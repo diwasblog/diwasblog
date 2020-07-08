@@ -1,0 +1,176 @@
+
+<html>
+	<head>
+	
+	<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+		<!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+	
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+	
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	
+	<style>
+	xmp.prettyprint{
+		font-size:12pt;
+		font-family:monospace;
+	
+	}
+	</style>
+	
+	</head>
+	<body>
+  
+  <h2>Fetching data based on numerous dropdown</h2>
+  
+  <img src="img/fetch.png">
+  
+  Here we have drop down. Five field where 4 are dropdown lets get table data on the basis of these data as below:
+  
+  
+  <pre>
+  <xmp class="prettyprint">
+  <form action="/infrastructure/index" method="get">
+		<div class="row">
+			<div class="col-md-4">
+				<label for="district">District </label>
+				<select id="dropdownDistrict" name="InfrastructureDistrictId" size='1' class="form-control" data-live-search="true">
+					<option value=" ">Select District</option>
+					@foreach (var district in ViewBag.District)
+					{
+					<option @(ViewBag.DistrictId == district.DistrictId? ("selected"): "") value="@district.DistrictId">@district.DistrictName</option>
+					}
+				</select>
+
+
+			</div>
+
+			<div class="col-md-4">
+				<label for="dropdownVDC">VDC </label>
+				<select id="dropdownVDC" name="InfrastructureVdcId" class=" form-control" data-live-search="true">
+					<option value="">Select VDC</option>
+					@foreach (var vdc in ViewBag.VdcByDistrict)
+					{
+					<option @(ViewBag.VDC == vdc.VdcId ? ("selected") : "") value="@vdc.VdcId">@vdc.VdcName</option>
+					}
+				</select>
+			</div>
+
+			<div class="col-md-3">
+				<label for="ward">Ward </label>
+				<input id="ward" type="number" value="@ViewBag.Ward" min="1" oninput="validity.valid||(value='');" step="1" name="Ward" class="form-control" />
+			</div>
+		</div>
+
+		<br />
+		<div class="row">
+			<div class="col-md-4">
+				<label for="name">Infrastructure Type </label>
+				<select id="" name="InfrastructureTypeId" class="form-control" data-live-search="true">
+					<option value="">Select Infrastructure Type</option>
+					@foreach (var infrastructureType in ViewBag.InfrastructureType)
+					{
+					<option @(ViewBag.InfrastructureTypeId == infrastructureType.InfrastructureTypeId? ("selected"): "") value="@infrastructureType.InfrastructureTypeId">
+						@infrastructureType.InfrastructureTypeName'
+					</option>
+					}
+				</select>
+
+			</div>
+
+			<div class="col-md-4">
+				<label for="name">Structure Type </label>
+				<select id="" name="InfrastructureLifeSpanId" class=" form-control" data-live-search="true">
+					<option value="">Select Structure Type</option>
+					@foreach (var infrastructureLifeSpan in ViewBag.InfrastructureLifeSpan)
+					{
+					<option @(ViewBag.InfrastructureLifeSpanId == infrastructureLifeSpan.InfrastructureLifeId? ("selected"): "") value="@infrastructureLifeSpan.InfrastructureLifeId">
+						@infrastructureLifeSpan.InfrastructureLifeName
+					</option>
+					}
+				</select>
+
+			</div>
+		</div>
+		<br />
+		<div class="row">
+			<div class="col-md-4">
+				<button type="submit" id="" class="btn btn-success">
+					<span id="sizing-addon2">
+						<i id="searching" class="fa fa-search"></i>
+
+					</span>
+
+					&nbsp;Search
+				</button>
+
+			</div>
+		</div>
+
+	</form>
+			</xmp>
+				
+				Then in controller ===> Infrastructure / index 
+				
+				
+				<pre>
+				<xmp class="prettyprint">
+	public ActionResult Index(int? page, int? infrastructureDistrictId, int? infrastructureVdcId, int? ward, int? infrastructureTypeId, int? infrastructureLifeSpanId)
+	{
+	var data = db.Infrastructure_Monitoring.AsQueryable();
+
+	if (infrastructureDistrictId != null)
+	{
+	data = data.Where(x => x.DistrictId == infrastructureDistrictId);
+	}
+	if (infrastructureVdcId != null)
+	{
+	data = data.Where(x => x.VDCId == infrastructureVdcId);
+	}
+
+	if (ward != null)
+	{
+	data = data.Where(x => x.Ward == ward);
+	}
+	if (infrastructureTypeId != null)
+	{
+	data = data.Where(x => x.InfrastructureTypeId == infrastructureTypeId);
+	}
+	if (infrastructureLifeSpanId != null)
+	{
+	data = data.Where(x => x.StructureTypeId == infrastructureLifeSpanId);
+	}
+
+	lst.InfrastructureListModel = (from d in data
+						join dis in db.Districts on d.DistrictId equals dis.DistrictId
+						join vdc in db.VDCs on d.VDCId equals vdc.VdcId
+						join infrastructureType in db.Infrastructure_Type on d.InfrastructureTypeId equals infrastructureType.InfrastructureTypeId
+						join structureType in db.Infrastructure_LifeSpan on d.StructureTypeId equals structureType.InfrastructureLifeId
+						select new InfrastructureListModel
+						{
+							InfrastructureId = d.InfrastructureId,
+							InfrastructureName = d.InfrastructureName,
+							DistrictName = dis.DistrictName,
+							VdcName = vdc.VdcName,
+							InfrastructureTypeName = infrastructureType.InfrastructureTypeName,
+							StructureTypeName = structureType.InfrastructureLifeName,
+							UpdatedBy = d.UpdatedBy
+
+						}
+	).ToList();
+
+	}
+			</xmp>
+				</pre>
+				
+				<br>
+				With this code we get below table 
+
+  
+  </body>
+  
+  </html>

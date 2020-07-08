@@ -1,0 +1,657 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+pre.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+}
+
+xmp.prettyprint{
+
+font-size:12pt;
+font-family:"Consolas, 'Courier New', monospace";
+}
+
+.prettify{
+  color:red;
+  
+}
+</style>
+</head>
+<body>
+<img src="img/startup.PNG">
+<br>
+<img src="img/startup.PNG">
+<br>
+<img src="img/register successful.PNG">
+<br>
+<ol>
+    <li>&nbsp;</li>
+    <li>&nbsp;</li>
+    <li><span style="font-size: 14pt;">Then press F5 and run the project and click on <strong>register on top right corner.</strong></span></li>
+    <li><span style="font-size: 14pt;">Then fill <strong>username, password and email</strong> and click <strong>ok</strong> button&nbsp;</span></li>
+    <li><span style="font-size: 14pt;">Then It will ask for <span style="color: #ff0000;"><strong>migration</strong> </span>then click on<span style="color: #ff0000;"><strong> create migration</strong></span> then <strong><span style="color: #ff0000;">refresh the page then its ok</span></strong></span></li>
+    </ol>
+
+    <br>
+
+    <h3>Then goto login/login_partial.cshtml</h3>
+    <xmp class="prettyprint">
+        @using Microsoft.AspNetCore.Identity
+
+        @inject SignInManager<IdentityUser> SignInManager   // look identityUser
+        @inject UserManager<IdentityUser> UserManager
+        
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post" id="logoutForm" class="navbar-right">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+                    </li>
+                    <li>
+                        <button type="submit" class="btn btn-link navbar-btn navbar-link">Logout</button>
+                    </li>
+                </ul>
+            </form>
+        }
+        else
+        {
+            <ul class="nav navbar-nav navbar-right">
+                <li><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
+                <li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
+            </ul>
+        }
+    </xmp>
+    Actually this IdentityUser will have Username,Email and password only so we have to extend it to like this:
+    <p><span style="font-size: 14pt;">Then lets extends our user table we do want to add :</span></p>
+<p><strong>First Name</strong></p>
+<p><strong>Last Name</strong></p>
+<p><strong>Street</strong></p>
+<p><strong>City</strong></p>
+<p><strong>Province</strong></p>
+<p><strong>PostalCode</strong></p>
+<p><span style="font-size: 18pt;">For this we create ApplicationUser.cs inside Model&nbsp;</span></p>
+<p><span style="font-size: 12pt;"><strong><span style="color: #ff0000;">ApplicationUser.cs</span></strong></span></p>
+<br>
+<xmp clas="prettyprint">
+    public class ApplicationUser:IdentityUser  
+    {
+        public ApplicationUser(): base() { }
+
+        public string FirstName { get; set; }
+        public string MiddleName { get; set; }
+        public string LastName { get; set; }
+        public string City { get; set; }
+        public string Province { get; set; }
+        public string PostalCode { get; set; } 
+        public string Country { get; set; }
+    }
+}
+
+</xmp>
+We are extending IdentityUser because we want to use Username ,email and Password field of IdentityUser and Other security feature of IdentityUser
+
+<h2>Then create ApplicationRole</h2>
+<xmp class="prettyprint">
+    public class ApplicationRole:IdentityRole
+    {
+
+        public string Description { get; set; }
+        public DateTime CreatedDate { get; set; }
+
+        public ApplicationRole()
+        {
+
+        }
+
+        public ApplicationRole(string roleName):base(roleName)
+        {
+
+        }
+
+        public ApplicationRole(string roleName,string description, DateTime createdDate):base(roleName)
+        {
+            this.Description = description;
+            this.CreatedDate = createdDate;
+        }
+
+    }
+</xmp>
+<h2>Then look at ApplicationDbContext </h2>
+<xmp class="prettyprint">
+    namespace IdentityCore.Data
+    {
+        public class ApplicationDbContext : IdentityDbContext
+        {
+            public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+                : base(options)
+            {
+            }
+        }
+    }
+</xmp>
+We are extending ApplicationDbContext from IdentityDbContext but we want to extend from IdentityDbContext<ApplicationUser>
+  like this:
+  <xmp class="prettyprint">
+      public class ApplicationDbContext : IdentityDbContext<ApplicationUser,ApplicationRole,string>
+          {
+              public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+                  : base(options)
+              {
+              }
+          }
+  </xmp>
+  <br>
+  Then Create ApplicationRole as well inside Model/ApplicationRole.cs
+  <br>
+  <p><span style="color: #ff0000;"><strong><span style="font-size: 14pt;">ApplicationRole.cs</span></strong></span></p>
+  <xmp class="prettyprint">
+      public class ApplicationRole:IdentityRole
+      {
+  
+          public string Description { get; set; }
+          public DateTime CreatedDate { get; set; }
+  
+          public ApplicationRole()
+          {
+  
+          }
+  
+          public ApplicationRole(string roleName):base(roleName)
+          {
+  
+          }
+  
+          public ApplicationRole(string roleName,string description, DateTime createdDate):base(roleName)
+          {
+              this.Description = description;
+              this.CreatedDate = createdDate;
+          }
+  
+      }
+  </xmp>
+  <br>
+  Then Create Dummydata inside data/dummydata.cs
+  <p><span style="color: #ff0000;"><strong><span style="font-size: 14pt;">DummyData.cs</span></strong></span></p>
+  <xmp class="prettyprint">
+      public class DummyData
+      {
+          public static async Task Initialize(ApplicationDbContext context,
+                                UserManager<ApplicationUser> userManager,
+                                RoleManager<ApplicationRole> roleManager)
+          {
+              context.Database.EnsureCreated();
+  
+              String adminId1 = "";
+              String adminId2 = "";
+  
+              string role1 = "Admin";
+              string desc1 = "This is the administrator role";
+  
+              string role2 = "Member";
+              string desc2 = "This is the members role";
+  
+              string password = "P@$$w0rd";
+  
+              if (await roleManager.FindByNameAsync(role1) == null)
+              {
+                  await roleManager.CreateAsync(new ApplicationRole(role1, desc1, DateTime.Now));
+              }
+              if (await roleManager.FindByNameAsync(role2) == null)
+              {
+                  await roleManager.CreateAsync(new ApplicationRole(role2, desc2, DateTime.Now));
+              }
+  
+              if (await userManager.FindByNameAsync("aa@aa.aa") == null)
+              {
+                  var user = new ApplicationUser
+                  {
+                      UserName = "aa@aa.aa",
+                      Email = "aa@aa.aa",
+                      FirstName = "Adam",
+                      LastName = "Aldridge",
+                      Street = "Fake St",
+                      City = "Vancouver",
+                      Province = "BC",
+                      PostalCode = "V5U K8I",
+                      Country = "Canada",
+                      PhoneNumber = "6902341234"
+                  };
+  
+                  var result = await userManager.CreateAsync(user);
+                  if (result.Succeeded)
+                  {
+                      await userManager.AddPasswordAsync(user, password);
+                      await userManager.AddToRoleAsync(user, role1);
+                  }
+                  adminId1 = user.Id;
+              }
+  
+              if (await userManager.FindByNameAsync("bb@bb.bb") == null)
+              {
+                  var user = new ApplicationUser
+                  {
+                      UserName = "bb@bb.bb",
+                      Email = "bb@bb.bb",
+                      FirstName = "Bob",
+                      LastName = "Barker",
+                      Street = "Vermont St",
+                      City = "Surrey",
+                      Province = "BC",
+                      PostalCode = "V1P I5T",
+                      Country = "Canada",
+                      PhoneNumber = "7788951456"
+                  };
+  
+                  var result = await userManager.CreateAsync(user);
+                  if (result.Succeeded)
+                  {
+                      await userManager.AddPasswordAsync(user, password);
+                      await userManager.AddToRoleAsync(user, role1);
+                  }
+                  adminId2 = user.Id;
+              }
+  
+              if (await userManager.FindByNameAsync("mm@mm.mm") == null)
+              {
+                  var user = new ApplicationUser
+                  {
+                      UserName = "mm@mm.mm",
+                      Email = "mm@mm.mm",
+                      FirstName = "Mike",
+                      LastName = "Myers",
+                      Street = "Yew St",
+                      City = "Vancouver",
+                      Province = "BC",
+                      PostalCode = "V3U E2Y",
+                      Country = "Canada",
+                      PhoneNumber = "6572136821"
+                  };
+  
+                  var result = await userManager.CreateAsync(user);
+                  if (result.Succeeded)
+                  {
+                      await userManager.AddPasswordAsync(user, password);
+                      await userManager.AddToRoleAsync(user, role2);
+                  }
+              }
+  
+              if (await userManager.FindByNameAsync("dd@dd.dd") == null)
+              {
+                  var user = new ApplicationUser
+                  {
+                      UserName = "dd@dd.dd",
+                      Email = "dd@dd.dd",
+                      FirstName = "Donald",
+                      LastName = "Duck",
+                      Street = "Well St",
+                      City = "Vancouver",
+                      Province = "BC",
+                      PostalCode = "V8U R9Y",
+                      Country = "Canada",
+                      PhoneNumber = "6041234567"
+                  };
+  
+                  var result = await userManager.CreateAsync(user);
+                  if (result.Succeeded)
+                  {
+                      await userManager.AddPasswordAsync(user, password);
+                      await userManager.AddToRoleAsync(user, role2);
+                  }
+              }
+          }
+      }
+  </xmp>
+  <br>
+  Then make change in startup.cs file
+
+  Replace this line inside configureservice() method:
+  <xmp class="prettyprint">
+    
+      services.AddDefaultIdentity<IdentityUser>()
+          .AddEntityFrameworkStores<ApplicationDbContext>();
+  </xmp>
+  With
+  <xmp class="prettyprint">
+    
+      services.AddIdentity<ApplicationUser, ApplicationRole>(
+          options => options.Stores.MaxLengthForKeys = 128)
+          .AddEntityFrameworkStores<ApplicationDbContext>()
+          .AddDefaultUI()    
+          .AddDefaultTokenProviders();
+  </xmp>
+
+<br>
+Here we have AddDefaultUI() because we are using inbuild UI which is currently buildin in the framework
+  ==========================================================================
+  So, ConfigureService() method looks like This
+  <pre class="prettyprint">
+      public void ConfigureServices(IServiceCollection services)
+      {
+          services.Configure&lt;CookiePolicyOptions>(options =>
+          {
+              // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+              options.CheckConsentNeeded = context => true;
+              options.MinimumSameSitePolicy = SameSiteMode.None;
+          });
+
+          services.AddDbContext&lt;ApplicationDbContext>(options =>
+              options.UseSqlServer(
+                  Configuration.GetConnectionString("DefaultConnection")));
+
+         <span style="color:white;background:lightgray">
+            services.AddIdentity&lt;ApplicationUser, ApplicationRole>(
+              options => options.Stores.MaxLengthForKeys = 128)
+              .AddEntityFrameworkStores&lt;ApplicationDbContext>()
+              .AddDefaultUI()
+              .AddDefaultTokenProviders();
+         </span>
+
+          services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+      }
+    </pre>
+  <br>
+  Now, login_partial.cs should not reference to IdentityUser but should reference to ApplicationUser like this:
+  <pre class="prettyprint">
+      @using Microsoft.AspNetCore.Identity
+
+      @inject SignInManager< <span style="background:red;color:black">ApplicationUser</span> > SignInManager
+      @inject UserManager<<span style="background:red;color:black">ApplicationUser</span>> UserManager
+      
+      @if (SignInManager.IsSignedIn(User))
+      {
+        &lt;form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post" id="logoutForm" class="navbar-right">
+            &lt;ul class="nav navbar-nav navbar-right">
+                  &lt;li>
+                     &lt;a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!&lt;/a>
+                      &lt;/li>
+                  &lt;li>
+                      &lt;button type="submit" class="btn btn-link navbar-btn navbar-link">Logout&lt;/button>
+                      &lt;/li>
+                  &lt;/ul>
+              &lt;/form>
+      }
+      else
+      {
+        &lt;ul class="nav navbar-nav navbar-right">
+              &lt;li>&lt;a asp-area="Identity" asp-page="/Account/Register">Register&lt;/a>&lt;/li>
+              &lt;li>&lt;a asp-area="Identity" asp-page="/Account/Login">Login&lt;/a>&lt;/li>
+          &lt;/ul>
+      }
+  </pre>
+  Then make following change on startup.cs file
+  <pre class="prettyprint">
+      public void Configure(IApplicationBuilder app, IHostingEnvironment env,
+      <span style="background:red;color:black">ApplicationDbContext context, RoleManager&lt;ApplicationRole> roleManager,
+      UserManager&lt;ApplicationUser> userManager</span>)
+  {
+      if (env.IsDevelopment())
+      {
+          app.UseDeveloperExceptionPage();
+          app.UseDatabaseErrorPage();
+      }
+      else
+      {
+          app.UseExceptionHandler("/Home/Error");
+          app.UseHsts();
+      }
+
+      app.UseHttpsRedirection();
+      app.UseStaticFiles();
+      app.UseCookiePolicy();
+
+      app.UseAuthentication();
+
+      app.UseMvc(routes =>
+      {
+          routes.MapRoute(
+              name: "default",
+              template: "{controller=Home}/{action=Index}/{id?}");
+      });
+
+     <span style="background:red;color:black"> DummyData.Initialize(context,userManager,roleManager).Wait();</span>
+  }
+  </pre>
+
+  Then in package manager or cmd we typed this for updating our table
+  <xmp class="prettyprint">
+      dotnet ef migrations add ExtendingUserandRoles
+      dotnet ef database update
+  </xmp>
+  Then new migration will get created with name ExtedningUserandRoles and on updating the table for user will get updated with firstname,lastname,password,email,streetname,city , postalcode etc
+  <br>
+  Then lets login with the data present in dummydata.cs as below
+  username : aa@aa.aa
+  password: Diwas@123
+
+  <img src="img/login.PNG">
+  
+  <img src="img/login successful.PNG">
+
+  Then lets create view for register which is hidden and lets open it 
+  <img src="img/create new identity ui.png">
+  <br>
+  <img src="img/select identity.PNG">
+  <br>
+  <img src="img/fortestselectallidentity.png">
+  Look all UI is created here
+  <br>
+  <img src="img/allui.PNG">
+  Here we can see both UI and view in same , all C# related task of register will be inside register.cshtml.cs file
+  <br>
+  <img src="img/eachviewwithcsfile.PNG">
+
+  <h2>Then goto register.cshtml.cs</h2>
+  Here, add more field for registering then InputModel will becomes like this
+  <pre class="prettyprint">
+      public class InputModel
+      {
+          [Required]
+          [EmailAddress]
+          [Display(Name = "Email")]
+          public string Email { get; set; }
+
+          [Required]
+          [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+          [DataType(DataType.Password)]
+          [Display(Name = "Password")]
+          public string Password { get; set; }
+
+          [DataType(DataType.Password)]
+          [Display(Name = "Confirm password")]
+          [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+          public string ConfirmPassword { get; set; }
+
+         <span style="background:red;color:lightgray">
+            [Required]
+            [DataType(DataType.Text)]
+            [StringLength(50, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+  
+            [Required]
+            [DataType(DataType.Text)]
+            [StringLength(50, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 2)]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
+  
+            [DataType(DataType.Text)]
+            [MaxLength(50)]
+            public string Street { get; set; }
+  
+            [DataType(DataType.Text)]
+            [MaxLength(50)]
+            public string City { get; set; }
+  
+            [DataType(DataType.Text)]
+            [MaxLength(50)]
+            public string Province { get; set; }
+  
+            [DataType(DataType.Text)]
+            [MaxLength(15)]
+            [Display(Name = "Postal Code")]
+            public string PostalCode { get; set; }
+  
+            [DataType(DataType.Text)]
+            [MaxLength(35)]
+            public string Country { get; set; }
+        
+        </span>
+      }
+<br>
+Then in same regiter.cshtml.cs file replace comment line with red line block
+      <pre class="prettyprint">
+          public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+              {
+                  returnUrl = returnUrl ?? Url.Content("~/");
+                  if (ModelState.IsValid)
+                  {
+                      //var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+                      //commented above line
+                     <span style="background:red">
+                        var user = new ApplicationUser
+                        {
+                            UserName = Input.Email,
+                            Email = Input.Email,
+                            FirstName = Input.FirstName,
+                            LastName = Input.LastName,
+                            Street = Input.Street,
+                            City = Input.City,
+                            Province = Input.Province,
+                            PostalCode = Input.PostalCode,
+                            Country = Input.Country
+                        };</span>
+                      var result = await _userManager.CreateAsync(user, Input.Password);
+                      if (result.Succeeded)
+                      {
+                          _logger.LogInformation("User created a new account with password.");
+      
+                          var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                          var callbackUrl = Url.Page(
+                              "/Account/ConfirmEmail",
+                              pageHandler: null,
+                              values: new { userId = user.Id, code = code },
+                              protocol: Request.Scheme);
+      
+                          await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                              $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+      
+                          await _signInManager.SignInAsync(user, isPersistent: false);
+                          return LocalRedirect(returnUrl);
+                      }
+                      foreach (var error in result.Errors)
+                      {
+                          ModelState.AddModelError(string.Empty, error.Description);
+                      }
+                  }
+      
+                  // If we got this far, something failed, redisplay form
+                  return Page();
+              }
+          }
+      </pre>
+
+  </pre>
+  Then in register.cshtml add this field like firstname,lastname,middelname,street, city name etc to show all ApplicationUser Field like this:
+  <pre class="prettyprint">
+      @page
+      @model RegisterModel
+      @{
+          ViewData["Title"] = "Register";
+      }
+      
+      &lt;h2>@ViewData["Title"]</h2>
+      
+      &lt;div class="row">
+      &lt;div class="col-md-4">
+
+      &lt;h4>Create a new account.&lt;/h4>
+      &lt;hr />
+      &lt;div asp-validation-summary="All" class="text-danger">&lt;/div>
+      &lt;form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+      <span style="background:gray">
+        
+      &lt;div class="form-group">
+      &lt;label asp-for="Input.FirstName">&lt;/label>
+      &lt;input asp-for="Input.FirstName" class="form-control" />
+      &lt;span asp-validation-for="Input.FirstName" class="text-danger">&lt;/span>
+      &lt;/div>
+                       &lt;div class="form-group">
+                       &lt;label asp-for="Input.LastName">&lt;/label>
+                       &lt;input asp-for="Input.LastName" class="form-control" />
+                       &lt;span asp-validation-for="Input.LastName" class="text-danger">&lt;/span>
+                       &lt;/div>
+                       &lt;div class="form-group">
+                       &lt;label asp-for="Input.Street">&lt;/label>
+                       &lt;input asp-for="Input.Street" class="form-control" />
+                       &lt;span asp-validation-for="Input.Street" class="text-danger">&lt;/span>
+                       &lt;/div>
+                       &lt;div class="form-group">
+                       &lt;label asp-for="Input.City">&lt;/label>
+                       &lt;input asp-for="Input.City" class="form-control" />
+                       &lt;span asp-validation-for="Input.City" class="text-danger">&lt;/span>
+                       &lt;/div>
+                       &lt;div class="form-group">
+                       &lt;label asp-for="Input.Province">&lt;/label>
+                       &lt;input asp-for="Input.Province" class="form-control" />
+                       &lt;span asp-validation-for="Input.Province" class="text-danger">&lt;/span>
+                       &lt;/div>
+                       &lt;div class="form-group">
+                       &lt;label asp-for="Input.PostalCode">&lt;/label>
+                       &lt;input asp-for="Input.PostalCode" class="form-control" />
+                       &lt;span asp-validation-for="Input.PostalCode" class="text-danger">&lt;/span>
+                       &lt;/div>
+                       &lt;div class="form-group">
+                       &lt;label asp-for="Input.Country">&lt;/label>
+                       &lt;input asp-for="Input.Country" class="form-control" />
+                       &lt;span asp-validation-for="Input.Country" class="text-danger">&lt;/span>
+                       &lt;/div>
+      </span>
+      
+                       &lt;div class="form-group">
+                       &lt;label asp-for="Input.Email">&lt;/label>
+                       &lt;input asp-for="Input.Email" class="form-control" />
+                       &lt;span asp-validation-for="Input.Email" class="text-danger">&lt;/span>
+                       &lt;/div>
+                       &lt;div class="form-group">
+                       &lt;label asp-for="Input.Password&lt;/label>
+                       &lt;input asp-for="Input.Password" class="form-control" />
+                       &lt;span asp-validation-for="Input.Password" class="text-danger">&lt;/span>
+                       &lt;/div>
+                       &lt;div class="form-group">
+                       &lt;label asp-for="Input.ConfirmPassword">&lt;/label>
+                       &lt;input asp-for="Input.ConfirmPassword" class="form-control" />
+                       &lt;span asp-validation-for="Input.ConfirmPassword" class="text-danger">&lt;/span>
+                       &lt;/div>
+      
+      
+      
+      
+                       &lt;button type="submit" class="btn btn-default">Register&lt;/button>
+                       &lt;/form>
+                       &lt;/div>
+                       &lt;/div>
+      
+      @section Scripts {
+        &lt;partial name="_ValidationScriptsPartial" />
+      }
+  </pre>
+  <br>
+  Then again register the user we get all field 
+  <img src="img/finalregisterpage.PNG">
+  <br>
+  <img src="img/cuttedregiest.PNG">
+  <br>
+  Then lets register new user . Here I have used ourtechroom@gmail.com as username and many more
+<img src="img/database local.PNG">
+
+  <h2>Source :https://www.youtube.com/watch?v=LFGt84fZlAM </h2>
+  </body>
+  </html>

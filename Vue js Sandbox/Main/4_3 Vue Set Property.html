@@ -1,0 +1,72 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+    font-size:12pt;
+    font-family:monospace;
+
+}
+</style>
+ 
+</head>
+<body>
+  <xmp class="prettyprint">
+      getAllEmployeePrivilegeRole() {
+        let vm = this;
+        axios.get('/hrms/employee/api/getemployeeprivilegerole')
+            .then(function (response) {
+                vm.theArray = response.data.Result;
+                //adding isSelected ==false property to data
+                vm.theArray.forEach(function (key) {
+                    Vue.set(key, "isSelected", false);
+                }) 
+            }).catch(function (error) {
+
+            });
+  </xmp>
+  
+  <h3>Adding selected property =false and displaying in name and isSelected property in table</h3>
+  <xmp class="prettyprint">
+    <table>
+      <tr v-for="item in theArray">
+          <td class="text-center"><input id="MenuId" v-model="item.isSelected" @@change="getMenuIds(item)" type="checkbox"></td>
+          <td>{{item.Name}}</td>
+      </tr>
+   </table>
+  </xmp>
+
+  <xmp class="prettyprint">
+      getMenuIds(menuitem) {
+        if (menuitem.isSelected == true)
+        {
+
+        }
+        else {
+
+        }
+      } 
+  </xmp>
+
+  <xmp class="prettyprint">
+    data:{
+      isSelected:'',
+      Name:''
+    }
+  </xmp>
+  
+<br>
+===========================================================================================================
+<br>
+<xmp class="prettyprint">
+vm.inputs.forEach(function (key) {
+    Vue.set(key, "ItemId", key.item.Id);
+});
+</xmp>
+    
+
+</body>

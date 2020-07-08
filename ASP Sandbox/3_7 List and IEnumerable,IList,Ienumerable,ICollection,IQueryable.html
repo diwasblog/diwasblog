@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/bootstrap-grid.css">
+  <link rel="stylesheet" href="css/bootstrap-reboot.css">
+  <link rel="stylesheet" href="css/dracula.css">
+  <link rel="stylesheet" href="css/dracula-prism.css">
+  <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+
+  <br>
+  <h2>Passing Data to object</h2>
+  <pre>
+      <code class="language-csharp">
+        public class Person{
+          public int Id{get;set;}
+          public string Name{get;set;}
+          public string Address{get;set;}
+        }
+      </code>
+    </pre>
+
+
+
+
+  <div class="row">
+
+    <div class="col">
+      <h2>Ways 1</h2>
+      <pre>
+            <code class="language-csharp">
+            Person p-new Person(){
+              Id=1,
+              Name="Diwas",
+              Address="Bhadrapur"
+            };
+            </code>
+          </pre>
+    </div>
+
+
+    <div class="col">
+      <h2>Ways 2</h2>
+      <pre>
+            <code class="language-csharp">
+            Person p-new Person();
+            p.Id=1;
+            p.Name="Diwas";
+            p.Address="Bhadrapur";
+             
+            </code>
+          </pre>
+    </div>
+  </div>
+
+
+  ==========================================================================================================================
+  <h2>List Enumerable Queryable</h2>
+  <div class="row">
+    <div class="col">
+      <pre>
+        <code class="language-csharp">
+List<int> ll=new List&lt;int>();
+//var ll=new List<int>()
+ll.Add(45);
+ll.Add('A');
+ll.Add(89);
+    
+foreach(var data in ll)
+Console.WriteLine(data);
+        </code>
+      </pre>
+    </div>
+    <div class="col">
+      <pre>
+              <code class="language-csharp">
+var ll = new List&lt;int>(){ 45, 'A', 89};
+
+  foreach(var data in ll)
+      Console.WriteLine(data);
+              </code>
+            </pre>
+
+    </div>
+    <div class="col">
+      <pre>
+              <code class="language-csharp">
+var ll = new List&lt;int> { 45,'A',89};
+
+  foreach(var data in ll)
+      Console.WriteLine(data);
+              </code>
+            </pre>
+    </div>
+
+  </div>
+
+  <pre>
+        <code class="language-csharp">
+          Output: 
+          45
+          A
+          89
+        </code>
+      </pre>
+
+  <br>
+  ============================================================================================================
+  <br>
+  <h2>Looping Through Object</h2>
+
+  |<div class="row">
+    <div class="col-lg-4">
+      <pre>
+      <code class="language-csharp">
+  var s=new List&lt;Student>();
+    s.Add(new Student{Id=1,Name="Diwas"});
+    s.Add(new Student{Id=2,Name="Subhum"});
+     foreach(var student in s)
+        Console.WriteLine(student.Id+" "+student.Name);   
+      </code>
+    </pre>
+    </div>
+
+    <div class="col-lg-4">
+      <pre>
+        <code class="language-csharp">
+  var lst=new List<Student>();
+    Student s1=new Student();
+    s1.Id=1;
+    s1.Name="Diwas";
+    lst.Add(s1);
+
+    Student s2=new Student();
+    s2.Id=1;
+    s2.Name="Diwas";
+    lst.Add(s2);
+
+          
+        </code>
+      </pre>
+    </div>
+    <div class="col-lg-4">
+      <pre>
+      <code class="language-csharp">
+Student s1=new Student(){
+                        Id=1,
+                        Name="Diwas"
+                      };
+Student s2=new Student(){
+                        Id=2,
+                        Name="Subhum"
+                      };
+                        
+var s=new List&lt;Student>{s1,s2};
+
+foreach(var student in s)
+  Console.WriteLine(student.Id+" "+student.Name);   
+        
+      </code>
+    </pre>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <pre>
+      <code class="language-csharp">
+Student s1=new Student{Id=1,Name="Diwas"};
+Student s2=new Student{Id=2,Name="Subhum"};
+                        
+var s=new List&lt;Student>{s1,s2};
+
+foreach(var student in s)
+  Console.WriteLine(student.Id+" "+student.Name); 
+      </code>
+    </pre>
+    </div>
+
+
+    <div class="col">
+      <pre>
+          <code class="language-csharp">
+              public class Student
+              { 
+                public int Id{ get; set; }
+                public string Name { get; set; }
+                
+              }
+          </code>
+        </pre>
+
+    </div>
+    <div class="col">
+      <pre>
+          <code class="language-csharp">
+              Output: 1 Diwas
+                      2 Subhum
+          </code>
+        </pre>
+
+    </div>
+  </div>
+  <br>
+  ========================================================================================
+  <h2>Initializing object</h2>
+
+  =============================================================================================
+  <br>
+  Note:DO use a list when you don’t know from the beginning how many items your collection will be holding.
+  <br>
+
+
+  <p><span style="color: #ff0000;"><strong><span style="font-size: 14pt;">IQueryable, IList, IDictionary,
+          ICollection</span></strong></span></p>
+  <p><span style="font-size: 14pt;">IQueryable,IList,IDictionary,ICollection inherits IEnumerable Interface. All the
+      interfaces of type collection will inherits IEnumerable Interface.</span></p>
+
+  <img src="img/icollection,ienumerable,ilist and icollection.jpeg">
+
+  <table style="border-collapse: collapse; width: 100%; height: 98px;" border="1">
+    <tbody>
+      <tr style="height: 49px; background-color: black; color: white;">
+        <td style="width: 50%; height: 49px;"><span style="font-size: 12pt;">Item</span></td>
+        <td style="width: 50%; height: 49px;"><span style="font-size: 12pt;">Used</span></td>
+      </tr>
+      <tr style="height: 49px;">
+        <td style="width: 50%; height: 49px;"><span style="font-size: 12pt;">IEnumerable</span></td>
+        <td style="width: 50%; height: 49px;">
+          <ul>
+            <li><span style="font-size: 12pt;">When you to deal with in process memory object like collections like in
+                ur local list or collections and loop through it and read the value than use it.</span></li>
+            <li><span style="font-size: 12pt;">You can not edit the items like adding, deleting, updating, etc. instead
+                you just use a container to contain a list of items.</span></li>
+            <li id="c277" class="graf graf--p graf-after--p"><span style="font-size: 12pt;">An IEnumerable does not hold
+                even the count of the items in the list, instead, you have to iterate over the elements to get the count
+                of items.</span></li>
+            <li id="892c" class="graf graf--p graf-after--p"><span style="font-size: 12pt;">An IEnumerable supports
+                filtering elements using where clause.</span></li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td style="width: 50%;"><span style="font-size: 12pt;"><strong
+              class="markup--strong markup--p-strong">ICollection</strong></span></td>
+        <td style="width: 50%;">
+          <p><span style="font-size: 12pt;">Derived from IEnumerable and extends it&rsquo;s functionality to add,
+              remove, update element in the list. ICollection also holds the count of elements in it and we does not
+              need to iterate over all elements to get total number of elements.</span></p>
+          <p><span style="font-size: 12pt;">ICollection supports enumerating over the elements, filtering elements,
+              adding new elements, deleting existing elements, updating existing elements and getting the count of
+              available items in the list.</span></p>
+        </td>
+      </tr>
+      <tr>
+        <td style="width: 50%;"><span style="font-size: 12pt;"><strong
+              class="markup--strong markup--p-strong">IList</strong></span></td>
+        <td style="width: 50%;">
+          <p><span style="font-size: 12pt;">IList extends ICollection.An IList can perform all operations combined from
+              IEnumerable and ICollection, and some more operations like inserting or removing an element in the middle
+              of a list.</span></p>
+          <p><span style="font-size: 12pt;">You can use a foreach loopor a for loop to iterate over the elements.</span>
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td style="width: 50%;"><strong class="markup--strong markup--p-strong">IQueryable</strong><strong
+            class="markup--strong markup--p-strong"><br /></strong></td>
+        <td style="width: 50%;">
+          <p><span style="font-size: 12pt;">IQueryable extends ICollection. An IQueryable generates a LINQ to SQL
+              expression that is executed over the database layer. Instead of the generating a Func&lt;T, bool&gt; like
+              the ones above, IQueryable generates an expression tree and gives Expression&lt;Func&lt;T, bool&gt;&gt;
+              that is executed over the database layer to get data set.</span></p>
+          <p>&nbsp;</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <p><span style="font-size: 18pt; color: #ff0000;">IQueryable vs IEnumerable</span></p>
+
+  <p><span style="font-size: 18pt; color: #000000;"><strong><span style="color: #e03e2d;">IEnumerable </span></strong>is
+      an interface that represents an object that can be <span style="color: #2dc26b;">enumerated</span>(which means
+      we can iterate over them using simple for each loop ).Example: string, list, array, dictionary are
+      enumerable(can be enumerated) . In string we can count or access each character using foreach loop.</span></p>
+  <p><span style="font-size: 18pt; color: #000000;">IQueryable is an interface that is derived from IEnumerable.So,
+      anything which queryable is also enumerable.</span></p>
+  <p>&nbsp;</p>
+  <p><img src="blob:https://www.tiny.cloud/0ed189fd-1cab-4b82-8e0b-8b5ff75dd59c" alt="" width="205" height="245" /></p>
+
+  <table style="border-collapse: collapse; width: 100%; height: 495px;" border="1">
+    <tbody>
+      <tr style="background-color: black; color: white;">
+        <td style="width: 50%; height: 55px;"><span style="font-size: 14pt;">IEnumerable</span></td>
+        <td style="width: 50%; height: 55px;"><span style="font-size: 14pt;">IQueryable</span></td>
+      </tr>
+      <tr style="height: 51px;">
+        <td style="width: 50%; height: 51px;"><span style="font-size: 12pt;"><span style="color: #ff0000;">Derives
+              From</span> : NO base interface</span></td>
+        <td style="width: 50%; height: 51px;"><span style="font-size: 12pt;">Derives from IEnumerable</span></td>
+      </tr>
+      <tr style="height: 51px;">
+        <td style="width: 50%; height: 51px;"><span style="font-size: 12pt;"><span style="color: #ff0000;">Deferred
+              Execution</span> : Supported</span></td>
+        <td style="width: 50%; height: 51px;"><span style="font-size: 12pt;">Supported</span></td>
+      </tr>
+      <tr style="height: 51px;">
+        <td style="width: 50%; height: 51px;"><span style="font-size: 12pt;"><span style="color: #ff0000;">Lazy
+              Loading</span> : Not Supported</span></td>
+        <td style="width: 50%; height: 51px;"><span style="font-size: 12pt;">Supported</span></td>
+      </tr>
+      <tr style="height: 186px;">
+        <td style="width: 50%; height: 186px;">
+          <p><span style="font-size: 12pt; color: #ff0000;">How does it works?</span></p>
+          <p><span style="font-size: 12pt;">While querying data from database,IEnumerable executes select queries on
+              Server Side , load data in-memory on Client Side and then filter data. Hence does&nbsp; more work and
+              becomes slow.</span></p>
+        </td>
+        <td style="width: 50%; height: 186px;"><span style="font-size: 12pt;">While querying data from database .
+            IQueryable executes select query on Server Side with all filters. Hence does less work and becomes
+            fast.</span></td>
+      </tr>
+      <tr style="height: 101px;">
+        <td style="width: 50%; height: 101px;">
+          <p><span style="font-size: 12pt;"><span style="color: #ff0000;">Suitable For</span> : Linq to Object, Linq to
+              XML queries.</span></p>
+        </td>
+        <td style="width: 50%; height: 101px;"><span style="font-size: 12pt;">Linq to SQL queries</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <pre>
+  <code class="language-csharp">
+      using (var efContext = new EfTestEntities())
+      {
+          IQueryable<Employee> employees = from e in efContext.Employees  select e.Salary;
+           
+          employees = employees.Take(2);
+      
+          foreach (var item in employees)
+          {
+              Console.WriteLine(item);
+          }
+      }
+  </code>
+</pre>
+
+  <p><span style="color: #ff0000;"><strong><span style="font-size: 14pt;">Look at SQL Profiler</span></strong></span>
+  </p>
+  <ol>
+    <li><span style="font-size: 12pt;">Total number of queries fired:&nbsp;<strong>1</strong></span></li>
+    <li><span style="font-size: 12pt;">Query text:<span
+          style="background-color: #ffffff; font-family: 'arial black', sans-serif;">&nbsp;<strong><code>SELECT TOP (2) [c].[Salary] AS [Salary] FROM [dbo].[Employee] AS [c]</code></strong></span></span>
+    </li>
+  </ol>
+
+  <p><span style="font-size: 12pt;">It is just that&nbsp;<span
+        style="color: #ff0000;"><strong><code>IQueryable</code></strong></span>&nbsp;is smart enough to apply
+      the<strong>&nbsp;<span style="color: #ff0000;"><code>Top (2)</code></span>&nbsp;</strong>clause on database server
+      side itself so it brings only <strong><span style="color: #ff0000;">2 out of 5 records</span> </strong>over the
+      wire. Any further in-memory filtering is not required at all on client computer side.</span></p>
+
+
+  <div>
+    <div><span style="font-size: 18pt;"><strong><span style="color: #2dc26b;">Hover mouse over employees object you will
+            get</span></strong>: <span style="color: #000000;"><strong><span
+              style="color: #e03e2d;">Expression&lt;Func&lt;TEntity, bool&gt;</span> . This create expression tree and
+            donot call db immediately and calls only when we access for each&nbsp;loop</strong></span></span></div>
+  </div>
+  =================================================================================================================
+
+  <h2>IEnumerable</h2>
+  <pre>
+      <code class="language-csharp">
+          using (var efContext = new EfTestEntities())
+          {
+              IEnumerable<Employee> employees = from e in efContext.Employees  select e.Salary;
+              employees = employees.Take(2);
+          
+              foreach (var item in employees)
+              {
+                  Console.WriteLine(item);
+              }
+          }
+      </code>
+    </pre>
+  Summary From Profile<br>
+  <ol>
+    <li><span style="font-size: 12pt;">Total number of queries fired:&nbsp;<strong>1</strong></span></li>
+    <li><span style="font-size: 12pt;">Query text captured in SQL profiler<strong>:&nbsp;<code>SELECT [Extent1].[Salary] AS [Salary]
+        FROM [dbo].[Employee] AS [Extent1]</code></strong></span></li>
+  </ol>
+
+  <p><span style="font-size: 14pt;">Now the thing is&nbsp;<code>IEnumerable</code>&nbsp;brought all the<strong> 5
+        records</strong> present in&nbsp;<span
+        style="color: #ff0000;"><strong><code>Salary</code></strong>&nbsp;</span>table and then performed an <span
+        style="color: #ff0000;"><strong>in-memory filtering</strong></span> on the client computer to get <strong>top 2
+        records</strong>. So more data (<span style="color: #ff0000;"><strong>3 additional records in this
+          case</strong></span>) got transferred over the wire unnecessarily.</span></p>
+
+
+  <div>
+    <div><span style="font-size: 18pt;"><strong><span style="color: #2dc26b;">Hover mouse over employees object you will
+            get</span></strong>: <span style="color: #000000;"><strong><span style="color: #e03e2d;">Func&lt;TEntity,
+              bool&gt;</span> . This will call db immediately only one time then will handle all take(),groupby,orderby
+            in memory</strong></span></span></div>
+  </div>
+
+  <br><br><br>
+  <h2>So in generic pattern we have Expression&lt;Func&lt;TEntity,bool>> instead of Func&lt;TEntity,bool> as shown below
+  </h2>
+  <pre>
+    <code class="language-csharp">
+
+
+        public int Update(TEntity entity, Expression&lt;Func&lt;TEntity, object>>[] properties)
+        {
+            _dataContext.Entry(entity).State = EntityState.Unchanged;
+            foreach (var property in properties)
+            {
+                var propertyName = ExpressionHelper.GetExpressionText(property);
+                _dataContext.Entry(entity).Property(propertyName).IsModified = true;
+            }
+            
+            return _dataContext.SaveChanges();
+        }
+
+
+
+
+        public IQueryable&lt;TEntity> GetBy(Expression&lt;Func&lt;TEntity, bool>> predicate)
+        {
+            return _dbSet.Where(predicate);
+        }
+        
+        public TEntity FindBy(Expression&lt;Func&lt;TEntity, bool>> predicate)
+        {
+            return _dbSet.FirstOrDefault(predicate);
+        }
+
+
+    </code>
+  </pre>
+  <h2>Note:</h2>
+  <p><span style="font-size: 18pt;">Note:</span></p>
+  <ul>
+    <li><span style="font-size: 18pt; color: #000000;">The Entity Framework's fluent interface for constructing SQL
+        queries is based on IQueryables, not IEnumerables.</span></li>
+    <li><span style="font-size: 18pt; color: #000000;">&nbsp;You can write LINQ code with hardly a thought for whether
+        you're querying objects, XML or a database.&nbsp;</span></li>
+    <li><span style="font-size: 18pt; color: #000000;"><strong>There is no use of IQueryable in querying from the C#
+          object </strong>because IQueryable only works with database related things.</span></li>
+  </ul>
+  <p>&nbsp;</p>
+  <ul>
+    <li><span style="font-size: 18pt;"><strong><span style="color: #000000;">&nbsp;IEnumerable&lt;&gt;</span></strong>
+        takes a <span style="color: #169179;"><strong>Func&lt;....&gt;</strong></span> as its parameter , <strong><span
+            style="color: #000000;"><em>IQueryable&lt;&gt;</em></span></strong>&nbsp;takes an&nbsp;<em><strong><span
+              style="color: #169179;">Expression&lt; Func&lt;.....&gt;&gt; </span></strong>as parameter</em></span></li>
+  </ul>
+  So, we have two internal build one for Enumerable (C# object ) and another Querable(For Database) as shown below
+  <pre>
+    <code class="language-csharp">
+        public static IOrderedEnumerable&lt;TSource> OrderByDescending&lt;TSource, TKey>(
+            this IEnumerable&lt;TSource> source, 
+            Func&lt;TSource, TKey> keySelector);
+        
+        public static IOrderedQueryable&lt;TSource> OrderByDescending&lt;TSource, TKey>(
+            this IQueryable&lt;TSource> source, 
+            Expression&lt;Func&lt;TSource, TKey>> keySelector);
+         
+    </code>
+
+  </pre>
+
+
+  <div class="row">
+    <h4>Enumerable</h4>
+    <div class="col-lg-6">
+      <pre>
+        <code class="language-csharp">
+         var data =  context.Cities 
+            .Where(where)
+            .OrderByDescending(c => c.Population)
+            .Take(numDesired);
+    
+        //   SELECT 
+        //   [Extent1].[Name] AS [Name], 
+        //   [Extent1].[StateCode] AS [StateCode], 
+        //   [Extent1].[Population] AS [Population]
+        //   FROM [dbo].[Cities] AS [Extent1]
+
+        // Then orderby and take happens in memory
+        </code>
+        </pre>
+    </div>
+
+    <div class="col-lg-6">
+      <h4>Queryable</h4>
+      <pre>
+          <code class="language-csharp">
+          var data =    context.Cities 
+              .Where(where)
+              .OrderByDescending(c => c.Population)
+              .Take(numDesired);
+      
+          //   SELECT TOP (15) 
+          //   [Extent1].[Name] AS [Name], 
+          //   [Extent1].[StateCode] AS [StateCode], 
+          //   [Extent1].[Population] AS [Population]
+          //   FROM [dbo].[Cities] AS [Extent1]
+          //   WHERE [Extent1].[Name] LIKE N'P%'
+          //   ORDER BY [Extent1].[Population] DESC
+
+          //all happens in database
+          </code>
+          </pre>
+    </div>
+  </div>
+
+  <script src="js/prism.js"></script>
+  <script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+      {
+        'remove-trailing': true,
+        'remove-indent': true,
+        'left-trim': true,
+        'right-trim': true,
+        // 'break-lines': 10,
+        // 'indent': 2,
+        // 'remove-initial-line-feed': false,
+        // 'tabs-to-spaces': 4,
+        // 'spaces-to-tabs': 4
+      });
+  </script>
+</body>
+
+</html>

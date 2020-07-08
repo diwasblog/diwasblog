@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<p><span style="font-size: 24pt; color: #ff0000;">Unobtrusive Javascript (This is client side validation)</span></p>
+<p><span style="font-size: 14pt;">It is a javascript that is separated from the web site's html markup.</span></p>
+<p><span style="font-size: 18pt; color: #ff0000;">Benefits</span></p>
+<p><span style="font-size: 14pt; color: #000000;"><strong><span style="color: #ff0000;">Separation of concerns</span></strong>:<span style="font-size: 12pt;">Your HTML and CSS aren't tied into your JS code. Your JS code isn't inline to some HTML element. Your code doesn't have one big function (or non-function) for everything. You have short, succinct functions and have on external file.Also page load faster.</span></span></p>
+<p><span style="font-size: 14pt; color: #000000;"><strong><span style="color: #ff0000;">It is easy to update the code:</span></strong><span style="font-size: 12pt;">as all the Js logic is present in a separate file.</span></span></p>
+<p><span style="font-size: 14pt; color: #000000;"><strong><span style="color: #ff0000;">We also get ,better cache supports</span></strong>:<span style="font-size: 12pt;">as present in separate file ,it can be cached and accessed much faster.</span></span></p>
+<p><span style="color: #ff0000;"><strong><span style="font-size: 14pt;">Modular</span>.</strong></span><span style="color: #000000;">&nbsp;<span style="font-size: 12pt;">This happens when you correctly separate concerns. Eg, Your awesome canvas animation doesn't need to know how vectors work in order to draw a box.</span></span></p>
+<p>&nbsp;</p>
+<p><span style="color: #000000;"><span style="font-size: 12pt;">Actually this unobstructive javascript is enabled here in web.config.cs file</span></span></p>
+<p><span style="color: #000000;"><span style="font-size: 12pt;">Obstructive Javascript</span></span></p>
+<p><span style="color: #000000;"><span style="font-size: 12pt;">Means writing javascript inline or in the same file where html is written. But for unobstrutive Js we write in separate file.</span></span></p>
+<p><span style="color: #000000;"><span style="font-size: 12pt;">Here, obstructive js&nbsp;</span></span></p>
+<p><span style="color: #000000;"><span style="font-size: 12pt;">eg1.&nbsp;</span></span></p>
+<pre class="default prettyprint prettyprinted"><code><span class="tag">&lt;div</span> <span class="atn">onclick</span><span class="pun">=</span><span class="atv">"</span><span class="pln">alert</span><span class="pun">(</span><span class="str">'obstrusive'</span><span class="pun">)</span><span class="atv">"</span><span class="tag">&gt;</span><span class="pln">Information</span><span class="tag">&lt;/div&gt;<br /><br />eg2.<br /></span></code></pre>
+<pre class="default prettyprint prettyprinted"><code><span class="tag">&lt;div</span> <span class="atn">id</span><span class="pun">=</span><span class="atv">"info"</span><span class="tag">&gt;</span><span class="pln">Information</span><span class="tag">&lt;/div&gt;</span><span class="pln">
+
+... etc ...
+
+// In an included JS file etc, jQueryish.
+$(function() {
+    $("#info").click(function() { alert("unobtrusive!"); }
+});</span></code></pre>
+<pre class="default prettyprint prettyprinted"><code><span class="tag"><br /></span></code>eg of unobstructive js<br /><br />&lt;head&gt;<br />&lt;script src="myfile.js"&gt;<br />&lt;/head&gt;<br />&lt;body&gt;<br /><code><span class="tag">&lt;div</span> <span class="atn">id</span><span class="pun">=</span><span class="atv">"info"</span><span class="tag">&gt;</span><span class="pln">Information</span><span class="tag">&lt;/div&gt;</span>
+</code><br />&lt;/body&gt;<br /><br />myfile.js <br />This file contains as below<br /><code><span class="pln">$(function() {
+    $("#info").click(function() { alert("unobtrusive!"); }
+});</span></code><br /><br /></pre>
+</body>
+</html>

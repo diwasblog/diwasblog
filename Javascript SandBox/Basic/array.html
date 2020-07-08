@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../css/dracula.css">
+    <link rel="stylesheet" href="../css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+      <p><strong><span style="font-size: 18pt; color: #ff00ff;">Merging an Array</span></strong></p>
+      <div><span style="color: #000000; font-size: 12pt;"><strong>If you need to merge two arrays you can use the Array.concat() function:</strong></span></div>
+          <pre class="limit-5">
+              <code class="language-javascript">
+                var array1 = [1, 2, 3];  
+              var array2 = [4, 5, 6];  
+              console.log(array1.concat(array2)); // [1,2,3,4,5,6];
+              </code>
+          </pre>  
+
+
+    
+          However, this function is not the most suitable to merge large arrays because it will consume a lot of memory by creating a new array. In this case, you can use Array.push.apply(arr1, arr2) which instead creates a new array – it will merge the second array in the first one reducing the memory usage:
+
+          <pre class="limit-5">
+              <code class="language-javascript">
+                var array1 = [1, 2, 3];  
+                var array2 = [4, 5, 6];  
+                console.log(array1.push.apply(array1, array2)); // [1,2,3,4,5,6];  
+              </code>
+          </pre>  
+
+          <p><strong><span style="font-size: 18pt; color: #ff00ff;">Use Of Slice</span></strong></p>
+Mostly use to get last element of array
+<pre class="limit-5">
+    <code class="language-javascript">
+        var array = [1, 2, 3, 4, 5, 6];  
+        console.log(array.slice(-1)); // [6]  
+        console.log(array.slice(-2)); // [5,6]  
+        console.log(array.slice(-3)); // [4,5,6] 
+        console.log(array.slice(2));  // [3,4,5,6]
+        console.log(array.slice(1));  // [2,3,4,5,6]
+        console.log(array.splice(2, 2); //myarray is now [13, 36 , 83]. The 3rd and 4th element is removed.   
+    </code>
+</pre>  
+
+
+
+    <script src="../js/prism.js"></script>
+    <script type="text/javascript">
+      Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+          'remove-trailing': true,
+          'remove-indent': true,
+          'left-trim': true,
+          'right-trim': true,
+          // 'break-lines': 10,
+          // 'indent': 2,
+          // 'remove-initial-line-feed': false,
+          // 'tabs-to-spaces': 4,
+          // 'spaces-to-tabs': 4
+        });
+    </script>
+  </body>
+</html>

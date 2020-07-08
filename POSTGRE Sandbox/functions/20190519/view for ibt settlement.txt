@@ -1,0 +1,35 @@
+-- View: transactions.transactions_view_for_ibt
+
+-- DROP VIEW transactions.transactions_view_for_ibt;
+
+CREATE OR REPLACE VIEW transactions.transactions_view_for_ibt AS
+ SELECT mv_transactions_view.tran_id,
+    mv_transactions_view.office_id,
+    mv_transactions_view.tran_date,
+    mv_transactions_view.value_date,
+    mv_transactions_view.book_name,
+    mv_transactions_view.gl_account_id,
+    mv_transactions_view.debit,
+    mv_transactions_view.credit,
+    mv_transactions_view.statement_reference,
+    mv_transactions_view.teller_id
+   FROM transactions.mv_transactions_view
+  WHERE mv_transactions_view.tran_date < (core.get_date() - 1)
+UNION ALL
+ SELECT t.tran_id,
+    t.office_id,
+    t.tran_date::date AS tran_date,
+    t.value_date::date AS value_date,
+    t.book_name,
+    td.gl_account_id,
+    td.debit,
+    td.credit,
+    td.statement_reference,
+    t.teller_id
+   FROM transactions.transactions t
+     JOIN transactions.transaction_details td ON t.tran_id = td.tran_id
+  WHERE t.verification_status_id > 0 AND t.tran_date = (core.get_date() - 1);
+
+ALTER TABLE transactions.transactions_view_for_ibt
+    OWNER TO postgres;
+

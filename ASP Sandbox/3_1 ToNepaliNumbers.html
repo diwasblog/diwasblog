@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+==========================================================================
+
+<h1>Extension Methods</h1>
+<p><span style="font-size: 14pt;">An <strong><span style="color: #ff00ff;">extension method</span></strong> is a<span style="color: #ff0000;"> static method</span> of a <span style="color: #ff0000;">static class</span>, where the "<span style="color: #ff0000;">this</span>" modifier is applied to the first parameter. The type of the first parameter will be the type that is extended.</span></p>
+<br>
+<p><span style="font-size: 14pt;">It helps to add new methods to existing types without modifying the original code,&nbsp; without inheriting and without aggregation.</span></p>
+<br>
+<p><span style="font-size: 14pt;"><span style="color: #ff00ff;"><strong>Note :&nbsp;</strong></span>Extension methods can be used anywhere in the application by including the <span style="color: #ff0000;">namespace of the extension method.</span></span></p>
+
+===================================================================================================
+<br>
+<h2>Extension/StringExtension.cs</h2>
+
+<pre>
+  <code class="language-csharp">
+    using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace TUDCMIS.Extensions
+{
+    public static class StringExtension //must be public and static
+    {
+        public static string ToNepaliNumbers(this string input)  //must be static and public
+        {
+            if (input == null)
+                return "";
+            string output = "";
+            for(int i = 0; i < input.Length; i++)
+            {
+                 
+                switch (input[i])
+                {
+                    case '1':
+                        output += '१';
+                        break;
+                    case '2':
+                        output += '२';
+                        break;
+                    case '3':
+                        output += '३';
+                        break;
+                    case '4':
+                        output += '४';
+                        break;
+                    case '5':
+                        output += '५';
+                        break;
+                    case '6':
+                        output += '६';
+                        break;
+                    case '7':
+                        output += '७';
+                        break;
+                    case '8':
+                        output += '८';
+                        break;
+                    case '9':
+                        output += '९';
+                        break;
+                    case '0':
+                        output += '०';
+                        break;
+                    case '-':
+                        output += '-';
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return output;
+        }
+    }
+}
+  </code>
+</pre>
+
+===========================================================================
+<h2>How to use this class</h2>
+<pre>
+  <code class="language-csharp">
+    @using TUDCMIS.Extensions;
+
+    
+    @Model.Darta.OfficeSerialNo.ToNepaliNumbers()
+    Also
+  </code>
+</pre>
+<hr>
+<h2>How to use this class in another class</h2>
+<pre>
+  <code class="language-csharp">
+    @using TUDCMIS.Extensions;
+
+    
+    string num="12345";
+    string newString=num.ToNepaliNumbers();
+    Also
+  </code>
+</pre>
+
+<h2>Internally</h2>
+
+num.ToNepaliNumbers(); Converted To==> StringExtension.ToNepaliNumbers(num);
+
+===========================================================================================================
+<br>
+<h2>Object Type</h2>
+<div class="row">
+    <div class="col">
+    <pre>
+    <code class="language-csharp">
+    public static void Main(string[] args)
+    {
+        var p=new Student{Name="John",Age=33};
+        p.SayHello();         
+    }  
+    </code>
+    </pre>
+    </div>
+    <div class="col">
+    <pre>
+    <code class="language-csharp">
+    public static class MyExtensions
+    {
+        public static void SayHello(this Student student)
+        {
+            Console.WriteLine("{0} says hello",student.Name);   
+        }
+    }  
+    </code>
+    </pre>
+    </div>
+
+    <div class="col">
+    <pre>
+    <code class="language-csharp">
+    public class Student{
+
+        public string Name {get;set;}
+        public int Age{get;set;}
+    } 
+    </code>
+    </pre>
+    </div>
+
+    <div class="col">
+        Output
+        <pre>
+        <code class="language-csharp">
+         John says hello
+        </code>
+        </pre>
+    </div>
+</div>
+==========================================================================
+<br>
+<h2>Object Type</h2>
+<div class="row">
+    <div class="col">
+    <pre>
+    <code class="language-csharp">
+    public static void Main(string[] args)
+    {
+        var p1=new Student{Name="John",Age=33};
+        var p2=new Student{Name="Diwas",Age=23};
+        p1.SayHello(p2);         
+    }  
+    </code>
+    </pre>
+    </div>
+    <div class="col">
+    <pre>
+    <code class="language-csharp">
+    public static class MyExtensions
+    {
+        public static void SayHello(this Student student,Student s2)
+        {
+            Console.WriteLine("{0} says hello to {1}",student.Name,s2.Name);   
+        }
+    }  
+    </code>
+    </pre>
+    </div>
+
+    <div class="col">
+    <pre>
+    <code class="language-csharp">
+    public class Student{
+
+        public string Name {get;set;}
+        public int Age{get;set;}
+    } 
+    </code>
+    </pre>
+    </div>
+
+    <div class="col">
+        Output
+        <pre>
+        <code class="language-csharp">
+         John says hello to Diwas
+        </code>
+        </pre>
+    </div>
+</div>
+=======================================================================================================================
+<h2>Adding th , st  at last </h2>
+<div class="row">
+<div class="col-lg-6">
+<pre>
+<code class="language-csharp">
+public static string OrdinalSuffix(this DateTime datetime)
+		{
+			int day = datetime.Day;
+			if (day % 100 >= 11 && day % 100 <= 13)
+				return String.Concat(day, "th");
+			switch (day % 10)
+			{
+				case 1:
+					return String.Concat(day, "st");
+				case 2:
+					return String.Concat(day, "nd");
+				case 3:
+					return String.Concat(day, "rd");
+				default:
+					return String.Concat(day, "th");
+			}
+		}
+
+</code>
+</pre>
+</div>
+
+<div class="col-lg-6">
+<pre>
+<code class="language-csharp">
+DateTime henrybirthdate = new DateTime(1998, 10, 12);
+Console.Write(henrybirthdate.OrdinalSuffix());   // 12th
+</code>
+</pre>
+</div>
+</div>
+<br>
+====================================================================================================================
+<br>
+<h2>Get Age From birthdate </h2>
+<pre>
+<code class="language-csharp">
+			Console.WriteLine(Math.Floor((DateTime.Today - new DateTime(1994, 12, 20)).TotalDays / 365.25));   //24
+</code>
+</pre>
+<br>
+==================================================================================================
+<br>
+<h2>Occurence Count</h2>
+<div class="row">
+<div class="col-lg-6">
+<pre>
+<code class="language-csharp">
+public static int Occurrence(this String instr, string search)
+{
+	return Regex.Matches(instr, search).Count;
+}
+</code>
+</pre>
+</div>
+
+<div class="col-lg-6">
+<pre>
+<code class="language-csharp">
+Console.WriteLine("diwas poudel paudel".Occurrence("p"));  //2
+</code>
+</pre>
+</div>
+
+</div>
+==================================================================================================
+<h2>Is String Null Or WhiteSpace Or Empty </h2>
+<div class="row">
+<div class="col-lg-6">
+<pre>
+<code class="language-csharp">
+public static bool IsNullOrEmptyOrWhiteSpace(this string str)
+{
+	return (String.IsNullOrEmpty(str) ||
+	str.Trim().Length == 0) ? true : false;
+}
+</code>
+</pre>
+</div>
+<div class="col-lg-6">
+<pre>
+<code class="language-csharp">
+	Console.WriteLine(" ".IsNullOrEmptyOrWhiteSpace()); //true
+	Console.WriteLine(null.IsNullOrEmptyOrWhiteSpace()); //true
+	Console.WriteLine("diwas".IsNullOrEmptyOrWhiteSpace()); //false
+	Console.WriteLine(" \n ".IsNullOrEmptyOrWhiteSpace()); //false
+</code>
+</pre>
+</div>
+</div>
+==================================================================================================
+<h2>List to String </h2>
+<div class="row">
+<div class="col-lg-6">
+<pre>
+<code class="language-csharp">
+var lst = new List<string>() { "Arun", "Amar","John" };
+Console.WriteLine(string.Join(", ",lst));
+</code>
+</pre>
+</div>
+<div class="col-lg-6">
+<pre>
+<code class="language-csharp">
+	Output: <br>
+	Arun, Amar, John 
+</code>
+</pre>
+</div>
+</div>
+==================================================================================================
+<script src="js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

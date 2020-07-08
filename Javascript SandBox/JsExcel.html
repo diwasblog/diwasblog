@@ -1,0 +1,51 @@
+<html>
+
+<head>
+    <script
+        src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+
+
+    <style>
+        xmp.prettyprint {
+            font-size: 12pt;
+            font-family: monospace;
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <xmp class="prettyprint">
+
+        <input type="button" oncliek="tableToExcel('pvtTable','Any Name')" value="ExcelDownload">
+
+        <table class="pvtTable">
+            ...
+        </table>
+
+
+
+        <script type="text/javascript">
+            var tableToExcel = (function () {
+                var uri = 'data:application/vnd.ms-excel;base64,'
+                    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><style> table, td {border:2em solid black;padding:20px !important;border-spacing: 10px}table {border-collapse:collapse}</style> <!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+                    , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+                    , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+                return function (table, name) {
+
+                    if (!table.nodeType) table = document.getElementsByClassName(table)[0] // look here we have taken first table with classname 
+                    var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
+                    window.location.href = uri + base64(format(template, ctx))
+                }
+            })()
+
+
+        </script>
+        </script>
+
+    </xmp>
+
+</body>

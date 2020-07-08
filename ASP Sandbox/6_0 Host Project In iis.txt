@@ -1,0 +1,4 @@
+1)Host project in IIS
+  Right click on Sites > Add Website > Give name of sites and port number with Ip : All Unassigned
+  Then enable that port in Firewall.
+2)Goto Postman or browser and hit get request

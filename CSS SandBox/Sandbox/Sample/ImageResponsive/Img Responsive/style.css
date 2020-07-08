@@ -1,0 +1,77 @@
+
+.ratio-16-9{
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  overflow: hidden;
+}
+
+.ratio-image{
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  text-align: center;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center center;
+}
+
+/* scale effect */
+.scale-effect{
+  transition: all 0.2s ease-in-out;
+}
+
+.scale-effect:hover{
+  transform: scale(1.15, 1.15) rotate(-1deg);
+}
+
+.heading-medium{
+  font-size: 18px;
+  font-weight: 500;
+  color: #007bff;;
+  clear: both;
+}
+
+.heading-medium > a{
+  text-decoration: none;
+  color: #007bff;;
+}
+
+.single-line{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vertical-gap-15{
+  margin-bottom: 15px;
+}
+
+.img-content{
+  color: white !important;
+  background-color: rgba(0,0,0,0.5);
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  padding: 10px;
+  width: 100%;
+}
+
+.img-category{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  color: white;
+  background-color: rgba(20,20,20,0.8);
+  padding: 2px 5px;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.two-line{
+  max-height: 43px;
+  overflow: hidden;
+}
+

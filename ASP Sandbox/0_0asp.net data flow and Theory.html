@@ -1,0 +1,128 @@
+<img src="img/workflow.jpg">WorkFlow
+
+<br>
+=====================================================================================
+<br>
+
+<img src="img/lifecycle.jpg">
+<div class="col-xs-12">
+  <h3><strong><span style="color: #ff0000;">Page Lifecycle of an&nbsp;<a style="color: #ff0000;" title="ASP.NET Articles" href="http://www.thingswelearned.com/CatAct/Articles/e48b4a34-729b-4023-aeae-fba7440d0521/" target="_blank" rel="noopener">ASP.NET</a>&nbsp;<a style="color: #ff0000;" title="MVC Articles" href="http://www.thingswelearned.com/CatAct/Articles/f0f57977-7ac0-47bb-970a-39643b2b9b72/" target="_blank" rel="noopener">MVC</a>:</span></strong></h3>
+  <ol>
+  <li>
+  <p><strong>App initialization-&nbsp;</strong>Browser request pages to IIS</p>
+  </li>
+  <li>
+  <p><strong>Perform routing -</strong>&nbsp;IIS will pass this request to Application <span style="color: #ff0000;">UrlRoutingMoule</span> will try to find Route defined in RouteTable</p>
+  </li>
+  <li>
+  <p><strong>Create&nbsp;</strong><a title="MVC Articles" href="http://www.thingswelearned.com/CatAct/Articles/f0f57977-7ac0-47bb-970a-39643b2b9b72/" target="_blank" rel="noopener"><strong>MVC</strong></a><strong>&nbsp;request handler-&nbsp;</strong>UrlRoutingMoule will try to find matching Route defined in <span style="color: #ff0000;">RouteTable</span> collection. If matching route found - <span style="color: #ff0000;">MvcRouteHandler</span> will create instance of MvcHandler</p>
+  </li>
+  <li>
+  <p><strong>Controller-</strong></p>
+  <ol>
+  <li>
+  <p><strong>Create controller-</strong>&nbsp;<span style="color: #ff0000;">MvcHandler</span> will create an instance of controller</p>
+  </li>
+  <li>
+  <p><strong>Execute controller&nbsp;</strong>- <span style="color: #ff0000;">MvcHandler</span> calls the controllers<span style="color: #ff0000;"> Execute method</span></p>
+  </li>
+  <li>
+  <p><strong>Invoke action -</strong>&nbsp;controller determines which action method of the controller class to call, and then calls that method.</p>
+  </li>
+  </ol>
+  </li>
+  <li>
+  <p><strong>Controller to Model -</strong>&nbsp;Controller work with Model- to retrieve and store data, to perform business logic for application.</p>
+  </li>
+  <li>
+  <p><strong>Model to Controller-</strong>&nbsp;Model provides data to controller</p>
+  </li>
+  <li>
+  <p><strong>Controller to View -</strong>&nbsp;Controller execute the result by returning a result type.</p>
+  </li>
+  <li>
+  <p><strong>View to Controller -</strong>&nbsp;View can also directly interact with controller (e.g. while interacting with&nbsp; multiple modules ).</p>
+  </li>
+  <li>
+  <p><strong>Return Result to IIS -</strong>&nbsp;Appropriate return type based on action will be returned to IIS.</p>
+  </li>
+  <li>
+  <p><strong>Return to Browser -&nbsp;</strong>Render result to Browser</p>
+  </li>
+  </ol>
+  </div>
+  </div>
+  </div>
+
+  <br>=
+  ==================================================================================================
+  <br>
+  <p><span style="color: #ff0000; font-size: 14pt;">WebForm</span></p>
+<p><strong><span style="color: #ff0000;">Pros</span></strong></p>
+<p>Rich Control(grid etc..)</p>
+<p>RAD</p>
+<p>Event Driven(like Winforms)</p>
+<p>StateFul</p>
+<p><strong><span style="color: #ff0000;">Cons</span></strong></p>
+<p>Less Control</p>
+<p>No built-in Separation of Concerns(SoC)</p>
+<p>Complicated Page Life Cycle</p>
+<p>Not SEO Friendly Url and big ViewState at the begining of page.</p>
+<p>&nbsp;</p>
+<p><span style="color: #ff0000; font-size: 14pt;">MVC Pattern</span>&nbsp;</p>
+<p><strong>Architectural Pattern developed by <span style="color: #ff0000;">Trygve Reenskaug</span> in <span style="color: #ff00ff;">1978.</span></strong></p>
+<p><strong><span style="color: #ff00ff;">ASP.Net MVC Pros</span></strong></p>
+<p>More Control over your html and js code</p>
+<p>SOC</p>
+<p>SEO friendly</p>
+<p>Test Driven Development</p>
+<p><span style="color: #ff00ff;"><strong>Cons</strong></span></p>
+<p>Not RAD</p>
+<p>No Rich Controls</p>
+<p><span style="font-size: 18pt;"><strong><span style="color: #ff00ff;">MVC Pattern in</span></strong></span></p>
+<p>1).Net has Spring.NET ,MonoRail</p>
+<p>2)Java has Swing,Struts,Grails</p>
+<p>3)Php has Laravel,Zend,</p>
+<p>4)Python has Django,Pylon</p>
+<p>5)Ruby has Ruby on Rails</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+
+http://www.hamdiceylan.com/asp-net-web-api-token-based-authentication/
+https://github.com/tjoudeh/AngularJSTwoFactorAuthentication/blob/master/TwoFactorAuthentication.API/Providers/SimpleAuthorizationServerProvider.cs
+https://searchcode.com/codesearch/view/99759500/
+https://www.moqdigital.com.au/insights/technical/12-steps-to-token-authentication-using-owin
+
+============================================================================================================================
+<p><span style="font-size: 14pt;">Using Global Filter</span></p>
+<p><span style="font-size: 12pt;">Global filter is applied to all action method of all controller so if no login and want to go to other page then will not allow.</span></p>
+<p><span style="font-size: 14pt; color: #ff0000;">In global.asax</span></p>
+<pre>
+  protected void Application_Start()
+  {
+    AreaRegistration.RegisterAllAreas();
+    GlobalConfiguration.Configure(WebApiConfig.Register);
+    FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);  //look here
+    RouteConfig.RegisterRoutes(RouteTable.Routes);
+    BundleConfig.RegisterBundles(BundleTable.Bundles);
+  }
+</pre>
+
+<p><strong><span style="font-size: 14pt; color: #ff0000;">In App_Start/FilterConfig</span></strong></p>
+
+<pre>
+  public class FilterConfig
+  {
+    public static void RegisterGlobalFilters(GlobalFilterCollection filters)
+    {
+      filters.Add(new HandleErrorAttribute());
+    }
+  }
+</pre>
+
+==========================================================================================================
+<h2 class="pHeading1Rule"><strong><span style="color: #ff0000;">&nbsp;Debug Log File</span></strong></h2>
+<p><span style="font-size: 12pt;">The license server produces both debug log files and report log files.</span></p>
+<p><span style="font-size: 12pt;">A debug log file contains status and error messages useful for debugging the license server. </span></p>
+<p><span style="font-size: 12pt;">A license server always generates debug log output.</span></p>

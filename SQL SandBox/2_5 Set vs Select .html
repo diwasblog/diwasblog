@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+
+      <table style="width: 100%; height: 281px;" border="1">
+          <tbody>
+          <tr style="height: 49px; background: gray;">
+          <td style="width: 50%; height: 49px;"><span style="font-size: 18pt; color: #ff00ff;">SET</span></td>
+          <td style="width: 50%; height: 49px;"><span style="font-size: 18pt; color: #ff00ff;">SELECT</span></td>
+          </tr>
+          <tr style="height: 49px;">
+          <td style="width: 50%; height: 49px;">SET is the <span style="color: #ff0000;">ANS</span>I standard for variable assignment</td>
+          <td style="width: 50%; height: 49px;">SELECT is not.</td>
+          </tr>
+          <tr style="height: 49px;">
+          <td style="width: 50%; height: 49px;">SET can only<strong><span style="color: #000000;"> assign one variable at a time</span></strong></td>
+          <td style="width: 50%; height: 49px;">SELECT can make <span style="color: #000000;"><strong>multiple assignments at once.</strong></span></td>
+          </tr>
+          <tr style="height: 67px;">
+          <td style="width: 50%; height: 67px;">If assigning from a query, SET can only assign a scalar value. If the query returns multiple values/rows then SET will raise an error.</td>
+          <td style="width: 50%; height: 67px;">&nbsp;SELECT will assign one of the values to the variable and hide the fact that multiple values were returned</td>
+          </tr>
+          <tr style="height: 67px;">
+          <td style="width: 50%; height: 67px;">When assigning from a query if there is no value returned then SET will assign NULL</td>
+          <td style="width: 50%; height: 67px;">&nbsp;SELECT will not make the assignment at all (so the variable will not be changed from its previous value)</td>
+          </tr>
+          </tbody>
+          </table>
+
+  <h2>Demo 4th point</h2>
+  <div class="row">
+    <div class="col-lg-6">
+        <pre class="limit-10">
+            <code class='language-sql'>
+                declare @var varchar(20)
+                set @var = 'Joe'
+                set @var = (select m.name from [dbo].[myTable] m where m.name = 'qwerty'); //use bracket
+                select @var /* @var is now NULL */
+        </code>
+        </pre>
+    </div>
+
+    <div class="col-lg-6">
+        <pre class="limit-10">
+            <code class='language-sql'>
+                declare @var varchar(20)
+                set @var = 'Joe'
+                select @var = m.name from [dbo].[myTable] m where m.name = 'qwerty'
+                select @var /* @var is still equal to 'Joe' */
+              </code>
+              </pre>
+      </div>
+  </div>  
+  <br>
+  ==========================================================================================      
+   <h2>Declaration and asssignment in same line</h2> 
+   <pre class="limit-10">
+      <code class='language-sql'>
+          DECLARE @Date datetime= DATEADD(MINUTE,345,GETUTCDATE());
+        </code>
+        </pre>
+
+        <br>
+        ==========================================================================================
+        <br>
+        <h2>Other</h2>
+        <div class="row">
+            <div class="col-lg-6">
+                <pre class="limit-10">
+                    <code class='language-sql'>
+                        declare @ModelID uniqueidentifer
+                        set @ModelID = (select modelid from models
+                        where areaid = 'South Coast')
+                </code>
+                </pre>
+            </div>
+        
+            <div class="col-lg-6">
+                <pre class="limit-10">
+                    <code class='language-sql'>
+                        declare @ModelID uniqueidentifer
+                        SELECT @ModelID = m.modelid 
+                        FROM MODELS m
+                        WHERE m.areaid = 'South Coast'
+                      </code>
+                      </pre>
+              </div>
+          </div> 
+
+          <br>
+          =========================================================================================
+          <br>
+          <h2><strong><span style="color: #ff00ff;">Warning</span></strong></h2>
+<p><span style="font-size: 14pt; color: #000000;">If this select statement returns&nbsp;<em>multiple values</em>&nbsp;:</span></p>
+<ul>
+<li><span style="font-size: 14pt; color: #000000;">When using&nbsp;<code>SELECT</code>, the variable is assigned the last value that is returned (as womp said), without any error or warning (this may cause logic bugs)</span></li>
+<li><span style="font-size: 14pt; color: #000000;">When using&nbsp;<code>SET</code>, an error will occur</span></li>
+</ul>
+
+<h2>Demostration</h2>
+<table>
+    <tbody>
+    <tr style="background: gray; color: white;">
+    <td>Id</td>
+    <td>Name</td>
+    <td>AreaId</td>
+    </tr>
+    <tr>
+    <td>1</td>
+    <td>Diwas</td>
+    <td>1</td>
+    </tr>
+    <tr>
+    <td>2</td>
+    <td>Yogesh</td>
+    <td>1</td>
+    </tr>
+    <tr>
+    <td>3</td>
+    <td>Sarad</td>
+    <td>2</td>
+    </tr>
+    <tr>
+    <td>4</td>
+    <td>Varat</td>
+    <td>3</td>
+    </tr>
+    <tr>
+    <td>NULL</td>
+    <td>NULL</td>
+    <td>NULL</td>
+    </tr>
+    </tbody>
+    </table>
+
+
+    <div class="row">
+        <div class="col-lg-6">
+            <pre class="limit-10">
+                <code class='language-sql'>
+                    declare @ID nvarchar(50);
+                    select @Id=m.Name FROM Member m  WHERE m.AreaId = 1
+                    Print @Id  // output: Yogesh 
+                    //Here we have two Name with AreaId=1 but select 
+                    //will accept multiple value will return last 
+                    //assigned value ie. Yogesh
+            </code>
+            </pre>
+        </div>
+    
+        <div class="col-lg-6">
+            <pre class="limit-10">
+                <code class='language-sql'>
+                    declare @NewId nvarchar(50);
+                    set @NewId=(Select m.Name From Member m where m.AreaId=1)
+                    Print @NewId  //will generate error
+                    //will not hold multiple value and generate error
+                  </code>
+                  </pre>
+          </div>
+      </div> 
+
+
+    <br>
+
+
+<script src="js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

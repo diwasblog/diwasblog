@@ -1,0 +1,122 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+
+<!--Explaination-->
+
+<p><span style="font-size: 12pt;">&nbsp;<span style="font-family: 'arial black', sans-serif; color: #ff0000;"><em>Dynamically binds an attribute to an expression.Some html attribute are : id,src,title,style,width,height, disabled etc</em></span></span><br /><span style="font-family: arial black, sans-serif;"><strong>Can be Used as</strong></span></p>
+<p style="text-align: center;"><span style="font-family: georgia, palatino, serif;"><strong> v-bind:id</strong></span></p>
+<p style="text-align: center;"><span style="font-family: georgia, palatino, serif;"><strong>&nbsp;v-bind:src="myimage"</strong></span></p>
+<p style="text-align: center;"><span style="font-family: georgia, palatino, serif;"><strong>&nbsp; v-bind:style="color:red", </strong></span></p>
+<p style="text-align: center;"><span style="font-family: georgia, palatino, serif;"><strong>v-bind:href</strong>&nbsp;</span>&nbsp;<br />&nbsp;Eg :<strong>&lt;item optional="1"&gt;...&lt;/item&gt; Here, place of optional is Attribute Name(Attribute) and "1" is attribute value(Expression)</strong></p>
+
+<p style="text-align: center;"><span style="color: #003300; font-size: 14pt;">Example</span>
+<!--########################Main Code######################################-->
+<style>
+.active {
+            background: red;
+            }
+</style>
+
+<div id='app'>
+        <img v-bind:src="myimage" height='300' width='400'>
+        <div>
+        <a href = "hreflink" > Link_Binding_Example</a> 
+         <a href = "{{hreflink}}" target = "_blank">Link_Binding_Example </a>  
+         <a v-bind:href = "hreflink" target = "_blank">Link_Binding_Example </a>   
+       </div>
+       <div v-bind:class = "{active:isactive}"><b>Class Binding Example</b></div>
+         <div v-bind:style = "{ color: activeColor, fontSize: fontSize + 'px' }">{{title}}</div>
+ 
+</div>
+
+<script>
+const app=new Vue({
+    el:'#app',
+    data:{
+      title:'Style Binding Attribute',
+       myimage:'https://avatars1.githubusercontent.com/u/28994482?s=460&v=4',
+       hreflink:"http://www.diwas-poudel.com.np",
+       isactive : true,
+       activeColor: 'red',
+       fontSize:25
+    }
+});
+</script>
+<!--##############################################################-->
+
+
+<!--|#########################DISPLAY############################################-->
+<?prettify linenums=1?>
+<xmp class="prettyprint"
+   >
+
+   <html>
+      <head>
+         <title>Attribute Binding</title>
+      </head>
+      <body>
+
+         <style>
+            .active {
+                background: red;
+            }
+        </style>
+
+<div id='app'>
+ <img v-bind:src="myimage" height='300' width='400'>
+        <div>
+
+          //wont work
+        <a href = "hreflink" > Image_Binding_Example</a> 
+
+        //wont work
+         <a href = "{{hreflink}}" target = "_blank">Image_Binding_Example </a>  
+
+         //work 
+         <a v-bind:href = "hreflink" target = "_blank">Image_Binding_Example </a>   
+       </div>
+       <div v-bind:class = "{active:isactive}"><b>Class Binding Example</b></div>
+       
+         <div v-bind:style = "{ color: activeColor, fontSize: fontSize + 'px' }">{{title}}</div>
+ 
+</div>
+
+<script>
+const app=new Vue({
+    el:'#app',
+    data:{
+      title:'Style Binding Attribute',
+       myimage:'https://avatars1.githubusercontent.com/u/28994482?s=460&v=4',
+       hreflink:"http://www.diwas-poudel.com.np",
+       isactive : true,
+       activeColor: 'red',
+       fontSize:25
+    }
+});
+</script>
+
+      </body>
+   </html>
+</xmp>
+<!--####################################################-->
+
+
+    </body>
+
+</html>

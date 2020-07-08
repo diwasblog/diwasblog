@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+<p><span style="font-size: 18pt; font-family: 'comic sans ms', sans-serif; color: #ff00ff;">Bundle And Minification</span></p>
+<ul>
+<li><span style="font-size: 14pt;">When we create different files of JavaScripts and style-sheets, the<strong> browser sends individual requests to the server to fetch them.</strong></span></li>
+<li><span style="font-size: 14pt;"> From <strong>ASP .NET 4.5 onward</strong> the developer will have the ability to <strong>create bundles of .js and .css files together so that the .js files are fetched in a single request from server. </strong></span></li>
+<li><span style="font-size: 14pt;"><strong>Bundling not only creates a single entity but also minifies all the content present in the bundles. </strong></span></li>
+<li><span style="font-size: 14pt;">This improves the performance of requests and requests are completed in a single go.</span></li>
+</ul>
+<p><span style="text-decoration: underline;"><strong><span style="font-size: 14pt; color: #ff00ff; text-decoration: underline;">Important</span></strong></span></p>
+<p><span style="font-size: 14pt;">Most of the current major browsers limit the number of&nbsp;<a href="http://www.browserscope.org/?category=network" data-linktype="external">simultaneous connections</a>&nbsp;per each hostname to six. </span></p>
+<p><span style="font-size: 14pt;">That means that while six requests are being processed, additional requests for assets on a host will be queued by the browser.&nbsp;</span></p>
+<p>&nbsp;</p>
+
+Look at BundleConfig.cs at AppStart.cs
+
+<pre>
+ <code class="language-csharp">
+    public class BundleConfig
+    {
+        // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
+        public static void RegisterBundles(BundleCollection bundles)
+        {
+            bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
+                        "~/Scripts/jquery-{version}.js"));
+            bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
+                         "~/Scripts/jquery-ui-1.12.1.min.js"));
+
+            ------
+          }
+        }
+ </code> 
+</pre>  
+
+<p><span style="font-size: 14pt;">This file contains RegisterBundles() method which is being called at Application_Start() event by global.asax.cs file. This RegisterBundles() method contains all the bundles created in the application.All the bundles created are added to this bundle parameter at the start of the application.</span></p>
+
+<p><span style="text-decoration: underline;"><span style="font-size: 14pt; color: #ff00ff; text-decoration: underline;">Notes</span></span></p>
+<ul>
+<li><span style="font-size: 14pt;">For scripts(.js files) we use&nbsp;<strong>ScriptBundle</strong>&nbsp;as you can see in above image.</span></li>
+<li><span style="font-size: 14pt;">For stylesheets(.css files) we use&nbsp;<strong>StyleBundle</strong>&nbsp;class.</span></li>
+</ul>
+<p><span style="font-size: 14pt;">This<strong>&nbsp;ScriptBundle/StyleBundle</strong>&nbsp;class takes the name of the bundle and then we can include multiple files to a particular bundle as per our choice.</span></p>
+
+<p><span style="font-size: 14pt;"><strong><span style="color: #ff0000;">~/Scripts/jquery-{version}.js&nbsp; &nbsp;</span> ==&gt; includes <span style="color: #ff00ff;">jquery.js</span> and<span style="color: #ff00ff;"> jquery.min.js</span>&nbsp;</strong></span></p>
+<p><span style="font-size: 14pt;"><strong><span style="color: #ff0000;">~/Scripts/jquery.validate*&nbsp; &nbsp;</span>==&gt; includes<span style="color: #ff00ff;">&nbsp;<em>jquery.validate.js</em>&nbsp;</span>&amp;<span style="color: #ff00ff;">&nbsp;<em>jquery.validate.unobtrusive.js.</em></span></strong></span></p>
+<h2 id="bundle-caching" class="heading-with-anchor"><span style="color: #ff00ff;"><strong>Bundle Caching</strong></span></h2>
+<p><span style="font-size: 14pt;">Bundles set the HTTP Expires Header one year from when the bundle is created.&nbsp;</span></p>
+<p><span style="font-size: 14pt;">So step are&nbsp;</span></p>
+<p><span style="font-size: 14pt;">1)Auto Register Bundle (At global.asax.cs)</span></p>
+<p><span style="font-size: 14pt;">&nbsp;&nbsp;</span></p>
+
+<pre>
+
+     <code class="language-csharp">
+     protected void Application_Start()
+        {
+            GlobalConfiguration.Configure(WebApiConfig.Register);
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
+            AreaRegistration.RegisterAllAreas();
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            BundleConfig.RegisterBundles(BundleTable.Bundles); //here it is 
+        }
+   </code> 
+</pre>
+
+
+<p><span style="font-size: 14pt;">&nbsp;2)Inside appstart folder/bundleconfig.cs</span></p>
+<p><span style="font-size: 14pt;">&nbsp;Don't format to add  BundleTable.EnableOptimizations = true; at buttom</span></p>
+<pre>
+   <code class="language-csharp">
+     public class BundleConfig
+    {
+        // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
+        public static void RegisterBundles(BundleCollection bundles)
+        {
+            //scripts
+            bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
+                        "~/Scripts/jquery-{version}.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
+                        "~/Scripts/jquery.validate*"));
+
+            bundles.Add(new ScriptBundle("~/bundles/ckeditor").Include(
+                        "~/Scripts/ckeditor/ckeditor.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
+                        "~/Scripts/modernizr-*"));
+
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+                      "~/scripts/bootstrap.min.js",
+                      "~/Scripts/respond.js"));
+
+            //styles            
+            bundles.Add(new StyleBundle("~/Content/Site").Include("~/Content/site.css"));
+            bundles.Add(new StyleBundle("~/Content/BootStrap").Include(
+                "~/Content/bootstrap.min.css"));
+
+            bundles.Add(new StyleBundle("~/Content/font-awesome").Include(
+                     "~/Content/font-awesome.min.css")); 
+
+            BundleTable.EnableOptimizations = true;
+        }
+    }
+   </code> 
+</pre>
+
+<p><span style="font-size: 14pt;">3Use it like this in view like _layout.cshtml</span></p>
+
+<pre>
+ <code class="language-csharp">
+   &lt;!DOCTYPE html>
+&lt;html>
+&lt;head>
+    &lt;meta charset="utf-8" />
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0">
+    &lt;title>@ViewBag.Title&lt;/title>
+
+    //load style here
+    @Styles.Render("~/Content/BootStrap")
+    @Styles.Render("~/Content/font-awesome")
+    @Styles.Render("~/Content/Site")
+    //my own style
+    @RenderSection("styles", required: false)
+
+    ----
+     remainign code
+     ----
+
+    @RenderBody()
+      ----
+    //load script here
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/ckeditor")
+    @Scripts.Render("~/bundles/modernizr")
+    //my own style
+    @RenderSection("scripts", required: false) 
+&lt;/head>
+&lt;body >
+</code>
+</pre>  
+
+
+=======================================================================
+You can include multiple in one name as well like this:
+ Here we include bootstrap and popper in same name i.e /bundles/bootstrap
+<pre>
+<code class="language-csharp">
+  bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+                      "~/Scripts/bootstrap.min.js",
+                      "~/Scripts/popper.min.js"));
+</code>  
+</pre>  
+
+==========
+You can include multiple by creating string as well.. as below
+
+
+<pre>
+<code class="language-csharp">
+string[] jQuery = new string[] { "~/Scripts/jquery-{version}.js", 
+                                 "~/Scripts/jquery-ui-{version}.js" };
+
+                                 ..
+bundles.Add(new ScriptBundle("~/bundles/jQuery")
+    .Include(jQuery));
+
+bundles.Add(new ScriptBundle("~/bundles/jQueryVal")
+    .Include(jQuery)
+    .Include("~/Scripts/jquery.validate*"));
+</code>  
+</pre>  
+
+
+
+
+
+=
+ <script src="js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>   

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+    ===============================================================================================
+    <h2>Synchronous vs ASynchronous Programming Execution </h2>
+
+    <p><strong><span style="font-size: 18pt; color: #ff00ff;">Synchronous Programming Execution</span></strong></p>
+<p><span style="font-size: 12pt;">In Synchronous program, program&nbsp; is <strong>executed line by line</strong>, <strong>one line at a time</strong>. </span></p>
+<p><span style="font-size: 12pt;">Each time a function is called, program execution waits until that function returns before continuing to the next line of code.</span></p>
+<p>&nbsp;</p>
+
+<div class="row">
+<div class="col-lg-8">
+    <pre>
+        <code class="language-csharp">
+            namespace ConsoleApp2
+            {
+                class Program
+                {
+                    public static void Print()
+                    {
+                        Console.WriteLine("Method Starts");
+                        System.Threading.Thread.Sleep(3000);
+                        Console.WriteLine("Method Starts after 3 seconds");
+                    }
+            
+            
+                    static void Main(string[] args)
+                    {
+                        Print();
+                        Console.WriteLine("This will execute after print method execute");
+                        Console.ReadKey();
+                    }
+                }
+            }
+        </code>
+        </pre>
+</div>
+
+<div class="col-lg-4">
+  <h5>OUtput: </h5>
+Method Starts<br>
+Method Starts after 3 seconds<br>
+This will execute after print method execute<br>
+<br>
+
+<b>Describption</b>:Always Same result because in synchronous programming because here programs executes line by line.
+<br><br>
+<b>Problem:</b> What happens if Print() function takes long times?<br>
+Your program will stuck and waits for Print() function to complete and then execute below line of print()
+
+</div>
+</div>
+<h2></h2>
+<p><strong><span style="font-size: 18pt;">Asynchronous Program Execution</span></strong></p>
+<p><span style="font-size: 12pt;">Here, above bottleneck willnot occur.Here, await is rewritten inside print function so if any print() take time then rest of code present below Print() will continue to execute.</span></p>
+<p>&nbsp;</p>
+
+<div class="row">
+    <div class="col-lg-8">
+        <pre>
+            <code class="language-csharp">
+                namespace ConsoleApp2
+                {
+                    class Program
+                    {
+                        public async static void Print()
+                        {
+                            Console.WriteLine("Method Starts");
+                            await Task.Delay(3000);
+                            Console.WriteLine("Method Starts after 3 seconds");
+                        }
+                
+                
+                        static void Main(string[] args)
+                        {
+                            Print();
+                            Console.WriteLine("This will execute after print method execute");
+                            Console.ReadKey();
+                        }
+                    }
+                }
+            </code>
+            </pre>
+    </div>
+    
+    <div class="col-lg-4">
+      <h5>OUtput: </h5>
+    Method Starts<br>
+    Method Starts after 3 seconds<br>
+    This will execute after print method execute<br>
+    <br>
+
+  <b>OR</b><br>
+  <h5>OUtput: </h5>
+  Method Starts<br>
+  This will execute after print method execute<br>
+  Method Starts after 3 seconds<br>
+
+
+    <b>Describption</b>:Can be of any order.And cannot be guarantee
+    </div>
+    </div>
+
+    <table style="border-collapse: collapse; width: 100%;" border="1">
+        <tbody>
+        <tr style="color: white; background: gray;">
+        <td style="width: 50%;">Synchronous</td>
+        <td style="width: 50%;">ASynchronous</td>
+        </tr>
+        <tr>
+        <td style="width: 50%;">When you execute something synchronously, you wait for it to finish before moving on to another task.&nbsp;</td>
+        <td style="width: 50%;">When you execute something asynchronously, you can move on to another task before it finishes.</td>
+        </tr>
+        </tbody>
+        </table>
+
+        asynchronous execution is doing stuff in the background.
+
+        <p><span style="color: #ff00ff;"><strong><span style="font-size: 14pt;">For example </span></strong></span></p>
+<p><span style="font-size: 14pt;">If you want to download a file from the internet you might use a <strong>synchronous functi</strong>on to do that but it will block your thread until the file finished downloading. This can make your application unresponsive to any user input.</span></p>
+<p><span style="font-size: 14pt;">Instead you could download the file in the background using <strong>asynchronous method.</strong> In this case the download function returns immediately and program execution continues normally. All the download operations are done in the background and your program will be notified when it's finished.</span></p>
+<p>&nbsp;</p>
+
+Note: Concurrency :Executing at the same time
+<br>
+Synchronously:Executing one after another serially
+
+<h2>Example 2</h2>
+<h1>Simple Explanation via analogy</h1>
+<p><strong>Synchronous Execution</strong></p>
+<p>My boss is a busy man. He tells me to write the code. I tell him: Fine. I get started and he's watching me like a vulture, standing behind me, off my shoulder. I'm like "Dude, WTF: why don't you go and do something while I finish this?"</p>
+<p>he's like: "No, I'm&nbsp;<em>waiting right here</em>&nbsp;until you finish." This is synchronous.</p>
+<p><strong>Asynchronous Execution</strong></p>
+<p>The boss tells me to do it, and rather than waiting right there for my work, the boss goes off and does other tasks. When I finish my job I simply report to my boss and say: "I'm DONE!" This is Asynchronous Execution.</p>
+<p>(Take my advice: NEVER work with the boss behind you.)</p>
+    =============================================================================================================================
+    <br>
+      <p><span style="font-size: 14pt;">Asynchronous&nbsp;</span></p>
+<p><span style="font-size: 14pt;">One of prominent best practices in async programming is <span style="color: #ff00ff;"><strong>Async all the <span style="color: #ff00ff;">wa</span>y</strong></span> i.e. <span style="color: #ff0000;">you shouldn&rsquo;t mix synchronous and asynchronous code.</span> In particular, it&rsquo;s usually a bad idea to block on async code by calling Task.Wait or Task.Result.</span></p>
+<p><span style="font-size: 14pt;">==================================================================================</span></p>
+<p><span style="font-size: 14pt;">Note: <strong>For synchronous API code</strong>, when a request is made to the API, <span style="color: #ff0000;">a thread</span> from the <span style="color: #ff0000;">thread pool</span> will handle the request. If the code makes an<span style="color: #ff0000;"> I/O call</span> (like <span style="color: #ff0000;">a database call</span>) synchronously, the thread will <span style="color: #ff0000;">block</span> until the I/O call has finished. The blocked thread can&rsquo;t be used for any other work, it simply does nothing and waits for the I/O task to finish. If other requests are made to our API whilst the other thread is blocked, different threads in the thread pool will be used for the other requests.<strong><span style="color: #ff0000;">Then think what happens when all thread from thread pool is used then problem occur .</span></strong></span></p>
+
+
+<img src="img/Sync-Diagram.png">
+
+<p><span style="font-size: 14pt;"><strong><span style="color: #ff0000;">If the API was to work in an asynchronous manner</span></strong>, when a request is made to our API,<span style="color: #ff0000;"><strong> a thread</strong></span> from the <span style="color: #ff0000;">thread pool</span> handles the request (as in the synchronous case). If the code makes an <strong><span style="color: #ff0000;">asynchronous I/O call</span></strong>, <strong>the thread will be returned to the thread pool at the start of the I/O call and then be used for other requests. So all thread will not be used .</strong></span></p>
+
+<img src="img/ASync-Diagram.png">
+
+<p><span style="font-size: 14pt;">So, making operations asynchronous will allow our API to work more efficiently with the ASP.NET Core thread pool.</span></p>
+
+<h3><strong><span style="color: #ff0000;">Conclusion</span></strong></h3>
+<p><span style="font-size: 14pt;"><span style="color: #ff0000;"><strong>When the API is stressed</strong></span>, async action methods will give the API some much needed breathing room whereas sync action methods will deteriorate quicker.</span></p>
+<p><span style="font-size: 14pt;"><strong><span style="color: #ff0000;">Async code doesn&rsquo;t come for free</span></strong> &ndash; there is additional <strong><span style="color: #ff0000;">overhead</span> </strong>in <span style="color: #ff00ff;">context switching</span>, <span style="color: #ff00ff;">data being shuffled on and off the heap,</span> etc which is why <span style="color: #ff0000;">async code can be a bit slower than the equivalent sync code if there is plenty of available threads in thread pool.</span> This difference is usually very minor though.</span></p>
+<p><span style="font-size: 14pt;">It&rsquo;s a good idea to write async action methods that are I/O bound even if the API is only currently dealing with a low amount of usage. It only takes typing an extra keyword per I/O call and the usage can grow.</span></p>
+
+=======================================================================================================================
+<br>
+<p><span style="color: #ff00ff;"><strong><span style="font-size: 18pt;">Increase Performance of ASP.Net</span></strong></span></p>
+<p><span style="font-size: 14pt;">1)&nbsp; &nbsp;<strong>Make your page asynchronous:</strong></span><span style="font-size: 12pt;"><span style="color: #ff0000;">IIS</span> uses <span style="color: #ff0000;">CLR thread pool</span> to get<span style="color: #ff0000;"> a thread</span> that processes a request that comes to the application. Say, if there are currently twenty threads available in the pool, it means only twenty requests can be served in parallel, and if request processing takes some time then it could turn into a disaster if hundred odd requests are bombarded in few milliseconds. In this case, some of the requests may take very long time and for some may return 404 status code. For any request, the significant part of the time is gone when the request goes out of current scope like going to the database and fetching or reading/writing file, calling the web services, etc. During that period, current thread keeps waiting till the response is returned. So if we make the page asynchronous and time-consuming calls are handled asynchronously, then we can increase the throughput considerably</span>.</p>
+
+<p><span style="font-size: 18pt; color: #ff00ff;"><strong><em>What are the Benefits of Async ?</em></strong></span></p>
+<p><span style="font-size: 14pt;">1) It can make application to handle more users.&nbsp;</span></p>
+<p><span style="font-size: 14pt;">2) It&nbsp;can process&nbsp;multiple I/O bound methods in parallel</span></p>
+<p><span style="font-size: 14pt;">3) It can make UI interface more responsive to the user</span></p>
+<p><span style="font-size: 14pt;">4) It can perform complex database calls that take seconds to return.</span></p>
+
+
+<p><strong><em>Where to Use</em></strong><strong>?</strong></p>
+<p>1) Complex Database calls</p>
+<p>2) Web services, Web API and other external 3<sup>rd</sup>&nbsp;party API.</p>
+
+
+    <script src="js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

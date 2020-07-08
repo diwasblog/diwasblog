@@ -1,0 +1,41 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+  <p><span style="color: #ff0000;"><strong><span style="font-size: 18pt;">wwwroot folder</span></strong></span></p>
+  <p><span style="font-size: 12pt;">Only<span style="color: #000000;"><strong> static file</strong></span> should be kept in wwwroot folder as this folder can be served over an http request.I mean to say that this folder can be access like this as :</span><span style="font-size: 12pt;"><span style="color: #ff0000;"><a style="color: #ff0000;" href="http://localhost&lt;port&gt;">http://localhost:&lt;port&gt;/css/bootstrap.css</a></span> .So placing code file inside this folder will be accessable via url which is not good . so <strong><span style="color: #ff0000;">we kept separation between code files and static files .</span></strong>All static file like css, js ,image are placed here</span></p>
+  <p><em>Note that we must set this in configure() method of startup.cs</em></p>
+  <pre class="csharpcode"><code>app.UseStaticFiles();</code></pre>
+  <p>Have separate folder as css,js and html in wwwroot which will render on request in html. If any static file like bootstrap.css is kept outside of wwwroot then bootstrap.css willnot work.</p>
+
+
+  Model Validation in asp.net mvcIn each controller we do this:if (!ModelState.IsValid){return BadRequest(ModelState);}so we are writing many code in every controller .In asp.net core we do like this ( called Global Model Validation as we configure it at global label):1)We can make a global filter attribute to handle this for us when action is executing:public class ValidateModelFilter : ActionFilterAttribute
+{
+    public override void OnActionExecuting(ActionExecutingContext context)
+    {
+        if (!context.ModelState.IsValid)
+        {
+            context.Result = new BadRequestObjectResult(context.ModelState);
+        }
+    }
+}==============================================================================================And then we can let MVC know that we want to use this filter, inside of our ConfigureServices in Startup class:services.AddMvcCore(options =>
+  {
+	options.Filters.Add(typeof(ValidateModelFilter));
+ })Now, we don’t have to do manual checks of ModelState property in  our every controllers.
+
+  </body>
+  </html>

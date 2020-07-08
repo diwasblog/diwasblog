@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/b">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+<style>
+    kbd {
+        background: black
+    }
+</style>
+
+<body>
+
+    <h4>Verbatim String</h4>
+    <div class="row">
+        <div class="col-lg-6">
+
+
+            <pre>
+            <code class="language-csharp">
+                Vidly
+                Properties
+                References
+                App_Data Folder //Database file will be store
+                Add_Start // File inside here will be called when application started
+                - BundleConfig.cs
+                - FilterConfig.cs
+                - RouteConfig.cs
+                Content
+                Controllers
+                Fonts
+                Models
+                Scripts
+                Views
+                favicon.ico
+                Global.aspx //used even in older asp project, When application starts this file gets called and contain
+                            inside gets executed ie. execute 4 file present in App_Start
+                packages.config // contains all package installed with nuget packages
+                web.config
+            </code>
+          </pre>
+        </div>
+
+
+    </div>
+    <hr>
+
+    <h2>RouteConfig.cs</h2>
+    <pre>
+        <code class="language-csharp">
+            public static void RegisterRoutes(RouteCollection routes)
+            {
+                routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+    
+                routes.MapRoute(
+                    name: "Default",
+                    url: "{controller}/{action}/{id}",
+                    defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                );
+            }
+    
+    
+        </code>
+      </pre>
+
+    Then shows when someone hits : /Movies/Popular in url then it will hit movies controller and Popular action method
+    <br>
+
+    When someone hits : /Movies/edit/1 then it will hit Movies Controller and Edit(int id) action method <br>
+
+
+    When you load an application pressing CTRL + F5 it will load Home/Index action Method <br>
+
+
+    <h2>Global.aspx.cs</h2>
+    <pre data-keep-tags="kbd, em">
+        <code class="language-csharp">
+            public class MvcApplication : System.Web.HttpApplication
+            {
+                protected void Application_Start()
+                {
+                    AreaRegistration.RegisterAllAreas();
+                    FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+                    RouteConfig.RegisterRoutes(RouteTable.Routes);
+                    BundleConfig.RegisterBundles(BundleTable.Bundles);
+                }
+            }
+        </code>
+    </pre>
+
+    This Application_Start() method will get called when application first started.
+    These 4 method are called in pipelining fashion. Route is generated at runtime.
+
+
+    <br>
+
+    <h2>Some ActionResult</h2>
+
+    <table style="border-collapse: collapse; width: 32.1809%; height: 44px;" border="1">
+        <tbody>
+            <tr style="height: 22px; color: white; background: black;">
+                <td style="width: 16.0239%; height: 22px;">Type</td>
+                <td style="width: 16.157%; height: 22px;">Helper Method</td>
+            </tr>
+            <tr style="height: 22px;">
+                <td style="width: 16.0239%; height: 22px;">ViewResult</td>
+                <td style="width: 16.157%; height: 22px;">View()</td>
+            </tr>
+            <tr>
+                <td style="width: 16.0239%;">PartialViewResult</td>
+                <td style="width: 16.157%;">PartialView()</td>
+            </tr>
+            <tr>
+                <td style="width: 16.0239%;">ContentResult</td>
+                <td style="width: 16.157%;">Content()</td>
+            </tr>
+            <tr>
+                <td style="width: 16.0239%;">RedirectResult</td>
+                <td style="width: 16.157%;">Redirect()</td>
+            </tr>
+            <tr>
+                <td style="width: 16.0239%;">RedirectionToRouteResult</td>
+                <td style="width: 16.157%;">RedirectToAction()</td>
+            </tr>
+            <tr>
+                <td style="width: 16.0239%;">JsonResult</td>
+                <td style="width: 16.157%;">Json()</td>
+            </tr>
+            <tr>
+                <td style="width: 16.0239%;">FileResult</td>
+                <td style="width: 16.157%;">File()</td>
+            </tr>
+            <tr>
+                <td style="width: 16.0239%;">HttpNotFoundResult</td>
+                <td style="width: 16.157%;">HttpNotFound()</td>
+            </tr>
+            <tr>
+                <td style="width: 16.0239%;">EmptyResult</td>
+                <td style="width: 16.157%;">&nbsp;</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+    <h2>Setuping Attribute Routing (Notes Order Matters)</h2>
+    <pre data-keep-tags="kbd, em">
+        <code class="language-csharp">
+    public class RouteConfig
+    {
+        public static void RegisterRoutes(RouteCollection routes)
+        {
+            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+        <kbd>routes.MapMvcAttributeRoutes();</kbd>
+
+            routes.MapRoute(
+                name: "Default",
+                url: "{controller}/{action}/{id}",
+                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+            );
+        }
+    }
+        </code>
+    </pre>
+
+    <script src="js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+
+
+        (function () {
+            if (!self.Prism) {
+                return;
+            }
+
+            var div = document.createElement('div');
+
+            Prism.hooks.add('before-highlight', function (env) {
+                var elt = env.element;
+                if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                    elt = elt.parentNode;
+                }
+                var tags = elt.getAttribute('data-keep-tags');
+                if (!tags) {
+                    return;
+                }
+                var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+                env.keepTags = true;
+                env.keepTagsPlaceholder = placeholder;
+
+                tags = tags.split(/\s*,\s*/).join('|');
+                var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+                env.keepTagsRegex = tags_regex;
+
+                env.tokenStack = [];
+                env.backupCode = env.code;
+
+                var code = env.element.innerHTML;
+                code = code.replace(tags_regex, function (match) {
+                    env.tokenStack.push(match);
+                    return placeholder.replace('{n}', env.tokenStack.length);
+                });
+                env.element.innerHTML = code;
+                code = env.element.textContent;
+                code = code.replace(/^(?:\r?\n|\r)/, '');
+
+                env.code = code;
+            });
+
+            Prism.hooks.add('after-highlight', function (env) {
+                if (!env.keepTags) {
+                    return;
+                }
+                for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                    t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                        div.innerHTML = inside;
+                        inside = div.textContent;
+                        return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                    });
+
+                    env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                    env.element.innerHTML = env.highlightedCode;
+                }
+            });
+
+        }());
+
+        Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+            v.classList.add("language-sql");
+        });
+        Prism.highlightAll();
+    </script>
+</body>
+
+</html>

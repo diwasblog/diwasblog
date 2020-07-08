@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <style>
+      .Note {
+        font-size: 0.8rem;
+        line-height: 1.5;
+        color: rgba(0, 0, 0, 0.4);
+        opacity: 0;
+        margin-top: 8px;
+        transition: opacity 200ms ease-out;
+      }
+
+      input:not(:placeholder-shown) + .Note {
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Main things is we donot need js</h2>
+    <main>
+      <input ne-textfield type="text" placeholder="Type your email" />
+      <span class="Note">Email for notifications</span>
+    </main>
+
+    <a href="https://jsfiddle.net/equinusocio/9hdm3fLc/embedded/result/"
+      >Click Here ... For js fiddle</a
+    >
+  </body>
+</html>

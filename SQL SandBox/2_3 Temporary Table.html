@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+
+  <body>
+==========
+<p><span style="color: #ff00ff;"><strong><span style="font-size: 18pt;">Temporary Table</span></strong></span></p>
+<ol>
+<li><span style="font-size: 14pt;">Temporary Table is similar to permanent table</span></li>
+<li><span style="font-size: 14pt;">Permanent tables get created in the database you specify and remain in the database permanently, until you delete(drop) them. On other hand , temporary tables get created in the TempDB and are&nbsp;&nbsp; automatically deleted, when they are no longer used.</span></li>
+</ol>
+
+
+<div class="row">
+<div class="col-lg-4">
+  <h2>Permanent Table</h2>
+<pre>
+  <code class="language-sql">
+    Create Table Person
+    (
+      Id int,
+       Name nvarchar(20)
+    )
+   </code> 
+</pre>  
+</div>  
+<div class="col-lg-4">
+   <h2>Temporary Table</h2>
+<pre>
+  <code class="language-sql">
+    Create Table #Person
+    (
+      Id int,
+       Name nvarchar(20)
+    )
+   </code> 
+</pre>  
+</div> 
+<div class="col-lg-4">
+   <h2>Global Table</h2>
+<pre>
+  <code class="language-sql">
+    Create Table ##Person
+    (
+      Id int,
+       Name nvarchar(20)
+    )
+   </code> 
+</pre>  
+</div> 
+</div>
+======================================================================
+
+<h2>Insert Data into the temporary table:</h2>
+<pre>
+  <code class="language-sql">
+Insert into #Person Values(1, 'Mike')
+Insert into #Person Values(2, 'John')
+Insert into #Person Values(3, 'Todd')
+   </code> 
+</pre>  
+
+
+==========================================================================
+<h2>Select the data from the temporary table:</h2>
+<pre>
+  <code class="language-sql">
+    Select * from #Person
+   </code> 
+</pre> 
+===============================================================
+
+<h2>Location of Storage</h2>
+
+Database===>System Database==>Tempdb==>Temporary Table==>dbo.Person________00000003D <br>
+
+<br>
+Look :The name of the table, is suffixed with lot of underscores and a random number. Look :0000003D
+
+==========================================================================
+
+<p><span style="background-color: #ffffff; color: #ff00ff;"><em><span style="text-decoration: underline;"><span style="font-size: 14pt; background-color: #ffffff;"><strong>Creating Temporary Table inside stored procedure</strong></span></span></em></span></p>
+<p><span style="font-size: 14pt;"><strong>If the temporary table, is created inside the stored procedure, it get's dropped automatically upon the completion of stored procedure execution. The&nbsp;stored procedure below, creates&nbsp;#Person&nbsp;temporary table, populates it and then finally returns the data and destroys the temporary table&nbsp;immediately&nbsp;after the completion of the stored procedure execution.</strong></span></p>
+
+
+<pre>
+<code class="language-sql">
+Create Procedure spCreateLocalTempTable
+as
+Begin
+Create Table #Person(Id int, Name nvarchar(20))
+
+Insert into #Person Values(1, 'Mike')
+Insert into #Person Values(2, 'John')
+Insert into #Person Values(3, 'Todd')
+
+Select * from #Person
+End
+
+</code>  
+</pre>  
+
+================================================
+<p><span style="font-size: 14pt;"><span style="color: #ff00ff;"><strong>A local temporary table is automatically dropped</strong>,</span> when the connection that has created&nbsp; it, is closed.</span></p>
+<p><span style="font-size: 14pt;"> If the user wants to explicitly drop the&nbsp;temporary table, he can do so using&nbsp;</span></p>
+
+
+<pre>
+<code class="language-sql">
+Drop Table #Person
+</code>  
+</pre>  
+
+
+================================================================================
+    <script src="js/prism.js"></script>
+    <script type="text/javascript">
+      Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+          'remove-trailing': true,
+          'remove-indent': true,
+          'left-trim': true,
+          'right-trim': true,
+          // 'break-lines': 10,
+          // 'indent': 2,
+          // 'remove-initial-line-feed': false,
+          // 'tabs-to-spaces': 4,
+          // 'spaces-to-tabs': 4
+        });
+    </script>
+  </body>
+</html>

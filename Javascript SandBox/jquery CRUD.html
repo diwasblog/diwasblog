@@ -1,0 +1,68 @@
+<html>
+<head>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+  <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+
+
+<style>
+xmp.prettyprint{
+  font-size:12pt;
+  font-family:monospace;
+
+}
+</style>
+</head>
+<body>
+
+<xmp class="prettyprint">
+    <form id="submit_form">
+        <label>Name</label>
+        <input type="text" name="name" id="name" class="form-control" />
+        <br />
+        <label>Message</label>
+        <textarea name="message" id="message" class="form-control"></textarea>
+        <br />
+        <input type="button" name="submit" id="submit" class="btn btn-info" value="Submit" />
+        <span id="error_message" class="text-danger" style="height:20px;background:red;padding:20px;color:white"></span>
+        <span id="success_message" class="text-success" style="padding:20px;background:#0eea80;width:400px;color:white">
+        </span>
+       
+    </form>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <script>
+        $(document).ready(function () {
+            $('#success_message').hide();
+            $('#error_message').hide();
+            $('#submit').click(function () {
+                var name = $('#name').val();
+                var message = $('#message').val();
+                if (name == '' || message == '') {
+                    $('#error_message').show();
+                    $('#error_message').html("All Fields are required");
+                }
+                else {
+                    $('#error_message').html('');
+                    $.ajax({
+                        url: "/home/test",
+                        method: "POST",
+                        data: { name: name, message: message },
+                        success: function (data) {
+                            $("form").trigger("reset");
+                            $('#error_message').hide();
+                            $('#success_message').fadeIn().html(data);
+                            setTimeout(function () {
+                                $('#success_message').fadeOut("Slow");
+                            }, 2000);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</xmp>  
+
+</body>
+</html>

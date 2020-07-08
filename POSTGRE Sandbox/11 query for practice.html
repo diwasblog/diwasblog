@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../Ef/css/bootstrap.css">
+    <link rel="stylesheet" href="../Ef/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../Ef/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../Ef/css/dracula.css">
+    <link rel="stylesheet" href="../Ef/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+    <h3>Return Integer instead of table</h3>
+    <pre>
+    <code class="language-sql">
+   CREATE OR REPLACE FUNCTION office.get_role_id_by_user_id(
+	user_id integer_strict)
+    RETURNS integer
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+AS $BODY$
+BEGIN
+        RETURN
+        (
+                SELECT office.users.role_id FROM office.users
+                WHERE office.users.user_id=$1
+        );
+END
+$BODY$;
+    </code>
+</pre>
+
+    <h3>Return Character Varying</h3>
+
+    <pre>
+    <code class="language-sql">
+            CREATE OR REPLACE FUNCTION office.get_collector_name(
+                collector_id_ integer)
+                RETURNS character varying
+                LANGUAGE 'plpgsql'
+            
+                COST 100
+                STABLE 
+            AS $BODY$
+            BEGIN
+                RETURN(SELECT collector_name FROM office.collectors WHERE collector_id = $1);
+            END
+            $BODY$;
+            </code>
+</pre>
+
+
+
+    <h3>Return Money</h3>
+
+    <pre>
+<code class="language-sql">
+        CREATE OR REPLACE FUNCTION loan.get_total_paid_interest(
+	loan_id_ bigint,
+	till_ date)
+    RETURNS money
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+AS $BODY$
+BEGIN
+	RETURN(
+		SELECT COALESCE(SUM(COALESCE(interest, '0')), '0') FROM loan.transaction_view
+		WHERE loan_id = loan_id_
+		AND value_date <= till_
+		);
+END
+        </code>
+</pre>
+
+    <h2>Percent Calculation</h2>
+    <pre>
+  <code class="language-sql">
+        select
+        cs.commodityid,c.name as commodityname,
+        Count(*) as ComodityCount,
+        (select count(*) from clientsubcommodity) as Total,
+        round(count(*)::numeric/(select count(*) from clientsubcommodity),2) as percentCount from
+        clientsubcommodity cs
+        inner join commodity c on c.id = cs.commodityid
+        group by cs.commodityid,c.name
+
+
+        //important part
+        //round(count(*)::numeric/(select count(*) from clientsubcommodity),2) as percentCount 
+        //here
+        //count(*) counts on the basis of group by 
+        //select count(*) from clientsubcommodity gives total ie. 95 in this case
+</code>
+</pre>
+
+    <table class="table table-border">
+        <tr>
+            <th>comodityid</th>
+            <th>Commodity Name</th>
+            <th>comodity count</th>
+            <th>total</th>
+            <th>Percent Count</th>
+        </tr>
+
+
+        <tr>
+            <th>4</th>
+            <th>Fruit</th>
+            <th>11</th>
+            <th>95</th>
+            <th>0.12</th>
+        </tr>
+
+        <tr>
+
+            <th>9</th>
+            <th>Spices</th>
+            <th>12</th>
+            <th>95</th>
+            <th>0.13</th>
+        </tr>
+
+
+
+        <tr>
+
+            <th>13</th>
+            <th>LiveStock</th>
+            <th>17</th>
+            <th>95</th>
+            <th>0.18</th>
+        </tr>
+    </table>
+
+
+
+    ==========================================================================
+    <h2>Converting to date in postgresql (ie. to_date( ...)</h2>
+    <pre>
+    <code class="language-csharp">
+            where qa.modifiedon between to_date("2017-12-08",'yyyy-MM-dd')  and to_date("2017-12-20",'yyyy-MM-dd')
+    </code>
+</pre>
+
+
+    <h2>Convert date to char in the format of AM and PM</h2>
+    <pre>
+    <code class="language-csharp">
+            to_char(qa.createdon, 'yyyy-mm-dd hh12:mi AM') as createdon
+    </code>
+</pre>
+
+    ===========================================================
+    <h2>Count Total before groupby</h2>
+
+    <pre>
+    <code class="language-csharp">
+            select count(qa.id) OVER() AS totalcount,qa.id as QuestionId
+            from questionanswer qa 
+            Where ((qa.createdon::date between to_date($1,'yyyy-mm-dd') and to_date($2,'yyyy-mm-dd')) 
+            order by qa.id desc
+
+
+            //main part 
+            // count(qa.id) OVER() AS totalcount
+    </code>
+</pre>
+
+    ===========================================================
+
+    <h2>Using Offset in postgressql</h2>
+    <pre>
+        <code class="language-csharp">
+                select count(qa.id) OVER() AS totalcount,qa.id as QuestionId
+                from questionanswer qa 
+                order by qa.id desc
+                OFFSET ((pagenumber-1)*pagesize) rows FETCH NEXT (pagesize) ROWS ONLY
+
+                //important
+                // OFFSET ((pagenumber-1)*pagesize) rows FETCH NEXT (pagesize) ROWS ONLY
+        </code>
+    </pre>
+
+    ======================================================================
+    <h2>If has value then select otherwise select all</h2>
+
+    <pre>
+    <code class="language-csharp">
+            Where ((qa.createdon::date between to_date($1,'yyyy-mm-dd') and to_date($2,'yyyy-mm-dd')) or ($1='' and $2='')) 
+            and ( c.stateid = $3 or ($3=0))
+            and ( c.districtid = $4 or ($4 = 0))
+            and ( c.palikaid = $5 or ($5 = 0))
+            and ( c.wardno = $6 or ($6 = 0))
+    </code>
+</pre>
+    ================================================================================
+    <pre>
+    <code class="language-csharp">
+            select count(qa.id) OVER() AS totalcount,qa.id as QuestionId,c.fullname as clientname ,c.phonenumber , p.name as province,dd.name as district
+            ,qa.question ,to_char(qa.createdon, 'yyyy-mm-dd hh12:mi AM') as createdon ,u.username  as respondername,
+            (select username  from users where id = qa.answerby) as answeredby,     //adding new column on result
+            case when qa.answer is not null then 1   //adding new column on result if has answer then set 1 else 0
+            when qa.answer is null then 0
+            end answer
+            from questionanswer qa 
+            inner join client c  on c.id = qa.clientid
+            inner join users u on u.id = qa.createdby
+            left join province p on p.id = c.stateid
+            left join palika pal on pal.id = c.palikaid
+            left join district dd on dd.id = c.districtid
+            Where ((qa.createdon::date between to_date($1,'yyyy-mm-dd') and to_date($2,'yyyy-mm-dd')) or ($1='' and $2='')) 
+                 and ( c.stateid = $3 or ($3=0))
+                 and ( c.districtid = $4 or ($4 = 0))
+                 and ( c.palikaid = $5 or ($5 = 0))
+                 and ( c.wardno = $6 or ($6 = 0))
+            order by qa.id desc
+            OFFSET (($7-1)*10) rows FETCH NEXT (10) ROWS ONLY
+    </code>
+</pre>
+    ===========================================================================
+    <h2>Creating temporary table </h2>
+    <div class="row">
+        <div class="col-lg-6">
+            <pre>
+                    <code class="language-csharp">
+                            WITH myconstants (var1, var2) as (
+                                values (5, 'foo')
+                             )
+                             SELECT * FROM  myconstants 
+                    </code>
+                </pre>
+        </div>
+        <div class="col-lg-6">
+            <table class="table table-border">
+                <tr>
+                    <th>var1</th>
+                    <th>var2</th>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>foo</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    ==============================================================================
+
+    <h2>Creating temporary table </h2>
+    <div class="row">
+        <div class="col-lg-6">
+            <pre>
+                    <code class="language-csharp">
+                            with myVar as (select name from commodity where id = 2)
+
+                            select * from myVar
+                    </code>
+                </pre>
+        </div>
+        <div class="col-lg-6">
+            //Comodity table
+            <table class="table table-border">
+                <tr>
+                    <th>id</th>
+                    <th>name</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>fish</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>goat</td>
+                </tr>
+            </table>
+
+            //final output
+
+            <table class="table table-border">
+                <tr>
+                    <th>name</th>
+
+                </tr>
+                <tr>
+                    <td>goat</td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+    ================================================================
+    <h2>Age Function Postgresql</h2>
+    <pre>
+    <code class="language-csharp">
+            SELECT age(timestamp '2015-01-15', timestamp '1972-12-28');
+            // 48 years 18 days
+    </code>
+</pre>
+
+
+    <pre>
+        <code class="language-csharp">
+                SELECT age(timestamp '2015-01-15');
+                // 4 years 5 month 19 days
+        </code>
+    </pre>
+
+
+    <pre>
+        <code class="language-csharp">
+                SELECT age(timestamp '2015-01-15');
+                // 4 years 5 month 19 days
+        </code>
+    </pre>
+    =====================================================================
+    <h2>Current Date Function Postgresql</h2>
+    <pre>
+    <code class="language-csharp">
+            SELECT current_date;
+
+            //output
+            date
+            ------------
+             2015-01-14
+            (1 row)
+    </code>
+</pre>
+    ==============================================================
+    <h2>Current Time Function Postgresql</h2>
+    <pre>
+    <code class="language-csharp">
+            SELECT current_time;
+
+            //output
+            timetz
+            -----------------
+             16:33:22.719-08
+            (1 row)
+    </code>
+</pre>
+
+
+    ================================================================
+    <h2>Current Timestamp Function Postgresql</h2>
+    <pre>
+    <code class="language-csharp">
+            SELECT current_timestamp;
+
+            //output
+            now
+            ----------------------------
+             2015-01-14 16:42:26.283-08
+            (1 row)
+    </code>
+</pre>
+
+    ================================================================
+
+    <h2>Current DateTruncate Function Postgresql</h2>
+    <pre>
+    <code class="language-csharp">
+            SELECT date_trunc('hour', timestamp '2002-09-17 19:27:45');
+
+            //output
+            date_trunc
+            ---------------------
+             2002-09-17 19:00:00
+            (1 row)
+    </code>
+</pre>
+
+    ================================================================
+
+    <h2>Array to string</h2>
+    <pre>
+    <code class="language-csharp">
+            
+        SELECT array_to_string(ARRAY[1, 2, 3, NULL, 5], ',');
+
+            //output
+            array_to_string
+            ---------------------
+             1,2,3,5
+            (1 row)
+    </code>
+</pre>
+
+    ===============================================================
+
+    <h2>Array to string</h2>
+    <pre>
+    <code class="language-csharp">
+            
+        SELECT array_to_string(ARRAY[1, 2, 3, NULL, 5], ',','*');
+
+            //output
+            array_to_string
+            ---------------------
+             1,2,3,*,5
+            (1 row)
+    </code>
+</pre>
+
+    =================================================================
+    <h2>Array Aggregate</h2>
+    <div class="row">
+        <div class="col-lg-6">
+            <pre>
+                <code class="language-csharp">
+                    //result in array
+                        SELECT s.name,  array_agg(g.Mark) as marks        
+                        FROM student s
+                        LEFT JOIN Grade g ON g.Student_id = s.Id
+                        GROUP BY s.Id
+                </code>
+            </pre>
+            OR
+            <pre>
+                    <code class="language-csharp">
+                        //gives directly to string
+                        SELECT s.name, 
+                        STRING_AGG(g.mark::text, ',' ORDER BY g.mark) As marks
+                        FROM student s
+                        LEFT JOIN grade g ON g.sid= s.id
+                        GROUP BY s.name;
+                    </code>
+                </pre>
+        </div>
+        <div class="col-lg-6">
+            <div class="row">
+                <div class="col-lg-6">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                        </tr>
+                        <tr>
+                            <th>1</th>
+                            <th>John</th>
+                        </tr>
+                        <tr>
+                            <th>2</th>
+                            <th>David</th>
+                        </tr>
+                        <tr>
+                            <th>3</th>
+                            <th>Will</th>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="col-lg-6">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Student Id</th>
+                            <th>Mark</th>
+                        </tr>
+                        <tr>
+                            <th>1</th>
+                            <th>A</th>
+                        </tr>
+                        <tr>
+                            <th>2</th>
+                            <th>B</th>
+                        </tr>
+                        <tr>
+                            <th>2</th>
+                            <th>B+</th>
+                        </tr>
+                        <tr>
+                            <th>3</th>
+                            <th>C</th>
+                        </tr>
+                        <tr>
+                            <th>3</th>
+                            <th>A</th>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        //Output
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Name</th>
+                                <th>Array of mark</th>
+                            </tr>
+                            <tr>
+                                <th>'John'</th>
+                                <th> {'A'}</th>
+                            </tr>
+                            <tr>
+                                <th>'David'</th>
+                                <th>{'B','B+'}</th>
+                            </tr>
+                            <tr>
+                                <th>'Will'</th>
+                                <th> {'C','A'}</th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <br>
+    <hr>
+    <h2>Use of union all
+        <div class="row">
+            <div class="col-lg-6">
+                <pre>
+                <code class="language-csharp">
+				SELECT *
+				FROM
+				(
+				select COUNT(id) from coop as d
+				union all
+				select COUNT(id) from shg  as d
+				) x
+				</code>
+			</pre>
+            </div>
+
+            <div class="col-lg-6">
+                <table>
+                    <tr>
+                        <th>count</th>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>6</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <h3>Note here: return parameter of each select operation must have same number of argument</h3>
+        ==============================================================
+        <h2>Get First Data After Groupby</h2>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <table border='1'>
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>customer</th>
+                            <th>Total</th>
+                            <th>Createdon</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Diwas</td>
+                            <td>45</td>
+                            <td>2019-05-30 14:43:16.810688</td>
+                        </tr>
+
+                        <tr>
+                            <td>2</td>
+                            <td>Ramesh</td>
+                            <td>23</td>
+                            <td>2019-06-30 14:43:16.810688</td>
+                        </tr>
+
+                        <tr>
+                            <td>3</td>
+                            <td>Gita</td>
+                            <td>56</td>
+                            <td>2019-05-30 14:43:16.810688</td>
+                        </tr>
+
+                        <tr>
+                            <td>4</td>
+                            <td>Diwas</td>
+                            <td>90</td>
+                            <td>2019-05-30 14:43:16.810688</td>
+                        </tr>
+
+                        <tr>
+                            <td>5</td>
+                            <td>Gita</td>
+                            <td>90</td>
+                            <td>2019-03-30 14:43:16.810688</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-lg-6">
+                <pre>
+<code class="language-sql">
+select * from test;
+</code>
+</pre>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <table border='1'>
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>customer</th>
+                            <th>Total</th>
+                            <th>Createdon</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>4</td>
+                            <td>Diwas</td>
+                            <td>90</td>
+                            <td>2019-09-30 14:43:16.810688</td>
+                        </tr>
+
+                        <tr>
+                            <td>1</td>
+                            <td>Diwas</td>
+                            <td>45</td>
+                            <td>2019-05-30 14:43:16.810688</td>
+                        </tr>
+
+                        <tr>
+                            <td>5</td>
+                            <td>Gita</td>
+                            <td>90</td>
+                            <td>2019-03-30 14:43:16.810688</td>
+                        </tr>
+
+                        <tr>
+                            <td>3</td>
+                            <td>Gita</td>
+                            <td>56</td>
+                            <td>2019-06-30 14:43:16.810688</td>
+                        </tr>
+
+                        <tr>
+                            <td>2</td>
+                            <td>Ramesh</td>
+                            <td>23</td>
+                            <td>2019-06-30 14:43:16.810688</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-lg-6">
+                <pre>
+<code class="language-sql">
+SELECT  id,customer, total,createdon
+FROM   test
+ORDER  BY customer ,createdon desc;
+</code>
+</pre>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <table border='1'>
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>customer</th>
+                            <th>Total</th>
+                            <th>Createdon</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>4</td>
+                            <td>Diwas</td>
+                            <td>90</td>
+                            <td>2019-09-30 14:43:16.810688</td>
+                        </tr>
+
+
+                        <tr>
+                            <td>5</td>
+                            <td>Gita</td>
+                            <td>90</td>
+                            <td>2019-03-30 14:43:16.810688</td>
+                        </tr>
+
+
+                        <tr>
+                            <td>2</td>
+                            <td>Ramesh</td>
+                            <td>23</td>
+                            <td>2019-06-30 14:43:16.810688</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-lg-6">
+                <pre>
+<code class="language-sql">
+SELECT DISTINCT ON (customer)
+id, customer, total,createdon
+FROM   test
+ORDER  BY customer ,createdon desc;
+</code>
+</pre>
+            </div>
+        </div>
+
+        <hr>
+        <h2>Union and Union All</h2>
+
+        Its two properties are :<br>
+        1) Must have same number of column and column types must line up
+
+
+        <h2>Union</h2>
+        Properties 1 ) and 2)Removes duplicates
+
+        <pre>
+        <code class="language-sql">
+        SELECT countryname from customer
+        union countryname from supplier  //removes duplicates result finally produced will be distinct name 
+        </code>
+        </pre>
+
+        <h2>Union All</h2>
+        Properties 1 ) and 2)Donot removes duplicates
+
+        <pre>
+        <code class="language-sql">
+        SELECT countryname from customer
+        union all countryname from supplier  //donot duplicates result finally produced will be distinct name 
+        </code>
+        </pre>
+
+        <hr>
+
+        <h2>Intersect</h2>
+        Properties 1 ) and 2)Get Common Data Only
+
+        <pre>
+        <code class="language-sql">
+        SELECT country from customer
+        union all country from supplier  //Get Common Country name present in customer and supplier table
+        </code>
+        </pre>
+        <h2>Insert Total At last of footer from database</h2>
+        <pre>
+    <code class="language-csharp">
+        Select count()
+    </code>
+</pre>
+
+
+        <script src="../EF/js/prism.js"></script>
+        <script type="text/javascript">
+            Prism.plugins.NormalizeWhitespace.setDefaults(
+                {
+                    'remove-trailing': true,
+                    'remove-indent': true,
+                    'left-trim': true,
+                    'right-trim': true,
+                    // 'break-lines': 10,
+                    // 'indent': 2,
+                    // 'remove-initial-line-feed': false,
+                    // 'tabs-to-spaces': 4,
+                    // 'spaces-to-tabs': 4
+                });
+        </script>
+</body>
+
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<style>
+    kbd {
+        background: black
+    }
+</style>
+
+
+<pre>
+    <code class="language-csharp">
+DbContext ==== > Database
+DbSet ====>Table
+
+
+DbContext has many DbSet
+
+Two method 
+1)DbFirst
+Here , table is create in database and Entity framework generates respective class in C#
+
+2) Code First
+Class is created then entity framework generates respective table.
+ </code>
+</pre>
+
+<h2>Create DbFirst Database with edmx</h2>
+
+
+<h3>Step 1 : First Create Database Name :Pluto and imported table Authors, Courses, CourseSections, CourseTags,Posts,
+    Tags,tblUser and its data</h3>
+<img src="https://i.ibb.co/DQ6snVZ/db-First16.jpg">
+<br>
+
+<h3>Step 2 :Create DbFirst Console Project </h3>
+<img src="https://i.ibb.co/BrB2N6m/DbFirst1.jpg" style="width:100%;height:auto">
+
+
+<h3>Step 3: Create Ado.Net Entity Data Model</h3>
+Right Click on DbFirst > Add > New Item > Ado.Net Entity Data Model and name it PlutoModel and click on Add
+<img src="https://i.ibb.co/0j51r5X/dbFirst2.jpg">
+<hr>
+<br><br>
+<img src="https://i.ibb.co/Q9tLF2D/dbFirst3.jpg">
+<br><br>
+<img src="https://i.ibb.co/Pj66d1k/dbFirst4.jpg">
+<br><br>
+<img src="https://i.ibb.co/0VT9cYK/dbFirst5.jpg">
+<br><br>
+<img src="https://i.ibb.co/BfSrHW6/dbFirst6.jpg">
+<br><br>
+<img src="https://i.ibb.co/QD5QNJ8/dbFirst7.jpg">
+<br><br>
+<img src="https://i.ibb.co/877xvt6/dbFirst8.jpg">
+<br>
+<br>
+Notice we have check pluralize or single check box Because we have those table in plural form and we are getting
+those data in Singular form in edmx diagram as shown below.
+<br>
+<img src="https://i.ibb.co/N1nFGL8/dbFirst9.jpg">
+<br>
+We can see all those table of database is created in VIsual studio edmx diagram as shown above. <br>
+
+<b>Notice:</b>While making single in edmx, it will remove e and s , so, from Courses "e" and "s" are removed.
+
+<h3>So lets rename Cours to "Course" and press cTRL + S</h3>>
+Doing so gets save in both edmx model and diagram
+<img src="https://i.ibb.co/dPxQhkn/db-First10.jpg">
+<br>
+<br>
+<h3>Lets look conncetion string at App.Config</h3>
+<pre>
+    <code class="language-csharp">
+ &lt;connectionStrings>
+    &lt;add name="PlutoDbContext" connectionString="
+    metadata=res://*/PlutoModel.csdl|
+    res://*/PlutoModel.ssdl|
+    res://*/PlutoModel.msl;
+    provider=System.Data.SqlClient;provider connection 
+    string=&quot;data source=.;initial catalog=Pluto;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework&quot;" providerName="System.Data.EntityClient" />
+    &lt;/connectionStrings>
+
+    </code>
+</pre>
+
+Here context is PlutoDbContext
+
+<h2> Make Changes to Database</h2>
+<h3>Adding New Table to db . Say : UserProfile Table</h3>
+<img src="https://i.ibb.co/G3fM1ZR/db-First11.jpg">
+<br>
+
+Now come to edmx diagram and right click on it > Update Model > Add > dbo > Select Those new table
+<img src="https://i.ibb.co/ZW1MFP9/db-First12.png">
+<br>
+<img src="https://i.ibb.co/SmNM1dC/db-First13.jpg">
+<br>
+So we got table in diagram as well so diagram and database are synced properly
+<img src="https://i.ibb.co/RC6PyM8/db-First14.jpg">
+<br>
+
+
+<h2>For Update and Delete their may occur problem ===> Look Mosh Video</h2>
+<br>
+<br>
+<h2>Executing Queries</h2>
+<pre>
+    <code class="language-csharp">
+        static void Main(string[] args)
+        {
+            PlutoDbContext obj = new PlutoDbContext();
+            var data = obj.Authors.ToList();
+        }
+    </code>
+</pre>
+
+
+We can look PlutoDbContext file with DbSet here :
+<br>
+<img src="https://i.ibb.co/dPxQhkn/db-First15.jpg" style="width:100%;height:auto">
+
+<script src="js/prism.js"></script>
+<script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true,
+            // 'break-lines': 10,
+            // 'indent': 2,
+            // 'remove-initial-line-feed': false,
+            // 'tabs-to-spaces': 4,
+            // 'spaces-to-tabs': 4
+        });
+
+
+    (function () {
+        if (!self.Prism) {
+            return;
+        }
+
+        var div = document.createElement('div');
+
+        Prism.hooks.add('before-highlight', function (env) {
+            var elt = env.element;
+            if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                elt = elt.parentNode;
+            }
+            var tags = elt.getAttribute('data-keep-tags');
+            if (!tags) {
+                return;
+            }
+            var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+            env.keepTags = true;
+            env.keepTagsPlaceholder = placeholder;
+
+            tags = tags.split(/\s*,\s*/).join('|');
+            var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+            env.keepTagsRegex = tags_regex;
+
+            env.tokenStack = [];
+            env.backupCode = env.code;
+
+            var code = env.element.innerHTML;
+            code = code.replace(tags_regex, function (match) {
+                env.tokenStack.push(match);
+                return placeholder.replace('{n}', env.tokenStack.length);
+            });
+            env.element.innerHTML = code;
+            code = env.element.textContent;
+            code = code.replace(/^(?:\r?\n|\r)/, '');
+
+            env.code = code;
+        });
+
+        Prism.hooks.add('after-highlight', function (env) {
+            if (!env.keepTags) {
+                return;
+            }
+            for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                    div.innerHTML = inside;
+                    inside = div.textContent;
+                    return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                });
+
+                env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                env.element.innerHTML = env.highlightedCode;
+            }
+        });
+
+    }());
+
+    Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+        v.classList.add("language-sql");
+    });
+    Prism.highlightAll();
+
+</script>
+
+</body>
+
+</html>

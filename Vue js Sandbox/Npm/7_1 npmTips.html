@@ -1,0 +1,341 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+
+
+npm is a package manager for Node.js with hundreds of thousands of packages. Although it does create some of your directory structure/organization, this is not the main purpose.
+
+The main goal, as you touched upon, is automated dependency and package management. This means that you can specify all of your project's dependencies inside your package.json file, then any time you (or anyone else) needs to get started with your project they can just run npm install and immediately have all of the dependencies installed. On top of this, it is also possible to specify what versions your project depends upon to prevent updates from breaking your project.
+
+It is definitely possible to manually download your libraries, copy them into the correct directories, and use them that way. However, as your project (and list of dependencies) grows, this will quickly become time-consuming and messy. It also makes collaborating and sharing your project that much more difficult.
+
+
+<a href="https://docs.npmjs.com/">For npm details</a>
+
+
+
+============================================================
+<h2>Note</h2>
+Before bringing any project from github or any where else .. always run npm-install because it weill
+create node_module file in project which contains all package information
+<pre class="prettyprint">
+ npm -install
+</pre>
+<br>
+================================================
+<br>
+<h1><span style="color:#e74c3c">devDependencies vs Dependencies</span></h1>
+
+<ul>
+	<li>
+	<h1><span style="font-size:18px">devDependencies are modules which are only required during development(Build Time Dependencies)</span></h1>
+	</li>
+	<li>
+	<h1><span style="font-size:18px">&nbsp;dependencies are modules which are also required at runtime/production(run time dependencies)</span></h1>
+	</li>
+</ul>
+
+<p><span style="font-size:18px">We need babel core,babel loader,vue loader,webpack only on developing application.</span></p>
+
+<p><span style="font-size:18px">But we need vue ,bootstrap, jquery,lodash,vue-multiselect ,axios in runtime /production or when application is lunched on we put it in dependencies.</span></p>
+
+<p>&nbsp;</p>
+
+
+<h4>Package.json file</h4>
+<xmp class="prettyprint">
+
+        "dependencies": {   //needs in production time 
+            "axios": "^0.16.1",
+            "bootstrap": "^3.3.7",
+            "browserify": "^14.3.0",
+            "css-loader": "^0.28.4",
+            "jquery": "^3.2.1",
+            "jspdf": "^1.3.5",
+            "lodash": "^4.17.4",
+            "papaparse": "^4.3.7",
+            "sweet-modal-vue": "^2.0.0",
+            "tween.js": "^16.6.0",
+            "v-mask": "^1.1.0",
+            "v-tooltip": "^2.0.0-rc.15",
+            "vee-validate": "^2.0.0-beta.25",
+            "vue": "^2.5.11",
+            "vue-full-loading": "^1.0.3",
+            "vue-hot-reload-api": "^2.1.0",
+            "vue-masked-input": "^0.5.2",
+            "vue-mixin-tween": "^0.1.3",
+            "vue-multiselect": "^2.0.2",
+            "vue-notification": "^1.2.3",
+            "vue-router": "^2.4.0",
+            "vue-server-renderer": "^2.5.16",
+            "vue-simple-spinner": "^1.2.1",
+            "vue-spinner": "^1.0.2",
+            "vue-tables-2": "^0.5.0",
+            "vue-text-mask": "^5.1.1",
+            "vue2-timepicker": "^0.1.4",
+            "xlsx": "^0.13.2"
+          },
+          "devDependencies": {  //need only on development time
+            "babel-core": "^6.26.0",
+            "babel-loader": "^7.1.2",
+            "babel-preset-es2015": "^6.24.1",
+            "babel-preset-stage-0": "^6.24.1",
+            "babelify": "^7.3.0",
+            "uglify-js": "^2.8.22",
+            "uglifyify": "^3.0.4",
+            "vue-loader": "^13.6.0",
+            "vue-template-compiler": "^2.5.11",
+            "webpack": "^3.10.0"
+          }
+        }
+        
+</xmp>
+
+<h4>Saving in dependencies</h4>
+<xmp class="prettyprint">
+    npm install --save   //npm i -S
+</xmp>
+=========================================================================
+<h4>Saving in devdependencies</h4>
+
+<xmp class="prettyprint">
+npm install --save-dev  //Or npm i -D
+</xmp>
+===============================================================================================
+<br>
+<h2>NPM vs Yarn</h2>
+Both of them are Package Manager which manages package of its own environment. It keeps track of all the packages and their versions and allows the developer to easily update or remove these dependencies. All of these external dependencies are being stored inside a file called called package.json.
+<p><span style="font-size: 14pt;"><span style="color: #ff0000;"><strong>Yarn</strong></span> is a superset of <strong><span style="color: #ff0000;">NPM</span></strong> that solves many problems that NPM has.</span></p>
+
+<p><span style="font-size: 14pt;">Every language that we use has some form of package manager, either official or a 3rd party one. PHP has&nbsp;<span style="color: #ff0000;"><code class="markup--code markup--p-code">Composer</code></span>, Python has&nbsp;<span style="color: #ff0000;"><strong><code class="markup--code markup--p-code">PyPi</code></strong></span>, Java has&nbsp;<code class="markup--code markup--p-code"><span style="color: #ff0000;"><strong>Gradle</strong></span>,</code>.Net has <strong><span style="color: #ff0000;">Nuget Package Manager</span></strong> etc.</span></p>
+
+
+<h3 id="parallelinstallation"><strong><span style="color: #ff0000;">Parallel Installation(Yarn vs NPM)</span></strong></h3>
+<p><span style="font-size: 14pt;">Whenever npm or Yarn needs to install a package, it carries out a series of tasks. In npm, these tasks are executed per package and sequentially, meaning it will wait for a package to be fully installed before moving on to the next. Yarn executes these tasks in parallel, increasing performance.</span></p>
+
+
+================================================================================================
+<p><span style="font-size: 14pt;"><span style="color: #ff0000;"><strong>ECMAScript 5</strong> </span><strong><span style="color: #000000;">is also known as</span></strong><span style="color: #ff0000;"><strong> ES5</strong> </span>or&nbsp;<span style="color: #ff0000;"><strong>ECMAScript 2009 <span style="color: #000000;">or</span>&nbsp; ES2009</strong></span></span></p>
+<p><span style="font-size: 14pt;"><span style="color: #ff0000;"><strong>ECMAScript 6</strong></span><strong><span style="color: #000000;"> is also known as</span></strong> <span style="color: #ff0000;"><strong>ES6</strong> </span>or&nbsp;<span style="color: #ff0000;"><strong>ECMAScript</strong></span><strong> <span style="color: #ff0000;">2015</span>&nbsp;<span style="color: #000000;">or</span></strong>&nbsp;<strong><span style="color: #ff0000;">ES 2015</span></strong></span></p>
+<br>
+===============================================================================================================
+<br>
+<p><br /><span style="color: #ff0000; font-size: 18pt;"><strong>Babel</strong></span></p>
+<p><span style="font-size: 14pt;">.&nbsp;<span class="markup--quote markup--p-quote is-other" data-creator-ids="anon">Babel is a JS transpiler that converts new JS code into old ones.One can easily add presets such as&nbsp;<code class="markup--code markup--p-code">es2015</code>,&nbsp;<code class="markup--code markup--p-code">es2016</code>,&nbsp;<code class="markup--code markup--p-code">es2017</code>, so that Babel compiles them to ES5.</span></span></p>
+<p><strong><span style="font-size: 18pt; color: #ff0000;"><span class="markup--quote markup--p-quote is-other" data-creator-ids="anon">Webpack</span></span></strong></p>
+<p><span style="font-size: 14pt;"><span class="markup--quote markup--p-quote is-other" data-creator-ids="anon">we know what Babel and ES6/7 are, we would like to use that. We would also like to use SASS for our styles, PostCSS for autoprefixing. Plus, we would like to minify and uglify both our CSS and Javascript code.&nbsp;Webpack solves all of these problems using one config file&nbsp;(named&nbsp;<code class="markup--code markup--p-code">webpack.config.js</code>) and one CLI command&nbsp;<code class="markup--code markup--p-code">webpack</code>.</span></span></p>
+<p><span style="font-size: 14pt;"><span class="markup--quote markup--p-quote is-other" data-creator-ids="anon">Webpack is a modular build tool that has two sets of functionality &mdash; Loaders and Plugins. Loaders transform the source code of a module. For example,&nbsp;<code class="markup--code markup--p-code">style-loader</code>&nbsp;adds CSS to DOM using&nbsp;<code class="markup--code markup--p-code">style</code>&nbsp;tags.&nbsp;<code class="markup--code markup--p-code">sass-loader</code>&nbsp;compiles SASS files to CSS.&nbsp;<code class="markup--code markup--p-code">babel-loader</code>&nbsp;transpiles JS code given the presets. Plugins are the core of Webpack. They can do things that loaders can&rsquo;t.</span></span></p>
+<p><span style="font-size: 14pt;"><span class="markup--quote markup--p-quote is-other" data-creator-ids="anon">Look at webpack.config.js file ,For files that end with extension&nbsp;<span style="color: #ff0000;"><code class="markup--code markup--p-code">.jsx</code></span>, we will use&nbsp;<span style="color: #ff0000;"><strong class="markup--strong markup--p-strong">babel-loader with es2015 and react presets</strong>.</span> For files that end with extension&nbsp;<span style="color: #ff0000;"><code class="markup--code markup--p-code">.scss</code>,</span> we will use&nbsp;<span style="color: #ff0000;"><strong>sass-loader, css-loader, and style-loaders</strong></span><strong class="markup--strong markup--p-strong">.</strong>&nbsp;This is how our webpack.config.js will look like once we add these loaders:</span></span></p>
+
+
+Webpack just take file from index.js and minify and compress it(ie. specified in webpack.config.js) and create 1 compact  bundle file  called bundle.js and we can use this on the project .
+
+<pre class="prettyprint">
+// This library allows us to combine paths easily
+const path = require('path');
+module.exports = {
+   entry: 'src/index.js',
+   output: {
+      path: path.resolve(__dirname, 'output'),
+      filename: 'bundle.js'
+   },
+   resolve: {
+      extensions: ['.js', '.jsx']
+   },
+   module: {
+      rules: [
+         {
+             test: /\.jsx/,
+             use: {
+                loader: 'babel-loader',
+                options: { presets: ['react', 'es2015'] }
+             }
+         },
+         {
+            test: /\.scss/,
+            use: ['style-loader', 'css-loader', 'sass-loader']
+         }
+      ]
+   }
+};
+</pre>
+
+===============================================================================================================
+<h2>Package-lock.json is coming after npm5 version only</h2>
+
+==========================================================
+<div class="row">
+    <div class="col">
+        <pre class="prettyprint">
+
+        </pre>
+    </div>
+
+    <div class="col">
+    
+    </div>
+</div>
+=======================================================================================
+<table border="2">
+    <tbody>
+    <tr style="background: black; color: white;">
+    <td>
+    <p><span style="font-size: 14pt;"><strong>Package</strong></span></p>
+    </td>
+    <td>
+    <p><span style="font-size: 14pt;"><strong>Description</strong></span></p>
+    </td>
+    </tr>
+    <tr>
+    <td>
+    <p><span style="font-size: 14pt;">babel-core</span></p>
+    </td>
+    <td>
+    <p><span style="font-size: 14pt;">Babel is a transpiler used to convert ES2015 JavaScript syntax which has limited browser support into ES5 syntax which has more universal browser support.</span></p>
+    </td>
+    </tr>
+    <tr>
+    <td>
+    <p><span style="font-size: 14pt;">babel-loader</span></p>
+    </td>
+    <td>
+    <p><span style="font-size: 14pt;">Webpack loader used to run script found within the &lt;script&gt; section of a Vue single-file component through the Babel transpiler. This is basically a bridge between Webpack and Babel.</span></p>
+    </td>
+    </tr>
+    <tr>
+    <td>
+    <p><span style="font-size: 14pt;">babel-presets-es2015</span></p>
+    </td>
+    <td>
+    <p><span style="font-size: 14pt;">Babel configuration presets for es2015 (ES6) to ES5 JavaScript conversion</span></p>
+    </td>
+    </tr>
+    <tr>
+    <td>
+    <p><span style="font-size: 14pt;">css-loader</span></p>
+    </td>
+    <td>
+    <p><span style="font-size: 14pt;">Webpack loader for bunding CSS files together. This is a peer dependency for the vue-loader packages and is required even if you are not bundling CSS.</span></p>
+    </td>
+    </tr>
+    <tr>
+    <td>
+    <p><span style="font-size: 14pt;">cross-env</span></p>
+    </td>
+    <td>
+    <p><span style="font-size: 14pt;">Allows environment variables to be set in the windows command line interface. This is used by the scripts defined in the package.json scripts section.</span></p>
+    </td>
+    </tr>
+    <tr>
+    <td>
+    <p><span style="font-size: 14pt;">eslint</span></p>
+    </td>
+    <td>
+    <p><span style="font-size: 14pt;">Provides linting support for JavaScript. Linting is the process of checking code for errors. Without this, Webpack just packs up all your code as-is without checking to make sure there are no mistakes.</span></p>
+    </td>
+    </tr>
+    <tr>
+    <td>
+    <p><span style="font-size: 14pt;">eslint-friendly-formatter</span></p>
+    </td>
+    <td>
+    <p><span style="font-size: 14pt;">Formats lint errors produced by eslint in a more user-friendly manner.</span></p>
+    </td>
+    </tr>
+    <tr>
+    <td>
+    <p><span style="font-size: 14pt;">eslint-loader</span></p>
+    </td>
+    <td>
+    <p><span style="font-size: 14pt;">Webpack loader used to run script found within the &lt;script&gt; section of a Vue single-file component through eslint to check for errors. This is basically a bridge between Webpack and eslint.</span></p>
+    </td>
+    </tr>
+    <tr>
+    <td>
+    <p><span style="font-size: 14pt;">file-save</span></p>
+    </td>
+    <td>
+    <p><span style="font-size: 14pt;">Provides a simple way to write text to a file. Used within the webpack configuration file to write application settings to an external file.</span></p>
+    </td>
+    </tr>
+    <tr>
+    <td>
+    <p><span style="font-size: 14pt;">path</span></p>
+    </td>
+    <td>
+    <p><span style="font-size: 14pt;">Provides common file-path routines and methods like combining and resolving paths.</span></p>
+    </td>
+    </tr>
+    <tr>
+    <td>
+    <p><span style="font-size: 14pt;">vue-loader</span></p>
+    </td>
+    <td>
+    <p><span style="font-size: 14pt;">Webpack loader for managing Vue single-file components. This is what is responsible for splitting the &lt;template&gt; &lt;script&gt; and &lt;style&gt; sections of a Vue file.</span></p>
+    </td>
+    </tr>
+    <tr>
+    <td>
+    <p><span style="font-size: 14pt;">vue-style-loader</span></p>
+    </td>
+    <td>
+    <p><span style="font-size: 14pt;">Webpack loader for extracting CSS from the &lt;style&gt; section of a Vue single-file component. This is a peer dependency for the vue-loader package and is required even if you are not working with CSS in Vue files.</span></p>
+    </td>
+    </tr>
+    <tr>
+    <td>
+    <p><span style="font-size: 14pt;">vue-template-compiler</span></p>
+    </td>
+    <td>
+    <p><span style="font-size: 14pt;">Allows vue templates to be pre-compiled into render functions to avoid runtime-compilation overhead. This is used by vue-loader.</span></p>
+    </td>
+    </tr>
+    <tr>
+    <td>
+    <p><span style="font-size: 14pt;">vue</span></p>
+    </td>
+    <td>
+    <p><span style="font-size: 14pt;">Vue JS library.</span></p>
+    </td>
+    </tr>
+    <tr>
+    <td>
+    <p><span style="font-size: 14pt;">vue-router</span></p>
+    </td>
+    <td>
+    <p><span style="font-size: 14pt;">Vue Router library used for single-page-application routing.</span></p>
+    </td>
+    </tr>
+    </tbody>
+    </table>
+    ===========================================================================================================================
+    <p><span style="font-size: 12pt;">When you create initial setup for package.json.Then you run&nbsp;<em>npm install</em>, NPM reads the&nbsp;<em>package.json</em>&nbsp;file and begins building a list of the packages on which your application depends. It then determines if any of those packages have dependencies, and then if any of those dependencies have their own dependencies, and so on it goes until&nbsp;<em>npm</em>&nbsp;has recursively built out a dependency tree based on your initial set of required packages.&nbsp;<em>Npm</em>&nbsp;then downloads all of those packages into the&nbsp;<em>node_modules&nbsp;</em>folder in the same directory where your&nbsp;<em>package.json</em>&nbsp;file resides. As such, the total number of packages that are actually pulled down can be far greater than the number defined in your&nbsp;<em>package.json</em>&nbsp;file. For example, the 15 packages defined here result in more than 500 packages after accounting for all the dependencies. This ends up being 50 MB worth of data (unpacked) and more than 13,000 individual files. Although this may seem overwhelming, these files are not included in your project, and you really don&rsquo;t need to interact with them for the most part.</span></p>
+
+    <p><span style="color: #ff0000;"><strong><span style="font-size: 12pt;"><em>NOTE: any time you add a new package to your&nbsp;packages.json&nbsp;file, you will need to run&nbsp;npminstall&nbsp;(either manually or from the&nbsp;Task Runner Explorer) to pull the package and any dependencies down.</em></span></strong></span></p>
+
+
+<h2>Must look</h2>
+https://www.red-gate.com/simple-talk/dotnet/net-development/introduction-to-vue-js-with-a-single-page-application-spa-in-visual-studio/
+
+https://medium.freecodecamp.org/what-exactly-is-node-js-ae36e97449f5
+https://docs.microsoft.com/en-us/sql/t-sql/statements/set-rowcount-transact-sql?view=sql-server-2017
+https://blog.sqlauthority.com/2012/10/31/sql-server-copy-data-from-one-table-to-another-table-sql-in-sixty-seconds-031-video/
+https://www.red-gate.com/simple-talk/blogs/writing-a-byte-array-to-a-hexadecimal-string/
+</body>
+</html>

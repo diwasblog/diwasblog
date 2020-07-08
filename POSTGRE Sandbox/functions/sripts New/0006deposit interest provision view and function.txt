@@ -1,0 +1,86 @@
+-- DROP VIEW deposit.collection_transaction_view;
+ 
+CREATE OR REPLACE VIEW deposit.collection_transaction_view AS
+ SELECT t.tran_id,
+    a.office_id,
+    t.tran_date,
+    p.deposit_product_name,
+	p.is_recurring_deposit,
+    COALESCE(t.collector_id,0) AS collector_id,
+    td.account_number_id,
+    COALESCE(td.slip_number::text, ''::text) || COALESCE(td.check_number::text, ''::text) AS check_number,
+    td.statement_reference,
+    td.credit,
+    t.audit_user_id AS user_id
+  FROM transactions.transactions t
+     JOIN transactions.transaction_details td ON t.tran_id = td.tran_id
+INNER JOIN deposit.account_holders a ON td.account_number_id = a.account_number_id
+  INNER JOIN core.deposit_products p ON a.deposit_product_id = p.deposit_product_id	
+  INNER JOIN office.collectors o ON t.collector_id = o.collector_id
+  WHERE t.verification_status_id > 0 AND td.account_number_id IS NOT NULL AND t.book_name::text <> 'Deposit Interest Transit'::text
+  AND td.credit>COALESCE(credit,'0')
+  AND o.collector_name<>'Office';
+
+ALTER TABLE deposit.collection_transaction_view
+    OWNER TO postgres;
+
+
+
+
+----Function 
+
+
+-- DROP FUNCTION deposit.get_recurring_provision(integer, date, date);
+
+
+CREATE OR REPLACE FUNCTION deposit.get_recurring_provision(
+	office_id_ integer,
+	from_ date,
+	to_ date)
+    RETURNS TABLE( office_id int,product character varying, collection money, rate numeric, provision money) 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+
+BEGIN
+	CREATE TEMP TABLE _t(
+	office_id int,
+	product character varying,
+	credit 	money,
+	rate	numeric,
+	provision money
+	) ON COMMIT DROP;
+	IF office_id_ > 0 THEN
+	INSERT INTO _t(office_id, product, credit)
+	SELECT t.office_id, t.deposit_product_name, SUM(COALESCE(t.credit,'0'))total_deposit
+	FROM deposit.collection_transaction_view t
+	WHERE tran_date BETWEEN from_ AND to_ AND t.is_recurring_deposit=true AND t.office_id = office_id_ 
+	GROUP BY t.office_id, t.deposit_product_name
+	HAVING SUM(COALESCE(credit,'0'))>'0';
+	ELSE
+	INSERT INTO _t(office_id, product, credit)
+	SELECT 0, t.deposit_product_name, SUM(COALESCE(t.credit,'0'))total_deposit
+	FROM deposit.collection_transaction_view t
+	WHERE t.tran_date BETWEEN from_ AND to_ AND t.is_recurring_deposit=true
+	GROUP BY  t.deposit_product_name
+	HAVING SUM(COALESCE(t.credit,'0'))>'0';						
+
+--SELECT * FROM deposit.get_recurring_provision(0,'2019-04-01','2019-04-20')
+END IF;
+	UPDATE _t SET rate= COALESCE(p.interest_provision_rate,0)
+	FROM core.deposit_products p
+	WHERE p.deposit_product_name = _t.product;
+
+	UPDATE _t SET provision = (_t.credit * _t.rate)/100;				
+						
+	RETURN QUERY( SELECT _t.office_id, _t.product, _t.credit, _t.rate, _t.provision FROM _t ORDER BY _t.office_id, _t.product);
+
+END
+
+$BODY$;
+
+ALTER FUNCTION deposit.get_recurring_provision(integer, date, date)
+    OWNER TO postgres;

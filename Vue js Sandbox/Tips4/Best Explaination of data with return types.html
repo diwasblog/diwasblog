@@ -1,0 +1,276 @@
+<html>
+  <head>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+      crossorigin="anonymous"
+    />
+
+    <style>
+      xmp.prettyprint {
+        font-size: 12pt;
+        font-family: "Consolas, 'Courier New', monospace";
+      }
+    </style>
+  </head>
+  <body>
+
+
+    <div class="row">
+      <div class="col-lg-3">
+        <xmp class="prettyprint">
+            <div id="app">
+                <p>{{ getFullName() }}</p>
+              </div>
+              
+        </xmp>
+      </div>
+
+      <div class="col-lg-6">
+        <xmp class="prettyprint">
+            new Vue({
+              el: '#app',
+              data: {
+                firstname:'diwas',
+                lastname:'poudel'
+              },
+              methods:{
+                getFullName:function(){
+                   let vm=this;
+                   return vm.firstname +' '+ vm.lastname;   //we must return
+                } 
+              }
+            })
+        </xmp>
+        </div>
+
+        <div class="col-lg-3">
+            diwas poudel
+          </div>
+    </div>
+    =====================================================================
+    <h2>By Passing Value as Argument</h2>
+    <div class="row">
+        <div class="col-lg-3">
+          <xmp class="prettyprint">
+              <div id="app">
+                  <p>{{ getFullName(firstname,lastname) }}</p>
+                </div>
+                
+          </xmp>
+        </div>
+  
+        <div class="col-lg-6">
+          <xmp class="prettyprint">
+              new Vue({
+                el: '#app',
+                data: {
+                  firstname:'diwas',
+                  lastname:'poudel'
+                },
+                methods:{
+                  getFullName:function(first , last){
+                     let vm=this;
+                     return first +' '+ last;   //we must return
+                  } 
+                }
+              })
+          </xmp>
+          </div>
+  
+          <div class="col-lg-3">
+              diwas poudel
+            </div>
+      </div>
+<br>
+
+=====================================================================
+<h2>Just returning an object</h2>
+<div class="row">
+    <div class="col-lg-3">
+      <xmp class="prettyprint">
+          <div id="app">
+              <p>{{ getFullName() }}</p>
+            </div>
+            
+      </xmp>
+    </div>
+
+    <div class="col-lg-6">
+      <xmp class="prettyprint">
+          new Vue({
+            el: '#app',
+            data: {
+              firstname:'diwas',
+              lastname:'poudel'
+            },
+            methods:{
+              getFullName:function(){
+                 let vm=this;
+                 return {
+                   name: vm.firstname + ' ' + vm.lastname;
+                 }
+              } 
+            }
+          })
+      </xmp>
+      </div>
+
+      <div class="col-lg-3">
+          { "name": "diwas poudel" }
+        </div>
+  </div>
+
+
+  =====================================================================
+<h2>Just returning object in correct ways </h2>
+<div class="row">
+    <div class="col-lg-3">
+      <xmp class="prettyprint">
+          <div id="app">
+              <p>{{ getFullName().name }}</p>
+            </div>
+            
+      </xmp>
+    </div>
+
+    <div class="col-lg-6">
+      <xmp class="prettyprint">
+          new Vue({
+            el: '#app',
+            data: {
+              firstname:'diwas',
+              lastname:'poudel'
+            },
+            methods:{
+              getFullName:function(){
+                 let vm=this;
+                 return {
+                   name: vm.firstname + ' ' + vm.lastname;
+                 }
+              } 
+            }
+          })
+      </xmp>
+      </div>
+
+      <div class="col-lg-3">
+         diwas poudel
+        </div>
+  </div>
+  <br>
+  ===============================================================================================
+  <h2>Using Props</h2>
+
+  <div class="div">
+    <h2>App.vue</h2>
+    <div class="col-lg-6">
+       <xmp class="prettyprint">
+          <template>
+              <div id="app">
+                <img alt="Vue logo" src="./assets/logo.png">
+                <HelloWorld msg="Welcome to Your Vue.js App"/>
+              </div>
+            </template>
+            
+            <script>
+            import HelloWorld from './components/HelloWorld.vue'
+            
+            export default {
+              name: 'app',
+              components: {
+                HelloWorld
+              }
+            }
+            </script>
+            
+            <style>
+            
+            </style>
+       </xmp>
+    </div>
+
+    <div class="col-lg-6">
+      <xmp class="prettyprint">
+          <template>
+              <div class="hello">
+                <h1>{{ msg }}</h1>
+                
+              </div>
+            </template>
+            
+            <script>
+            export default {
+              name: 'HelloWorld',
+              props: {
+                msg: String
+              }
+            }
+            </script>
+      </xmp>
+    </div>
+  </div>
+  ==============================================================================================
+  <h2>Why Components’ Data Properties Must Be Functions ?</h2>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <xmp class="prettyprint">
+          <div id="app">
+              <counter></counter>
+              <counter></counter>
+              <counter></counter>
+            </div>
+
+            <script>
+                
+                </script>
+      </xmp>
+    </div>
+   
+    </div>
+
+  <p><span style="color: rgb(255, 0, 0);"><span style="font-family: &quot;Noto Serif&quot;, serif; font-size: 24px; background-color: rgb(251, 251, 251); display: inline !important;">With components, the&nbsp;</span><span class="code" style="padding: 1px 5px; white-space: pre-wrap; background-color: rgb(238, 238, 238); border-radius: 4px; letter-spacing: 1px; font-family: Consolas, Menlo, Monaco, &quot;Lucida Console&quot;, &quot;Liberation Mono&quot;, &quot;DejaVu Sans Mono&quot;, &quot;Bitstream Vera Sans Mono&quot;, &quot;Courier New&quot;, monospace, sans-serif; font-size: 24px;">data</span><span style="font-family: &quot;Noto Serif&quot;, serif; font-size: 20px; background-color: rgb(251, 251, 251); display: inline !important;"><span style="font-size: 24px;">&nbsp;</span><span style="font-size: 24px;">property must be a function and not an object as we are used to.</span></span></span></p><p><span style="color: rgb(37, 37, 37); font-family: &quot;Noto Serif&quot;, serif; font-size: 20px; background-color: rgb(251, 251, 251); display: inline !important;"><span style="box-sizing: inherit; border: 0px solid rgb(218, 225, 231); font-weight: bolder; color: rgb(0, 0, 0); font-family: Merriweather, Constantia, &quot;Lucida Bright&quot;, Lucidabright, &quot;Lucida Serif&quot;, Lucida, &quot;DejaVu Serif&quot;, &quot;Bitstream Vera Serif&quot;, &quot;Liberation Serif&quot;, Georgia, serif; font-size: 18px;"><code class="language-text" style="box-sizing: inherit; border: 0px solid rgb(218, 225, 231); font-family: Consolas, Monaco, &quot;Andale Mono&quot;, &quot;Ubuntu Mono&quot;, monospace; font-size: 1rem; color: rgb(36, 41, 46); background: rgba(27, 31, 35, 0.05); padding: 0.2em 0.4em; border-radius: 3px; text-shadow: none; white-space: pre; word-spacing: normal; word-break: normal; overflow-wrap: normal; line-height: 1.5; tab-size: 4; hyphens: none;"><span style="font-size: 24px;">Data</span></code><span style="font-size: 24px;">&nbsp;</span><span style="font-size: 24px;">is the private memory of each component where you can store any variables you need.&nbsp;</span></span></span></p><p><span style="color: rgb(37, 37, 37); font-family: &quot;Noto Serif&quot;, serif; font-size: 20px; background-color: rgb(251, 251, 251); display: inline !important;"><span style="box-sizing: inherit; border: 0px solid rgb(218, 225, 231); font-weight: bolder; color: rgb(0, 0, 0); font-family: Merriweather, Constantia, &quot;Lucida Bright&quot;, Lucidabright, &quot;Lucida Serif&quot;, Lucida, &quot;DejaVu Serif&quot;, &quot;Bitstream Vera Serif&quot;, &quot;Liberation Serif&quot;, Georgia, serif; font-size: 18px;"><br></span></span></p><p><br></p><p><span style="font-size: 24px;">Notice how all of the numbers on the buttons changed. This is because all three instances of the component share the same data object because when vue invokes the function to retrieve the object, It returns a<span style="color: rgb(255, 0, 0);"> reference to the same data object </span>each time.All three counter have the same reference to data and if any counter component changes the value then all counter component will have same value.</span></p>
+
+  <img src="http://codingexplained.com/wp-content/uploads/2017/05/Screen-Shot-2017-05-02-at-00.52.03.png">
+
+  When clicked on first button all three button value changes.
+
+  <h2>NOw lets return data</h2>
+
+
+  <div class="row">
+      <div class="col-lg-6">
+        <xmp class="prettyprint">
+            <div id="app">
+                <counter></counter>
+                <counter></counter>
+                <counter></counter>
+              </div>
+  
+              <script>
+                 new Vue({
+                   data:{
+                    return {
+                        counter: 0
+                      };
+                   }
+                 })
+              </script>
+        </xmp>
+      </div>
+      <div class="col-lg-6">
+          <xmp class="prettyprint">
+            
+          </xmp>
+        </div>
+      </div>
+
+      <img src="http://codingexplained.com/wp-content/uploads/2017/05/Screen-Shot-2017-05-02-at-00.52.03.png">
+      Here each counter component has  separate copy of data object (previous each counter component has same data object)
+      So on clicking on first button has no affect on the second and third button
+  </body>
+  </html>

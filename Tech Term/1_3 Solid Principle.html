@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+
+
+<p><span style="color: #ff00ff;"><strong><span style="font-size: 18pt;">SOLID PRINCIPLE</span></strong></span></p>
+<p><span style="font-size: 12pt;">Before undestanding SOLID principle .Let's look the design flaws that cause the damage in software , mostly.</span></p>
+<p><span style="font-size: 12pt; color: #000000;">1<strong>) Putting more stress on classes by assigning more responsibilities to them.(ie. <span style="color: #ff0000;">Adding a lot of unnecessary functionality not related to a class</span>).</strong></span></p>
+<p><strong><span style="font-size: 12pt; color: #000000;">2) Forcing the classes to depend on each other. If classes are dependent on each other(<span style="color: #ff0000;"> in other word highly coupled), then change in one will affect the other)</span></span></strong></p>
+<p><strong><span style="font-size: 12pt; color: #000000;">3)Spreading duplicate of Code</span></strong></p>
+<p><span style="color: #ff00ff;"><strong><span style="font-size: 18pt;">Solution:</span></strong></span></p>
+<ul>
+<li><span style="font-size: 12pt;">Choose correct architecture(MVC,3 -tier, Layered , MVP, MVVM)</span></li>
+<li><span style="font-size: 12pt;">Following the Design Principle</span></li>
+<li><span style="font-size: 12pt;">Choose correct Design Pattersn to build the software based on its specification.</span></li>
+</ul>
+<p><strong><span style="font-size: 24pt;">SOLID Principles</span></strong></p>
+<p><span style="font-size: 12pt;">They are the desing principle that enable us to manage with most of the software design patterns.</span></p>
+<p><span style="font-size: 12pt;">This principles provide us ways to move from tightly coupled code and little encapsulation to desired results of loosely coupled and encapsulated real needs of a business properly.</span></p>
+<ul>
+<li><span style="color: #008000;"><strong><span style="font-size: 12pt;">S: Solid Responsibility Principle(SRS)</span></strong></span></li>
+<li><span style="color: #008000;"><strong><span style="font-size: 12pt;">O: Open Closed Principle (OCP)</span></strong></span></li>
+<li><span style="color: #008000;"><strong><span style="font-size: 12pt;">L : Liskov Substitution Principle (LSP)</span></strong></span></li>
+<li><span style="color: #008000;"><strong><span style="font-size: 12pt;">I: Interface Seggregation Principle (ISP)</span></strong></span></li>
+<li><span style="color: #008000;"><strong><span style="font-size: 12pt;">D : Dependency Inversion Principle (DIP)</span></strong></span></li>
+</ul>
+<p><span style="color: #008000;"><strong><span style="font-size: 12pt;">==============================================================================</span></strong></span></p>
+<p><span style="color: #000000; font-size: 18pt;"><strong>SRS(Solid Responsibility Principle)</strong></span></p>
+<p><span style="color: #808080; font-size: 12pt;">One class should be responsible for one tasks only.</span></p>
+
+
+<div class="row">
+  <div class="col-6">
+      <pre>
+          <code class="language-csharp">
+ public class BankAccount
+{
+  pulbic BankAccount(){ }
+
+  public string AccountNumber{get;set;}
+
+  public string AccountHolderName{get;set;}
+
+  public decimal AccountBalance{get;set;}
+
+  public decimal Cal_Interest(){
+    //code to calculate interest
+  }
+}
+
+public class Main
+{
+  psvm(){
+    BankAccount ba = new BankAccount();
+    ba.AccountNumber=1;
+    s = ba.Cal_Interest();
+  }
+}
+            </code>
+     </pre>
+  </div>
+
+  <div class="col-6">
+      <pre>
+          <code class="language-csharp">
+              public class BankAccount
+              {
+                pulbic BankAccount(){ }
+              
+                public string AccountNumber{get;set;}
+              
+                public string AccountHolderName{get;set;}
+              
+                public decimal AccountBalance{get;set;}
+              
+                
+              }
+              
+              public class InterestCalculator
+              {
+                public decimal Cal_Interest(BankAccount acc){
+              
+                  //code to calculate interest
+                }
+              }
+              
+              public class Main
+              {
+                psvm(){
+                  BankAccount ba = new BankAccount();
+                  ba.AccountNumber=1;
+              
+                  InterestCalculator cal = new InterestCalculator();
+                  s = cal.Cal_Interest(ba);
+                  console.Read();
+                }
+              }
+            </code>
+     </pre>
+  </div>
+</div>
+
+
+<p><span style="font-size: 14pt;">Bad Practice</span></p>
+<p><span style="font-size: 12pt;">Look for <strong>BankAccount we have 4 method</strong>. <strong><span style="color: #ff00ff;">For having BankAccoun</span><span style="color: #ff00ff;">t</span></strong> <strong>we donot need logic of calculate interes</strong>t. Suppose BankAccount class is used for showing detail to user . So , for this there is no any logic for keeping calculate_interest(). So , we separate it from BankAccount.</span></p>
+<p><span style="font-size: 12pt;">As Calculating Interest is separate logic and if needed changing interest function code affect whole class BankAccount. So, tightly coupled. To remove this separate class for Interest is made so, changing code in calculating_interest() function donot affect to BankAccount class.</span></p>
+<p><span style="font-size: 14pt;">Note:</span></p>
+<p><span style="font-size: 12pt;">A class should always handle single functionality.If you put more than one functionality in one class in C# it introduce coupling between two functionality and even if you change one functionality there is chance you broke coupled functionality , which required another round of testying to avoid any surprise on production environment.</span></p>
+<p><span style="font-size: 12pt;">The size of the classes become shorter .It makes code easily understandable. Your class may contain several method or property but must relate to single responsibility.</span></p>
+<p><span style="font-size: 18pt;">Open Closed Principle</span></p>
+
+
+<p><span style="font-size: 18pt;">Open/Closed Principle</span></p>
+<p><span style="color: #ff0000;"><strong><span style="font-size: 14pt;">Software components should be open for extension, but closed for modification</span></strong></span></p>
+<p><span style="font-size: 12pt;">This means that our classes should be designed such a way that whenever fellow developers wants to change the flow of control in specific conditions in application, all they need to <span style="color: #ff0000;"><strong>extend</strong> </span>our class and <span style="color: #ff0000;"><strong>override</strong> </span>some functions and that's it.</span></p>
+<p><span style="font-size: 12pt;">If you look at&nbsp; good framework like <strong>spring</strong> or <strong>asp.net mvc</strong> , we will see that we cannot change their core logic and request processing&nbsp; , but we modify the desired application flow just by extending some classes and plugin them in configuration files.</span></p>
+<p><span style="font-size: 12pt;">For Example , mvc framework has class DbContext . To use this class , we arenot required to modify this class but we just extend it's functionality the way we want as :</span></p>
+
+
+<pre>
+  <code class="language-csharp">
+    public MyApplicationDBContext : Dbcontext
+    {
+
+    }
+    </code>
+</pre>
+<br>
+<p><span style="font-size: 14pt;">Here also we donot Change/modify Action Class(close for modification)&nbsp; but we extend this Action class and overrides its execute() method.</span></p>
+<br>
+<pre>
+  <code class="language-csharp">
+    public class HelloWorldAction extends Action{
+      @Override
+      public ActionForward execute ()
+      {
+
+      }
+    }
+  }
+  </code>
+</pre>
+
+<br>
+<p><span style="color: #ff0000;"><strong><span style="font-size: 14pt;">Liskov's Substitution Principle</span></strong></span></p>
+
+
+<script src="../ASP Sandbox/js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

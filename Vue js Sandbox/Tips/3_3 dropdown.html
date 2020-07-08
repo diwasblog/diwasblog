@@ -1,0 +1,150 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+
+
+<!--Explaination-->
+
+<!--########################Main Code######################################-->
+
+<!--##############################################################-->
+
+
+<!--|#########################DISPLAY############################################-->
+<?prettify linenums=1?>
+<xmp class="prettyprint"
+   >
+
+   <html>
+      <head>
+         <title>Using This</title>
+      </head>
+      <body>
+        <div class="row">
+          <div class="col-lg-4 col-md-4">
+              <div class="form-group">
+                  <div class="row">
+                      <div class="col-lg-8 col-md-8">
+                          <label for="department">Department</label>
+                      </div>
+                  </div>
+                  <select class="form-control" v-model="departmentId" @@change="departmentChanged">
+                      <option value="0">Select Department</option>
+                      @foreach (var department in Model.Departments)
+                      {
+                          <option value="@department.Id">@department.Name</option>
+                      }
+                  </select>
+              </div>
+          </div>
+
+          <div class="col-lg-4 col-md-4">
+              <div class="form-group">
+                  <div class="row">
+                      <div class="col-lg-8 col-md-8">
+                          <label for="employee">Employee</label>
+                      </div>
+                  </div>
+                  <select v-bind:disabled="departmentId == 0 && employeeData.length == 0"  class="form-control" v-model="employeeId" @@change="employeeChanged">
+                      <option value="0">Select Employee</option>
+                      <option v-for="item in employeeData" v-bind:value="item.Id">{{ item.Name}}</option>
+                  </select>
+              </div>
+          </div>
+  
+      </div>
+
+       <script>
+        Vue.use(VeeValidate);
+
+        new Vue({
+            el: '#app',
+            components: {
+                'overlay': Overlay,
+            },
+            data: {
+                departmentId: 0,
+                employeeData: [],
+                employeeId: 0,
+                error: '',
+            },
+            methods: {
+                departmentChanged: function () {
+                    var vm = this;
+                    
+                    axios.get('/hrms/employee/api/getemployeebydepartment/' + vm.departmentId)
+                        .then(function (response) {
+                            vm.employeeData = [];
+                            if (response.hasOwnProperty('data')) {
+                                vm.employeeData = response.data.Result;
+                            }  
+                        })
+                        .catch(function (error) {
+                        });
+                },
+                employeeChanged: function () {
+                    vm = this;
+                    console.log(vm.employeeId);
+                    //vm.getallLeaveTypes();
+                    
+                }
+            }
+       
+       </script>
+ 
+      </body>
+   </html>
+</xmp>
+<!--####################################################-->
+===========================================================================================
+<h2>Dropdown Special</h2>
+<p><br /><span style="font-size: 14pt;">1)set batchId=0 when courseChanges</span></p>
+
+<xmp class="prettyprint">
+courseChanged() {
+  let vm = this;
+  vm.batchId = 0;
+}
+</xmp>  
+
+<p><br /><span style="font-size: 14pt;">2) When courseId=0 then disable batchId</span></p>
+What happen here is when courseId changes to 0 then first step gets called then set exam.batchId=0 
+Then below will execute.
+
+<xmp class="prettyprint">
+<select v-model="batchId" v-bind:disabled="exam.courseId == 0 || isExamDataLoading" class="form-control" @@change="batchChanged">
+     <option value="0">Select</option>
+    <option v-for="batch in batchData" :value="batch.Id">{{batch.Name}}</option>
+ </select>
+ </xmp> 
+==================================================================================
+
+
+
+usp_course_selectcourse
+usp_course_selectbatchbycourse
+
+
+
+
+
+
+
+    </body>
+
+</html>

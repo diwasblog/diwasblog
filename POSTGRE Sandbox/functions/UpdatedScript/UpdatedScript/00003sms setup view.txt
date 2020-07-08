@@ -1,0 +1,49 @@
+-- View: sms.setup_view
+
+-- DROP VIEW sms.setup_view;
+
+
+CREATE OR REPLACE VIEW sms.setup_view AS
+ SELECT o.office_id,
+    o.nick_name AS office,
+    g.customer_id,
+    c.customer_name,
+	c.contact_number,
+    s.account_type,
+    s.account_number,
+    s.start_date,
+    s.weekly_sms_sent_date AS renewed_date,
+    s.expires_in,
+    s.status,
+        CASE
+            WHEN g.is_dead = false THEN 'active'::text
+            ELSE 'terminated'::text
+        END AS ac_status
+   FROM sms.customer_sms s
+     JOIN loan.loan_grant g ON s.account_number = g.loan_account_number::text
+     JOIN sms.customers_view c ON g.customer_id = c.customer_id
+     JOIN office.offices o ON g.office_id = o.office_id
+UNION ALL
+ SELECT o.office_id,
+    o.nick_name AS office,
+    a.customer_id,
+    c.customer_name,
+	c.contact_number,
+    s.account_type,
+    s.account_number,
+    s.start_date,
+    s.weekly_sms_sent_date AS renewed_date,
+    s.expires_in,
+    s.status,
+        CASE
+            WHEN a.status = true THEN 'active'::text
+            ELSE 'terminated'::text
+        END AS ac_status
+   FROM sms.customer_sms s
+     JOIN deposit.account_holders a ON s.account_number = a.account_number::text
+     JOIN sms.customers_view c ON a.customer_id = c.customer_id
+     JOIN office.offices o ON a.office_id = o.office_id;
+
+ALTER TABLE sms.setup_view
+    OWNER TO postgres;
+

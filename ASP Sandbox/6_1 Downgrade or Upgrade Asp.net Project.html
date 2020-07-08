@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+    <h2>For Downgrade WebApplication from 4.7.2 to 4.5.2</h2>
+
+    1)Select Project ( not solution ) > Properties >Then under Application Tab change Target Framework to "4.5.2"
+    2)Do this all project under solution.
+
+
+    3)Open Package Console
+    4) Run Below Command:
+    <pre>
+        <code class="language-csharp">
+            //Works for NuGet 2.1 and above
+            //For Nuget 2.1 below :https://stackoverflow.com/questions/12006991/retargeting-solution-from-net-4-0-to-4-5-how-to-retarget-the-nuget-packages?noredirect=1&lq=1
+            Update-Package -Reinstall
+        </code>
+    </pre>
+
+    5)Then goto package.config of every project under solution then check targetFramework = net452 or not as shown below
+    , if not then
+    goto step 6
+    <pre>
+        <code class="language-csharp">
+            //package.config
+                &lt;?xml version="1.0" encoding="utf-8"?>
+                &lt;packages>
+                &lt;package id="Microsoft.AspNet.WebApi" version="5.2.7" targetFramework="net452" />
+                &lt;package id="Microsoft.AspNet.WebApi.Client" version="5.2.7" targetFramework="net452" />
+                &lt;package id="Microsoft.AspNet.WebApi.Core" version="5.2.7" targetFramework="net452" />
+                &lt;package id="Microsoft.AspNet.WebApi.WebHost" version="5.2.7" targetFramework="net452" />
+                &lt;package id="Newtonsoft.Json" version="12.0.3" targetFramework="net452" />
+                &lt;package id="System.Net.Http" version="4.0.0" targetFramework="net452" />
+                &lt;package id="System.Web.Http.Common" version="4.0.20126.16343" targetFramework="net452" />
+                &lt;/packages>
+        </code>
+    </pre>
+
+    6) Go inside directory of that project and type below command
+    <pre>
+            <code class="language-csharp">
+                    Update-Package -Reinstall -ProjectName Project.Name.Here
+                    //Project.Name.Here  === > RERP_Project.BusinessLayer , RERP_Project.WebApi, RERP_Project.Web, RERP_Project.DataAccess
+            </code>
+        </pre>
+
+    7) Then you may get error like this:
+
+    <pre>
+        <code class="language-csharp">
+                Solution: Could not load file or assembly 'System.Net.Http, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' or one of its dependencies. The system cannot find the file specified.
+        </code>
+    </pre>
+
+    Its solution
+    Meaning that some project required System.Net.Http 4.0.0.0 so convert it to System.Net.Http 4.0.0.0
+    <pre>
+        <code class="language-csharp">
+
+
+
+                https://coderjony.com/blogs/solution-could-not-load-file-or-assembly-systemnethttp-version-4200-culture-neutral-publickeytoken-b03f5f7f11d50a3a-or-one-of-its-dependencies-the-system-cannot-find-the-file-specified/
+                OR
+                https://stackoverflow.com/questions/38408167/could-not-load-file-or-assembly-system-net-http-version-4-0-0-0-culture-neutr
+                OR
+                //Just go to webconfig.cs
+                And change it like:
+                
+                &lt;dependentAssembly>
+                &lt;assemblyIdentity name="System.Net.Http" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
+                &lt;bindingRedirect oldVersion="0.0.0.0-4.2.0.0" newVersion="4.0.0.0" />
+                &lt;/dependentAssembly>
+        
+            </code>
+    </pre>
+
+    <script src="js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+    </script>
+
+</body>
+
+</html>

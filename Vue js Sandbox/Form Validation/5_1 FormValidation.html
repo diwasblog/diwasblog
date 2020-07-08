@@ -1,0 +1,193 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+}
+</style>
+ 
+</head>
+<body>
+
+<h2>Use of data-vs-as and v-validate</h2>
+<xmp class="prettyprint">
+    <div class="form-group">
+        <label for="name">Payment</label>
+        <select class="form-control" name="PaymentModeId"  data-vv-as="Payment" v-validate="'required|otherThanZero'">
+            <option  selected>Select Payment</option>
+            @foreach (var paymentType in Model.PaymentMode)
+            {
+                <option value="@paymentType.Id">@paymentType.Name</option>
+            }
+        </select>
+        <span v-show="errors.has('PaymentModeId')" class="text-danger">{{ errors.first('PaymentModeId') }}</span>
+    </div>
+
+</xmp>
+
+
+
+<xmp class="prettyprint">
+<h2>Min length validation</h2>
+v-validate="{required: true, minLength: 5}"
+</xmp>
+
+
+Email Validation with default error as :  myinput field is required
+
+<xmp class="prettyprint">
+<input v-validate="{ required: true, email: true}" type="text" name="myemail">
+<span class="text-danger " >{{ errors.first('myemail') }}</span>
+</xmp>
+<br>
+Alternatively
+<xmp class="prettyprint">
+    <input v-validate="'required|email'"  name="myinput" type="text">
+    <span class="text-danger">{{ errors.first('myinput') }}</span>
+</xmp>
+
+<br>
+
+Email Validation with custom error as : Email field is required
+<xmp class="prettyprint">
+    <input v-validate="'required|email'" data-vv-as="Email" name="myinput" type="text">
+    <span class="text-danger" >{{ errors.first('myinput') }}</span>
+</xmp>
+
+
+Validate after number of second(Debounce Validation)
+<h2>data-vv-delay</h2>
+<xmp class="prettyprint">
+    <input data-vv-delay="300" v-validate="'required'" type="text"  name="myinput" placeholder="Name">
+    <span class="text-danger">{{ errors.first('myinput') }}</span>
+</xmp>
+
+Validate Space
+<xmp class="prettyprint">
+    v-validate="'required|alpha_spaces'"
+</xmp>
+
+
+Use npm to install font awesome
+npm install @fortawesome/fontawesome-free
+
+<xmp class="prettyprint">
+    //required and accept only alphabetic character
+        required|alpha 
+</xmp>
+
+<xmp class="prettyprint">
+    //minimum six character
+    required|min:6
+</xmp>
+
+
+<xmp class="prettyprint">
+    //numeric character only
+    required|numeric
+</xmp>
+
+<xmp class="prettyprint">
+    //size in KB
+        <input name="My File" v-validate data-vv-rules="image|maxdimensions:500,500|size:10" type="file"><br>
+        <span v-if="errors.has('My File')">{{ errors.first('My File') }}</span>
+</xmp>
+
+<xmp class="prettyprint">
+    //check valid url
+        required|url
+</xmp>
+
+<xmp class="prettyprint">
+    // image must be of bmp and png type only
+        <input data-vv-delay="300" v-validate="'required|mimes:image/bmp,image/png'" type="file" name="myinput" placeholder="Name">
+        <span class="text-danger">{{ errors.first('myinput') }}</span>
+</xmp>
+
+
+<xmp class="prettyprint">
+    valid ip
+    required|ip
+</xmp>
+
+<xmp class="prettyprint">
+    //dimension parameters
+    My File: <input name="My File" v-validate data-vv-rules="image|maxdimensions:500,500|size:100" type="file"><br>
+    <span v-if="errors.has('My File')">{{ errors.first('My File') }}</span>
+</xmp>
+
+<xmp class="prettyprint">
+    required|alpha
+    required|alpha_dash   //alphabet and dash allow
+    required|alpha_num    //alphabet and number allow
+    required|alpha_spaces  //alphabet and space allow
+</xmp>
+
+<xmp class="prettyprint">
+    //credit card validation
+    required|credit_card
+</xmp>
+=====================================================================================================================
+<h2>Use of :disabled="error.any ( If any error occur button willnot be clicked)</h2> 
+<ul>
+    <li><span style="color: #ff0000;"><strong><code>first('field')</code></strong></span>Fetches the first error message related to that field.</li>
+    <li><code><strong><span style="color: #ff0000;">collect('field')</span></strong></code>Fetches all error messages related to that field. Alternatively, you can pass nothing, and it will return errors grouped by areas.</li>
+    <li><code><strong><span style="color: #ff0000;">has('field')</span>&nbsp;</strong>C</code>hecks if there are any errors related to that field.</li>
+    <li><code><strong><span style="color: #ff0000;">all()</span>&nbsp;</strong></code>Gets all error messages.</li>
+    <li><span style="color: #ff0000;"><code><strong>any()</strong></code>&nbsp;</span> checks if there are any errors.</li>
+    </ul>
+<div class="row">
+
+<div class="col-lg-6">
+<xmp class="prettyprint">
+    <div id="app">
+        <form @@submit.prevent="validateBeforeSubmit" novalidate>
+            <div >
+                <label>Network Name</label>
+                <input type="text" v-validate="'required'" class="{ 'input form-control': true }" name="name" />
+                <span class="text-danger ">{{ errors.first('name') }}</span>
+            </div>   
+            <div> <button  :disabled="errors.any()"class="btn btn-primary"></button></div>
+        </form>
+    </div>
+</xmp>
+</div>
+
+<div class="col-lg-6">
+<xmp class="prettyprint">
+    @section Scripts{
+        <script type="text/javascript">
+            Vue.use(VeeValidate);
+            new Vue({
+                el: '#app',
+                data: {
+                    name: '',
+                },
+                methods: {
+                    validateBeforeSubmit() {
+                        this.$validator.validateAll().then((result) => {
+                            if (result) {
+                                alert('From Submitted!');
+                                return;
+                            }
+                        });
+                    }
+                },
+            })
+        </script>
+        }
+</xmp>
+</div>
+</div>
+
+
+
+
+===================================================================================================================

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../css/dracula.css">
+    <link rel="stylesheet" href="../css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+====
+  	<p><span style="font-size: 14pt;"><span style="color: #ff0000;">Database normalization</span> is a technique of organizing the data in the database.</span></p>
+<p><span style="text-decoration: underline;"><span style="font-size: 14pt;">Normalization is used for&nbsp;</span></span></p>
+<p><strong><span style="font-size: 12pt;">1)Minimizing the duplicate data</span></strong></p>
+<p><strong><span style="font-size: 12pt;">2)To minimize or avoid data modification issues</span></strong></p>
+<p><strong><span style="font-size: 12pt;">2)To simplify queries.</span></strong></p>
+<p>Let's look at table below</p>
+
+Let's look at table below
+<br>
+<img src="../img/normalization/1 Intro-Table-Not-Normalized.png"><br>
+
+note: underline column is primary key<br>
+
+=============================================================================================
+<p><span style="font-size: 14pt;">The first thing to notice is this table serves many purposes including:</span></p>
+<ol>
+<li><span style="font-size: 12pt;">Identifying the organization&rsquo;s salespeople</span></li>
+<li><span style="font-size: 12pt;">Listing the sales offices and phone numbers</span></li>
+<li><span style="font-size: 12pt;">Associating a salesperson with an sales office</span></li>
+<li><span style="font-size: 12pt;">Showing each salesperson&rsquo;s customers</span></li>
+</ol>
+<p><span style="font-size: 12pt;">Having the table serve many purposes introduces many of the challenges; </span><span style="font-size: 12pt;">namely, <span style="color: #ff00ff;">data duplication, data update issues, and increased effort to query data.</span></span></p>
+<p><span style="font-size: 12pt; color: #000000;">So, We must have a table with specific purpose only.</span></p>
+<h3><strong>Data Duplication and Modification Anomalies</strong></h3>
+<p>Notice that for each SalesPerson we have listed both the SalesOffice and OfficeNumber.&nbsp; This information is duplicated for each SalesPerson.&nbsp; Duplicated information presents two problems:</p>
+<ol>
+<li>It increases storage and decrease performance.</li>
+<li>It becomes more difficult to maintain data changes.</li>
+</ol>
+<p>For example</p>
+<ul>
+<li>Consider if we move the Chicago office to Evanston, IL.&nbsp; To properly reflect this in our table, we need to update the entries for all the SalesPersons currently in Chicago.&nbsp; Our table is a small example, but you can see if it were larger, that potentially this could involve hundreds of updates.</li>
+</ul>
+<ul>
+<li>Also consider what would happen if John Hunt quits.&nbsp; If we remove his entry, then we lose the information for New York.</li>
+</ul>
+<p>These situations are modification anomalies.</p>
+<p>There are three modification anomalies that can occur:</p>
+<p>&nbsp;</p>
+
+<p><span style="font-size: 18pt; color: #ff00ff;">Insertion Anomalies</span></p>
+<p><span style="font-size: 12pt;">1)If I want to insert 100 SalesPerson of Same SalesOffice then OfficeNumber and SalesOffice will get duplicate.</span></p>
+<p><span style="font-size: 12pt;">2) We cannot record a new sales office until we also know the sales person. Because in order to create the record ,we need provide a primary key. Here , EmployeeId</span></p>
+
+<br>
+<img src="../img/normalization/2 Insertion Anomalies.png"><br>
+
+=======================================================================================
+
+<p><span style="font-size: 18pt; color: #ff00ff;">Update Anomalies</span></p>
+<p><span style="font-size: 14pt;"><span >The same information is recorded in multiple rows.&nbsp; For instance if the office number changes, then there are multiple updates that need to be made.&nbsp; If these updates are not successfully completed across all rows, then an inconsistency occurs.&nbsp;</span></span></p>
+<p>&nbsp;</p>
+<br>
+<img src="../img/normalization/3 Update Anamalies.png"><br>
+==========================================================================================
+
+<h4><span style="color: #ff00ff; font-size: 18pt;"><strong>Deletion Anomaly</strong></span></h4>
+
+<p><span style="font-size: 14pt;">Deletion of a row can cause more than one set of facts to be removed.&nbsp; For instance, if John Hunt retires, then deleting that row cause use to lose information about the New York office.&nbsp;</span></p>
+
+<img src="../img/normalization/3 Delete Anamalies.png"><br>
+
+============================================================================================
+
+<p><span style="font-size: 18pt; color: #ff00ff;">Rules of 1NF</span></p>
+<ol>
+<li><span style="font-size: 14pt;"><span style="color: #ff00ff;">Single Valued Attributes</span>:</span> <span style="font-size: 12pt;"><strong>Each column of your table should be <span style="color: #ff0000;">single valued(or atomic value)</span> which means they should not contain multiple values.</strong></span></li>
+<li><span style="font-size: 14pt; color: #ff00ff;">Attribute Domain should not change</span>: <strong><span style="font-size: 12pt;">In Each column the values stored must be of the <span style="color: #ff0000;">same kind or type</span>.&nbsp;</span></strong></li>
+</ol>
+<p>&nbsp; &nbsp; &nbsp; &nbsp;<span style="font-size: 12pt;">Example: If you have a column dob to save date of births of a set of people,then you cannot or you must not save 'names' of the some of them in that&nbsp; column along with "date of birth" of others in that column.</span></p>
+<p><span style="font-size: 14pt;">3. <span style="color: #ff00ff;">Unique name for Attributes/Columns</span></span></p>
+<p><span style="font-size: 12pt;">This rule expects that each column in a table should have a<span style="color: #ff0000;"> unique name.</span></span></p>
+<p><span style="font-size: 14pt;">4. <span style="color: #ff00ff;">Order doesnot matters</span></span></p>
+<p>&nbsp; &nbsp; &nbsp;<span style="font-size: 12pt;"> This rules says that the order in which you store the data in your table doesn't matter.(roll_no==&gt; 101 ,102,103 or roll_no==&gt; 103,101,102)</span></p>
+<p><span style="font-size: 14pt;">5.<span style="color: #ff00ff;"> Each Table should contain at least one column as primary key.</span></span></p>
+
+
+<div class="row">
+<div class="col-lg-6">
+	<h4>Bad Table</h4>
+	Subject is a multi valued attribute and not in 1NF
+<table style="height: 200px;">
+<tbody>
+<tr style="color: white; background-color: gray;">
+<th style="height: 50px; width: 320px;"><span style="color: #ffffff; font-size: 12pt;">roll_no</span></th>
+<th style="height: 50px; width: 277px;"><span style="color: #ffffff; font-size: 12pt;">name</span></th>
+<th style="height: 50px; width: 338px;"><span style="color: #ffffff; font-size: 12pt;">subject</span></th>
+<th style="height: 50px; width: 338px;"><span style="color: #ffffff; font-size: 12pt;">Phone1</span></th>
+<th style="height: 50px; width: 338px;"><span style="color: #ffffff; font-size: 12pt;">Phone2</span></th>
+</tr>
+<tr style="height: 50px;">
+<td style="height: 50px; width: 320px;">101</td>
+<td style="height: 50px; width: 277px;">Akon</td>
+<td style="height: 50px; width: 338px;">OS, CN</td>
+<td style="height: 50px; width: 338px;">11111</td>
+<td style="height: 50px; width: 338px;">22222</td>
+</tr>
+<tr style="height: 50px;">
+<td style="height: 50px; width: 320px;">103</td>
+<td style="height: 50px; width: 277px;">Ckon</td>
+<td style="height: 50px; width: 338px;">Java</td>
+<td style="height: 50px; width: 338px;">33333</td>
+<td style="height: 50px; width: 338px;">44444</td>
+</tr>
+<tr style="height: 50px;">
+<td style="height: 50px; width: 320px;">102</td>
+<td style="height: 50px; width: 277px;">Bkon</td>
+<td style="height: 50px; width: 338px;">C, C++</td>
+<td style="height: 50px; width: 338px;">555555</td>
+<td style="height: 50px; width: 338px;">666666</td>
+</tr>
+</tbody>
+</table>
+</div>	
+
+	<div class="col-lg-4">
+		<p><span style="color: #008000; font-size: 14pt;">Solved!!! (Single Value Attribute)</span></p>
+<table class="table table-bordered table-striped">
+<tbody>
+<tr style="background-color: gray; color: white;">
+<th><span style="color: #ffffff; font-size: 12pt;">roll_no</span></th>
+<th><span style="font-size: 12pt; color: #ffffff;">name</span></th>
+<th><span style="font-size: 12pt; color: #ffffff;">subject</span></th>
+</tr>
+<tr>
+<td>101</td>
+<td>Akon</td>
+<td>OS</td>
+</tr>
+<tr>
+<td>101</td>
+<td>Akon</td>
+<td>CN</td>
+</tr>
+<tr>
+<td>103</td>
+<td>Ckon</td>
+<td>Java</td>
+</tr>
+<tr>
+<td>102</td>
+<td>Bkon</td>
+<td>C</td>
+</tr>
+<tr>
+<td>102</td>
+<td>Bkon</td>
+<td>C++</td>
+</tr>
+</tbody>
+</table>
+	</div>	
+
+
+
+<div class="col-lg-2">
+<table border="1">
+	<tr>
+		<th>RollNo</th>
+		<th>Phone</th>
+	</tr>
+
+	<tr>
+		<th>101</th>
+		<th>111111</th>
+	</tr>
+	<tr>
+		<th>101</th>
+		<th>222222</th>
+	</tr>
+	<tr>
+		<th>103</th>
+		<th>3333333</th>
+	</tr>
+	<tr>
+		<th>103</th>
+		<th>44444</th>
+	</tr>
+	<tr>
+		<th>102</th>
+		<th>5555555</th>
+	</tr>
+	<tr>
+		<th>102</th>
+		<th>66666666</th>
+	</tr>
+
+</table>	
+</div>	
+</div>
+
+
+=================================================================================================
+
+
+
+<script src="../js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

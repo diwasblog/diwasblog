@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/bootstrap-grid.css">
+  <link rel="stylesheet" href="css/bootstrap-reboot.css">
+  <link rel="stylesheet" href="css/dracula.css">
+  <link rel="stylesheet" href="css/dracula-prism.css">
+  <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+  <h2>Autofocus</h2>
+  <div class="row">
+    <div class="col-lg-6">
+      <pre>
+              <code langauage="text/html">
+               &lt;form action="/action_page.php">
+                 First name: &lt;input type="text" name="fname" >&lt;br>
+                 Last name: &lt;input type="text" name="lname" autofocus>&lt;br>
+                 &lt;input type="submit">
+                 &lt;/form>
+             </code>
+            </pre>
+    </div>
+
+    <div class="col-lg-6">
+      <form action="/action_page.php">
+        First name: <input type="text" name="fname"><br>
+        Last name: <input type="text" name="lname" autofocus><br>
+        <input type="submit">
+      </form>
+    </div>
+  </div>
+
+
+  <h2>AutoComplete</h2>
+
+  By default autocomplete is on by default and when you start typing it gives suggestion.
+  So you must set autocomplete ="off" for the field and it must have name on it.
+  Used specially in gmail field because why to give suggestion for creating new gmail for user
+  </p>
+
+  <pre>
+      <code langauage="text/html">
+       &lt;form action="/action_page.php" method="get" >
+        First name:&lt;input type="text" name="gmail" autocomplete="off"><br>
+        E-mail: &lt;input type="email" name="email"><br>
+        &lt;input type="submit">
+      &lt;/form>
+      
+     </code>
+    </pre>
+
+
+  <h2>Disable Form</h2>
+  <pre>
+      <code langauage="text/html">
+        &lt;form>
+            First name: &lt;input type="text" name="fname">&lt;br>
+            Last name: &lt;input type="text" name="lname" disabled>&lt;br>
+            &lt;input type="submit" value="Submit">
+        &lt;/form>
+      
+     </code>
+    </pre>
+
+  <h2>Readonly</h2>
+  <pre>
+        <code langauage="text/html">
+          &lt;form>
+              First name: &lt;input type="text" name="fname">&lt;br>
+              Last name: &lt;input type="text" name="lname" disabled>&lt;br>
+              &lt;input type="submit" value="Submit">
+          &lt;/form>
+        
+       </code>
+      </pre>
+
+
+
+  <h2>Capitalize, UpperCase and LowerCase</h2>
+  <div class="row">
+    <div class="col-lg-6">
+      <pre>
+      <code langauage="text/html">
+        &lt;form>
+            First name: &lt;input type="text" name="fname">&lt;br>
+            Last name: &lt;input type="text" name="lname" disabled>&lt;br>
+            &lt;input type="submit" value="Submit">
+        &lt;/form>
+      
+     </code>
+    </pre>
+    </div>
+
+
+    <div class="col-lg-6">
+      <pre>
+      <code langauage="text/html">
+        <form>
+            First name: <input type="text" style = "text-transform:capitalize;" name="fname1"><br>
+            Last name: <input type="text" style = "text-transform:uppercase;" name="lname1" ><br>
+            UserName<input type="text" style = "text-transform:lowercase;" name="username1" ><br>
+            <input type="submit" value="Submit">
+        </form>
+      
+     </code>
+    </pre>
+    </div>
+  </div>
+
+
+  <h2>Input type Button and Submit</h2>
+  <div class="row">
+    Then you cannot extend submitNotice() function.because as soon as you click submit then form will be posted to that
+    action("notice/add" ) but
+    in button we explicitly post and submit later as above.
+    <div class="col-lg-6">
+      <p><strong><span style="font-size: 18pt; color: #ff00ff;">&lt;input type="button"&gt;</span></strong></p>
+      <p><span style="font-size: 12pt;">The&nbsp;<code>&lt;input type="button"&gt;</code>&nbsp;is just a button and
+          won't do anything by itself.</span></p>
+
+      <pre>
+     <code class="language-csharp">
+      &lt;form method="post" action="/notice/add"  id="noticeForm" >
+      &lt;input type="text" name="Title"   class="form-control" />
+      &lt;input type="button" value="Add" @@click="submitNotice" class="btn btn-default" />
+      &lt;/form>
+
+      Then you can call click event below to post
+      method:{
+        submitNotice(){
+          if (result) {
+            document.querySelector('#noticeForm').submit();
+        }
+        }
+      }
+     </code>
+   </pre>
+    </div>
+    <div class="col-lg-6">
+      <p><span style="color: #ff00ff;"><strong><span style="font-size: 18pt;">&lt;input
+              type="submit"&gt;</span></strong></span></p>
+      <p><span style="font-size: 12pt;"> The&nbsp;<code>&lt;input type="submit"&gt;</code>, when inside a form element,
+          will submit the form when clicked.</span></p>
+
+
+      <pre>
+        <code class="language-csharp">
+         &lt;form method="post" action="/notice/add"    id="noticeForm" >
+         &lt;input type="text" name="Title"   class="form-control" />
+         &lt;input type="submit" value="Add" />
+         &lt;/form>
+   
+        
+        </code>
+      </pre>
+    </div>
+  </div>
+
+  <h2>Opening in new Tab</h2>
+  <div class="row">
+    <div class="col-lg-6">
+      <pre>
+  <code class="language-csharp">
+    &lt;a href="#" target="_blank">link&lt;/a>
+  </code>
+</pre>
+    </div>
+
+    <div class="col-lg-6">
+      <pre>
+        <code class="language-csharp">
+          &lt;form action="#" method="post" target="_blank">
+            ...
+            &lt;/form>
+        </code>
+      </pre>
+    </div>
+  </div>
+
+
+  <h2>General Valid Html Tag</h2>
+
+  <div class="row">
+    <div class="col-lg-6">
+      <pre>
+        <code class="language-html">
+          &lt;form id="myForm" action="#" method="post">
+
+          &lt;div>
+          &lt;label for="name">Text Input:&lt;/label>
+          &lt;input type="text" name="name" id="name" value="" tabindex="1">
+          &lt;/div>
+    
+          &lt;div>
+          &lt;h4>Radio Button Choice&lt;/h4>
+    
+          &lt;label for="radio-choice-1">Choice 1&lt;/label>
+          &lt;input type="radio" name="radio-choice" id="radio-choice-1" tabindex="2" value="choice-1">
+    
+          &lt;label for="radio-choice-2">Choice 2</label>
+          &lt;input type="radio" name="radio-choice" id="radio-choice-2" tabindex="3" value="choice-2">
+          &lt;/div>
+    
+          &lt;div>
+              
+          &lt;label for="select-choice">Select Dropdown Choice:&lt;/label>
+          &lt;select name="select-choice" id="select-choice">
+          &lt;option value="Choice 1">Choice 1&lt;/option>
+          &lt;option value="Choice 2">Choice 2&lt;/option>
+          &lt;option value="Choice 3">Choice 3&lt;/option>
+          &lt;/select>
+          &lt;/div>
+    
+          &lt;div>
+          &lt;label for="textarea">Textarea:&lt;/label>
+          &lt;textarea cols="40" rows="8" name="textarea" id="textarea">&lt;/textarea>
+          &lt;/div>
+    
+          
+          Method 1 - Wrap Label Tag
+          &lt;label><input type="checkbox" name="checkbox1" value="value">Text&lt;/label>
+       
+
+          Method 2 - Use the for Attribute
+          &lt;input type="checkbox" name="checkbox3" id="checkbox_id" value="value">
+          &lt;label for="checkbox_id">Text&lt;/label>
+    
+          &lt;div>
+          &lt;input type="submit" value="Submit">
+          &lt;/div>
+    
+          &lt;/form>
+        </code>
+      </pre>
+    </div>
+
+    <div class="col-lg-6">
+      <form id="myForm" action="#" method="post">
+
+        <div>
+          <label for="name">Text Input:</label>
+          <input type="text" name="name" id="name" value="" tabindex="1">
+        </div>
+
+        <div>
+          <h4>Radio Button Choice</h4>
+
+          <label for="radio-choice-1">Choice 1</label>
+          <input type="radio" name="radio-choice" id="radio-choice-1" tabindex="2" value="choice-1">
+
+          <label for="radio-choice-2">Choice 2</label>
+          <input type="radio" name="radio-choice" id="radio-choice-2" tabindex="3" value="choice-2">
+        </div>
+
+        <div>
+          <label for="select-choice">Select Dropdown Choice:</label>
+          <select name="select-choice" id="select-choice">
+            <option value="Choice 1">Choice 1</option>
+            <option value="Choice 2">Choice 2</option>
+            <option value="Choice 3">Choice 3</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="textarea">Textarea:</label>
+          <textarea cols="40" rows="8" name="textarea" id="textarea"></textarea>
+        </div>
+
+        <div>
+
+
+          <label><input type="checkbox" name="checkbox1" value="value">Text</label>
+          <br>
+
+
+          <input type="checkbox" name="checkbox3" id="checkbox_id" value="value">
+          <label for="checkbox_id">Text</label>
+        </div>
+
+        <div>
+          <input type="submit" value="Submit">
+        </div>
+
+      </form>
+    </div>
+  </div>
+  <h2>Accept Specific Meme Only</h2>
+  <pre>
+  <code class="language-csharp">
+    &lt;input type="file" name="media_empty" accept="image/gif,image/jpeg,image/jpg,image/png">
+  </code>
+</pre>
+
+
+
+  <script src="js/prism.js"></script>
+  <script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+      {
+        'remove-trailing': true,
+        'remove-indent': true,
+        'left-trim': true,
+        'right-trim': true,
+        // 'break-lines': 10,
+        // 'indent': 2,
+        // 'remove-initial-line-feed': false,
+        // 'tabs-to-spaces': 4,
+        // 'spaces-to-tabs': 4
+      });
+  </script>
+</body>
+
+</html>

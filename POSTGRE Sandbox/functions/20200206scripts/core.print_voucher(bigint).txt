@@ -1,0 +1,42 @@
+-- FUNCTION: core.print_voucher(bigint)
+
+-- DROP FUNCTION core.print_voucher(bigint);
+
+CREATE OR REPLACE FUNCTION core.print_voucher(
+	tran_id_ bigint)
+    RETURNS TABLE(is_heading integer, gl_account character varying, debit money, credit money, statement_reference character varying) 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+BEGIN
+
+RETURN QUERY(
+	(SELECT NULL, gl.account_name, coalesce(td.debit,'0') as debit, coalesce(td.credit,'0') as credit, 
+		CASE WHEN transactions.get_deposit_account_id(td.transaction_detail_id) IS NOT NULL 
+            THEN td.statement_reference ||' (A/C ' || deposit.get_account_number(transactions.get_deposit_account_id(td.transaction_detail_id)) || ' :'|| deposit.get_customer_name(transactions.get_deposit_account_id(td.transaction_detail_id)) || ').'
+		WHEN td.loan_id  IS NOT NULL THEN td.statement_reference ||' From ' || l.loan_account_number || ' ('|| core.get_customer_name(l.customer_id) || ').'
+		WHEN td.share_account_id IS NOT NULL THEN td.statement_reference ||' From ' || s.account_number || ' ('|| core.get_customer_name(s.customer_id) || ').'
+		ELSE td.statement_reference END AS statement_reference
+	FROM transactions.transactions t
+	INNER JOIN transactions.transaction_details td ON t.tran_id = td.tran_id
+	LEFT JOIN deposit.account_holders d ON td.account_number_id = d.account_number_id
+	LEFT JOIN loan.loan_grant l ON td.loan_id = l.loan_id
+	LEFT JOIN core.share_accounts s ON td.share_account_id = s.share_account_id
+	INNER JOIN core.gl_accounts gl ON td.gl_account_id = gl.gl_account_id
+	WHERE t.tran_id = tran_id_ order by debit desc)
+
+	UNION ALL
+	SELECT 
+		1, 'Total', SUM(COALESCE(td.debit,'0')), SUM(COALESCE(td.credit, '0')), ''
+	FROM transactions.transaction_details td
+	WHERE td.tran_id = tran_id_
+	
+	);
+END
+$BODY$;
+
+ALTER FUNCTION core.print_voucher(bigint)
+    OWNER TO postgres;

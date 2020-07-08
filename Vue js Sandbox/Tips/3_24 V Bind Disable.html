@@ -1,0 +1,38 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+    If Id==0 then input type FullMarks get disabled
+  <xmp class="prettyprint">
+
+    <div class="form-group">
+        <label>Full Marks *</label>
+        <input type="number" name="FullMarks" v-bind:disabled="evaluationRule.id == 0"
+             v-model="evaluationRule.fullMarks" />
+    </div>
+</xmp>
+    
+Giving Id for displaying in for loop
+<xmp class="prettyprint">
+
+    <tr v-for="(particular,index) in billDetailData.DiscountParticulars">
+        <td>{{index + 1}}</td>
+        <td>{{particular.Description}}</td>
+    </tr>
+</xmp>
+</body>
+</html>

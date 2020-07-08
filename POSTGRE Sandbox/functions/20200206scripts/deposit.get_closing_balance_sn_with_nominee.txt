@@ -1,0 +1,58 @@
+-- FUNCTION: deposit.get_closing_balance_sn(integer, date, date, character varying, character varying)
+
+-- DROP FUNCTION deposit.get_closing_balance_sn(integer, date, date, character varying, character varying);
+
+CREATE OR REPLACE FUNCTION deposit.get_closing_balance_sn(
+	office_id_ integer,
+	from_ date,
+	to_ date,
+	product_ character varying,
+	unit_ character varying)
+    RETURNS TABLE(sn integer, open_date date, customer_id bigint, account_number character varying, customer_name text, address text, contact text, gender text, dob character varying, age integer, unit character varying, product character varying, collector character varying, opening_balance money, debit money, credit money, balance money, nominee_account character varying) 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+BEGIN
+	CREATE TEMP TABLE _t1(
+	sn		serial,
+	open_date	date,
+	customer_id	bigint,
+	account_number_id bigint,
+	account_number	character varying(50),
+	customer_name	text,
+	address		text,
+	contact		text,
+	gender		text,
+    dob         character varying(20),
+	age         int,
+	unit		character varying(50),
+	product		character varying(150),
+	collector	character varying(150),
+	opening_balance	money,
+	debit		money,
+	credit		money,
+	balance		money,
+	nominee_account	character varying(50)
+
+	) ON COMMIT DROP;
+
+	INSERT INTO _t1( open_date, customer_id, account_number, customer_name, address, contact, gender, dob, age, unit,
+			product, collector, opening_balance, debit, credit, balance, nominee_account)
+	SELECT 
+	f.open_date, f.customer_id, f.account_number, f.customer_name, f.address, f.contact, f.gender, f.dob, f.age, f.unit,
+			f.product, f.collector, f.opening_balance, f.debit, f.credit, f.balance, f.nominee_account
+
+			FROM deposit.get_closing_balance(office_id_, from_, to_, product_, unit_) f;
+			
+
+	
+	RETURN QUERY(SELECT _t1.sn, _t1.open_date, _t1.customer_id, _t1.account_number, _t1.customer_name, _t1.address, _t1.contact, _t1.gender, _t1.dob, _t1.age, _t1.unit,
+			_t1.product, _t1.collector, _t1.opening_balance, _t1.debit, _t1.credit, _t1.balance, _t1.nominee_account FROM _t1);
+END
+$BODY$;
+
+ALTER FUNCTION deposit.get_closing_balance_sn(integer, date, date, character varying, character varying)
+    OWNER TO postgres;

@@ -1,0 +1,26 @@
+-- View: deposit.transaction_view_source
+
+-- DROP VIEW deposit.transaction_view_source;
+
+CREATE OR REPLACE VIEW deposit.transaction_view_source AS
+ SELECT t.tran_id,
+    a.customer_id,
+    a.customer_name,
+    a.permanent_address,
+    t.office_id,
+    t.tran_date,
+    t.book_name,
+    a.account_number_id,
+    a.account_number,
+    tr.credit,
+    s.detail AS source_of_fund,
+    tr.source_other AS remarks
+   FROM transactions.transaction_details tr
+     JOIN transactions.transactions t ON tr.tran_id = t.tran_id
+     JOIN deposit.account_holders_view a ON tr.account_number_id = a.account_number_id
+     JOIN deposit.source_details s ON tr.source_detail_id = s.source_detail_id
+  WHERE tr.credit >= '$1,000,000.00'::money;
+
+ALTER TABLE deposit.transaction_view_source
+    OWNER TO postgres;
+

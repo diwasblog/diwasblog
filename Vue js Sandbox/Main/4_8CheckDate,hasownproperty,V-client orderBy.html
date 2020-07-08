@@ -1,0 +1,260 @@
+<html>
+
+<head>
+  <script
+    src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+  <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+  <script src="https://unpkg.com/vue"></script>
+
+  <style>
+    xmp.prettyprint {
+      font-size: 12pt;
+      font-family: monospace;
+    }
+  </style>
+
+  ==========================================================================================================================
+  Check Date and Time (yyyy/mm/dd)
+  <xmp class="prettyprint">
+
+    checkDate(dateString) {
+    alert(dateString);
+    var regEx = /^\d{4}-\d{1,2}-\d{1,2}$/;
+    if (!dateString.match(regEx)) return false; // Invalid format
+    else
+    return true;
+    }
+  </xmp>
+
+  <h2>Compare Two English Date</h2>
+
+  <xmp class="prettyprint">
+    <input type="text" class=" form-control" id="startDate" />
+    <input type="text" class=" form-control" id="endDate" />
+    var startDateEnglish = document.getElementById("startDate").value;
+    var endDateEnglish = document.getElementById("endDate").value
+
+
+    if ((Date.parse(endDateEnglish) <= Date.parse(startDateEnglish))) { alert("End date should be greater than Start
+      date"); document.getElementById("nepaliEndDatePicker").value="" ; }
+      </xmp>================================================================================================================================
+      <xmp class="prettyprint">
+      @Convert.ToDateTime(Model.Date, CultureInfo.CurrentCulture).ToString("yyyy MMMM dd")
+  </xmp>
+
+  ================================================================================
+  <xmp class="prettyprint">
+    let activeAccountHeadData = [];
+    Object.keys(vm.accountHeadData).forEach(function (key) {
+    if (vm.accountHeadData[key].IsInserted) {
+    if (vm.checkInput(vm.accountHeadData[key].Amount)) {
+    alert("The data you entered must be numeric.");
+    return;
+    }
+    if (vm.checkInput(vm.accountHeadData[key].Amount)) {
+    alert("The data you entered must be numeric.");
+    return;
+    }
+    activeAccountHeadData.push(vm.accountHeadData[key]);
+    console.log(activeAccountHeadData);
+    }
+    })
+  </xmp>
+
+  ====================================================================== using
+  hasOwnProperty
+  <xmp class="prettyprint">
+    hasownproperty
+    axios.get('/hrms/employee/api/getemployeebydepartment/' + vm.departmentId)
+    .then(function (response) {
+    vm.employeeData = []; //very important
+    if (response.hasOwnProperty('data')) {
+    vm.employeeData = response.data.Result;
+    vm.employeeDataLoading = false;
+    }
+    })
+    .catch(function (error) {
+    vm.employeeDataLoading = false;
+    });
+  </xmp>
+
+  ==================================================================================================================================
+  OrderBy in V-client to order data on insertion
+
+  <xmp class="prettyprint">
+    orderBy: { column: "Id" }
+    //or
+    orderBy: { ascending: true, column: 'Id' },
+  </xmp>
+
+  ===========================================================================================================================
+  V-client Header
+  <xmp class="prettyprint">
+    th:nth-child(n+2) { //centering the text of column header 2,3,4.....
+    text-align:center;
+    }
+  </xmp>
+
+  ================================================================================================
+  To prevent negative number and allow decimal value
+  <xmp class="prettyprint">
+    <input type="number" name="price" step="0.01" min="0" oninput="validity.valid||(value='');">
+  </xmp>
+
+  Max number validation in html
+  <xmp class="prettyprint">
+    <input type="text" class="form-control" pattern="\d*" maxlength="10" oninput="validity.valid||(value='');" step="1">
+  </xmp>
+  ==============================================================================================
+  <br />
+  <h2>Allow positive number and step always 0.5</h2>
+  <xmp class="prettyprint">
+    <input type="number" min="0" oninput="validity.valid||(value='');" step="0.5" />
+  </xmp>
+
+  <br>
+  <xmp class="prettyprint">
+    <input type="text" class="form-control" id="price" name="price" placeholder="Price"
+      onkeyup="this.value=this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1')">
+  </xmp>
+
+  ============================================================================================
+  <br />
+  <h2>Phone number validation and step by 0.5</h2>
+  <xmp class="prettyprint">
+    //here type ="text"
+    <input type="text" pattern="\d*" maxlength="10" min="0" oninput="validity.valid||(value='');" step="1"
+      name="FarmerMobileNo" />
+    //OR
+    <input pattern="^9+([7-8][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]+)$" maxlength="10" id="mobile" type="text"
+      name="Mobile" class="form-control">
+
+    //Best Ways
+
+    <form>
+      <input type="tel" pattern="^9+([7-8][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]+)$" name="telephone-num
+ber">
+      <input type="submit">
+    </form>
+
+
+
+  </xmp>
+
+  ==============================================================
+  <br />
+  <h3>Multiple Checkbox ... Radio Button like effect</h3>
+  <xmp class="prettyprint">
+    data:{
+    listOfRadioButton: ['LocalCollector', 'Cooperative', 'Traders'],
+    }
+  </xmp>
+
+  <xmp class="prettyprint">
+    <div v-for="(val, key) in listOfRadioButton">
+      <div class="col-sm-3">
+        <div class="radio">
+          <input type="radio" :value="val" name="LastSalesInfo.SoldThrough" v-model="selected" :id="val"
+            @@click="uncheck(val)">
+          <label :for="val">{{ val }}</label>
+        </div>
+      </div>
+    </div>
+
+    uncheck: function (val) {
+    if (val === this.previouslySelected) {
+    this.selected = false;
+    }
+    this.previouslySelected = val;
+    },
+
+  </xmp>
+  <br />
+  ==================================================================================================
+  <hr />
+  Time validation
+  <xmp class="prettyprint">
+    <input type=time min="11:00" max="21:00" step="900" name="delivery" required>
+  </xmp>
+  <br />
+
+  <hr />
+  <h2>Date Validation ( cannot enter date after 1980 )</h2>
+  <xmp class="prettyprint">
+    <input name=bday type=date max="1979-12-31">
+  </xmp>
+  <hr />
+  <h4>
+    In mobile want to see only number
+    <b>inputmode (Improving the user experience on mobile devices)</b>:
+  </h4>
+  <xmp class="prettyprint">
+    <input name="custbuzz" inputmode="numeric">
+  </xmp>
+  <br />
+  <hr />
+  <h2>username and password validatoin</h2>
+  <xmp class="prettyprint">
+    <form action="/newaccount" method=post
+      oninput="up2.setCustomValidity(up2.value != up.value ? 'Passwords do not match.' : '')">
+      <p>
+        <label for="username">E-mail address:</label>
+        <input id="username" type=email required name=un>
+        <p>
+          <label for="password1">Password:</label>
+          <input id="password1" type=password required name=up>
+          <p>
+            <label for="password2">Confirm password:</label>
+            <input id="password2" type=password name=up2>
+            <p>
+              <input type=submit value="Create account">
+    </form>
+  </xmp>
+
+  <br />
+  <hr />
+  Use of field set
+  <xmp class="prettyprint">
+    <fieldset style="background:gray">
+      <legend>Did the movie pass the Bechdel test?</legend>
+      <p>
+        <label><input type="radio" name="bechdel" value="no-characters" /> No, there
+          are not even two female characters in the movie.
+        </label>
+      </p>
+      <p>
+        <label><input type="radio" name="bechdel" value="no-names" /> No, the female
+          characters never talk to each other.
+        </label>
+      </p>
+      <p>
+        <label><input type="radio" name="bechdel" value="no-topic" /> No, when
+          female characters talk to each other it's always about a male
+          character.
+        </label>
+      </p>
+      <p>
+        <label><input type="radio" name="bechdel" value="yes" required /> Yes.
+        </label>
+      </p>
+      <p>
+        <label><input type="radio" name="bechdel" value="unknown" /> I don't know.
+        </label>
+      </p>
+    </fieldset>
+  </xmp>
+
+
+  <h2>Ipv4 Validation Regex</h2>
+  <xmp class="prettyprint">
+    ^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$
+  </xmp>
+
+  <h2>Ipv6 Validation Regex</h2>
+  <xmp class="prettyprint">
+    ((^\s*((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))\s*$)|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$))
+  </xmp>
+</head>
+
+</html>

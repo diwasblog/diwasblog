@@ -1,0 +1,285 @@
+
+<html>
+    <head>
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+        <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+    
+    <script src="https://unpkg.com/vue"></script>
+    
+    <style>
+    xmp.prettyprint{
+        font-size:12pt;
+        font-family:monospace;
+    
+    }
+    </style>
+     
+    </head>
+    <body>
+        <div class="row">
+          <div class="col-lg-6">
+              <?prettify linenums=1?>
+              <xmp class="prettyprint">
+                  <button class="pokemon-button">Load Pokémon Data</button>
+      
+                  var button = document.querySelector(".pokemon-button");
+                  button.addEventListener("click", getPokemonData);
+      
+                  new Vue({
+                    methods:{
+                      getPokemonData() {
+      
+                      }
+                    }
+                  })
+              </xmp>
+          </div>
+
+          <div class="col-lg-6">
+              <xmp class="prettyprint">
+                  <button class="pokemon-button" @@click="getPokemonData">Load Pokémon Data</button>
+
+                  new Vue({
+                    methods:{
+                      getPokemonData() {
+      
+                      }
+                    }
+                  })
+
+              </xmp>
+
+==========================================================================================================
+
+              <xmp class='prettyprint'>
+                  axios.put(this.apiBaseEndpoint + '/' + id, input)
+                  .then((response) => {
+                      // Success
+                  })
+                  .catch((error) => {
+                      // Error
+                      if (error.response) {
+                          // The request was made and the server responded with a status code
+                          // that falls out of the range of 2xx
+                          // console.log(error.response.data);
+                          // console.log(error.response.status);
+                          // console.log(error.response.headers);
+                      } else if (error.request) {
+                          // The request was made but no response was received
+                          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                          // http.ClientRequest in node.js
+                          console.log(error.request);
+                      } else {
+                          // Something happened in setting up the request that triggered an Error
+                          console.log('Error', error.message);
+                      }
+                      console.log(error.config);
+                  });
+              </xmp>
+              </div>
+            </div>
+
+============================
+Note
+<div class="js-timeline-item js-timeline-progressive-focus-container" data-gid="MDEyOklzc3VlQ29tbWVudDM5ODI2OTcxMg==">
+        <div class="timeline-comment-wrapper js-comment-container">
+        <div id="issuecomment-398269712" class="timeline-comment-group js-minimizable-comment-group">
+        <div class="unminimized-comment comment previewable-edit js-comment js-task-list-container timeline-comment reorderable-task-lists " data-body-version="209dc1b234567d268681ffd8c4606800" data-unfurl-authenticity-token="HyfPLRwpHbPtiXLGvRS3JGYoz+Oi1H6Wttn/BfelU2PJZ/Gjvg9glCXXwUIoRcMNzaOVG/k5BmnGEVy5JYP2BQ==">
+        <div class="edit-comment-hide">
+        <table class="d-block">
+        <tbody class="d-block">
+        <tr class="d-block">
+        <td class="d-block comment-body markdown-body  js-comment-body">
+        <p><span style="font-size: 14pt;">Those of you that get a message about a<span style="color: #ff0000;">&nbsp;<strong>4XX</strong>&nbsp;or&nbsp;<strong>5XX</strong></span>&nbsp;error from the server, are in luck! There is usually a response from the server available to you because in order to get this error, Axios had to wait around for the full server response. In these cases, Axios sends you to&nbsp;<code>.catch()</code>&nbsp;with the&nbsp;<code>response</code>&nbsp;but it wraps the response in its own&nbsp;<code>error</code>&nbsp;object that it creates on the fly.</span><br />So if you are getting&nbsp;<strong>5XX</strong>&nbsp;or&nbsp;<strong>4XX</strong>&nbsp;errors, than you probably have the server response available to you, but it is buried DEEP!</p>
+        <p>&nbsp;</p>
+        <p><span style="font-size: 14pt; color: #ff00ff;">For Laravel users:</span><span style="font-size: 14pt; font-family: 'book antiqua', palatino, serif;">Try&nbsp;<code>error.response.data.data.message</code>. This is confirmed to work for Laravel API requests that return server errors.</span></p>
+        <p><span style="font-size: 14pt; color: #ff00ff;"><strong>Non-Laravel users</strong>&nbsp;--</span> You will at least need to go&nbsp;<code>error.response.data</code>&nbsp;to get to the core response from the server, but most servers than wrap their responses in another&nbsp;<code>data{}</code>&nbsp;object requiring you to go a layer deeper, and then finally access the response property you want like&nbsp;<code>.message</code>&nbsp;from there.</p>
+        <h3><strong><span style="text-decoration: underline;"><span style="color: #ff00ff; text-decoration: underline;">But I Did Console.Log and It Contains No Response!</span></span></strong></h3>
+        <p>Yeah i know, but just try to output&nbsp;<code>error.response.data</code>&nbsp;anyway just to humor me.</p>
+        <p>For some reason Axios modifies the output of&nbsp;<code>console.log(error)</code>&nbsp;on the error object. I am not sure why they do this, but if you instead write<span style="font-size: 14pt;"><strong><span style="color: #ff0000;">&nbsp;<code>console.log(JSON.stringify(error))</code></span></strong></span>&nbsp;than you will see the whole object in all its glory.</p>
+        <p>This is serialized JSON which gets hard to read after about 2 layers deep. So you should copy the full thing and paste it into a&nbsp;<a href="https://jsonformatter.curiousconcept.com/" rel="nofollow">JSON prettifyer</a>&nbsp;to explore the error object's structure.</p>
+        <hr />
+        <p><span style="font-size: 18pt;"><strong>Conclusion</strong></span></p>
+        <p>If you are getting a 500 error or a 400 type error (or really any server supplied error code) in Axios, then that means that the request completed and that the server's response is available to you!</p>
+        <p>The problem is that it's super deep, and because Axios modifies the output of our&nbsp;<code>console.log(error)</code>&nbsp;that most people do to see the&nbsp;<code>error{}</code>&nbsp;object, most people don't know that it exists. But it's there!</p>
+        </td>
+        </tr>
+        </tbody>
+        </table>
+        <div class="comment-reactions has-reactions js-reactions-container js-socket-channel js-updatable-content" data-channel="reaction:issue-comment:398269712" data-url="/_render_node/MDEyOklzc3VlQ29tbWVudDM5ODI2OTcxMg==/comments/reactions"><form class="js-pick-reaction" accept-charset="UTF-8" action="https://github.com/users/axios/reactions" method="post">
+        <div class="comment-reactions-options">&nbsp;</div>
+        </form><details class="details-overlay details-reset position-relative float-left reaction-popover-container js-reaction-popover-container">
+        <summary class="btn-link reaction-summary-item add-reaction-btn" aria-haspopup="true" aria-label="Add your reaction">&nbsp;</summary>
+        </details></div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        <div class="js-timeline-item js-timeline-progressive-focus-container" data-gid="MDEyOklzc3VlQ29tbWVudDM5ODMxODI3NA==">
+        <div class="timeline-comment-wrapper js-comment-container">&nbsp;</div>
+        </div>
+=================================================================================================================
+
+<h2>Always execute then part after catch</h2>
+<div class="row">
+    <div class="col-6">
+            <xmp class='prettyprint'>
+                    axios.get('api/admin/user?ID=12345')
+                    .then(function (response) {
+                      // handle success
+                      console.log(response);
+                    })
+                    .catch(function (error) {
+                      // handle error
+                      console.log(error);
+                    })
+                    .then(function () {
+                      // always executed
+                    });  
+                </xmp>
+    </div>
+
+    <div class="col-6">
+            <xmp class='prettyprint'>
+                   
+                [Route("api/admin/user")]
+                public IActionResult GetUser(int ID){
+
+                }
+                </xmp>
+    </div>
+</div>
+
+<div class="row">
+        <div class="col-6">
+                <xmp class='prettyprint'>
+                        axios.get('api/admin/user/' + 12345)
+                        .then(function (response) {
+                          // handle success
+                          console.log(response);
+                        })
+                        .catch(function (error) {
+                          // handle error
+                          console.log(error);
+                        })
+                        .then(function () {
+                          // always executed
+                        });  
+                    </xmp>
+        </div>
+    
+        <div class="col-6">
+                <xmp class='prettyprint'>
+                       
+                    [Route("api/admin/user/{id}")]
+                    public IActionResult GetUser(int id){
+                        
+                    }
+                    </xmp>
+        </div>
+    </div>
+
+
+
+======================================================================================================
+With parameter type
+<div class='row'>
+    <div class='col-lg-4'>
+    <xmp class="prettyprint">
+    axios.get('path',{
+        params:{
+            parameter1: value,
+            parameter2: value,
+            .... 
+        }
+        })
+        .then(function(response){
+            // Handle response
+        }).catch(function(error){
+            // Error handling
+        });
+    </xmp>
+    </div>
+
+    <div class='col-lg-4'>
+        <xmp class="prettyprint">
+                axios.get('path?variable1=value1&variable2=value2&...')
+                .then(function(response){
+                   // Handle response
+                }).catch(function(error){
+                   // Error handling
+                });
+        </xmp>
+    </div>
+
+    <div class='col-lg-4'>
+            <xmp class="prettyprint">
+            axios.get("/bims/report/api/getstudents/course/"+vm.courseId+"/batch/"+vm.batchId)
+            .then(function(response){
+                
+            })
+            </xmp>
+        </div>
+</div>
+
+=========================================================================================
+<h2>Fetching From External Api</h2>
+
+<h2>Index.js</h2>
+<xmp class="prettyprint">
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <title>Using Axios</title>
+        </head>
+        <body>
+            <h1>Using Axios to get Pokémon Data</h1>
+            <div>
+                Please Enter an ID:
+                <input type="number" min="1" value="1" class="pokemon-input"></input>
+            </div>
+            <div>
+                <span class="pokemon-name"></span>
+            </div>
+            <img class="pokemon-image"></img>
+            <button class="pokemon-button">Load Pokémon Data</button>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.0/axios.js"></script>
+            <script src="app.js"></script>
+        </body>
+    </html>
+</xmp>
+
+<xmp class="prettyprint">
+        var apiUrl = "https://pokeapi.co/api/v2/pokemon/";
+        var input = document.querySelector(".pokemon-input");
+        var pokemonName = document.querySelector(".pokemon-name");
+        var pokemonImage = document.querySelector(".pokemon-image");
+    
+        function getPokemonData() {
+            axios.get(apiUrl + input.value)
+            .then(function (response) {
+                pokemonName.innerHTML = response.data.forms[0].name;
+                pokemonImage.src = response.data.sprites.front_default;
+            })
+            .catch(function (error) {
+                pokemonName.innerHTML = "(An error has occurred.)";
+                pokemonImage.src = "";
+            });
+        }
+    
+        var button = document.querySelector(".pokemon-button");
+        button.addEventListener("click", getPokemonData);
+</xmp>
+
+
+Actually what is inside :https://pokeapi.co/api/v2/pokemon/
+
+<br>
+We have json data like this:
+<br>
+{"count":964,"next":"https://pokeapi.co/api/v2/pokemon/?offset=20&limit=20","previous":null,"results":[{"name":"bulbasaur","url":"https://pokeapi.co/api/v2/pokemon/1/"},{"name":"ivysaur","url":"https://pokeapi.co/api/v2/pokemon/2/"},{"name":"venusaur","url":"https://pokeapi.co/api/v2/pokemon/3/"},{"name":"charmander","url":"https://pokeapi.co/api/v2/pokemon/4/"},{"name":"charmeleon","url":"https://pokeapi.co/api/v2/pokemon/5/"},{"name":"charizard","url":"https://pokeapi.co/api/v2/pokemon/6/"},{"name":"squirtle","url":"https://pokeapi.co/api/v2/pokemon/7/"},{"name":"wartortle","url":"https://pokeapi.co/api/v2/pokemon/8/"},{"name":"blastoise","url":"https://pokeapi.co/api/v2/pokemon/9/"},{"name":"caterpie","url":"https://pokeapi.co/api/v2/pokemon/10/"},{"name":"metapod","url":"https://pokeapi.co/api/v2/pokemon/11/"},{"name":"butterfree","url":"https://pokeapi.co/api/v2/pokemon/12/"},{"name":"weedle","url":"https://pokeapi.co/api/v2/pokemon/13/"},{"name":"kakuna","url":"https://pokeapi.co/api/v2/pokemon/14/"},{"name":"beedrill","url":"https://pokeapi.co/api/v2/pokemon/15/"},{"name":"pidgey","url":"https://pokeapi.co/api/v2/pokemon/16/"},{"name":"pidgeotto","url":"https://pokeapi.co/api/v2/pokemon/17/"},{"name":"pidgeot","url":"https://pokeapi.co/api/v2/pokemon/18/"},{"name":"rattata","url":"https://pokeapi.co/api/v2/pokemon/19/"},{"name":"raticate","url":"https://pokeapi.co/api/v2/pokemon/20/"}]}
+===================================================
+    </body>
+    </html>

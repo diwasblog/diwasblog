@@ -1,0 +1,932 @@
+<html>
+
+<head>
+  <script
+    src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+  <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+
+  <style>
+    xmp.prettyprint {
+      font-size: 12pt;
+      font-family: "Consolas, 'Courier New', monospace";
+    }
+  </style>
+</head>
+
+<body>
+
+  <h3>Step 1: Install Node and npm (Goto node.org and download node and npm will auto get installed , then check it is
+    installed or not by typing node -v , npm -v</h3>
+  ===============================================================================
+  <br>
+  <h3>Step 2 Install Vue Cli 3</h3>
+  Older Vue cli comes as vue-cli and vue cli 3 comes with @vue/cli
+
+  <xmp class="prettyprint">
+    npm install -g @vue/cli
+  </xmp>
+  It provides the ability to quickly scaffold a new project via vue create
+  When you press enter then it ask you to manually select package or auto. For easyness select automatically.
+
+  While doing manuall install,select babel
+  Make sure you have Babel selected, Babel will automatically add multiple polyfills.
+  The polyfills will help with having backwards compatibility of ECMAScript features.
+  <br>
+  <hr>
+  <h2>Notes: </h2>
+
+  <div><span style="font-size: 18pt; color: #000000;">Here, we have "<span
+        style="color: #e03e2d;"><strong>-g</strong>"</span> means installing vue/cli globally so that you can run npm
+      from anywhere on your system.</span></div>
+  <div>&nbsp;</div>
+  <div><strong><span style="font-size: 18pt; color: #000000;"> Where does this global package get
+        install?</span></strong></div>
+  <div>&nbsp;</div>
+  <div><span style="font-size: 18pt;">Solution: You can find it by typing: <span style="color: #e03e2d;"><strong>npm
+          list -g</strong></span></span></div>
+  <div>&nbsp;</div>
+
+  <div><span style="font-size: 18pt;">In my case, it has installed in <span
+        style="color: #000000;"><strong>C:\Users\Pathway\AppData\Roaming\npm</strong></span></span></div>
+  <br /><br /></div>
+  <h5>Short Note:</h5>
+  <xmp class="prettyprint">
+    npm list --depth=0 //display only main packages not its sub-packages
+  </xmp>
+  If you donot type -d then it will install locally inside node_modules of current working project
+  <hr>
+  ================================================================================================
+  <br>
+  <h3>Step 3 Create new Vue project</h3>
+
+  <xmp class="prettyprint">
+    vue create SeedManagement
+  </xmp>
+
+  <br>
+
+  =========================================================================================
+  <h3>Step 4 type below</h3>
+  <xmp class="prettyprint">
+    cd SeedManagement
+    npm run serve
+  </xmp>
+  <br>
+  <br>
+  <h3>Now lets look vue structure </h3>
+  <img
+    src="https://d2mxuefqeaa7sj.cloudfront.net/s_4F0B8E7AB4E6ED4B9E26FFEEF7D345C2DAFD5E5BAADEA28ACC924E6DE74CDBBD_1531780354405_16.png">
+
+
+  <p><span style="font-size: 14pt;">Here we can see script has js extension now let's <strong><span
+          style="color: #f1c40f;">integrate typescript</span></strong> so that all<span
+        style="color: #e03e2d; font-size: 18pt;"><strong> js</strong> </span>gets converted to<span
+        style="color: #e03e2d; font-size: 18pt;"><strong> ts </strong></span>, also class-style component is
+      added.</span></p>
+
+
+  <xmp class="prettyprint">
+    vue add typescript
+  </xmp>
+
+  <img src="https://i.ibb.co/GvQqKR8/highcompress-added-typescript.jpg">\
+
+  <br>
+  <h3>Now Folder Structure Looks like this</h3>
+  <img src="https://i.ibb.co/yn68t3w/highcompress-typescript-folder-structure.jpg">
+  <br>
+
+  <br>
+  <p><span style="font-size: 14pt;">We have two main folder <span style="color: #ff00ff;"><strong>public
+        </strong></span>and <span style="color: #ff00ff;"><strong>src</strong></span>.</span></p>
+  <p><span style="font-size: 14pt;">The <span style="color: #ff00ff;"><strong>public</strong> </span>contains static
+      assets like <span style="color: #000000;"><strong>images</strong></span>, <strong><span
+          style="color: #000000;">favicons</span> </strong>and more. It also contains your&nbsp;<strong><span
+          style="color: #000000;">
+          <code class="highlighter-rouge">index.html</code></span></strong></span></p>
+  <br>
+  <xmp class="prettyprint">
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width,initial-scale=1.0">
+      <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+      <title>wordvue</title>
+    </head>
+
+    <body>
+      <noscript>
+        <strong>We're sorry but wordvue doesn't work properly without JavaScript enabled. Please enable it to
+          continue.</strong>
+      </noscript>
+      <div id="app"></div>
+      <!-- built files will be auto injected -->
+    </body>
+
+    </html>
+  </xmp>
+  <p><span style="font-size: 14pt;"> Vue will automatically inject the necessary generated JavaScript files right before
+      the closing body tag. This will include the transpiled version of your own code as well as vendor <code
+        class=""></code>The most important thing is the&nbsp;<span style="color: #000000;"><strong><code
+            class="highlighter-rouge">div</code>&nbsp;</strong></span>tag with <span
+        style="color: #000000;"><strong>id&nbsp;</strong></span><code class="highlighter-rouge">app</code>. This should
+      always be present in your&nbsp;<strong><span style="color: #000000;"><code
+            class="highlighter-rouge">index.html</code></span></strong>&nbsp;as this is the tag on which Vue will
+      <strong><span style="color: #000000;">bootstrap</span> </strong>the entire application</span></p>
+  <br>
+  ===========================================================================================
+  <br>
+  <h2>Now lets look how it works ?</h2>
+  <h2>src/main.ts</h2>
+  <xmp class="prettyprint">
+    import Vue from 'vue';
+    import App from './App.vue';
+
+
+    Vue.config.productionTip = false;
+
+    new Vue({
+    render: (h) => h(App),
+    }).$mount('#app');
+  </xmp>
+  <br>
+  <p style="text-align: justify;"><span style="font-size: 14pt; font-family: verdana, geneva, sans-serif;">When you look
+      in the&nbsp;<span style="color: #ff0000;"><strong><code
+            class="highlighter-rouge">src</code>&nbsp;</strong></span>folder, you will find a&nbsp;<span
+        style="color: #ff0000;"><strong><code class="highlighter-rouge">main.ts</code></strong></span>&nbsp;file. This
+      is the one that <strong><span style="color: #000000;">Vue will execute first.</span></strong> As you can see this
+      creates a new instance of Vue in which <strong><span style="color: #000000;">we only define a&nbsp;<code
+            class="highlighter-rouge">render</code>&nbsp;function</span></strong>. Vue will pass along&nbsp;<span
+        style="color: #ff0000;"><strong><code class="highlighter-rouge">h</code>&nbsp;</strong></span>which is of
+      type<strong><span style="color: #ff0000;">&nbsp;<code
+            class="highlighter-rouge">CreateElement</code></span></strong>.&nbsp;<code
+        class="highlighter-rouge">h</code>&nbsp;has been&nbsp;<a
+        href="https://github.com/vuejs/babel-plugin-transform-vue-jsx/issues/6" target="_blank"
+        rel="noopener noreferrer">chosen by the creator of Vue</a>&nbsp;as it is short for&nbsp;<span
+        style="color: #ff0000;"><strong><code class="highlighter-rouge">Hyperscript</code>,</strong></span> a term that
+      is used in several virtual DOM implementations. A hyperscript is a script that will generate HTML structures. It
+      takes<span style="color: #000000;"><strong> one parameter</strong></span>:&nbsp;<strong><span
+          style="color: #ff0000;"><code class="highlighter-rouge">App</code></span></strong>. Thus in a Vue
+      project,&nbsp;<strong><span style="color: #000000;"><code class="highlighter-rouge">h</code>&nbsp;will generate
+          the HTML for our App component</span></strong>. <span style="color: #ff0000;"><strong>App</strong> </span>is
+      our <strong><span style="color: #ff00ff;">main component </span></strong>that was generated by the Vue
+      CLI&nbsp;</span></p>
+  <br>
+
+  <h2>Now lets install vue router</h2>
+  <xmp class="prettyprint">
+    npm install vue-router
+  </xmp>
+
+  <p style="text-align: justify;"><span style="font-size: 14pt;">Then this will add vue-router in package.json.Now let's
+      configure the router in <span style="color: #e03e2d;"><strong>main.ts</strong></span> as shown below.</span></p>
+  <p style="text-align: justify;"><span style="font-size: 14pt;">It is recommended to write routes in a separate file
+      like <span style="color: #e03e2d;"><strong>router/index.ts</strong></span>, so we did :&nbsp;</span></p>
+  <div>
+    <ul>
+      <li><span style="color: #000000; font-size: 14pt;"><strong>import router from '@/router';</strong></span></li>
+    </ul>
+    <div>&nbsp;</div>
+    <div><span style="color: #000000; font-size: 14pt;"><strong>Here, The @ is just a nice alias for the<span
+            style="color: #e03e2d;"> /src</span> directory that was set up in a web pack by the Vue command-line
+          tool.</strong></span></div>
+  </div>
+
+
+
+  <xmp class="prettyprint">
+    import Vue, { CreateElement, VNode } from 'vue';
+    import App from './App.vue';
+    import router from '@/router'; //// Router being imported to src/router/
+
+    Vue.config.productionTip = false;
+
+    new Vue({
+    router, // router configuration
+    render: (h: CreateElement): VNode => h(App),
+    }).$mount('#app');
+  </xmp>
+
+  <p style="text-align: justify;"><span style="font-size: 14pt; font-family: verdana, geneva, sans-serif;">Here we have
+      installed a router<span style="color: #e03e2d;"> separately,&nbsp;</span>Why, <strong><span
+          style="color: #e03e2d;">Vue CLI</span></strong> is not coming with <span
+        style="color: #e03e2d;"><strong>router</strong></span>, <span
+        style="color: #e03e2d;"><strong>store</strong></span>, and <strong><span style="color: #e03e2d;">Http
+        </span></strong><span style="color: #e03e2d;"><span style="color: #000000;">at initial setup
+        </span></span>because the creator is trying to make it lighter.</span></p>
+  <br>
+  ==============================================================================================
+  <hr>
+  <hr>
+  <h3>Create component</h3>
+  <img src="https://i.ibb.co/n83ndc7/create-component.jpg">
+  <hr>
+  <hr>
+  <div class="row">
+    <div class="col-lg-6">
+      <h2>Login.vue</h2>
+      <xmp class="prettyprint">
+
+        <template>
+          <div>
+            <h2>This is Login page</h2>
+          </div>
+        </template>
+        <script>
+          export default {
+
+          }
+        </script>
+      </xmp>
+    </div>
+    <div class="col-lg-6">
+      <h2>home.vue</h2>
+      <xmp class="prettyprint">
+
+        <template>
+          <div>
+            <h2>This is Home page</h2>
+          </div>
+        </template>
+        <script>
+          export default {
+
+          }
+        </script>
+      </xmp>
+    </div>
+  </div>
+
+  <hr>
+
+  <p style="text-align: justify;"><span style="font-size: 14pt;">Now let's create<span style="color: #e03e2d;"><strong>
+          router folder</strong> </span>inside the <strong><span style="color: #e03e2d;">src folder</span></strong> and
+      inside that create <strong><span style="color: #e03e2d;">index.ts</span></strong>&nbsp; &nbsp;ie. <span
+        style="color: #000000;"><strong>src/router/index.ts</strong></span></span></p>
+  <p style="text-align: justify;"><span style="font-size: 14pt;">Here, we set up like this:</span></p>
+  <p style="text-align: justify;">&nbsp;</p>
+  <xmp class="prettyprint">
+    import Vue from "vue";
+    import Router from "vue-router";
+    import { RootRouter } from '@/utils/routePathContsant'; // all route url is set up here.
+
+    Vue.use(Router);
+
+    export default new Router({
+    mode: "history",
+    base: process.env.BASE_URL,
+
+    routes: [
+    {
+    path: RootRouter.Root, // defined in utils/routePathConstant
+    name: 'root',
+    component: () =>
+    import("@/views/home/home.vue")
+    },
+    {
+    path: RootRouter.Login,
+    name: 'login',
+    component: () =>
+    import("@/views/auth/login.vue")
+    },
+    {
+    path: RootRouter.Home,
+    name: 'home',
+    component: () =>
+    import("@/views/home/home.vue")
+    },
+    ]
+    })
+  </xmp>
+
+  <br>
+  <br>
+  <p><span style="font-size: 14pt;">Firstly we need to <span
+        style="color: #000000;"><strong>import&nbsp;<code>router</code></strong></span>&nbsp;from the <strong><span
+          style="color: #000000;">Vue-Router package</span></strong>&nbsp;and add it to <strong><span
+          style="color: #f1c40f;">Vue as a plugin</span> </strong>with the method&nbsp;<strong><span
+          style="color: #f1c40f;"><code>use</code></span></strong>.After that, we treat the router as an <strong><span
+          style="color: #000000;">object</span></strong>, which will <span style="color: #000000;"><strong>hold all the
+          routes</strong></span>. </span></p>
+  <p><span style="font-size: 14pt;">And of course, we have to <span style="color: #000000;"><strong>export
+          it</strong></span> so the rest of the application can access it. The <code>routes</code>&nbsp;property is an
+      <strong><span style="color: #000000;">array</span> </strong>that<strong><span style="color: #000000;"> will hold
+          objects</span></strong>, each of which will be the specific routes for your web page. </span></p>
+
+  <p><span style="font-size: 14pt; font-family: verdana, geneva, sans-serif;">By default, <span
+        style="color: #000000;"><strong>Vue-Router</strong></span> is set up to <span
+        style="color: #000000;"><strong><span
+            style="color: #000000;"><code>hash</code></span>&nbsp;mode</strong></span>, which means all URLs will have
+      a&nbsp;<span style="color: #000000;"><strong><code>#</code></strong></span>&nbsp;at the end.</span></p>
+  <p><span style="font-size: 14pt; font-family: verdana, geneva, sans-serif;">like this:&nbsp;<span
+        style="color: #000000;"><strong> <a style="color: #000000;" href="http://localhost:8080/#/home"
+            aria-invalid="true">http://localhost:8080/#/home</a> </strong></span></span></p>
+  <p><span style="color: #000000; font-size: 14pt; font-family: verdana, geneva, sans-serif;"><strong>To remove this #
+        we have auto this line.</strong></span></p>
+  <div>
+    <xmp class="prettyprint">
+      mode: "history",
+    </xmp>
+
+    <div>&nbsp;</div>
+    <div><span style="font-size: 14pt; font-family: verdana, geneva, sans-serif;">Now it looks like this :&nbsp; <span
+          style="color: #000000;"><strong><a style="color: #000000;" href="http://localhost:8080/#/home"
+              aria-invalid="true">http://localhost:8080/home</a></strong></span> </span></div>
+    =============================================================================================
+    <hr>
+    <p><span style="font-size: 14pt;">Then create <span style="color: #000000;"><strong>utils</strong> </span>folder,
+        inside there create <span style="color: #000000;"><strong>routePathConstant.ts</strong></span> where we write
+        <strong><span style="color: #000000;">url</span></strong> enum</span></p>
+    ie. src/utils/routePathConstant.ts
+    <xmp class="prettyprint">
+      export enum RootRouter {
+      Root = "/",
+      Login = "/login",
+      Home = "/home",
+      }
+    </xmp>
+
+    <img src="https://i.ibb.co/Rvs56mf/routessetup.jpg">
+    <br>
+    <h2>Then inside App.vue we add router-link and router-view like this</h2>
+    <h2>App.vue</h2>
+    <xmp class="prettyprint">
+      <template>
+        <div id="app">
+          <router-link to='/home'>Home</router-link>
+          <router-link to='/login'>About</router-link>
+
+          <router-view></router-view>
+        </div>
+      </template>
+
+      ....
+      //other as it is
+    </xmp>
+
+    <br>
+    <hr>
+    <h5>When click on home we goto home component and when clicked on login we goto login component</h5>
+    <img src="https://i.ibb.co/nPJ3s24/home-and-login-route.jpg">
+
+    <br>
+    <hr>
+    <center>
+      <h2>Created route successfully ...</h2>
+    </center>
+    <hr>
+
+    <hr>
+
+    <hr>
+
+    <h2>App.vue</h2>
+    <p style="text-align: justify;"><span
+        style="font-size: 14pt; font-family: verdana, geneva, sans-serif;">The&nbsp;<span
+          style="color: #000000;"><strong><code class="highlighter-rouge">App.vue</code></strong></span>&nbsp;file is
+        our first component that Vue bootstraps through our&nbsp;<span style="color: #000000;"><strong><code
+              class="highlighter-rouge">main.ts</code></strong></span>&nbsp;file. It is considered to be the root
+        component. The Vue CLI generates the App component with one child component.</span></p>
+    <br>
+    <br>
+    <h2>Basic Simple view/test.vue</h2>
+
+    <xmp class="prettyprint">
+
+    </xmp>
+    <p><span style="font-size: 14pt; font-family: verdana, geneva, sans-serif;">In .vue file, we define three optional
+        tags: <strong><span style="color: #000000;"><code
+              class="highlighter-rouge">template</code></span></strong>,&nbsp;<strong><span
+            style="color: #000000;"><code
+              class="highlighter-rouge">script</code>&nbsp;</span></strong>and&nbsp;<strong><span
+            style="color: #000000;"><code class="highlighter-rouge">style</code></span></strong>. According to the Vue
+        documentation, you should always&nbsp;<a
+          href="https://vuejs.org/v2/style-guide/#Single-file-component-top-level-element-order-recommended"
+          target="_blank" rel="noopener noreferrer">order the tags consistently</a>&nbsp;with&nbsp;<code
+          class="highlighter-rouge">style</code>&nbsp;being the last one.</span></p>
+    ie.
+    <div class="row">
+      <div class="col-lg-4">
+        <xmp class="prettyprint">
+          <template>…</template>
+        </xmp>
+        <p><span style="font-size: 12pt;">Note that your custom HTML should always be surrounded by <strong><span
+                style="color: #ff0000;">a div tag.</span></strong> The reason for this is that<span
+              style="color: #000000;"> <strong>it allows Vue to encapsulate your custom CSS without unknowingly
+                affecting the styling of your whole site</strong>.</span> You can use this to add a custom id or class
+            to the tag to help you identify the component in for example your e2e tests.</span></p>
+        <div><span style="font-size: 12pt;">Note that a .vue file can contain<strong>&nbsp;<span
+                style="color: #ff0000;">at most one</span></strong>&nbsp;template tag.</span></div>
+
+      </div>
+      <div class="col-lg-4">
+        <xmp class="prettyprint">
+          <script LANG="TS"> ... </script>
+        </xmp>
+        <br>
+        Note that your custom HTML should always be surrounded by a div tag.
+        The reason for this is that it allows Vue to encapsulate your custom CSS without
+        unknowingly affecting the styling of your whole site. You can use this to add a
+        custom id or class to the tag to help you identify the component in for example your e2e tests.
+        Note that a .vue file can contain at most one template tag.
+        In order for TypeScript to be available, you need to add lang="ts".
+        All of our TypeScript code should be present in this script tag,
+        even the import statements.contain at most one script.
+
+        <br>
+        In the script tag, you can add your custom TypeScript code.
+        The lang attribute is not required but if you do not add it,
+        the default language will be JavaScript. In order for TypeScript to be available,
+        you need to add lang="ts". All of our TypeScript code should be present in this script tag,
+        even the import statements. Note that a .vue file can contain at most one script tag.
+
+      </div>
+      <div class="col-lg-4">
+        <xmp class="prettyprint">
+          <style lang="scss"> </style>
+        </xmp>
+        By default, all the styles you define in a style tag are global.
+        By adding the scoped attribute to our style tag,
+        our custom SCSS will be specific for that component.
+
+
+        A .vue file can contain more than one style tag.
+
+        If you want to use global styles, you can either put them in App.vue or create your own CSS file that you import
+        either directly in index.html or in App.vue.
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-8">
+        <xmp class="prettyprint">
+          <template>
+            <div id="app">
+              <p>Hello World!</p>
+              <ChildComponent></ChildComponent>
+            </div>
+          </template>
+
+          <script lang="ts">
+      ...
+          </script>
+
+          <style scoped>
+            //local css in template only  and not in child component
+            #app {
+              p {
+                text-style: italic;
+              }
+            }
+          </style>
+
+          <style>
+            //global style on paragraph
+            #app {
+              p {
+                color: red;
+              }
+            }
+          </style>
+        </xmp>
+      </div>
+
+      <div class="col-lg-4">
+        In the example above, the style tag with the scoped attribute will only affect the p tag in our component and
+        not the one in our child component. The color: red styling however will affect also the styling of p tags in
+        ChildComponent
+      </div>
+    </div>
+
+    <h2>Creating advance folder structure</h2>
+    <pre class="prettyprint">
+     /public  
+              /index.html
+     /src
+              /assets
+              /components
+                navbar.vue
+			        /subcomponent			
+              /models
+              /store
+
+				        /api
+                    api.ts    ===> api calls
+                    auth.ts
+                    news.ts
+                    meta.ts
+
+				        /models       ===> interface present
+                    news.ts
+                    map.ts
+                    report.ts
+                    meta.ts
+
+				        /modules
+                    index.ts   ==>where we assemble modules like news and incident and export the store
+                    news.ts    ===> mutation and action present
+                    incident.ts
+					          meta.ts     ===> contains like loadingdistrict, loadingvdc and common things 
+                  index.ts
+                  
+                /utils
+                    routePathConstant.ts
+                    helpers.ts
+                    eventHub.ts
+                    constant.ts
+                    
+                /views
+                    /shared
+						          layout.vue  
+					          /authscreen
+                      login.vue
+                      register.vue
+                      resetpassword.vue
+				          	/incident
+                      createincident.vue
+                      listincident.vue 
+					          /admin
+						          /news
+						            create.vue
+						            list.vue         
+          App.vue
+          main.ts
+          router.ts    
+
+</pre>
+    Note here, /public and /assets has same purpose. I use /assets for some local .json file. <br>
+    In /components I keep all my generic components that can be used by pages and other components. like navBar
+    component, ASideBar component and many more. So it can be used in all views
+    Same goes for the /store that contains my implementation of a store.
+
+    ==============================================================================================
+    <br>
+    <h2>Now lets try to use my own component and other external component</h2>
+
+    <xmp class="prettyprint">
+      <template>
+        <div id="mydata">
+          <h1>Diwas fantastic blog</h1>
+
+          <Navbar />
+          <el-input placeholder="" name="" value=""></el-input>
+        </div>
+      </template>
+
+      <script lang="ts">
+        import { Component, Vue } from 'vue-property-decorator';
+        import { Input, Button } from "element-ui";          //external component
+        import Navbar from './components/Navbar.vue';        //my own component
+
+        @Component({
+          components: {
+            Navbar,                 //my own component located at /component/navbar.vue
+            Input,                  //from global component from element-ui
+            Button
+          },
+        })
+        export default class App extends Vue {
+      
+          ....
+        }
+      </script>
+
+      <style lang="scss">
+
+      </style>
+    </xmp>
+    <br>
+    =======================================================================================
+    <br>
+    <h2>Different between producing application in development and prodcution mode</h2>
+    <table style="height: 403px;">
+      <thead>
+        <tr style="height: 50px; background: black; color: white;">
+          <th style="height: 50px; width: 463px;"><span style="font-size: 14pt;">Development mode</span></th>
+          <th style="height: 50px; width: 472px;"><span style="font-size: 14pt;">Production mode</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="height: 50px;">
+          <td style="height: 50px; width: 463px;"><span style="font-size: 14pt;"><span style="color: #ff00ff;">CSS &amp;
+                HTML</span> bundled into <span style="color: #ff00ff;">JS</span></span></td>
+          <td style="height: 50px; width: 472px;"><span style="font-size: 14pt;">CSS separately, HTML bundled into
+              JS</span></td>
+        </tr>
+        <tr style="height: 50px;">
+          <td style="height: 50px; width: 463px;"><span style="font-size: 14pt;">Warnings in console</span></td>
+          <td style="height: 50px; width: 472px;"><span style="font-size: 14pt;">No warnings in console</span></td>
+        </tr>
+        <tr style="height: 50px;">
+          <td style="height: 50px; width: 463px;"><span style="font-size: 14pt;">Additional checks to identify
+              warnings</span></td>
+          <td style="height: 50px; width: 472px;"><span style="font-size: 14pt;">No additional checks, ignores any
+              situation that would trigger warnings</span></td>
+        </tr>
+        <tr style="height: 51px;">
+          <td style="height: 51px; width: 463px;"><strong><span style="font-size: 14pt; color: #ff0000;">Everything in
+                one&nbsp;<code class="highlighter-rouge">app.js</code></span></strong></td>
+          <td style="height: 51px; width: 472px;"><strong><span
+                style="font-size: 14pt; color: #ff0000;">Separate&nbsp;<code
+                  class="highlighter-rouge">app.js</code>&nbsp;and&nbsp;<code
+                  class="highlighter-rouge">vendor.js</code></span></strong></td>
+        </tr>
+        <tr style="height: 51px;">
+          <td style="height: 51px; width: 463px;"><span style="font-size: 14pt;">Heavy use of&nbsp;<code
+                class="highlighter-rouge">eval()</code>&nbsp;for hot reload</span></td>
+          <td style="height: 51px; width: 472px;"><span style="font-size: 14pt;">No use of&nbsp;<code
+                class="highlighter-rouge">eval()</code>, no hot reloading necessary</span></td>
+        </tr>
+        <tr style="height: 50px;">
+          <td style="height: 50px; width: 463px;"><span style="font-size: 14pt;">Basic bundling of all code, use of
+              minified libraries only when available</span></td>
+          <td style="height: 50px; width: 472px;"><span style="font-size: 14pt;">Bundling &amp; maximum
+              minification</span></td>
+        </tr>
+        <tr style="height: 51px;">
+          <td style="height: 51px; width: 463px;"><span style="font-size: 14pt;">No minification of&nbsp;<code
+                class="highlighter-rouge">index.html</code></span></td>
+          <td style="height: 51px; width: 472px;"><span style="font-size: 14pt;">Minification of&nbsp;<code
+                class="highlighter-rouge">index.html</code></span></td>
+        </tr>
+      </tbody>
+    </table>
+    <h2>In Development Mode</h2>
+    <xmp class="prettyprint">
+      npm run serve
+    </xmp>
+    <h2>In Produciton Mode</h2>
+    <xmp class="prettyprint">
+      npm run build
+    </xmp>
+
+    <div>
+      <div><span style="font-size: 14pt;">Note:<span style="color: #ff0000;"><strong> vendor.js:</strong></span>
+          <strong><span style="color: #000000;">Contains all the node_modules code that your project
+              uses</span></strong></span></div>
+    </div>
+
+    <br>
+
+    <p><span style="font-size: 14pt;">If we do a&nbsp;<code class="highlighter-rouge">npm run serve</code>&nbsp;and
+        check our Developer Tools in Chrome, we see the size of our application:</span></p>
+    <p class="align-center"><img class="image fit"
+        src="https://ordina-jworks.github.io/img/vue-with-typescript/wordvue-size-serve.png" /></p>
+    <p style="text-align: justify;"><span style="font-size: 14pt;">In development mode, our application is more than 2MB
+        large. We see the&nbsp;<code class="highlighter-rouge">index.html</code>&nbsp;alongside a generated&nbsp;<code
+          class="highlighter-rouge">app.js</code>&nbsp;that contains all our own code and all the&nbsp;<code
+          class="highlighter-rouge">node_modules</code>&nbsp;that we are using. While when we build with the production
+        mode via&nbsp;<code class="highlighter-rouge">npm run build</code>, we get an application that is in total less
+        than 125KB:</span></p>
+
+
+    <h2 id="building-for-production"><strong><span style="color: #000000;">BUILDING FOR PRODUCTION</span></strong></h2>
+    <p>When running the&nbsp;<code class="highlighter-rouge">npm run build</code>&nbsp;command, you&rsquo;ll get the
+      following output:</p>
+    <p class="align-center"><img class="image fit"
+        src="https://ordina-jworks.github.io/img/vue-with-typescript/vue-cli-build.png" /></p>
+    <p>So what the Vue CLI does is take all the SCSS out of the components and minifies it, compiles all the components
+      into an&nbsp;<code class="highlighter-rouge">app.js</code>&nbsp;file and&nbsp;<a
+        href="https://webpack.js.org/guides/tree-shaking/" target="_blank"
+        rel="noopener noreferrer">treeshakes</a>&nbsp;all used libraries into a&nbsp;<code
+        class="highlighter-rouge">chunk-vendors.js</code>&nbsp;file. After that, it Gzips all those files to ensure that
+      everything is as light as possible. If you have any assets, it will also clone those into the&nbsp;<code
+        class="highlighter-rouge">dist</code>&nbsp;folder.</p>
+    <p>The result is a dist folder which contents you can directly deploy onto your favourite server.</p>
+    ========================================================================================================
+    <br>
+
+    <h2>How router.ts is used >?</h2>
+
+    <h2>First setup router in main.ts as below</h2>
+    <xmp class="prettyprint">
+      import Vue from 'vue';
+      import App from './App.vue';
+      import router from './router';
+      import store from './store';
+      import ElementUI from 'element-ui';
+      import locale from 'element-ui/lib/locale/lang/en'
+      import Snotify,{SnotifyPosition } from 'vue-snotify';
+      import { SnotifyService } from "vue-snotify/SnotifyService";
+      import 'vue-snotify/styles/material.css';
+      import VeeValidate from 'vee-validate';
+      import VueProgressBar from 'vue-progressbar'
+
+      Vue.use(VueProgressBar, {
+      color: '#41B883',
+      failedColor: 'red',
+      height: '2px',
+      thickness: "3px",
+      autoRevert: true,
+      autoFinish:false
+      })
+      const options = {
+      toast: {
+      position: SnotifyPosition.leftBottom
+      }
+      }
+      Vue.use(Snotify,options);
+      Vue.use(ElementUI, { locale })
+      Vue.use(VeeValidate);
+      Vue.config.productionTip = false;
+
+      declare module 'vue/types/vue' {
+      interface Vue {
+      $snotify: SnotifyService
+      }
+      }
+
+      new Vue({
+      router, //look here
+      store,
+      render: (h) => h(App),
+      }).$mount('#app');
+
+    </xmp>
+    As this main.ts is load first so that router.ts will also be loaded at first then after that
+    =========================================================
+    <h2>Now , lets go to router.ts as below</h2>
+
+    <xmp class="prettyprint">
+      import Vue from "vue";
+      import Router from "vue-router";
+      import Incident from "@/router/incident"
+      import DutyOffice from "@/router/dutyOffice"
+
+      Vue.use(Router);
+
+      export default new Router({
+      mode: "history",
+      base: process.env.BASE_URL,
+      routes: [{
+      path: "/",
+      component: () =>
+      import("@/views/authscreen/login.vue")
+      },
+
+      {
+      path: "/register",
+      component: () =>
+      import("@/views/authscreen/register.vue")
+      },
+      {
+      path:"/forgotPassword",
+      component:() =>
+      import("@/views/authscreen/forgotPassword.vue")
+      },
+      {
+      path:"/resetpassword",
+      component:() =>
+      import("@/views/authscreen/resetPassword.vue")
+      },
+      {
+      path:"/changePassword",
+      component:() =>
+      import ("@/views/authscreen/changePassword.vue")
+      },
+      {
+      path: "*",
+      component: () =>
+      import("@/views/errorscreen/notfound.vue")
+      },
+      Incident,DutyOffice
+
+      ]
+      });
+
+    </xmp>
+    So here we can see that on going to home page ie "/" then it will route to login.vue page.
+    if going to "/regiser" then it will route to register.vue page.
+    Look at last we have Incident and DutyOffice in router.ts .This is just
+    extending router.ts file.
+
+    <h4>router/incident.ts </h4>
+    <xmp class="prettyprint">
+
+
+      const incidentroute = {
+      path: "/Incident",
+      name: "",
+      component: () => import("@/views/shared/Layout.vue"),
+      children: [
+
+      {
+      path: "/incident/dashboard",
+      component: () =>
+      import("@/views/incident/dashboard.vue")
+      },
+      {
+      path: "/incident/categories",
+      component: () =>
+      import("@/views/incident/category/incidentCategories.vue")
+      },
+      {
+      path: "/incident/categories/index",
+      component: () =>
+      import("@/views/incident/category/incidentIndex.vue")
+      },
+
+      ]
+      };
+
+      export default incidentroute;
+
+    </xmp>
+
+    So now when /register then goto register.vue page, if not match then goto "notfound.vue" page
+    As we have written incident in router.ts after "notfound.vue".
+    ====================================================================================================
+
+    <h2>Visit this :https://ordina-jworks.github.io/vue/2019/03/04/vue-with-typescript.html for details</h2>
+    ====================================================================================================
+    <br>
+    The reason why we write this in a getter, is that we want to avoid putting business logic in our template. Thus we
+    opt for writing a getter which is the equivalent of a computed property in Vue JavaScript.
+
+    <xmp class="prettyprint">
+      get visibleBlogPosts() {
+      return this.blogPosts.filter((post: Post) => post.highlighted === undefined || post.highlighted ===
+      this.showHighlighted);
+      }
+    </xmp>
+
+    Vue comes without any libraries, it is a super clean and lean framework where even functionality for HTTP calls is
+    not present
+
+    ===================================================
+    <xmp class="prettyprint">
+      <template>
+        <div id="app">
+          ...
+        </div>
+      </template>
+
+      <script lang="ts">
+        import { Component, Vue } from 'vue-property-decorator';
+
+        @Component({})
+        export default class App extends Vue {
+          private created() {
+            console.log('The app is created!');
+          }
+
+          private mounted() {
+            console.log('The app is mounted!');
+          }
+        }
+      </script>
+
+      <style lang="scss">
+        #app {
+          ...
+        }
+      </style>
+
+    </xmp>
+    Created is called by Vue when the object is created: reactive data is set up, event callbacks are ready and the
+    object is not yet mounted on the DOM. The Vue object will thus be ready to go but it will not yet be visible to the
+    user. The mounted hook is used for when the element is mounted into the HTML DOM, which means the rendering is
+    performed by the browser.
+
+
+    <br>
+    <br>
+    There are two reasons why we want to start our HTTP calls in the created method. The first reason is that we can
+    limit the amount of time the user has to wait for data to be loaded and shown on the screen. The second one is that
+    the mounted hook is not called when we would use serverside rendering. To ensure that our code is compatible with
+    all use cases, we place the HTTP calls in the created method of our App.vue which results in this component:
+    <xmp class="prettyprint">
+      private created() {
+      this.$http.get('http://localhost:3000/blogposts').then((response: AxiosResponse) => {
+      this.blogPosts = response.data.map((val: any) => ({
+      title: val.title,
+      body: val.body,
+      author: val.author,
+      datePosted: new Date(val.datePosted),
+      highlighted: val.highlighted,
+      }));
+      });
+
+      //As you can see we have added a private created
+      // method since this should not be publicly available to other components.
+
+
+
+
+
+
+
+    </xmp>
+
+
+
+    https://github.com/vuejs/awesome-vue
+
+</body>
+
+</html>

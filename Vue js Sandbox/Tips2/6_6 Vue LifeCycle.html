@@ -1,0 +1,149 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+    <p><span style="font-size:18px">Actions of lifecycle methods can be broken down into four categories:</span></p>
+
+    <ul>
+      <li><span style="font-size:22px">Creation</span></li>
+      <li><span style="font-size:22px">Mounting</span></li>
+      <li><span style="font-size:22px">Updating</span></li>
+      <li><span style="font-size:22px">Destruction</span></li>
+    </ul>
+    
+    <p><u><span style="font-size:22px"><span style="color:#e74c3c">Creation methods </span>are implemented using&nbsp;<span style="color:#c0392b"><code>beforeCreate()</code>&nbsp;</span>and&nbsp;<span style="color:#c0392b"><code>created()</code></span>&nbsp;hooks.</span></u></p>
+    
+    <p><span style="font-size:20px"><span style="color:#c0392b">beforeCreate():&nbsp;</span><code>data</code>&nbsp;is still not reactive and events that occur during the component&rsquo;s lifecycle have not been set up yet. This code will be run as soon the Vue instance exists.Nothing gets called before this.&nbsp;</span></p>
+    
+    <p><span style="font-size:20px"><span style="color:#c0392b">Created():</span>The&nbsp;<code>created()</code>&nbsp;You can access reactive data and event.But cannot access DOM and template and component yet.&nbsp;</span></p>
+    
+    <p><span style="font-size:22px">&nbsp;</span></p>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <xmp class="prettyprint">
+  new Vue({
+    data: {
+      x: 5
+    },
+    beforeCreate: function () {
+      // `this` points to the view model instance
+      console.log('x is: ' + this.x)
+    }
+  })
+      // x is: undefined
+        </xmp>
+      </div>
+
+      <div class="col-lg-6">
+          <xmp class="prettyprint">
+new Vue({
+  data: {
+    x: 5
+  },
+  created: function () {
+    // `this` points to the view model instance
+    console.log('x is: ' + this.x)
+  }
+})
+    // x is: 5
+          </xmp>
+        </div>
+    </div>
+
+    <p><span style="font-size:20px"><span style="color:#c0392b">beforeMount():</span>The&nbsp;<code>beforeMount()</code>&nbsp;method is invoked after our template has been compiled and our virtual DOM updated by Vue. After this, the&nbsp;<code>$el</code>&nbsp;property is added to the Vue instance, the native DOM is updated and the&nbsp;<code>mounted()</code>&nbsp;method is invoked.</span></p>
+
+
+
+<p><span style="font-size:22px"><code><span style="color:#c0392b">mounted() :</span>mounted()</code>&nbsp;method gives you access to templates and enables interaction with the DOM.</span></p>
+<div class="row">
+    <div class="col-lg-6">
+      <xmp class="prettyprint">
+          new Vue({
+            beforeMount: function () {
+              // el has not been created so we cannot access dom element like div .But here template is compiled
+              console.log(`this.$el is yet to be created`)
+            }
+          })
+      </xmp>
+    </div>
+
+    <div class="col-lg-6">
+        <xmp class="prettyprint">
+            <div id="app">
+                <p>I'm text inside the component.</p>
+            </div>
+              //mounted can access dom element like div . and can access DOM element 
+            new Vue({
+              el: '#app',
+              mounted: function() {
+                console.log(this.$el.textContent) 
+              }
+            })
+            // I'm text inside the component.
+        </xmp>
+      </div>
+  </div>
+
+<h2>Use of Create</h2>
+<script src="https://unpkg.com/vue"></script>
+<div id="app">
+    <p>{{counter}}</p>
+    </div>
+<script>
+    new Vue({
+      el: '#app',
+      data() {
+        return {
+          counter: ''
+        }
+      },
+       created: function() {
+        setInterval(() => {
+          this.counter=new Date()
+        }, 1000)
+      },
+   
+    })
+  </script>
+<xmp class="prettyprint">
+    <script src="https://unpkg.com/vue"></script>
+<div id="app">
+    <p>{{counter}}</p>
+    </div>
+
+    new Vue({
+      el: '#app',
+      data() {
+        return {
+          counter: ''
+        }
+      },
+       created: function() {
+        setInterval(() => {
+          this.counter=new Date()
+        }, 1000)
+      },
+   
+    })
+</xmp>
+
+<h2>For Update and destroy look at :https://scotch.io/tutorials/demystifying-vue-lifecycle-methods</h2>
+  </body>
+
+  </html>

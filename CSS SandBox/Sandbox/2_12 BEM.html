@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <title>Bootstrap Sandbox</title>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+    
+<style>
+    xmp.prettyprint{
+        font-size:12pt;
+        font-family:monospace;
+    
+    }
+</style>
+</head>
+<body>
+    <p><strong>BEM</strong></p>
+    <p><strong>BEM</strong>&nbsp;stands for &ldquo;Block&rdquo;, &ldquo;Element&rdquo;, &ldquo;Modifier&rdquo;.naming convention standard for CSS class names.&nbsp;</p>
+    <ol>
+    <li><strong><span style="color: #ff0000;">Block</span></strong>: The outermost parent element of the component is defined as the block.</li>
+    <li><strong><span style="color: #ff0000;">Element</span></strong>: Inside of the component may be one or more children called elements.</li>
+    <li><strong><span style="color: #ff0000;">Modifier</span></strong>: Either a block or element may have a variation signified by a modifier.</li>
+    </ol>
+    <p>If all three are used in a name it would look something like this:</p>
+    
+    <xmp class="prettyprint">
+      [block]__[element]--[modifier]
+    </xmp>
+    <p><strong><span style="background-color: #ffffff; font-size: 18pt; color: #ff0000;"><code>Block</code></span></strong></p>
+    <p><span style="background-color: #ffffff; font-size: 18pt;"><span style="font-size: 12pt;">The&nbsp;<a class="article__link" href="https://en.bem.info/methodology/naming-convention/#block-name">block name</a>&nbsp;describes its purpose ("<strong><span style="color: #ff0000;">What is it</span></strong>?"&nbsp;&mdash;&nbsp;<span style="color: #ff00ff;"><code class="article__inline-code">menu</code>&nbsp;or&nbsp;<code class="article__inline-code">button</code></span>), not its state ("<strong><span style="color: #ff0000;">What does it look like</span></strong>?"&nbsp;&mdash;&nbsp;<span style="color: #ff00ff;"><code class="article__inline-code">red</code>&nbsp;or&nbsp;<code class="article__inline-code">big</code></span>).</span></span></p>
+    <p><span style="background-color: #ffffff; font-size: 12pt;">Let&rsquo;s say you&rsquo;re building a contact form. In this case, the form can be a block. In BEM, blocks are written as class names, like this:</span></p>
+
+<xmp class="prettyprint">
+    .form { /* styles */ }
+</xmp>
+=======================================================================================
+<xmp class="prettyprint">
+  <!-- Correct. The `error` block is semantically meaningful -->
+<div class="error"></div>
+
+<!-- Incorrect. It describes the appearance -->
+<div class="red-text"></div>
+</xmp>
+
+<p><strong><span style="background-color: #ffffff; font-size: 18pt; color: #ff0000;"><code></code></span></strong></p>
+<pre class="article__code article__code_correctHeight"><span class="hljs-tag">&nbsp;</span></pre>
+<ul class="article__list">
+<li class="article__list-item">
+<p class="article__paragraph"><span style="font-size: 14pt;">The block shouldn't influence its environment, meaning you shouldn't set the external geometry (margin) or positioning for the block.</span></p>
+</li>
+<li class="article__list-item">
+<p class="article__paragraph"><span style="font-size: 14pt; color: #ff0000;">You also shouldn't use CSS tag or&nbsp;<code class="article__inline-code">ID</code>&nbsp;selectors when using BEM.</span></p>
+</li>
+</ul>
+<p class="article__paragraph"><span style="font-size: 14pt;">This ensures the necessary independence for reusing blocks or moving them from place to place.</span></p>
+
+<h3 id="guidelines-for-using-blocks" class="article__heading article__heading_level_3"><span style="color: #ff00ff;"><strong>Guidelines for using blocks</strong></span></h3>
+<h4 id="nesting" class="article__heading article__heading_level_4"><strong>Nesting</strong></h4>
+<ul class="article__list">
+<li class="article__list-item">
+<p class="article__paragraph">Blocks can be nested in each other.</p>
+</li>
+<li class="article__list-item">
+<p class="article__paragraph">You can have any number of nesting levels.</p>
+</li>
+</ul>
+
+<xmp class="prettyprint">
+  <!-- `header` block -->
+<header class="header">
+    <!-- Nested `logo` block -->
+    <div class="logo"></div>
+
+    <!-- Nested `search-form` block -->
+    <form class="search-form"></form>
+</header>
+</xmp>
+<h2 id="element" class="article__heading article__heading_level_2"><span style="color: #ff00ff;"><strong>Element</strong></span></h2>
+<p class="article__paragraph"><span style="font-size: 12pt;">A composite part of a block that can't be used separately from it.</span></p>
+<p class="article__paragraph"><span style="font-size: 12pt;">Features:</span></p>
+<ul class="article__list">
+<li class="article__list-item">
+<p class="article__paragraph"><span style="font-size: 12pt;">The&nbsp;<a class="article__link" href="https://en.bem.info/methodology/naming-convention/#element-name">element name</a>&nbsp;describes its purpose ("<span style="color: #ff0000;">What is this</span>?"&nbsp;&mdash;&nbsp;<code class="article__inline-code">item</code>,&nbsp;<code class="article__inline-code">text</code>, etc.), not its state ("<span style="color: #ff0000;">What type, or what does it look like?</span>"&nbsp;&mdash;&nbsp;<code class="article__inline-code">red</code>,&nbsp;<code class="article__inline-code">big</code>, etc.).</span></p>
+</li>
+<li class="article__list-item">
+<p class="article__paragraph"><span style="font-size: 12pt;">The structure of an element's full name is&nbsp;<span style="color: #ff0000;"><code class="article__inline-code">block-name__element-name</code></span>. The element name is separated from the block name with a double underscore (<span style="color: #ff0000;"><code class="article__inline-code">__</code></span>).</span></p>
+</li>
+</ul>
+
+<xmp class="prettyprint">
+  <!-- `search-form` block -->
+<form class="search-form">
+    <!-- `input` element in the `search-form` block -->
+    <input class="search-form__input">
+
+    <!-- `button` element in the `search-form` block -->
+    <button class="search-form__button">Search</button>
+</form>
+</xmp>
+
+
+<h3 id="guidelines-for-using-elements" class="article__heading article__heading_level_3"><span style="color: #ff00ff;"><strong>Guidelines for using elements</strong></span></h3>
+<ul class="article__list">
+<li class="article__list-item">
+<p class="article__paragraph"><a class="article__link" href="https://en.bem.info/methodology/quick-start/#nesting-1">Nesting</a></p>
+</li>
+<li class="article__list-item">
+<p class="article__paragraph"><a class="article__link" href="https://en.bem.info/methodology/quick-start/#membership">Membership</a></p>
+</li>
+<li class="article__list-item">
+<p class="article__paragraph"><a class="article__link" href="https://en.bem.info/methodology/quick-start/#optionality">Optionality</a></p>
+</li>
+</ul>
+<h4 id="nesting-1" class="article__heading article__heading_level_4"><strong>Nesting</strong></h4>
+<ul class="article__list">
+<li class="article__list-item">
+<p class="article__paragraph">Elements can be nested inside each other.</p>
+</li>
+<li class="article__list-item">
+<p class="article__paragraph">You can have any number of nesting levels.</p>
+</li>
+<li class="article__list-item">
+<p class="article__paragraph">An element is always part of a block, not another element. This means that element names can't define a hierarchy such as&nbsp;<strong><span style="color: #ff0000;"><code class="article__inline-code">block__elem1__elem2</code>.</span></strong></p>
+</li>
+</ul>
+
+
+<xmp class="prettyprint">
+  <!--
+    Correct. The structure of the full element name follows the pattern:
+    `block-name__element-name`
+-->
+<form class="search-form">
+    <div class="search-form__content">
+        <input class="search-form__input">
+
+        <button class="search-form__button">Search</button>
+    </div>
+</form>
+
+<!--
+    Incorrect. The structure of the full element name doesn't follow the pattern:
+    `block-name__element-name`
+-->
+<form class="search-form">
+    <div class="search-form__content">
+        <!-- Recommended: `search-form__input` or `search-form__content-input` -->
+        <input class="search-form__content__input">
+
+        <!-- Recommended: `search-form__button` or `search-form__content-button` -->
+        <button class="search-form__content__button">Search</button>
+    </div>
+</form>
+</xmp>
+
+The block name defines the namespace, which guarantees that the elements are dependent on the block (block__elem).
+
+A block can have a nested structure of elements in the DOM tree:
+
+<xmp class="prettyprint">
+    <div class="block">
+        <div class="block__elem1">
+            <div class="block__elem2">
+                <div class="block__elem3"></div>
+            </div>
+        </div>
+    </div>
+</xmp>
+<p><span style="font-size: 12pt;">Note: However, this block structure is always represented as a flat list of elements in the BEM methodology:</span></p>
+
+Example:
+<xmp class="prettyprint">
+    .block {}
+    .block__elem1 {}
+    .block__elem2 {}
+    .block__elem3 {}
+</xmp>
+
+<p><strong><span style="font-size: 12pt; color: #ff0000;">This allows you to change a block's DOM structure without making changes in the code for each separate element:</span>
+
+  ================================================
+  <xmp class="prettyprint">
+      <div class="block">
+          <div class="block__elem1">
+              <div class="block__elem2"></div>
+          </div>
+      
+          <div class="block__elem3"></div>
+      </div>
+  </xmp>
+
+  <p><strong><span style="font-size: 12pt; color: #ff0000;">The block's structure changes, but the rules for the elements and their names remain the same.</span></strong></p>
+
+  <h4 id="membership" class="article__heading article__heading_level_4"><span style="color: #ff0000;"><strong>Membership</strong></span></h4>
+<p class="article__paragraph"><span style="font-size: 12pt;">An element is&nbsp;<strong class="article__strong">always part of a block</strong>, and you shouldn't use it separately from the block.</span></p>
+
+<xmp class="prettyprint">
+  <!-- Correct. Elements are located inside the `search-form` block -->
+<!-- `search-form` block -->
+<form class="search-form">
+    <!-- `input` element in the `search-form` block -->
+    <input class="search-form__input">
+
+    <!-- `button` element in the `search-form` block -->
+    <button class="search-form__button">Search</button>
+</form>
+
+<!--
+    Incorrect. Elements are located outside of the context of
+    the `search-form` block
+-->
+<!-- `search-form` block -->
+<form class="search-form">
+</form>
+
+<!-- `input` element in the `search-form` block -->
+<input class="search-form__input">
+
+<!-- `button` element in the `search-form` block-->
+<button class="search-form__button">Search</button>
+
+</xmp>
+
+<h2 id="should-i-create-a-block-or-an-element" class="article__heading article__heading_level_2"><strong><span style="color: #ff0000;">Should I create a block or an element?</span></strong></h2>
+<h3 id="create-a-block" class="article__heading article__heading_level_3"><strong>Create a block</strong></h3>
+<p class="article__paragraph"><span style="font-size: 12pt;">If a section of code might be reused and it doesn't depend on other page components being implemented.</span></p>
+<h3 id="create-an-element" class="article__heading article__heading_level_3"><strong>Create an element</strong></h3>
+<p class="article__paragraph"><span style="font-size: 12pt;">If a section of code can't be used separately without the parent entity (the block).</span></p>
+<p class="article__paragraph">The exception is elements that must be divided into smaller parts &ndash; subelements &ndash; in order to simplify development.&nbsp;In the BEM methodology,&nbsp;<a class="article__link" href="https://en.bem.info/methodology/quick-start/#nesting-1">you can't create elements of elements</a>. In a case like this, instead of creating an element, you need to create a service block.</p>
+
+<h2 id="modifier" class="article__heading article__heading_level_2"><span style="color: #ff0000;"><strong>Modifier</strong></span></h2>
+<p class="article__paragraph"><span style="font-size: 12pt;">An entity that defines the <span style="color: #ff0000;">appearance, state, or behavior of a block or element.</span></span></p>
+<p class="article__paragraph"><span style="font-size: 14pt;">Features:</span></p>
+<ul class="article__list">
+<li class="article__list-item">
+<p class="article__paragraph">The&nbsp;<a class="article__link" href="https://en.bem.info/methodology/naming-convention/#block-modifier-name">modifier name</a>&nbsp;describes its appearance ("<span style="color: #ff0000;">What size</span>?" or "<span style="color: #ff0000;">Which theme</span>?" and so on&nbsp;&mdash;&nbsp;<code class="article__inline-code">size_s</code>&nbsp;or&nbsp;<code class="article__inline-code">theme_islands</code>), its state ("<span style="color: #ff0000;">How is it different from the others</span>?"&nbsp;&mdash;&nbsp;<span style="color: #ff0000;"><code class="article__inline-code">disabled</code>,&nbsp;<code class="article__inline-code">focused</code>,</span> etc.) and its behavior ("<span style="color: #ff0000;">How does it behave</span>?" or "How does it respond to the user?"&nbsp;&mdash; such as&nbsp;<code class="article__inline-code">directions_left-top</code>).</p>
+</li>
+<li class="article__list-item">
+<p class="article__paragraph">The modifier name is separated from the block or element name by a <span style="color: #ff0000;"> (<code class="article__inline-code"></code>single underscore_</code>).</span></p>
+
+</li>
+</ul>
+
+
+<xmp class="prettyprint">
+  <!-- The `search-form` block has the `theme` modifier with the value `islands` -->
+<form class="search-form search-form_theme_islands">
+    <input class="search-form__input">
+
+    <!-- The `button` element has the `size` modifier with the value `m` -->
+    <button class="search-form__button search-form__button_size_m">Search</button>
+</form>
+
+<!-- You can't use two identical modifiers with different values simultaneously -->
+<form class="search-form
+             search-form_theme_islands
+             search-form_theme_lite">
+
+    <input class="search-form__input">
+
+    <button class="search-form__button
+                   search-form__button_size_s
+                   search-form__button_size_m">
+        Search
+    </button>
+</form>
+</xmp>
+
+<h2>https://en.bem.info/methodology/quick-start/#create-an-element</h2>
+
+==================================================================================================
+<h4>One of the purposes behind BEM is to keep specificity low and consistent. Don’t omit class names from the child elements in your HTML.</h4>
+<div class="row">
+    <div class="col">
+        <xmp class="prettyprint">
+            <!-- DO THIS -->
+        <figure class="photo">
+        <img class="photo__img" src="me.jpg">
+        <figcaption class="photo__caption">Look at me!</figcaption>
+      </figure>
+      
+      <style>
+        .photo { } /* Specificity of 10 */
+        .photo__img { } /* Specificity of 10 */
+        .photo__caption { } /* Specificity of 10 */
+      </style>
+        </xmp>
+    </div>
+
+    <div class="col">
+            <xmp class="prettyprint">
+            <!-- DON'T DO THIS -->
+<figure class="photo">
+        <img src="me.jpg">
+        <figcaption>Look at me!</figcaption>
+      </figure>
+      
+      <style>
+        .photo { } /* Specificity of 10 */
+        .photo img { } /* Specificity of 11 */
+        .photo figcaption { } /* Specificity of 11 */
+      </style>
+                </xmp>
+    </div>
+</div>
+==============================================================================================================
+<br>
+<div class="row">
+        <div class="col">
+            <xmp class="prettyprint">
+                    THIS -->
+                    <figure class="photo">
+                      <img class="photo__img" src="me.jpg">
+                      <figcaption class="photo__caption">
+                        <blockquote class="photo__quote">
+                          Look at me!
+                        </blockquote>
+                      </figcaption>
+                    </figure>
+                    
+                    <style>
+                      .photo { }
+                      .photo__img { }
+                      .photo__caption { }
+                      .photo__quote { }
+                    </style>
+            </xmp>
+        </div>
+    
+        <div class="col">
+                <xmp class="prettyprint">
+                
+<!-- DON'T DO THIS -->
+<figure class="photo">
+        <img class="photo__img" src="me.jpg">
+        <figcaption class="photo__caption">
+          <blockquote class="photo__caption__quote"> <!-- never include more than one child element in a class name -->
+            Look at me!
+          </blockquote>
+        </figcaption>
+      </figure>
+      
+      <style>
+        .photo { }
+        .photo__img { }
+        .photo__caption { }
+        .photo__caption__quote { }
+      </style>
+       </xmp>
+        </div>
+    </div>
+==========================================================================================================================
+<div class="row">
+        <div class="col">
+            <xmp class="prettyprint">
+                    <!-- DO THIS -->
+<figure class="photo photo--highlighted">
+        <img class="photo__img" src="me.jpg">
+        <figcaption class="photo__caption">Look at me!</figcaption>
+      </figure>
+      
+      <style>
+        .photo--highlighted .photo__img { }
+        .photo--highlighted .photo__caption { }
+      </style>
+      
+            </xmp>
+        </div>
+    
+        <div class="col">
+                <xmp class="prettyprint">
+ <!-- DON'T DO THIS -->
+<figure class="photo">
+        <img class="photo__img photo__img--highlighted" src="me.jpg">
+        <figcaption class="photo__caption photo__caption--highlighted">Look at me!</figcaption>
+      </figure>
+      
+      <style>
+        .photo__img--highlighted { }
+        .photo__caption--highlighted { }
+      </style>
+       </xmp>
+        </div>
+    </div>
+
+    ==================================================
+    <br>
+    <h2>Multi-word Names</h2>
+    BEM names intentionally use double underscores and double hyphens instead of single to separate Block-Element-Modifier.
+    <div class="row">
+            <div class="col">
+                <xmp class="prettyprint">
+                        O THIS -->
+                        <div class="some-thesis some-thesis--fast-read">
+                          <div class="some-thesis__some-element"></div>
+                        </div>
+                        
+                        <style>
+                          .some-thesis { }
+                          .some-thesis--fast-read { }
+                          .some-thesis__some-element { }
+                        </style>
+                        
+                </xmp>
+            </div>
+        
+            <div class="col">
+                    <xmp class="prettyprint">
+                            N'T DO THIS -->
+                            // These class names are harder to read
+                            <div class="somethesis somethesis--fastread">
+                              <div class="somethesis__someelement"></div>
+                            </div>
+                            
+                            <style>
+                              .somethesis { }
+                              .somethesis--fastread { }
+                              .somethesis__someelement { }
+                            </style>
+           </xmp>
+            </div>
+        </div>
+
+        ==============================================================
+        <br>
+        <h1>Stick man convention</h1>
+       <xmp class="prettyprint">
+           //component or block
+            .stick-man {
+  
+            }
+        
+       </xmp>
+
+       <xmp class="prettyprint">
+           //element
+            .stick-man__head {
+            }
+            .stick-man__arms {
+            }
+            .stick-man__feet {
+            }
+        </xmp>
+
+        <xmp class="prettyprint">
+            //modifier
+                .stick-man--blue {
+                }
+                .stick-man--red {
+                }
+             
+                .stick-man__head--small {
+                }
+                .stick-man__head--big {
+                }
+            </xmp>
+  </body>
+  </html>

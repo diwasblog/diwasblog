@@ -1,0 +1,532 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+    font-size:12pt;
+    font-family:monospace;
+
+}
+</style>
+ 
+</head>
+<body>
+
+<xmp class="prettyprint">
+//Scripts/vue-component(folder)/posting-button.vue
+<template>
+    <button :class="skin" v-on:click="clicked">
+        <span v-if="posting"><i class="fa fa-spinner fa-pulse fa-fw"></i>Posting ...</span>
+        <span v-if="!posting">{{value}}</span>
+    </button>
+</template>
+
+<script type="text/javascript">
+    export default {
+        name: 'posting-button',
+        data() {
+            return {
+
+            }
+        },
+        props: {
+            skin: {
+                type: String,
+                required: true
+            },
+            posting: {
+                type: Boolean,
+                required: true
+            },
+            value: {
+                type: String,
+                required: true
+            },
+            clicked: {
+                type: Function,
+                required: false
+            }
+        },
+        methods: {}
+    }
+</script>
+</xmp>
+
+
+<xmp class="prettyprint">
+//in .cshtml  html section
+<posting-button skin="btn btn-primary" :clicked="editDepartment" value="Submit" :posting="isPosting">
+  </posting-button>
+</xmp>
+
+<xmp class="prettyprint">
+//in .cshtml script section
+<script type="text/javascript">
+  Vue.component('posting-button', PostingButton);
+  </script>
+
+  //also
+  <script>
+  isPosting:false;
+  </script>
+</xmp>
+
+<xmp class="prettyprint">
+//index.js
+import PostingButton from './vue-components/posting-button.vue';
+global.PostingButton = PostingButton;
+
+</xmp>
+====================================================================================================================
+
+<p><span style="font-size: 14pt;">One way to pass data from a<strong><em> parent to a child i</em></strong>s called<span style="color: #ff00ff;"><strong>&nbsp;props.</strong></span></span></p>
+
+
+
+<h2>Local Component</h2>
+Both left and right are in same .cshtml file
+<div class="row">
+<div class="col-lg-5">
+    <xmp class="prettyprint">
+    <div id="app" class="container">
+        <h2>{{heading}}</h2>
+            <!-- Locally Registered Component -->
+        <local-component :test="heading"></local-component>
+        </div>
+    </xmp>
+
+<h2>Output:</h2>
+<h2>Vue.js 2.0 Component Example</h2>
+<h3>Vue.js 2.0 Component Example</h3>
+</div>
+
+<div class="col-lg-7">
+<xmp class="prettyprint">
+@section scripts{
+    <script>
+// Locally Registered Component
+        var localComponent = {
+            props: ["test"],
+            template: `<h3>{{test}}</h3>`
+        };
+// Vue Instance
+new Vue({
+    el: "#app",
+    components: {
+        // <local-component> will only be available in this parent template
+        "local-component": localComponent
+    },
+    data: function () {
+        return {
+            heading: "Vue.js 2.0 Component Example"
+        }
+    }
+});
+    </script>
+}
+</xmp>
+</div>
+</div>
+
+
+==================================================================================================
+
+<h2>Global Component </h2>
+
+<div class='row'>
+    <div class="col-lg-6">
+        <xmp class="prettyprint">
+<div id="app" class="container">
+    <h1>{{heading}}</h1>
+    <!-- Global Component -->
+    <global-component :test="heading"></global-component>
+</div>
+        </xmp>
+    </div>
+
+    <div class="col-lg-6">
+        <xmp class="prettyprint">
+@section scripts{
+<script>
+    // Global Component
+// Note. Must be registered before Vue Instance
+var globalComponent = Vue.component("global-component",{
+    props: ['test'],
+    template: `<p>{{test}}</p>`
+});
+
+// Vue Instance
+new Vue({
+    el: "#app",
+    data() {
+        return {
+            heading: "Vue.js 2.0 Component Example"
+        }
+    }
+});
+</script>
+    }
+        </xmp>
+    </div>
+</div>
+====================================================================================================================
+<h2>Global Component using External file</h2>
+
+<p><span style="font-size: 14pt;">1.First<strong> Install Vue-loader and Vue-template-compiler.</strong> There is dependency between them.</span></p>
+
+I have Installed
+<xmp class="prettyprint">
+    Vue-loader=>"^13.6.0",
+    Vue-template-compiler=>"^2.5.11"
+</xmp>
+
+
+These installation Step are:
+<xmp class="prettyprint">
+npm install vue-loader@^13.6.0
+npm install vue-loader@^13.6.0 --save-dev
+</xmp>
+
+Then for template
+<xmp class="prettyprint">
+npm install vue-template-compiler@^2.5.11
+npm install vue-template-compiler@^2.5.11 --save-dev
+</xmp>
+
+<p><span style="font-size: 14pt;">2.Then run <span style="color: #ff0000;"><strong>webpack<span style="color: #000000;"> (webpack in cmd you must not see any error there)</span></strong></span>&nbsp;then you will see those package in dev-dependency in package.json as below:</span></p>
+
+<xmp class="prettyprint">
+    "devDependencies": {
+        "babel-core": "^6.26.3",
+        "babel-loader": "^7.1.4",
+        "vue-loader": "^13.6.0",
+        "vue-template-compiler": "^2.5.11",
+        "webpack": "^3.10.0"
+        },
+</xmp>
+
+<p><span style="font-size: 14pt;">Alternatively&nbsp; step of Step 2 to install those package :</span></p>
+<p>Put those vue-loader and vue-template-compiler in devdependencies in package.json&nbsp; with matching version like above.Then just run <span style="color: #ff0000;"><strong>npm install&nbsp;</strong></span></p>
+<p>Then all package that is present in package.json will be installed and these installed file will be present at node_module folder of the project folder.</p>
+
+===========================================================================================<br>
+<p><span style="font-size: 14pt;">3.Add Vue Loader's plugin to your webpack config file as below</span></p>
+
+<xmp class="prettyprint">
+        module.exports = {
+            entry: './scripts/index.js',
+            output: {
+            filename: './scripts/dist/bundle.js'
+            },
+            devtool: 'source-map',
+            module: {
+            loaders: [
+            {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            loader: 'babel-loader',
+            query: {
+            presets: ['es2015', 'stage-0']
+            }
+            },
+            {
+            test: /\.vue$/,
+            exclude: /node_modules/, 
+            loader: 'vue-loader'
+            }
+            ],
+            }
+            };
+</xmp>
+Then run webpack
+
+============================================================================================
+<p><strong><span style="font-size: 14pt;">4.Be ready to create .vue component</span></strong></p>
+
+
+<p>&nbsp; Lets create<span style="font-size: 12pt;"> <strong>vuecomponents / child-modal.vue</strong></span></p>
+<p><strong>Inside child-modal.vue :</strong></p>
+<p>&nbsp;</p>
+
+<xmp class="prettyprint">
+<template>
+<h1 style="color:red">{{ b }}</h1>
+</template>
+
+<script type="text/javascript">
+export default {
+name: 'child-modal',
+data() {
+return {
+b:10,
+}
+},
+props: ['test'],
+methods: {
+
+},
+mounted(){
+let vm=this;
+vm.b=vm.test+vm.b
+}
+}
+</script>
+                          
+</xmp>
+
+<p><span style="font-size: 14pt;">5. Then goto index.js and register child-model.vue component as below</span></p>
+
+<xmp class="prettyprint">
+import ChildModal from './vue-components/child-modal.vue';
+global.ChildModal=ChildModal;
+</xmp>
+
+===================================
+<p><span style="font-size: 14pt;">6. Then create componenttestcontroller.cs</span></p>
+
+
+<xmp class="prettyprint">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace IntegratingVueWithMVC.Controllers
+{
+public class ComponentTestController : Controller
+{
+// GET: ComponentTest
+public ActionResult Index()
+{
+return View();
+}
+}
+}                 
+</xmp>
+
+<p><span style="font-size: 14pt;">7)Then create view of index action as</span><span style="color: #ff0000;"> index.cshtml</span><span style="font-size: 14pt;"> as below</span></p>
+<xmp class="prettyprint">
+<div id="app">
+        <child-modal :test="message"></child-modal> 
+</div>
+    
+    
+@section scripts{
+    <script type="text/javascript">
+        Vue.component('child-modal', ChildModal);
+        new Vue({
+            el: "#app",
+            data: {
+                message:45
+            },
+            methods:{
+            },
+            mounted() {
+            }
+        });
+    </script>
+    }          
+</xmp>
+
+
+<p>Then run the application and output will be as :</p>
+<h2 style="color:red"><strong>55</strong></h2>
+<p>&nbsp;</p>
+<h2>Completed</h2>
+====================================================================================================================
+<h2>Important Steps</h2>
+
+<div class="row">
+
+    <div class="col-lg-6">
+        index.cshtml
+        <xmp class="prettyprint">
+<div id="app">
+    <child-modal :test="message"></child-modal> 
+</div>
+    
+    
+@section scripts{
+    <script type="text/javascript">
+        Vue.component('child-modal', ChildModal);
+        new Vue({
+            el: "#app",
+            data: {
+                message:45
+            },
+            methods:{
+            },
+            mounted() {
+            }
+        });
+    </script>
+    }               
+</xmp>
+    </div>
+
+<div class="col-lg-6">
+        child-component.vue
+    <xmp class="prettyprint">
+<<template>
+        <h1 style="color:red">{{ b }}</h1>
+      </template>
+      
+      <script type="text/javascript">
+        export default {
+        name: 'child-modal',
+        data() {
+        return {
+        b:10,
+        }
+        },
+        props: ['test'],
+        methods: {
+      
+        },
+        mounted(){
+        let vm=this;
+        vm.b=vm.test+vm.b
+        }
+        }
+      </script>
+           
+            </xmp>
+        </div>
+</div>
+
+
+<h2>We can do validation check as well</h2>
+
+<div class="row">
+    <div class="col-lg-6">
+        <xmp class="prettyprint">
+<template>
+    <h2>{{ test }}</h2>
+</template>
+        
+        
+        <script type="text/javascript">
+        
+        export default {
+        name: 'child-modal',
+        data() {
+        return {
+       b:10,
+        }
+        },
+        props: {
+            test: {
+            type: Number,
+            required: true
+            }
+        },
+        methods: {
+        
+        }
+        }
+        </script>
+          
+        </xmp>
+
+        OUtput:
+        <h2 style="color:red">55</h2>
+            </div>
+
+    <div class="col-lg-6">
+            <xmp class="prettyprint">
+    <template>
+        <h2 style="color:red">{{ test }}</h2>
+    </template>
+            
+            
+    <script type="text/javascript">
+    
+    export default {
+    name: 'child-modal',
+    data() {
+    return {
+    b:10,
+    }
+    },
+    props: {
+        test: {
+        type: Boolean,
+        required: true
+        }
+    },
+    methods: {
+    
+    }
+    }
+    </script>
+        
+            </xmp>
+
+            OUtput:
+            <h2 style="color:red">55</h2>
+            with following error in console
+            <p><span style="color: #ff0000;">[Vue warn]: Invalid prop: type check failed for prop "test". Expected Boolean, got Number.</span></p>
+<p><span style="color: #ff0000;">found in</span></p>
+<p><span style="color: #ff0000;">---&gt; &lt;ChildModal&gt; at scripts\vue-components\child-modal.vue</span><br /><span style="color: #ff0000;">&lt;Root&gt;</span></p>
+
+        </div>
+</div>
+
+==============================================================================================
+
+<h2>Passing static and dynamic data </h2>
+<div class="row">
+    <div class="col-lg-7">
+        Passing static data
+        <xmp class="prettyprint">
+                <child-modal text="message"></child-modal>
+                //here message is static data which is passed to child component
+
+        </xmp>
+        <xmp class="prettyprint">
+            <!-- Even though `message` is static, we need v-bind to tell Vue that -->
+            <!-- this is a JavaScript expression rather than a string.          -->
+            <child-modal :text="message"></child-modal>
+        </xmp>
+    </div>
+
+    <div class="col-lg-5">
+            <xmp class="prettyprint">
+     <child-modal v-bind:likes="post.message"></child-modal> 
+            </xmp>
+    </div>
+</div>
+
+=====================================================================================
+<p><span style="color: #ff00ff; font-size: 18pt;"><span style="color: #ff0000;">Passing Boolean value</span></span></p>
+
+
+<div class="row">
+    <div class="col-lg-7">
+        <xmp class='prettyprint'>
+<!-- Including the prop with no value will imply `true`. -->
+<blog-post is-published></blog-post>
+        </xmp>
+    </div>
+
+    <div class="col-lg-5" style="padding:0;margin:0">
+            <xmp class='prettyprint'>
+<!-- Even though `false` is static, we need v-bind to tell Vue that -->
+<!-- this is a JavaScript expression rather than a string.          -->
+<blog-post v-bind:is-published="false"></blog-post>
+            </xmp>
+        </div>
+</div>
+
+================================================================================================
+<p><span style="color: #ff00ff; font-size: 18pt;"><span style="color: #ff0000;">Passing Array value</span></span></p>
+
+
+</body>
+</html>

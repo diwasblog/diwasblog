@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../css/dracula.css">
+    <link rel="stylesheet" href="../css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+
+
+    =============================================================================================<p><span style="font-size: 14pt;"><strong>In SQL server, there are different types of JOINS.</strong></span><br />1. CROSS JOIN<br />2. INNER JOIN&nbsp;<br />3. OUTER JOIN&nbsp;</p>
+<p><span style="font-size: 14pt;"><strong>Outer Joins are again divided into 3 types</strong></span><br />1. Left Join or Left Outer Join<br />2. Right Join or Right Outer Join<br />3. Full Join or Full Outer Join</p>
+
+
+<h2>Note :minimum number of join statements to join n tables are (n-1).</h2>
+====================================================================
+
+    <div class="row">
+      <div class="col-lg-6">
+          <pre>
+            <code class="language-sql">
+
+            </code>
+          </pre>
+       </div>
+        
+        <div class="col-lg-6">
+           <pre>
+            <code class="language-sql">
+
+            </code>
+          </pre>
+       </div>
+    </div>  
+
+    =====
+     <div class="row">
+      <div class="col-lg-6">
+        <h2>Employee</h2>
+          <table border="1">
+<tbody>
+<tr style="background-color: gray; color: white;">
+<td>Id</td>
+<td>Name</td>
+<td>Gender</td>
+<td>Salary</td>
+<td>DepartmentId</td>
+</tr>
+<tr>
+<td>1</td>
+<td>A</td>
+<td>Male</td>
+<td>4000</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>B</td>
+<td>Female</td>
+<td>3000</td>
+<td>3</td>
+</tr>
+<tr>
+<td>3</td>
+<td>C</td>
+<td>Male</td>
+<td>3500</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>D</td>
+<td>Male</td>
+<td>4500</td>
+<td>2</td>
+</tr>
+<tr>
+<td>5</td>
+<td>E</td>
+<td>Male</td>
+<td>2800</td>
+<td>2</td>
+</tr>
+<tr>
+<td>6</td>
+<td>F</td>
+<td>Male</td>
+<td>7000</td>
+<td>1</td>
+</tr>
+<tr>
+<td>7</td>
+<td>G</td>
+<td>Female</td>
+<td>4800</td>
+<td>3</td>
+</tr>
+<tr>
+<td>8</td>
+<td>H</td>
+<td>Female</td>
+<td>5500</td>
+<td>1</td>
+</tr>
+<tr>
+<td>9</td>
+<td>I</td>
+<td>Male</td>
+<td>6500</td>
+<td>NULL</td>
+</tr>
+<tr>
+<td>10</td>
+<td>J</td>
+<td>Male</td>
+<td>8800</td>
+<td>NULL</td>
+</tr>
+</tbody>
+</table>
+       </div>
+        
+        <div class="col-lg-6">
+          <h2>Department</h2>
+           <table border="1">
+<tbody>
+<tr style="background-color: gray; color: white;">
+<td>Id</td>
+<td>DepartmentName</td>
+<td>Location</td>
+<td>DepartmentHead</td>
+</tr>
+<tr>
+<td>1</td>
+<td>IT</td>
+<td>London</td>
+<td>Rick</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Payroll</td>
+<td>Delhi</td>
+<td>Diwas</td>
+</tr>
+<tr>
+<td>3</td>
+<td>HR</td>
+<td>New York</td>
+<td>Subham</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Other Department</td>
+<td>Sydney</td>
+<td>Suspense</td>
+</tr>
+<tr>
+<td>NULL</td>
+<td>NULL</td>
+<td>NULL</td>
+<td>NULL</td>
+</tr>
+</tbody>
+</table>
+       </div>
+    </div>  
+    ====<br>
+
+    ==========================================================================================
+    <br>
+ <div class="row">
+      <div class="col-lg-6">
+        <h2>New Ways</h2>
+          <pre>
+            <code class="language-sql">
+               SELECT e.Name, e.Gender, e.Salary, d.DepartmentName
+                FROM Employee e
+                INNER JOIN Department d
+                ON e.DepartmentId = d.Id
+            </code>
+          </pre>
+       </div>
+        
+        <div class="col-lg-6">
+          <h2>Old Ways('Where' is used instead of 'ON')</h2>
+           <pre>
+            <code class="language-sql">                
+              SELECT e.Name, d.DepartmentName
+              FROM tblEmployee AS e, tblDepartment AS d
+              WHERE e.DepartmentId=d.Id;
+            </code>
+          </pre>
+       </div>
+    </div>  
+
+
+<table border="1">
+<tbody>
+<tr style="background-color: gray; color: white;">
+<td >Name</td>
+<td >Gender</td>
+<td >Salary</td>
+<td >DepartmentName</td>
+</tr>
+<tr>
+<td >A</td>
+<td >Male</td>
+<td >4000</td>
+<td >IT</td>
+</tr>
+<tr>
+<td >B</td>
+<td >Female</td>
+<td >3000</td>
+<td >HR</td>
+</tr>
+<tr>
+<td >C</td>
+<td ">Male</td>
+<td >3500</td>
+<td >IT</td>
+</tr>
+<tr>
+<td >D</td>
+<td>Male</td>
+<td >4500</td>
+<td >Payroll</td>
+</tr>
+<tr>
+<td >E</td>
+<td >Male</td>
+<td >2800</td>
+<td >Payroll</td>
+</tr>
+<tr>
+<td >F</td>
+<td >Male</td>
+<td >7000</td>
+<td >IT</td>
+</tr>
+<tr>
+<td >G</td>
+<td >Female</td>
+<td >4800</td>
+<td >HR</td>
+</tr>
+<tr>
+<td >H</td>
+<td >Female</td>
+<td >5500</td>
+<td >IT</td>
+</tr>
+</tbody>
+</table>
+If you look at the output, we got only 8 rows, but in the Employees table, we have 10 rows. We didn't get I and  J records. This is because the DEPARTMENTID, in Employees table is NULL for these two employees and doesn't match with ID column in Departments table. =======================================================================================
+
+<br>
+<h2>Left Join</h2>
+<p><span style="color: #ff00ff; font-size: 14pt;"><strong>LEFT JOIN or LEFT OUTER JOIN</strong></span></p>
+<p><span style="color: #000000; font-size: 14pt;"><strong>Now, let's say, I want all the rows from the Employees table, including JAMES and RUSSELL records. I want the output, as shown below.&nbsp;</strong></span></p>
+
+<div class="row">
+  <div class="col-lg-6">
+    <table border="1">
+<tr style="background-color: gray;color:white">
+<td >Name</td>
+<td >Gender</td>
+<td >Salary</td>
+<td >DepartmentName</td>
+</tr>
+<tr>
+<td >A</td>
+<td >Male</td>
+<td >4000</td>
+<td >IT</td>
+</tr>
+<tr>
+<td >B</td>
+<td >Female</td>
+<td >3000</td>
+<td >HR</td>
+</tr>
+<tr>
+<td >C</td>
+<td ">Male</td>
+<td >3500</td>
+<td >IT</td>
+</tr>
+<tr>
+<td >D</td>
+<td>Male</td>
+<td >4500</td>
+<td >Payroll</td>
+</tr>
+<tr>
+<td >E</td>
+<td >Male</td>
+<td >2800</td>
+<td >Payroll</td>
+</tr>
+<tr>
+<td >F</td>
+<td >Male</td>
+<td >7000</td>
+<td >IT</td>
+</tr>
+<tr>
+<td >G</td>
+<td >Female</td>
+<td >4800</td>
+<td >HR</td>
+</tr>
+<tr>
+<td >H</td>
+<td >Female</td>
+<td >5500</td>
+<td >IT</td>
+</tr>
+
+<tr>
+<td >I</td>
+<td >Male</td>
+<td >6500</td>
+<td >Null</td>
+</tr>
+
+<tr>
+<td >J</td>
+<td >Male</td>
+<td >6800</td>
+<td >NULL</td>
+</tr>
+</tbody>
+</table>
+  </div>
+
+  <div class="col-lg-6">
+    <pre>
+      <code class="language-sql">
+        SELECT e.Name, e.Gender, e.Salary, d.DepartmentName
+        FROM tblEmployee e
+        LEFT  JOIN tblDepartment d
+        ON e.DepartmentId = d.Id
+
+
+      </code>
+    </pre>
+  </div>
+</div>
+
+<p><span style="font-size: 14pt;"><strong>Note:</strong>&nbsp;You can use, LEFT JOIN or LEFT OUTER JOIN. OUTER keyowrd is optional</span><br /><br /><span style="font-size: 14pt;"><strong>LEFT JOIN</strong>, returns all the matching rows + non matching rows from the left table.&nbsp;</span></p>
+
+
+===============================================================================================
+<h2>Right Join o Right Outer Join</h2>
+
+<p><span style="font-size: 14pt;"><strong>RIGHT JOIN or RIGHT OUTER JOIN :</strong>I want, all the rows from the right table. The query output should be, as shown below.&nbsp;</span></p>
+
+
+<p><span style="font-size: 14pt;"><strong>Note:</strong>&nbsp;You can use, <span style="color: #ff0000;">RIGHT JOIN or RIGHT OUTER JOIN</span>. OUTER keyowrd is optional</span><br /><br /><span style="font-size: 14pt;"><strong>RIGHT JOIN</strong>, <strong><span style="color: #000000;">returns all the matching rows + non matching rows from the right table.</span></strong></span></p>
+
+<div class="row">
+  <div class="col-lg-6">
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr style="color: white; background-color: gray;">
+<td>Name</td>
+<td>Gender</td>
+<td>Salary</td>
+<td>DepartmentName</td>
+</tr>
+<tr>
+<td>A</td>
+<td>Male</td>
+<td>4000</td>
+<td>IT</td>
+</tr>
+<tr>
+<td>C</td>
+<td>Male</td>
+<td>3500</td>
+<td>IT</td>
+</tr>
+<tr>
+<td>F&nbsp;</td>
+<td>Male</td>
+<td>7000</td>
+<td>IT</td>
+</tr>
+<tr>
+<td>H</td>
+<td>Female</td>
+<td>5000</td>
+<td>IT</td>
+</tr>
+<tr>
+<td>D</td>
+<td>Male</td>
+<td>4500</td>
+<td>Payroll</td>
+</tr>
+<tr>
+<td>E</td>
+<td>Male</td>
+<td>2800</td>
+<td>Payroll</td>
+</tr>
+<tr>
+<td>B</td>
+<td>Female</td>
+<td>3000</td>
+<td>HR</td>
+</tr>
+<tr>
+<td>G</td>
+<td>Female</td>
+<td>4800</td>
+<td>HR</td>
+</tr>
+<tr>
+<td>NULL</td>
+<td>NULL</td>
+<td>NULL</td>
+<td>Other Department</td>
+</tr>
+</tbody>
+</table>
+  </div>
+
+  <div class="col-lg-6">
+    <pre>
+      <code class="language-sql">
+        SELECT e.Name, e.Gender, e.Salary, d.DepartmentName
+        FROM tblEmployee e
+        RIGHT  JOIN tblDepartment d
+        ON e.DepartmentId = d.Id
+
+
+      </code>
+    </pre>
+  </div>
+</div>
+=================================================================================
+<h2>Full JOIN </h2>
+<p><span style="font-size: 14pt; color: #ff00ff;"><strong>FULL JOIN or FULL OUTER JOIN</strong></span><br /><span style="font-size: 14pt;">I want all the rows from both the tables involved in the join. The query output should be, as shown below.&nbsp;</span></p>
+
+
+<div class="row">
+  <div class="col-lg-6">
+    <table border="1">
+<tr style="background-color: gray;color:white">
+<td >Name</td>
+<td >Gender</td>
+<td >Salary</td>
+<td >DepartmentName</td>
+</tr>
+<tr>
+<td >A</td>
+<td >Male</td>
+<td >4000</td>
+<td >IT</td>
+</tr>
+<tr>
+<td >B</td>
+<td >Female</td>
+<td >3000</td>
+<td >HR</td>
+</tr>
+<tr>
+<td >C</td>
+<td ">Male</td>
+<td >3500</td>
+<td >IT</td>
+</tr>
+<tr>
+<td >D</td>
+<td>Male</td>
+<td >4500</td>
+<td >Payroll</td>
+</tr>
+<tr>
+<td >E</td>
+<td >Male</td>
+<td >2800</td>
+<td >Payroll</td>
+</tr>
+<tr>
+<td >F</td>
+<td >Male</td>
+<td >7000</td>
+<td >IT</td>
+</tr>
+<tr>
+<td >G</td>
+<td >Female</td>
+<td >4800</td>
+<td >HR</td>
+</tr>
+<tr>
+<td >H</td>
+<td >Female</td>
+<td >5500</td>
+<td >IT</td>
+</tr>
+
+<tr>
+<td >I</td>
+<td >Male</td>
+<td >6500</td>
+<td >Null</td>
+</tr>
+
+<tr>
+<td >J</td>
+<td >Male</td>
+<td >6800</td>
+<td >NULL</td>
+</tr>
+
+<tr>
+<td>NULL</td>
+<td>NULL</td>
+<td>NULL</td>
+<td>Other Department</td>
+</tr>
+</tbody>
+</table>
+  </div>
+
+  <div class="col-lg-6">
+    <pre>
+      <code class="language-sql">
+        SELECT e.Name, e.Gender, e.Salary, d.DepartmentName
+        FROM tblEmployee e
+        FULL  JOIN tblDepartment d  //or FULL OUTER JOIN
+        ON e.DepartmentId = d.Id
+
+
+      </code>
+    </pre>
+  </div>
+</div>
+
+===============================================================
+
+<h2>Cartesian Join</h2>
+
+<ul>
+<li><span style="font-size: 14pt;">CROSS JOIN, produces the cartesian product of the 2 tables involved in the join. For example, in the Employees table we have <span style="color: #ff00ff;">10 rows</span> and in the Departments table we have <span style="color: #ff00ff;">4 rows</span>. So, a cross join between these 2 tables produces 40 rows. </span></li>
+<li><span style="font-size: 14pt;">Cross Join shouldn't have ON clause.&nbsp;</span></li>
+</ul>
+
+
+=================================
+<br>
+<img src="../img/join.png">
+<img src="../img/join_summery.png">
+
+    ==============================================================
+    <br>
+    <h2>Advance Join</h2>
+
+    1)<p><span style="font-size: 14pt; color: #ff00ff;"><strong>How to retrieve only the non matching rows from the left table?</strong></span></p>
+<div class="row">
+  <div class="col-lg-6">
+
+    <table border="1">
+<tr style="background-color: gray;color:white">
+<td >Name</td>
+<td >Gender</td>
+<td >Salary</td>
+<td >DepartmentName</td>
+</tr>
+
+<tr>
+<td >I</td>
+<td >Male</td>
+<td >6500</td>
+<td >Null</td>
+</tr>
+
+<tr>
+<td >J</td>
+<td >Male</td>
+<td >6800</td>
+<td >NULL</td>
+</tr>
+</tbody>
+</table>
+<img src="../img/left_only_join.png">
+  </div>
+
+  <div class="col-lg-6">
+    <pre>
+      <code class="language-sql">
+        SELECT e.Name, e.Gender, e.Salary, d.DepartmentName
+        FROM Employee e
+        LEFT  JOIN Department d
+        ON e.DepartmentId = d.Id
+        Where d.Id IS NULL
+
+
+      </code>
+    </pre>
+  </div>
+</div>
+
+===================================================================================<br>
+ 2)<p><span style="font-size: 14pt; color: #ff00ff;"><strong>How to retrieve only the non matching rows from the Right table?</strong></span></p>
+<div class="row">
+  <div class="col-lg-6">
+
+    <table border="1">
+<tr style="background-color: gray;color:white">
+<td >Name</td>
+<td >Gender</td>
+<td >Salary</td>
+<td >DepartmentName</td>
+</tr>
+
+<tr>
+<td>NULL</td>
+<td>NULL</td>
+<td>NULL</td>
+<td>Other Department</td>
+</tr>
+</tbody>
+</table>
+<img src="../img/right_only_join.png">
+  </div>
+
+  <div class="col-lg-6">
+    <pre>
+      <code class="language-sql">
+        SELECT e.Name, e.Gender, e.Salary, d.DepartmentName
+        FROM Employee e
+        RIGHT  JOIN Department d
+        ON e.DepartmentId = d.Id
+        Where e.DepartmentId IS NULL
+
+
+      </code>
+    </pre>
+  </div>
+</div>
+
+    =================================================<br>
+2)<p><span style="font-size: 14pt; color: #ff00ff;"><strong>How to retrieve only the non matching rows from both the left and right table. Matching rows should be eliminated. </strong></span></p>
+<div class="row">
+  <div class="col-lg-6">
+
+    <table border="1">
+<tr style="background-color: gray;color:white">
+<td >Name</td>
+<td >Gender</td>
+<td >Salary</td>
+<td >DepartmentName</td>
+</tr>
+
+
+<tr>
+<td >I</td>
+<td >Male</td>
+<td >6500</td>
+<td >Null</td>
+</tr>
+
+<tr>
+<td >J</td>
+<td >Male</td>
+<td >6800</td>
+<td >NULL</td>
+</tr>
+
+<tr>
+<td>NULL</td>
+<td>NULL</td>
+<td>NULL</td>
+<td>Other Department</td>
+</tr>
+</tbody>
+</table>
+<img src="../img/Left and right only join.png">
+  </div>
+
+  <div class="col-lg-6">
+    <pre>
+      <code class="language-sql">
+        SELECT e.Name, e.Gender, e.Salary, d.DepartmentName
+        FROM Employee e
+        RIGHT  JOIN Department d
+        ON e.DepartmentId = d.Id
+        WHERE e.DepartmentId IS NULL
+        OR   d.Id IS NULL
+      </code>
+    </pre>
+  </div>
+</div>
+
+================================================================================
+<br>
+<h2>Self Join</h2>
+
+<h3>Employee Table</h3>
+<div class="row">
+  <div class="col-lg-6">
+    <table style="border-collapse: collapse; width: 100%; height: 294px;" border="1">
+<tbody>
+<tr style="background-color: gray; color: white;">
+<td>EmployeeId</td>
+<td>Name</td>
+<td>ManagerId</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Mike</td>
+<td>3</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Rob</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Todd</td>
+<td>NULL</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Ben</td>
+<td>1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Sam</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+  </div>
+
+  <div class="col-lg-6">
+    <h3>Wants</h3>
+    <table style="border-collapse: collapse; width: 100%; height: 294px;" border="1">
+<tbody>
+<tr style="background-color: gray; color: white;">
+<td>Employee</td>
+<td>Manager</td>
+</tr>
+<tr>
+<td>Mike</td>
+<td>Todd</td>
+</tr>
+<tr>
+<td>Rob</td>
+<td>Mike</td>
+</tr>
+<tr>
+<td>Todd</td>
+<td>NULL</td>
+</tr>
+<tr>
+<td>Ben</td>
+<td>Mike</td>
+</tr>
+<tr>
+<td>Sam</td>
+<td>Mike</td>
+</tr>
+</tbody>
+</table>
+  </div>
+ </div> 
+
+<h2>Use Join to achieve this(any one of these)</h2>
+
+<div class="row">
+  <div class="col-lg-4">
+    <pre>
+  <code class="language-sql">
+    Select E.Name as Employee, M.Name as Manager
+    from Employee E
+    Left Join Employee M
+    On E.ManagerId = M.EmployeeId
+  </code>
+ </pre> 
+  </div>
+
+  <div class="col-lg-4">
+    <pre>
+  <code class="language-sql">
+    Select E.Name as Employee, M.Name as Manager
+    from Employee E
+    Inner Join Employee M
+    On E.ManagerId = M.EmployeeId
+  </code>
+ </pre> 
+  </div>
+
+  <div class="col-lg-4">
+    <pre>
+  <code class="language-sql">
+    Select E.Name as Employee, M.Name as Manager
+    from Employee
+    Cross Join Employee
+  </code>
+ </pre> 
+  </div>
+ </div> 
+
+
+    =================================================================<br>
+<h3 class="post-title entry-title"><strong><span style="color: #ff00ff;">Different ways to replace NULL in sql server ?</span></strong></h3>
+
+We got this from previous: <br>
+ <table style="border-collapse: collapse; width: 100%; height: 294px;" border="1">
+<tbody>
+<tr style="background-color: gray; color: white;">
+<td>Employee</td>
+<td>Manager</td>
+</tr>
+<tr>
+<td>Mike</td>
+<td>Todd</td>
+</tr>
+<tr>
+<td>Rob</td>
+<td>Mike</td>
+</tr>
+<tr>
+<td>Todd</td>
+<td>NULL</td>
+</tr>
+<tr>
+<td>Ben</td>
+<td>Mike</td>
+</tr>
+<tr>
+<td>Sam</td>
+<td>Mike</td>
+</tr>
+</tbody>
+</table>
+
+
+Do this :
+
+<div class="row">
+    <div class="col-lg-6">
+
+  <pre>
+      <code class="language-sql">
+  SELECT E.Name as Employee, ISNULL(M.Name,'No Manager') as Manager
+  FROM Employee E
+  LEFT JOIN Employee M
+  ON E.ManagerID = M.EmployeeID
+      </code>
+  </pre>
+     </div>
+
+     <div class="col-lg-6">
+        <h2>OR</h2>
+    <pre>
+      <code class="language-sql">
+          SELECT E.Name as Employee, COALESCE(M.Name, 'No Manager') as Manager
+    FROM Employee E
+    LEFT JOIN Employee M
+    ON E.ManagerID = M.EmployeeID
+      </code>
+    </pre>
+     </div> 
+ </div> 
+
+ <h2>Output</h2>
+
+ <table style="border-collapse: collapse; width: 100%; height: 294px;" border="1">
+<tbody>
+<tr style="background-color: gray; color: white;">
+<td>Employee</td>
+<td>Manager</td>
+</tr>
+<tr>
+<td>Mike</td>
+<td>Todd</td>
+</tr>
+<tr>
+<td>Rob</td>
+<td>Mike</td>
+</tr>
+<tr>
+<td>Todd</td>
+<td>No Manager</td>
+</tr>
+<tr>
+<td>Ben</td>
+<td>Mike</td>
+</tr>
+<tr>
+<td>Sam</td>
+<td>Mike</td>
+</tr>
+</tbody>
+</table>
+===================================================================
+
+<script src="../js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+1) Goto google font url and get links of your favourite font style
+eg. 
+
+<link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Tangerine">
+
+2) Then use it in body style.
+
+ body {
+        font-family: 'Tangerine', serif;
+        font-size: 48px;
+      }
+
+
+As a whole:
+
+<html>
+  <head>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Tangerine">
+    <style>
+      body {
+        font-family: 'Tangerine', serif;
+        font-size: 48px;
+      }
+    </style>
+  </head>
+  <body>
+    <div>Making the Web Beautiful!</div>
+  </body>
+</html>

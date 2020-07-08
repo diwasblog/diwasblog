@@ -1,0 +1,97 @@
+-- Type: tran_detail_type
+
+-- DROP TYPE transactions.tran_detail_type;
+
+CREATE TYPE transactions.tran_detail_type AS
+(
+	tran_id bigint,
+	account_number_id bigint,
+	loan_id bigint,
+	share_account_id bigint,
+	gl_account_id bigint,
+	repository_id bigint,
+	is_interest boolean,
+	slip_number bigint,
+	check_number bigint,
+	is_loan_collection boolean,
+	debit money,
+	credit money,
+	statement_reference character varying(1500),
+	deno_id bigint,
+	office_id integer,
+	ref_dep_ac_id bigint,
+	source_detail_id int,
+	source_other character varying(50)
+	
+);
+
+ALTER TYPE transactions.tran_detail_type
+    OWNER TO postgres;
+
+
+
+
+
+-- FUNCTION: transactions.post_transaction(json, json, json)
+
+-- DROP FUNCTION transactions.post_transaction(json, json, json);
+
+CREATE OR REPLACE FUNCTION transactions.post_transaction(
+	tran_ json,
+	detail_ json,
+	share_tran_ json)
+    RETURNS bigint[]
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+AS $BODY$
+    DECLARE r           transactions.tran_type;
+    DECLARE _tran_id    bigint;
+    DECLARE _tran_ids   bigint[];
+BEGIN
+
+    FOR r IN SELECT * FROM json_populate_recordset(null::transactions.tran_type, $1)
+    LOOP
+
+        INSERT INTO transactions.transactions(
+            office_id, tran_date, value_date, book_name, collector_id, 
+            total_amount, teller_id, is_auto_payment, is_compounded, is_flagged, instrument_id, 
+            instrument_number, verification_status_id, verified_by_user_id, audit_user_id, collection_sheet_id,
+            loan_receipt_id, loan_reimburse_id, cash_transfer_id, remittance_id, standing_instruction_id, ibt_tran_id
+        )
+        SELECT r.office_id, r.tran_date, r.value_date, r.book_name, r.collector_id, 
+            r.total_amount, r.teller_id, r.is_auto_payment, r.is_compounded, false, r.instrument_id, 
+            r.instrument_number, r.verification_status_id, r.verified_by_user_id, r.teller_id, r.collection_sheet_id,
+            r.loan_receipt_id, r.loan_reimburse_id, r.cash_transfer_id, r.remittance_id, r.standing_instruction_id, r.ibt_tran_id;
+
+        SELECT CURRVAL('transactions.transactions_tran_id_seq') INTO _tran_id;
+        IF _tran_ids IS NULL THEN
+        _tran_ids := array[_tran_id];
+
+        ELSE
+            _tran_ids := _tran_ids || _tran_id;
+        END IF;
+
+        INSERT INTO transactions.transaction_details(
+            tran_id, account_number_id, loan_id, gl_account_id, share_account_id, repository_id,is_interest, 
+            slip_number, check_number, is_loan_collection, debit, credit, statement_reference, audit_user_id, deno_id, ref_dep_ac_id, source_detail_id, source_other)
+
+        SELECT _tran_id, td.account_number_id, td.loan_id, td.gl_account_id, td.share_account_id, td.repository_id, td.is_interest, 
+            td.slip_number, td.check_number, td.is_loan_collection, td.debit, td.credit, td.statement_reference, r.teller_id, td.deno_id, 
+			td.ref_dep_ac_id, td.source_detail_id, td.source_other
+        FROM json_populate_recordset(null::transactions.tran_detail_type, $2) td
+        WHERE td.office_id = r.office_id;
+
+        INSERT INTO transactions.share_transaction(tran_id, share_account_id, kitta_from, kitta_to, audit_user_id)
+        SELECT tran_id, share_account_id, kitta_from, kitta_to, audit_user_id
+        FROM json_populate_recordset(null::transactions.share_tran_type, null) s
+        WHERE s.office_id = r.office_id;
+    END LOOP;
+
+    RETURN _tran_ids;
+END
+$BODY$;
+
+ALTER FUNCTION transactions.post_transaction(json, json, json)
+    OWNER TO postgres;

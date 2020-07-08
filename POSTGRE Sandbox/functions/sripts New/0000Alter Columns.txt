@@ -1,0 +1,7 @@
+ALTER TABLE core.deposit_products ADD COLUMN is_bonus boolean NOT NULL DEFAULT FALSE;
+
+ALTER TABLE core.deposit_products ADD COLUMN flat_bonus boolean;
+
+ALTER TABLE deposit.account_holders ADD COLUMN bonus_rate double precision;
+
+ALTER TABLE deposit.account_holders ADD COLUMN bonus_amount money;

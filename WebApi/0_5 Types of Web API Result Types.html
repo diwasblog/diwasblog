@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+
+<p><span style="font-size: 14pt;">Web API service is a REST enabled service, and beware of 3 things :</span></p>
+<ul>
+<li><span style="font-size: 12pt;">What is the response&nbsp;<span style="color: #ff0000;"><strong><a style="color: #ff0000;" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status" target="_blank" rel="noopener">Status code</a></strong></span></span></li>
+<li><span style="font-size: 12pt;">What is<span style="color: #ff0000;">&nbsp;<strong><a style="color: #ff0000;" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Complete_list_of_MIME_types" target="_blank" rel="noopener">content type</a></strong></span></span></li>
+<li><span style="font-size: 12pt;">What is the <span style="color: #ff0000;"><strong>output we return</strong></span> (required result)</span></li>
+</ul>
+<p>&nbsp;</p>
+<p><strong><span style="font-size: 14pt; color: #ff0000;">Type of WebApi Action Result</span></strong></p>
+<p><span style="font-size: 12pt;">Webapi returns any of these 4 result.</span></p>
+<ol>
+<li><strong>Void</strong></li>
+<li><strong>Any Entity/Datatype (Primitive or Complex DataType)</strong></li>
+<li><strong>HttpResponseMessage</strong></li>
+<li><strong>IHttpActionResult</strong></li>
+</ol>
+<p>Void</p>
+<p>It will send 204 "No Content" status code as a response when you send HTTP DELETE request&nbsp; as below :</p>
+
+<pre>
+  <code class="language-csharp">
+      public class StudentController : ApiController
+      {
+          public void Delete(int id)
+          {
+              DeleteStudentFromDB(id);
+          }
+      }
+      
+  </code>
+</pre>
+
+================================================================================================
+<br>
+<p><span style="color: #ff00ff;"><strong><span style="font-size: 14pt;">HttpResponseMessage</span></strong></span></p>
+<p><span style="font-size: 14pt;">If the action returns an&nbsp;<span style="color: #ff00ff;"><a style="color: #ff00ff;" href="https://msdn.microsoft.com/library/system.net.http.httpresponsemessage.aspx" data-linktype="external">HttpResponseMessage</a>,</span> Web API converts the <span style="color: #ff00ff;">return value</span> directly into an<span style="color: #ff00ff;"> HTTP response message</span>, using the properties of the&nbsp;<strong>HttpResponseMessage</strong>&nbsp;object to populate the response.</span></p>
+
+
+<p><span style="font-size: 12pt;">The advantage of sending HttpResponseMessage from an action method is that you can configure a response your way. You can set the <span style="color: #ff0000;"><strong>status code</strong></span>, <span style="color: #ff0000;"><strong>content</strong></span> or<span style="color: #ff0000;"><strong> error message</strong> </span>(if any) as per your requirement.</span></p>
+
+<pre>
+  <code class="language-csharp">
+      public HttpResponseMessage Get()
+      {
+          HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, "value1");            
+          return response;
+      }
+  </code> 
+</pre>
+
+<div class="row">
+  <div class="col">
+      Calling sample Web API with HTTP GET request
+      <img src="img/httpresponsemessage1.jpg">
+  </div>
+
+  <div class="col">
+      In Response, It is returning status code 200 OK and Content
+      <img src="img/httpresponsemessage2.jpg">
+    </div>
+</div>
+
+
+==========================================================================================
+<br>
+<pre>
+  <code class="language-csharp">
+      public HttpResponseMessage Get()
+      {
+         // list of Countries
+         List<Country> Countries = new List<Country>();
+          Country country = new Country();
+          country.ID = 1;
+          country.CountryName = "USA";
+          country.Capital = "Washington";
+          Countries.Add(country);
+              
+          if(Countries == null)
+            return Request.CreateResponse(HttpStatusCode.NotFound); 
+
+          //Countries to the response body.             
+          HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, Countries);            
+          return response;
+      }
+  </code>
+</pre>
+
+<img src="img/httpresponsemessage3.jpg">
+==============================================================================================================================
+<br>
+<h5>Using Cache Control Mechanism in HttpResponseMessage</h5>
+
+<pre>
+  <code class="language-csharp">
+      public class ValuesController : ApiController
+      {
+          public HttpResponseMessage Get()
+          {
+              HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, "value");
+              response.Content = new StringContent("hello", Encoding.Unicode);
+              response.Headers.CacheControl = new CacheControlHeaderValue()
+              {
+                  MaxAge = TimeSpan.FromMinutes(20)
+              };
+              return response;
+          } 
+      }
+  </code>
+</pre>
+
+Output:
+<pre>
+  <code class="language-csharp">
+      HTTP/1.1 200 OK
+      Cache-Control: max-age=1200   // as Time is set to 20 minutes
+      Content-Length: 10
+      Content-Type: text/plain; charset=utf-16
+      Server: Microsoft-IIS/8.0
+      Date: Mon, 27 Jan 2014 08:53:35 GMT
+      
+      hello
+  </code>
+</pre>
+==============================================================================================
+<br>
+<p><strong><span style="font-size: 18pt; color: #ff00ff;">IHttpActionResult</span></strong></p>
+Internally it Call ExecuteAsync to create an HttpResponseMessage, then convert to an HTTP response message.
+
+<script src="../ASP Sandbox/js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

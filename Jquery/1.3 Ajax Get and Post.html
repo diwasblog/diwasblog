@@ -1,0 +1,67 @@
+
+<html>
+<head>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+
+<style>
+xmp.prettyprint{
+    font-size:12pt;
+    font-family:monospace;
+
+}
+</style>
+ 
+
+
+
+</head>
+
+
+<body>
+
+<h2>POST Method </h2>
+
+<xmp class="prettyprint">
+	<a href="#" onclick="Delete(@item.InfrastructureId);">Delete</a>
+	
+	<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script>
+	 //note  function always kepted outside of document.ready 
+	function Delete(infrastructureId) {
+		let conf = confirm(`Are you sure to delete this Infrastructure Item ?`);
+		if (!conf) {
+			return;
+		} else {
+			$.ajax({
+
+				type: "POST",
+				url: "/Infrastructure/Delete",
+				data: { infrastructureId: infrastructureId },
+				success: function (result) {
+					console.log(result);
+					window.location.href = '/Infrastructure/Index/';
+				},
+				error: function (errormessage) {
+					alert(errormessage.responseText);
+				}
+
+			})
+		}
+		}
+		
+</xmp>
+
+
+<h2>Get Method </h2>
+<xmp class="prettyprint">
+
+Look cascade dropdown
+</xmp>
+
+
+</body>
+
+</html>

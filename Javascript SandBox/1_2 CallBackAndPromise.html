@@ -1,0 +1,479 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+
+
+<style>
+xmp.prettyprint{
+    font-size:12pt;
+    font-family:monospace;
+
+}
+</style>
+ 
+</head>
+<body>
+<xmp class="prettyprint">
+  var x=function(x){  //function assign to variable
+    return x+3;       
+  }
+  var y=x;
+  y(30); //variable acting as function
+</xmp> 
+
+When a function simply accepts another function as an argument, this contained function is known as a callback function. Using callback functions is a core functional programming concept, and you can find them in most JavaScript code; either in simple functions like setInterval, event listening or when making API calls.
+
+<xmp class="prettyprint">
+//Callback functions are written like so:
+//setInterval accepts a callback function as its first parameter and also a time interval.
+setInterval(function() {
+    console.log('hello!');
+}, 1000);
+</xmp>
+
+
+We used the .map() method to iterate through the array list, the method accepts a callback function which states how each element of the array will be manipulated. Callback functions can also accept arguments as well.
+
+<xmp class="prettyprint">
+const list    = ['man', 'woman', 'child']
+
+// create a new array
+// loop over the array and map the data to new content
+const newList = list.map(function(val) {
+    return val + " kind";
+});
+
+// newList = ['man kind', 'woman kind', 'child kind']
+</xmp>
+
+
+Previous one is anonymous callback function now lets look at named callback function
+<div class="row">
+        <div class="col-sm-6">
+          <xmp class="prettyprint">
+function greeting(name) {
+    console.log(`Hello ${name}, welcome to Scotch!`);
+    }
+            //using this function as call back function
+          </xmp>
+        </div>
+        <div class="col-sm-6">
+            <xmp class="prettyprint">
+function introduction(firstName, lastName, callback) {
+    const fullName = `${firstName} ${lastName}`;
+    
+    callback(fullName);
+    }
+    
+    introduction('Chris','Nwamba', greeting); // Hello Chris Nwamba, welcome to Scotch!
+              </xmp>
+        </div>
+    </div>
+    Note: The callback function is not run unless called by its containing function, it is called back. Hence, the term call back function
+    
+    <br>
+    <br>
+
+<div><strong><span style="font-size: 18pt; color: #ff00ff;">Promise</span></strong></div>
+</div>
+    Like Promise in real life. Your kids promise to clean the room by end of the day. By the end of the day he cleaned the room 
+    or failed.
+    For example, when you were younger and told your mom “I promise to take out the trash”. That meant you will fulfill your promise and throw out the trash some time later in the day. That could be in a couple of minutes or a couple of hours.
+
+
+
+<div class="row">
+    <div class="col-sm-6">
+        <xmp class="prettyprint">
+    let promiseToCleanTheRoom=new Promise(function(resolve,reject){
+
+        //cleaning the room 
+        let isClean=true;
+
+        if (isClean){
+            resolve('clean');
+        }else{
+            reject('not clean');
+        }
+    });
+        </xmp>
+    </div>
+    <div class="col-sm-6">
+        <xmp class="prettyprint">
+    promiseToCleanTheRoom.then(function(fromResolve){ //if resolve then will execute
+        console.log('The room is'+ fromResolve )
+    }).catch(function(fromReject){  // if reject catch will execute
+            console.log('The room is'+fromReject);
+    })
+        </xmp>
+    </div>
+</div>
+
+<div class="row">
+        <div class="col-sm-6">
+            <xmp class="prettyprint">
+    let cleanRoom=function(){
+        return new Promise(function(resolve,reject){
+            resolve(' Cleaned The Room');
+        })
+    };
+    
+    let removeGarbage=function(message){
+        return new Promise(function(resolve,reject){
+            resolve(message+' remove Garbage');
+        })
+    };
+    
+    let winIceCream=function(message){
+        return new Promise(function(resolve,reject){
+            resolve(message+' won IceCream');
+        });
+    };
+                 
+</xmp>
+</div>
+<div class="col-sm-6">
+    <xmp class="prettyprint">
+
+        //these all removeGarbage , winIceCream works in parallel (it is not possible in callback)
+        //and resolve at last
+    cleanRoom().then(function(result){
+        return removeGarbage(result);
+    }).then(function(result){
+        return winIceCream(result);
+    }).then(function(result){
+        console.log('finished'+result);
+    })
+
+
+    //alternatively
+
+    Promise.all([cleanRoom(),removeGarbage(),winIceCream()]).then(function(){
+        console.log("all finised");
+    }).catch(function()=>{
+        console.log("something wrong happends ");
+    })
+    </xmp>
+
+    <xmp class="prettyprint">
+    Output : finished Cleaned The Room remove Garbage won IceCream
+    </xmp>
+</div>
+    </div>
+
+
+=====================================================================================================================================
+<div class="row">
+    <div class="col-xm-6" >
+            <xmp class="prettyprint">
+                let lookupPrice=function(){
+                    return new Promise(function(resolve,reject){
+                        resolve(123);
+                        //reject(123);
+                    })
+                };
+                    
+            </xmp>
+        </div>
+</div>
+
+
+<div class="row">
+    <div class="col-sm-6">
+        <xmp class="prettyprint">
+                lookupPrice(value)
+                .then(function (price) {
+                    console.log('The item costs: ' + price)
+                    })
+                    .catch(function (error){
+                    console.log('Could not find an item with that ID')
+                    })
+        </xmp>
+    </div>
+
+
+    <div class="col-sm-6">
+        <xmp class="prettyprint">
+            OR 
+                lookupPrice(value)
+                .then(function (price) {
+                    console.log('The item costs: ' + price), null})
+                .then(null, function (error){
+                    console.log('Could not find an item with that ID')
+                })
+        </xmp>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="prettyprint">
+        The item costs: 123
+    </div>
+</div>
+
+===========================================================================================================================================
+<div class="row">
+    <div class="prettyprint">
+            lookupPrice(99999)
+            .then(function (price) {
+              console.log('The item costs: ' + price)
+              return price
+            })
+            .then(function (price) {
+              console.log('Double the price: ' + (price * 2))
+            })
+            .catch(function (error){
+              console.log('Could not find an item with that ID')
+            })
+    </div>
+</div>
+If first then will execute then second then will auto execute and catch will not get execute
+But if first then willnot execute then second then will also not execute and catch block will be execute
+==================================================================================================================================================
+
+<h2>Next Best Example of Promise</h2>
+
+<div class="row">
+    <div class="col-sm-6">
+        <xmp class="prettyprint">
+        function generateRandomNumber () {
+            return new Promise(function (resolve, reject) {
+                var randomNumber = Math.floor((Math.random() * 10) + 1)
+                if (randomNumber <= 5) {
+                resolve(randomNumber)
+                } else {
+                reject(randomNumber)
+                }
+            })
+        }
+        </xmp>
+    </div>
+    
+    
+<div class="col-sm-6">
+    <xmp class="prettyprint">
+        generateRandomNumber()
+        .then(function(result) { // if randomNumber>5
+            console.log('Success: ' + result)
+            })
+        .catch(function(error) { //if randomNumer<5
+            console.log('Error: ' + error)
+            })
+            //Test output :Sometime success and sometime failure
+    </xmp>
+</div>
+</div>
+=====================================================================================
+<br>
+<h2>More in depth</h2>
+Javascript is synchronous handling one line at a time.So, if one lines take more time then
+it will not execute code below it until above is finished.
+Works on the basis of top to bottom approaches.
+<xmp class="prettyprint">
+    console.log("Plant corn");
+    console.log("Water plant");
+    console.log("Add fertilizer");
+</xmp>
+Run it :
+Output <br>
+Plant Corn  <br>
+Water Plant <br>
+Add fertilizer <br>
+
+========================================================================
+<br>
+But lets run this :
+<xmp class="prettyprint">
+    console.log("Plant maize");
+
+    setTimeout(function() {
+        console.log("Water plant")
+    },3000);
+    
+    console.log("Add fertilizer");
+</xmp>
+Run it :
+Output <br>
+Plant Corn  <br>
+Add fertilizer <br>
+Water Plant <br>
+
+The setTimeout function makes the operation asynchronous(because it doesnot wait, here function has function inside of it so it is callback function) by deferring plant watering <br>
+ to occur after 3 seconds. The whole operation doesn’t pause for 3 seconds so it can log  <br>
+ “Water plant”. Rather, 
+ the system goes ahead to apply fertilizers and then water plant after 3 seconds.
+
+<br>
+=============================================================================================
+<h2>Different between callback and promise (Important)</h2>
+
+A Callback is a any function which is passed as a parameter to another function and
+ is invoked/executed only after after some kind of event occurs <br>
+
+ <h2>Without Callback</h2>
+ <div class="row">
+     <div class="col-lg-12">
+         <xmp class="prettyprint">
+                fileObject = open(file);
+                // WAIT for the file to open, then write to it
+                fileObject.write("Digital Fortress");
+                // continue execution with opened the file
+         </xmp>
+     </div>
+ </div>
+
+ Here, we need to WAIT for the file to open, before we can write to it. This “blocks” the flow of execution, and our program needs to wait before continuing further execution!
+
+====================================================================================
+
+
+<h2>With Callback</h2>
+
+<xmp class="prettyprint">
+        // define a callback function
+        function writeToFile (fObj) {
+            fObj.write("Digital Fortress");
+        }
+        // we pass the the CALLBACK FUNCTION 'writeToFile' as a parameter to function open()
+        fileObject = open(file, writeToFile(fileObject));
+        // execution continues i.e. we don't wait for the file to be opened
+</xmp>
+As you can see, once the file is opened, the callback function is invoked (which does the write operation), but while we wait for it to be opened, our program can do other things and it does not remain blocked!
+<br>
+
+<h2>Promise</h2>
+
+<xmp class="prettyprint">
+        const promise = new Promise(function (resolve, reject) {
+            // Perform some work (possibly asynchronous, like an http request)
+         
+            if (/* Work finished successfully and produced "value" */) {
+                resolve(value);
+            } else {
+                // Something went wrong because of "reason"
+                let reason = new Error(message);
+                reject(reason);
+                // Throwing an error also rejects the promise.
+                throw reason;
+            }
+        });
+
+
+        promise.then(function(value) {
+            // Work completed successfully,
+            // promise has been fulfilled with "value"
+        }).catch(function(reason) {
+            // Something went wrong,
+            // promise has been rejected with "reason"
+        });
+</xmp>
+
+<h2>Difference</h2>
+
+<p><span style="font-size: 14pt;"><span style="color: #ff0000;"><strong>Promises are not callbacks</strong>.</span> They are more like&nbsp;<strong>wrappers</strong>&nbsp;on callbacks that provide mighty abstraction. That being said, there is nothing that Promises can do and that callbacks cannot! Although, since promises are little more than just regular callbacks,</span></p>
+
+<h2>Promise is more readable</h2>
+
+<xmp class="prettyprint">
+
+
+
+
+
+
+        // Regular Callbacks
+        api1(function(result1){
+            api2(function(result2){
+                api3(function(result3){
+                     // do work
+                });
+            });
+        });
+         
+        // Using Promises
+        api1().then(function(result1){
+            return api2();
+        }).then(function(result2){
+            return api3();
+        }).then(function(result3){
+             // do work
+        });
+</xmp>
+
+With Callbacks, more the number of callbacks you chain, more difficult does it get to read and more difficult to debug as well.
+<br>
+
+<h2>Easy error handling in Promise</h2>
+
+<xmp class="prettyprint">
+        // Regular Callbacks
+        api1(function(error1, result2){
+            if (error1) {
+              // log error
+            } else {
+                api2(function(error2, result2){
+                    if (error2) {
+                    // log error
+                    } else {
+                        api3(function(error, result3){
+                            if (error2) {
+                                // log error
+                            } else {
+                                // do work
+                            }
+                        });
+                    }
+                });
+            }   
+        });
+         
+        // Using Promises
+        api1().then(function(result1){
+            return api2();
+        }).then(function(result2){
+            return api3();
+        }).then(function(result3){
+             // do work
+        }).catch(function(error) {
+             //handle any error that may occur before this point
+        });
+</xmp>
+
+the solution with promises is pretty much like a try {} catch block but with regular callbacks its becomes a literal callback hell.
+
+<h2>Advantage of Promise</h2>
+
+Parallel Execution (Important things) <br>
+With Promises, you can make simultaneous calls to the 3 apis and wait for them to be resolved. 
+<xmp class="prettyprint">
+        Promise.all([api1(), api2(), api3()]).then(function(result) {
+            // Do some work. 
+            // result is an array containing values of the three fulfilled promises.
+        }).catch(function(error) {
+            // Handle error
+            // Executes when at least one of the promises was rejected.
+        });   
+</xmp>
+Not possible in callback
+
+<h2>Integrating Error Handler</h2>
+<xmp class="prettyprint">
+        promise.then(function(result){
+            // do something
+        }).catch(function(error) {
+            //handle any error that may occur before this point
+        }).then(function() {
+            // do something whether there was an error or not
+            // eg: hiding a spinner while performing an AJAX request
+        });
+</xmp>
+Promises come with integrated error handling. The result of the computation might be that either the promise is 
+fulfilled with a value, or it is rejected with a reason.
+Errors are handled and propagated automatically in promise chains, so that you don’t need to care about it explicitly compared to plain callbacks.
+
+</body>
+</html>

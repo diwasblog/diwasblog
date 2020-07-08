@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <title>Bootstrap Sandbox</title>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+    
+<style>
+    xmp.prettyprint{
+        font-size:12pt;
+        font-family:monospace;
+    
+    }
+</style>
+</head>
+<body>
+
+
+    <p><span style="font-size: 18pt; color: #ff00ff;">CSS Animation</span></p>
+    <p><span style="font-size: 14pt; color: #ff0000;">It makes animating web elements much easier.</span></p>
+    <p><span style="font-size: 14pt; color: #ff0000;">Elliminates JS/JQuery for lots of animations so donot take much time to load page.</span></p>
+    <p><span style="font-size: 14pt;">1)Tranforms</span></p>
+    <p><span style="font-size: 14pt;">2)Transition</span></p>
+    <p><span style="font-size: 14pt;">3)KeyFrames</span></p>
+    <p><span style="font-size: 14pt;">For animation targetted IE is &gt;=11</span></p>
+    <br>
+
+  <h2>Translation (basic math)</h2>
+  <img src="img/translate.png" height="400" width="400">
+  <br>
+========================================================================================================================
+<br>
+  <h2>Transfrom in X direction</h2>
+  <div class="row">
+    <div class="col-lg-6">
+      <xmp class="prettyprint">
+<div>Static</div>
+<div class="moved">Moved</div>
+<div>Static</div>
+      </xmp>
+
+      <script async src="https://jsfiddle.net/Diwas_Poudel/aoyk6fvn/embed/result/"></script>
+    </div>
+
+    <div class="col-lg-6">
+        <xmp class="prettyprint">
+div {
+  width: 60px;
+  height: 60px;
+  background-color: skyblue;
+}
+
+.moved {
+  transform: translate(10px); /* Equal to translateX(10px) */
+  background-color: pink;
+}
+        </xmp>
+      </div>
+  </div>
+
+<br>
+====================================================================================================================
+<br>
+<h2>Transfrom in X and Y both direction</h2>
+<div class="row">
+  <div class="col-lg-6">
+    <xmp class="prettyprint">
+<div>Static</div>
+<div class="moved">Moved</div>
+<div>Static</div>
+    </xmp>
+
+    <script async src="https://jsfiddle.net/Diwas_Poudel/h9onL6xe/1/embed/result/"></script>
+  </div>
+
+  <div class="col-lg-6">
+      <xmp class="prettyprint">
+div {
+  width: 60px;
+  height: 60px;
+  background-color: skyblue;
+}
+
+.moved {
+  transform: translate(10px, 10px); /*translate in both X, Y direction */
+  background-color: pink;
+}
+      </xmp>
+    </div>
+</div>
+
+<br>
+============================================================================================================================
+<br>
+<h2>Scale</h2>
+<xmp class="prettyprint">
+  //format
+    scale(sx)
+
+    scale(sx, sy)
+</xmp>
+
+<div class="row">
+    <div class="col-lg-6">
+      <xmp class="prettyprint">
+<div>Normal</div>
+<div class="scaled">Scaled</div>
+      </xmp>
+  
+      <script async src="https://jsfiddle.net/Diwas_Poudel/gd9oqcs1/3/embed/result/"></script>
+    </div>
+  
+    <div class="col-lg-6">
+        <xmp class="prettyprint">
+div {
+  width: 80px;
+  height: 80px;
+  background-color: skyblue;
+}
+
+.scaled {
+  transform: scale(0.7);
+  /* Equal to scaleX(0.7) scaleY(0.7) */
+  background-color: pink;
+}
+
+        </xmp>
+      </div>
+  </div>
+  <br>
+  ==========================================================================================
+  <br>
+  <br>
+<h2>Scale</h2>
+<xmp class="prettyprint">
+  //format
+    scale(sx)
+
+    scale(sx, sy)
+</xmp>
+
+<div class="row">
+    <div class="col-lg-6">
+      <xmp class="prettyprint">
+<div>Normal</div>
+<div class="scaled">Scaled</div>
+      </xmp>
+  
+      <script async src="https://jsfiddle.net/Diwas_Poudel/hmL1fwcp/embed/result/"></script>
+    </div>
+  
+    <div class="col-lg-6">
+        <xmp class="prettyprint">
+  div {
+    width: 80px;
+    height: 80px;
+    background-color: skyblue;
+  }
+  
+  .scaled {
+    transform: scale(2, 0.5); /* Equal to scaleX(2) scaleY(0.5) */
+    transform-origin: left;
+    background-color: pink;
+  }
+        </xmp>
+      </div>
+  </div>
+
+
+  <h2>Translate ,and Rolate</h2>
+  <div class="row">
+    <div class="col-lg-4">
+      <xmp class="prettyprint"> 
+        <div>Test</div>
+
+        div {
+          border: solid red;
+          width: 40px;
+          height: 60px;
+        }
+      </xmp>
+
+
+      <script async src="https://jsfiddle.net/Diwas_Poudel/xydo82qe/4/embed/result/"></script>
+    </div>
+    <div class="col-lg-4">
+        <xmp class="prettyprint">
+            <div>Test</div>
+
+            div {
+              border: solid red;
+              transform:translate(20px,30px) ;
+              width: 40px;
+              height: 60px;
+            }
+        </xmp>
+        <script async src="https://jsfiddle.net/Diwas_Poudel/xydo82qe/7/embed/result/"></script>
+      </div>
+
+      <div class="col-lg-4">
+          <xmp class="prettyprint">
+              <div>Test</div>
+
+              div {
+                border: solid red;
+                transform:translate(20px,30px)  rotate(30deg);;
+                width: 40px;
+                height: 60px;
+              }
+
+              
+          </xmp>
+          <script async src="https://jsfiddle.net/Diwas_Poudel/5efp0h9x/5/embed/result/dark/"></script>
+        </div>
+  </div>
+  <h3>asdfsd</h3>
+</body>    
+</html>

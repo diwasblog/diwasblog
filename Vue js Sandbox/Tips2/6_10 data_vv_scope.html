@@ -1,0 +1,160 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+    <h1 id="scopes"><strong><span style="color: #ff00ff;">Scopes</span></strong></h1>
+    <p><span style="font-size: 12pt;">By default, the scope of the validator is the same as the Vue instance that owns it. </span></p>
+    <p><span style="font-size: 12pt;">Sometimes you may have multiple fields within the same component, they are in different forms and serve different purposes. Since the validator uses the&nbsp;<span style="color: #ff0000;"><code>name</code></span>&nbsp;or&nbsp;<span style="color: #ff0000;"><code>data-vv-name</code></span>&nbsp;attributes to identify the field, fields with the same name will conflict with each other, which will cause problems when trying to display error messages for either of them.</span></p>
+    <p><span style="font-size: 12pt;">You can tell the validator to scope the fields by adding a&nbsp;<span style="color: #ff0000;"><code>data-vv-scope</code></span>. Those fields will be then identified using their name and their scope. You can have inputs with the same name in different scopes, and you can display, clear and validate those scopes independently.</span></p>
+    <p><span style="font-size: 12pt;">For convenience, you may add the<span style="color: #ff0000;">&nbsp;<code>data-vv-scope</code></span>&nbsp;attribute on the form that owns the inputs, you don't have to add the attribute on every input. You can also pass&nbsp;<code>scope</code>&nbsp;property to the validator expression.</span></p>
+    <p><span style="font-size: 18pt;">Important</span></p>
+    <p><span style="color: #ff0000;"><code>data-vv-scope <span style="color: #000000;">required HTML5 to work with it</span></code></span></p>
+    <p>&nbsp;</p>
+
+<xmp class="prettyprint">
+    <form id="form1" data-vv-scope="form1Scope" method="post" action="/admin/newsmanagement/new" class="form-horizontal">
+                       
+      <div class="form-group">
+          <label class="control-label">Title </label>
+          <input type="text" placeholder="Type Title" v-model="news.title" name="Title"  class="form-control">
+          <span v-show="errors.has('form1Scope.Title')" class="text-danger form-error">{{ errors.first('form1Scope.Title') }}</span>
+      </div>
+    
+       <div class="form-group">
+          <label class="control-label">Name </label>
+          <input type="text" placeholder="Type Name" v-model="news.name" name="Name"  class="form-control">
+            <span v-show="errors.has('form1Scope.Name')" class="text-danger form-error">{{ errors.first('form1Scope.Name') }}</span>
+      </div>
+      
+       <div class="form-group">                      
+        <input type="button" @@click="submitForm('form1Scope')" class="btn btn-success" value="Save" />
+      </div>
+    </form> 
+    
+    
+    submitForm(scope) {
+        let vm = this;
+        vm.$validator.validateAll(scope).then((result) => {
+            if (result) {
+                  document.getElementById("form1").submit();
+            }
+        })
+    }
+    
+</xmp>
+
+<h2>Axios Case (Same as above)</h2>
+
+  <xmp class="prettyprint">
+      <form id="form1" data-vv-scope="form1Scope"  class="form-horizontal">
+                       
+          <div class="form-group">
+              <label class="control-label">Title </label>
+              <input type="text" placeholder="Type Title" v-model="news.title" name="Title"  class="form-control">
+              <span v-show="errors.has('form1Scope.Title')" class="text-danger form-error">{{ errors.first('form1Scope.Title') }}</span>
+          </div>
+        
+           <div class="form-group">
+              <label class="control-label">Name </label>
+              <input type="text" placeholder="Type Name" v-model="news.name" name="Name"  class="form-control">
+                <span v-show="errors.has('form1Scope.Name')" class="text-danger form-error">{{ errors.first('form1Scope.Name') }}</span>
+          </div>
+          
+           <div class="form-group">                      
+            <input type="button" @@click="submitForm('form1Scope')" class="btn btn-success" value="Save" />
+          </div>
+        </form> 
+        
+        
+        submitForm(scope) {
+            let vm = this;
+            vm.$validator.validateAll(scope).then((result) => {
+                if (result) {
+                      
+                      axios.post("/admin/newsmanagement/new")...
+                }
+            })
+        }
+  </xmp>
+
+
+  <h2>Steps are: (look where form1Scope is writter)</h2>
+
+  1)
+  <xmp class="prettyprint">
+      <form id="form1" data-vv-scope="form1Scope"  class="form-horizontal">
+  </xmp>
+
+  2)
+  <xmp class="prettyprint">
+      <span v-show="errors.has('form1Scope.Name')" class="text-danger form-error">{{ errors.first('form1Scope.Name') }}</span>
+    </xmp>
+
+    3)
+    <xmp class="prettyprint">
+        <input type="button" @@click="submitForm('form1Scope')" class="btn btn-success" value="Save" />
+      </xmp>
+
+      4)
+      <xmp class="prettyprint">
+          submitForm(scope) {
+            let vm = this;
+            vm.$validator.validateAll(scope).then((result) => {
+                if (result) {
+                  ......................
+                });
+        </xmp>
+<br>
+=====================================================================================
+<br>
+
+Instead of using in form with can use with field .<br>
+ You can use data-vv-scope of vee-validate to achieve this functionality. Here is how it can be done
+
+<xmp class="prettyprint">
+        <input 
+        id="university" 
+        name="university" type="text"
+        v-model="<model_of_university>"
+        data-vv-rules="required" 
+        data-vv-as="University"
+        data-vv-scope="university" required/>
+  
+  <input 
+        id="course" 
+        name="course" type="text"
+        v-model="<model_of_course>"
+        data-vv-rules="required" 
+        data-vv-as="Course"
+        data-vv-scope="university" required/>
+</xmp>
+
+Now, in oder to validate these fields just pass the data-vv-scope value in the validateAll method as following
+
+<xmp class="prettyprint">
+this.$validator.validateAll('university').then((result) => {
+    if (result) {
+    
+        }
+        // alert("Correct them errors!");
+    }
+</xmp>
+
+  </body>
+
+  </html>

@@ -1,0 +1,124 @@
+<p><span style="font-size: 14pt; color: #000000;">Asp.net core is a<span style="color: #ff0000;"> <strong>free and open source</strong> </span>web framework used to develop ASP.NET applications.</span></p>
+<p><span style="font-size: 14pt;"><span style="color: #000000;">Can runs on Windows as well as on <span style="color: #ff0000;">cross platform</span> systems</span> .</span></p>
+<p><span style="font-size: 14pt;"><span style="color: #000000;">Originally it was called</span> <span style="color: #ff0000;">asp.net next version</span> <span style="color: #000000;">and then later it was supposed to be called</span> <strong><span style="color: #ff0000;">asp.net 5</span></strong> <span style="color: #000000;">when it is ready. However, Microsoft later changed the name to ASP.NET core during the first release. </span></span></p>
+
+    <table style="border-collapse: collapse; width: 28.2267%; height: 190px;" border="1">
+        <tbody>
+        <tr style="background: black; color: white;">
+        <td style="width: 50%;">Version</td>
+        <td style="width: 50%;">Release</td>
+        </tr>
+        <tr>
+        <td style="width: 50%;">ASP.NET Core 2.1</td>
+        <td style="width: 50%;">May 2018</td>
+        </tr>
+        <tr>
+        <td style="width: 50%;">ASP.NET Core 2.0</td>
+        <td style="width: 50%;">August 2017</td>
+        </tr>
+        <tr>
+        <td style="width: 50%;">ASP.NET Core 1.1</td>
+        <td style="width: 50%;">November 2016</td>
+        </tr>
+        <tr>
+        <td style="width: 50%;">ASP.NET Core 1.0</td>
+        <td style="width: 50%;">June 2016</td>
+        </tr>
+        </tbody>
+        </table>
+
+<br>
+<p><span style="font-size: 14pt; color: #ff00ff;"><strong>Why is Microsoft Promoting Core?</strong>&nbsp;</span></p>
+<ul>
+<li><span style="font-size: 12pt;">Developers don&rsquo;t stick to SQL server development(As asp.net works only with sql server but core can work with other server like oracle as well)</span></li>
+<li><span style="font-size: 12pt;">Platform Independence is in demand</span></li>
+<li><span style="font-size: 12pt;">Flexibility in hosting apps to Amazon/Google/Microsoft clouds&nbsp;</span></li>
+<li><span style="font-size: 12pt;">Community development brings rapid changes becauase Core is open source and free</span></li>
+
+
+<p><span style="text-decoration: underline;"><em><strong><span style="font-size: 14pt; color: #ff0000; text-decoration: underline;">Note : ASP.Net Core is not replacement of ASP.Net.</span></strong></em></span></p>
+
+<p><span style="font-size: 18pt; color: #ff00ff;">Why shouldnot use Repository Pattern with Entity Framework?</span></p>
+<p><span style="font-size: 12pt;">The single best reason to not use the repository pattern with Entity Framework?<span style="color: #ff0000;"> Entity Framework&nbsp;<em>already</em>&nbsp;implements a repository pattern.</span>&nbsp;<strong><span style="color: #ff0000;"><code>DbContext</code>&nbsp;is your UoW</span></strong> (Unit of Work) and <span style="color: #ff0000;"><strong>each&nbsp;<code>DbSet</code>&nbsp;is the repository</strong>.</span> Implementing another layer on top of this is not only redundant, but makes maintenance harder.</span></p>
+<p><span style="font-size: 12pt;">People follow patterns without realizing the&nbsp;<em>purpose</em>&nbsp;of the pattern. In the case of the repository pattern, the purpose is to abstract away the low-level database querying logic. In the old days of actually writing SQL statements in your code, the repository pattern was a way to move that SQL out of individual methods scattered throughout your code base and localize it in one place. Having an ORM like Entity Framework, NHibernate, etc. is a&nbsp;<em>replacement</em>&nbsp;for this code abstraction, and as such, negates the need for the pattern.</span></p>
+
+<table style="width: 100%;" border="1">
+    <tbody>
+    <tr>
+    <td style="width: 50.1067%;">Asp.Net</td>
+    <td style="width: 49.8933%;">Asp.Net Core</td>
+    </tr>
+    <tr>
+    <td style="width: 50.1067%;">It runs on only Windows environment. Though, we have Mono for Linux deployment it is not a complete implementation like .NetFramework</td>
+    <td style="width: 49.8933%;">It is platform independent. Runs on all major platforms.</td>
+    </tr>
+    <tr>
+    <td style="width: 50.1067%;">Though Asp.Net MVC and WebAPI are open source, the Asp.Net framework is not.</td>
+    <td style="width: 49.8933%;">
+    <p class="ArticleContent">It is fully open source.Repository: <a href="https://github.com/aspnet/home" target="_blank" rel="noopener">https://github.com/aspnet/home</a></p>
+    </td>
+    </tr>
+    <tr>
+    <td style="width: 50.1067%;">Supports Asp.Net WebForm, Asp.Net MVC and Asp.Net WebAPI</td>
+    <td style="width: 49.8933%;">
+    <p class="ArticleContent">No WebForms Support. Supports Asp.Net MVC, Web API and Asp.Net Web Pages support to be added in .Net Core 2.0</p>
+    </td>
+    </tr>
+    <tr>
+    <td style="width: 50.1067%;">Asp.Net is not modular framework. It requires .Net Framework to be installed in the machine or server.</td>
+    <td style="width: 49.8933%;">
+    <p class="ArticleContent">Asp.Net Core is a modular framework i.e. application can be run with minimal required framework components. The required framework components can only be included in the app unlike traditional Asp.Net where it runs over the full .Net framework.</p>
+    <p class="ArticleContent">All components including runtime are available as Nuget packages.</p>
+    </td>
+    </tr>
+    <tr>
+    <td style="width: 50.1067%;">Cannot be bin deployed. Need .NetFramework installed on the server before deployment. The Asp.Net MVC libraries alone can be bin deployed though.</td>
+    <td style="width: 49.8933%;">
+    <p class="ArticleContent">Framework components can be bin deployed. This means we do not need .Net Core framework already installed on the server for deployment.</p>
+    </td>
+    </tr>
+    <tr>
+    <td style="width: 50.1067%;">heavily dependent on System.Web.dll and so it can be used only with IIS</td>
+    <td style="width: 49.8933%;">
+    <p class="ArticleContent">No dependency with System.Web.dll so no dependent on IIS</p>
+    </td>
+    </tr>
+    <tr>
+    <td style="width: 50.1067%;">It can be hosted with only IIS (Internet Information Services) that comes as part of Operating System. Though it is free webserver but the Windows Operating system is licensed.</td>
+    <td style="width: 49.8933%;">
+    <p class="ArticleContent">It comes with its own cross platform webserver called Kestrel. Asp.Net Core applications can be hosted with Kestrel behind the most common webservers like Nginx, Apache, IIS, etc. These webservers act as reverse proxy forwarding the request to Kestrel server. It can be self-hosted.</p>
+    </td>
+    </tr>
+    <tr>
+    <td style="width: 50.1067%;">Supports WCF,WPF and WF</td>
+    <td style="width: 49.8933%;">
+    <p class="ArticleContent">No support for WCF, WPF and WF.</p>
+    <p class="ArticleContent">Support for WCF client libraries are available.</p>
+    </td>
+    </tr>
+    <tr>
+    <td style="width: 50.1067%;">Asp.Net MVC and WebAPI are separate framework.</td>
+    <td style="width: 49.8933%;">
+    <p class="ArticleContent">WebAPI is merged with Asp.Net MVC controller. So, Asp.Net MVC and WebAPI are single framework in Asp.Net Core.</p>
+    </td>
+    </tr>
+    <tr>
+    <td style="width: 50.1067%;">Dependency Injections can be incorporated using DI containers like Unity, StructureMap, Autofac, etc.</td>
+    <td style="width: 49.8933%;">
+    <p class="ArticleContent">Dependency Injection is part of Asp.Net MVC framework.</p>
+    </td>
+    </tr>
+    <tr>
+    <td style="width: 50.1067%;">Container support is not as good as Asp.Net Core applications.</td>
+    <td style="width: 49.8933%;">
+    <p class="ArticleContent">Best suited for Container based deployments like Docker.</p>
+    </td>
+    </tr>
+    </tbody>
+    </table>
+
+http://www.codedigest.com/posts/18/difference-between-aspnet-and-aspnet-core
+
+http://www.codedigest.com/quick-start/5/learn-kestrel-webserver-in-10-minutes
+
+https://www.codeguru.com/csharp/.net/net_asp/mvc/securing-asp.net-mvc-applications-with-asp.net-identity.htm

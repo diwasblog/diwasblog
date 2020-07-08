@@ -1,0 +1,75 @@
+
+<html>
+<head>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+    font-size:12pt;
+    font-family:monospace;
+
+}
+</style>
+ 
+
+
+
+</head>
+
+
+<body>
+
+<xmp class="prettyprint">
+<div class="row">
+	<div class="col-md-4">
+		<input type="file" id="files" multiple="multiple" name="Images" />
+		<div id="thumb-output"></div>
+	</div>
+</div>
+</xmp>
+
+
+<xmp class="prettyprint">
+//This will preview multiple image
+<script>
+	$(document).ready(function () {
+	
+		$('#files').on('change', function () { //on file input change
+			if (window.File && window.FileReader && window.FileList && window.Blob) //check File API supported browser
+			{
+
+				var data = $(this)[0].files; //this file data
+				$('#thumb-output').html(""); 
+				$.each(data, function (index, file) { //loop though each file
+					if (/(\.|\/)(gif|jpe?g|png)$/i.test(file.type)) { //check supported file type
+						var fRead = new FileReader(); //new filereader
+						fRead.onload = (function (file) { //trigger function on successful read
+							return function (e) {
+								var img = $('<img/>').addClass('thumb').attr('src', e.target.result); //create image element 
+								
+								$('#thumb-output').append(img); //append image to output element
+							};
+						})(file);
+						fRead.readAsDataURL(file); //URL representing the file's data.
+					}
+				});
+
+			} else {
+				alert("Your browser doesn't support File API!"); //if File API is absent
+			}
+		});
+
+	
+	});
+
+</script>
+</xmp>
+
+
+</body>
+
+</html>

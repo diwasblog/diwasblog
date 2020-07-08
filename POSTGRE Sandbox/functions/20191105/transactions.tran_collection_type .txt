@@ -1,0 +1,13 @@
+-- Type: tran_collection_type
+
+-- DROP TYPE transactions.tran_collection_type;
+
+CREATE TYPE transactions.tran_collection_type AS
+(
+	account_number character varying(255),
+	amount money,
+	statement_reference character varying(255)
+);
+
+ALTER TYPE transactions.tran_collection_type
+    OWNER TO postgres;

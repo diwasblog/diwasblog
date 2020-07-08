@@ -1,0 +1,159 @@
+<html>
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+
+<!--Explaination-->
+
+<!--########################Main Code######################################-->
+
+<!--##############################################################-->
+
+<!--|#########################DISPLAY############################################-->
+
+
+
+
+To start Webpack in command line
+<xmp class="prettyprint">
+    webpack --watch  
+</xmp>
+
+Search term in entire solution of Visual Studio
+<xmp class="prettyprint">
+    ctrl+shift+F
+</xmp>
+
+Accept html to support in summernote
+<xmp class="prettyprint">
+namespace BIMS.Models
+{
+    public class Notice
+    {
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string RefinedContent { get; set; }
+        [AllowHtml]   //focus
+        public string FullContent { get; set; }
+     
+    }
+}
+
+</xmp>
+
+Refining Content. FullContent=>"<p>Hello world</p>"" and refine content will be "Hello world"
+<xmp class="prettyprint">
+  var doc = new HtmlDocument();
+  doc.LoadHtml(obj.FullContent);
+
+  if (doc.DocumentNode.InnerText.Length > 200)
+      obj.RefinedContent = doc.DocumentNode.InnerText.Substring(0, 200);
+  else
+      obj.RefinedContent = doc.DocumentNode.InnerText;
+
+</xmp>
+
+using summernote
+<xmp class="prettyprint">
+    <textarea v-model="notice.fullContent" id="summernote" name="FullContent" class="form-control"></textarea>
+
+  //link of jQuery
+  //link of bootstrap
+  //link of summernote and link of summernote.cs
+
+  mounted() {
+    let vm = this;
+    jQuery(document).ready(function () {
+        jQuery('#summernote').summernote({
+            height: 300,
+            focus: true,
+            placeholder:'Notice Here ...'
+        });
+    });
+
+}
+
+</xmp>
+
+===========================================================================================================================
+
+Get Content of Html in summernote
+
+<xmp class="prettyprint">
+    <textarea  id="summernote" name="Message" class="form-control"></textarea>
+
+
+    jQuery("#summernote").summernote("code", <h1><em>Hello world</em></h1>);
+</xmp>
+
+Output Inside TextBox as :
+<h1><em>Hello world</em></h1>
+
+
+Alternative :Use <h2>@Html.Raw() </h2> as below
+
+<xmp class="prettyprint">
+  data: {
+    notice: {
+        Id:'@Model.Id',
+        title: '@Model.Title',
+        dateAD: '@Model.DateAD',
+        fullContent: '@Html.Raw(Model.FullContent)' //focus here ... html to text
+    }
+},
+
+</xmp>
+==================================================================================================================================
+
+
+<xmp class="prettyprint">
+    //in mvc controller
+    [Route("misc/notice/getallnotices")]
+    public JsonResult GetAllNotice()
+    {
+        var list = _noticeService.GetAll(GetInstitutionId());
+        return Json(list, JsonRequestBehavior.AllowGet);
+    }
+
+
+    and calling in view as axios.get('bims/misc/getallnotices').then(response)
+    {
+      console.log(response.data) //we get list of data
+    }
+</xmp>
+
+
+<!--####################################################-->
+========================================================================
+
+   <textarea v-model="post.content" id="summernote" name="Content" class="form-control"></textarea>
+
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-lite.css" rel="stylesheet">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote-lite.js"></script>
+
+     vm.post.content= document.querySelector('#summernote').value;  //for adding
+
+
+
+======================================================================
+
+
+    </body>
+
+</html>

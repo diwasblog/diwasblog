@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../SQL SandBox/css/bootstrap.css">
+    <link rel="stylesheet" href="../SQL SandBox/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../SQL SandBox/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../SQL SandBox/css/dracula.css">
+    <link rel="stylesheet" href="../SQL SandBox/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+
+  <body>
+
+
+    <pre>
+      <code class="language-dart">
+        import 'package:flutter/material.dart';
+        void main() => runApp(new MyApp());
+        class MyApp extends StatelessWidget {
+          @override
+          Widget build(BuildContext ctxt) {
+            return new Directionality(
+                textDirection: TextDirection.ltr,
+                child: new Text("Hello Flutter")
+            );
+          }
+        }
+      </code>
+    </pre>
+
+<pre>
+  <code class="language-dart">
+    class MyApp extends StatelessWidget {
+      @override
+      Widget build(BuildContext ctxt) {
+        return new Directionality(
+            textDirection: TextDirection.ltr,
+            child: new Center(                        // Changed Line
+              child: new Text("Hello Flutter"),       // Changed Line
+            )
+        );
+      }
+    }
+    
+  </code>
+</pre>
+
+
+<div class="row">
+  <div class="col-lg-6">
+      <h2>Creating Material Design</h2>
+      <span style="font-size: 12pt;">In Flutter, we generally use&nbsp;<span style="color: #ff0000;"><strong>MaterialApp</strong></span>&nbsp;for creating material design which allows us to use&nbsp;<span style="color: #ff0000;"><strong class="markup--strong markup--p-strong">Scaffold</strong>&nbsp;</span>which shall be used for creating&nbsp;<strong class="markup--strong markup--p-strong"><span style="color: #ff0000;">Application Bar</span> &amp; <span style="color: #ff0000;">Body</span>.&nbsp;</strong>Here is how we create a bare minimum screen with MaterialApp and Body.</span></pre>
+      
+    <pre>
+      <code class="language-dart">
+        class MyApp extends StatelessWidget {
+          @override
+          Widget build(BuildContext ctxt) {
+            return new MaterialApp(
+              title: "MySampleApplication",
+              home: new Scaffold(
+                appBar: new AppBar(
+                  title: new Text("Hello Flutter App"),
+                ),
+                body: new Center(
+                  child: new Text("Hello Flutter"),
+                ),
+              ),
+            );
+          }
+        }
+      </code>
+    </pre>
+    
+  </div>
+
+  <div class="col-lg-6">
+    <img src="img/hierarchy1.png" width="600">
+
+  </div>
+</div>
+============================================================================
+
+<div class="row">
+    <p><span style="font-size: 12pt;">In <span style="color: #ff0000;"><strong>Material Design</strong></span>, the body can hold only <strong><span style="color: #ff0000;">one child</span></strong> widget which is not what we want. <strong>In general, the screen consists of multiple widgets.</strong> To achieve the same, <strong>we need to use a widget as a child, which can hold array of widgets.</strong> <span style="color: #000000;"><strong>There are multiple widgets in Flutter which can hold array of widgets as child, Row/Column is one of them.</strong></span> I<span style="color: #000000;"><strong>n the code above, we can add Row/Column to display multiple widgets which change the widgets hierarchy</strong></span></span></p>
+  <div class="col-lg-6">
+    <pre>
+      <code class="language-dart">
+          class MyApp extends StatelessWidget {
+            @override
+            Widget build(BuildContext ctxt) {
+              return new MaterialApp(
+                title: "MySampleApplication",
+                home: new Scaffold(
+                  appBar: new AppBar(
+                    title: new Text("Hello Flutter App"),
+                  ),
+                  body: new Center(
+                    child: new Row(
+                      children: <Widget>[
+                        new Text("Hello Flutter"),
+                        new Text("Hello Flutter - "),
+                      ],
+                  ),
+                 ),
+                )
+              );
+            }
+          }
+      </code>
+    </pre>
+    
+  </div>
+
+  <div class="col-lg-6">
+    <img src="img/hierarchy2.png" width="600">
+    
+  </div>
+</div>
+
+    <script src="../SQL SandBox/js/prism.js"></script>
+    <script type="text/javascript">
+      Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+          'remove-trailing': true,
+          'remove-indent': true,
+          'left-trim': true,
+          'right-trim': true,
+          // 'break-lines': 10,
+          // 'indent': 2,
+          // 'remove-initial-line-feed': false,
+          // 'tabs-to-spaces': 4,
+          // 'spaces-to-tabs': 4
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+-- View: deposit.tranaction_view_for_pb
+
+-- DROP VIEW deposit.tranaction_view_for_pb;
+
+CREATE OR REPLACE VIEW deposit.tranaction_view_for_pb AS
+ SELECT t.tran_id,
+    t.office_id,
+    t.tran_date,
+    t.value_date,
+    t.book_name,
+    COALESCE(t.collector_id, office.get_office_collector_id(t.office_id)) AS collector_id,
+    td.account_number_id,
+    COALESCE(td.slip_number::text, ''::text) || COALESCE(td.check_number::text, ''::text) AS check_number,
+    td.statement_reference,
+    td.debit,
+    td.credit,
+    t.audit_user_id AS user_id
+   FROM transactions.transactions t
+     JOIN transactions.transaction_details td ON t.tran_id = td.tran_id
+     JOIN deposit.account_holders a ON td.account_number_id = a.account_number_id AND a.is_pb_provided = true
+  WHERE t.verification_status_id > 0 AND td.account_number_id IS NOT NULL AND t.book_name::text <> 'Deposit Interest Transit'::text AND t.audit_user_id <> 0;
+
+ALTER TABLE deposit.tranaction_view_for_pb
+    OWNER TO postgres;
+

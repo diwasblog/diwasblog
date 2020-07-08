@@ -1,0 +1,83 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+
+<!--Explaination-->
+
+<!--########################Main Code######################################-->
+<div id='app'>
+      <h1>{{greet('night')}}</h1>
+      <p>Name: {{name}}</p>
+</div>
+
+<script>
+const app=new Vue({
+    el:'#app',
+    data:{
+      name:'Diwas',
+    },
+    methods:{
+        greet:function(time)
+        {
+            return 'Good'+time+' '+this.name;
+        }
+    }
+});
+</script>
+<!--##############################################################-->
+
+
+<!--|#########################DISPLAY############################################-->
+<?prettify linenums=1?>
+<xmp class="prettyprint"
+   >
+
+   <html>
+      <head>
+         <title>Using This</title>
+      </head>
+      <body>
+
+        <div id='app'>
+            <h1>{{greet('night')}}</h1>
+            <p>Name: {{name}}</p>
+      </div>
+      
+      <script>
+      const app=new Vue({
+          el:'#app',
+          data:{
+            name:'Diwas',
+          },
+          methods:{
+              greet:function(time)
+              {
+                  return 'Good'+time+' '+this.name;
+              }
+          }
+      });
+      </script>
+      </body>
+   </html>
+</xmp>
+<!--####################################################-->
+
+
+    </body>
+
+</html>

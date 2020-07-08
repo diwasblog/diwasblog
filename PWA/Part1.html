@@ -1,0 +1,21 @@
+﻿<p><strong><span style="font-size: 24pt;">Worker</span></strong></p>
+<p><span style="font-size: 18pt; color: #000000;">A worker is a script that runs on a thread separate to the browser&rsquo;s main thread.If too many activities in the Main thread will slow down your sites. All the script tag that we use in webpages works in the Main Thread.</span></p>
+<p><span style="font-size: 18pt; color: #000000;">Web Workers, Service Workers, and worklets are all scripts that run on a separate thread. They provides possibility to write multi-threaded Javascript. They do not&nbsp;block UI and user interaction.Workers utilize thread-like message passing to achieve parallelism.</span></p>
+<hr />
+<p><span style="font-size: 24pt; color: #fb0000;"><strong>Web workers:</strong></span></p>
+<p><span style="font-size: 18pt;"><span style="color: #000000;"> It can load any heavy processing from the main thread. Web workers are created using the Web Workers API. After creating a dedicated Javascript file for our worker, we can add it as a new Worker.</span> </span></p>
+<p><span style="font-size: 18pt;"><span style="color: #000000;">Web Workers run in an isolated thread. As a result, the code that they execute needs to be contained in a separate file. </span></span></p>
+<hr />
+<p><span style="color: #fb0000;"><strong><span style="font-size: 24pt;">Service Workers:</span></strong></span></p>
+<p style="text-align: justify;"><span style="font-size: 18pt; color: #000000;">It is designed to be<span style="color: #fb0000;"> fully async;</span> as a consequence, APIs such as <span style="color: #fb0000;">synchronous&nbsp;<a style="color: #fb0000;" href="https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest">XHR</a></span>&nbsp;and&nbsp;<span style="color: #fb0000;"><a style="color: #fb0000;" href="https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Storage">localStorage</a>&nbsp;</span>can't be used inside a service worker.</span></p>
+<p style="text-align: justify;"><span style="font-size: 18pt; color: #000000;">It acts as a proxy between browser and network and works independently from an app.</span></p>
+<p style="text-align: justify;"><span style="font-size: 18pt; color: #000000;">Required HTTPs and allow http only on localhost.</span></p>
+<p style="text-align: justify;"><span style="font-size: 18pt; color: #000000;">Converting standard websites into PWA we add a couple of layers. First is : Service Worker <span style="color: #fb0000;">sw.js</span> is client-side which acts like client-side proxy object. Its key role is to <strong><span style="color: #fb0000;">cache content</span> </strong>for that it uses caches api. It provides easy client-side storage for any resource on the page.</span></p>
+<p style="text-align: justify;"><span style="font-size: 18pt; color: #000000;"> PWA is just an enhancement of general websites and if PWA is not active then it works like general sites. </span></p>
+<p><span style="color: #fb0000;"><strong><span style="font-size: 18pt;">Progressive Web Apps Requirement </span></strong></span></p>
+<ol>
+<li><span style="font-size: 14pt; color: #000000;">&nbsp;Having a website with a cache is great.</span></li>
+<li><span style="font-size: 14pt; color: #000000;">&nbsp;The website has to be designed as Mobile App like Behaviours, so it should be responsive, fast, and runs smoothly in any device. </span></li>
+<li><span style="font-size: 14pt; color: #000000;">While using mobile, data usage is important and use the network only when it has to. </span></li>
+<li><span style="font-size: 14pt; color: #000000;">&nbsp;Has to work offline to some degree.&nbsp;</span></li>
+</ol>

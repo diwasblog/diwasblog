@@ -1,0 +1,59 @@
+<html>
+<body>
+
+    <pre class="default prettyprint prettyprinted"><code> <span class="pun">/</span>   <span class="pun">=</span> <span class="typ">Root</span><span class="pln"> directory
+      </span><span class="pun">.</span>   <span class="pun">=</span> <span class="typ">This</span><span class="pln"> location
+      </span><span class="pun">..</span>  <span class="pun">=</span> <span class="typ">Up</span><span class="pln"> a directory
+      </span><span class="pun">./</span>  <span class="pun">=</span> <span class="typ">Current</span><span class="pln"> directory
+      </span><span class="pun">../</span> <span class="pun">=</span> <span class="typ">Parent</span><span class="pln"> of current directory
+      </span><span class="pun">../../</span> <span class="pun">=</span> <span class="typ">Two</span><span class="pln"> directories backwards</span></code></pre>
+
+    <p><span style="font-size: 18pt;">Use normal slashes<span style="color: #ff0000;"> /</span> not reversed slashes \ in the file paths</span></p>
+
+    <img src="img/navigation.png">
+    <table style="border-collapse: collapse; width: 77.1612%; height: 245px;" border="1">
+    <tbody>
+    <tr style="height: 49px;">
+    <td style="width: 1.72891%; height: 49px;">Link From&nbsp;</td>
+    <td style="width: 51.4381%; height: 49px;">To</td>
+    <td style="width: 24.0072%;">Path</td>
+    </tr>
+    <tr style="height: 49px;">
+    <td style="width: 1.72891%; height: 49px;">Contents.html</td>
+    <td style="width: 51.4381%; height: 49px;">hour.html (Both on same folder)</td>
+    <td style="width: 24.0072%;">hour.html</td>
+    </tr>
+    <tr style="height: 49px;">
+    <td style="width: 1.72891%; height: 49px;">Contents.html</td>
+    <td style="width: 51.4381%; height: 49px;">&nbsp;tips.html (in the resources subfolder)</td>
+    <td style="width: 24.0072%;">resources/tips.html</td>
+    </tr>
+    <tr style="height: 49px;">
+    <td style="width: 1.72891%; height: 49px;">Contents.html</td>
+    <td style="width: 51.4381%; height: 49px;">index.html (in the parent folder, one level above contents.html)</td>
+    <td style="width: 24.0072%;">../index.html.</td>
+    </tr>
+    <tr style="height: 49px;">
+    <td style="width: 1.72891%; height: 49px;">Contents.html</td>
+    <td style="width: 51.4381%; height: 49px;">&nbsp;catalog.html (in a different subfolder of the parent folder)</td>
+    <td style="width: 24.0072%;">../products/catalog.html</td>
+    </tr>
+    </tbody>
+    </table>
+
+    =======================================================
+
+    <img src="img/navigation2.jpg">
+
+    <div>
+        <div><span style="font-size: 14pt;">From chapter_2.html to link image:cat.jpg ===&gt;<strong><span style="color: #ff0000;"> ../../pictures/cat.jpg</span></strong></span></div>
+        <br />
+        <div><span style="font-size: 14pt;">From chapter_2.html to link front_page.html ===&gt; <span style="color: #ff0000;"><strong>../home/front_page.html</strong></span></span></div>
+        </div>
+
+    <br>
+
+    <h2>When to use absolute and when relative</h2>
+    <img src="img/absolutevsrelativepath.png">
+</body>
+</html>

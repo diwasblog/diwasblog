@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+
+  <body>
+
+      <p><span style="font-size: 24pt; color: #ff00ff;">Required Things for making website Responsive</span></p>
+      <h4 id="ff02" class="graf graf--h4 graf-after--p"><span style="text-decoration: underline;"><span style="font-family: 'courier new', courier, monospace; color: #ff0000;"><strong>Fluid Design</strong></span></span></h4>
+      <p id="40b4" class="graf graf--p graf-after--h4"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">Make sure your website is fluid. What that means is that your website components should scale with your screen size.</span></p>
+      <p class="graf graf--p graf-after--h4"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">For this use percentage for your height and width instead of static pixel sizes.</span></p>
+      <p class="graf graf--p graf-after--h4"><span style="font-family: arial, helvetica, sans-serif; font-size: 12pt;">&nbsp;This way when someone resizes their browser window, your html tags will shrink or expand accordingly instead of breaking the page.</span></p>
+      <p class="graf graf--p graf-after--h4"><span style="text-decoration: underline;"><span style="color: #ff0000;"><strong><span style="font-family: 'courier new', courier, monospace; font-size: 18pt;">Use Media Queries</span></strong></span></span></p>
+      <p><strong><span style="font-family: 'courier new', courier, monospace; font-size: 18pt;">
+        
+        2a Mobile First</span></strong></p>
+      <p><span style="font-family: arial, helvetica, sans-serif;"><span style="font-size: 18pt;"><span style="font-size: 12pt;">Your small screen styles are in your regular screen CSS and then as the screen gets larger you override what you need to. So,&nbsp;<span style="color: #ff0000;"><code>min-width</code></span>&nbsp;media queries in general.&nbsp;</span>&nbsp;</span></span></p>
+      <p>&nbsp;</p>
+      
+      <h2><span style="color: #ff00ff;"><strong>Always Design for Mobile First</strong></span></h2>
+      <p><span style="font-size: 12pt; font-family: arial, helvetica, sans-serif;">Mobile First means designing for mobile before designing for desktop or any other device (This will make the page display faster on smaller devices).</span></p>
+        <pre>
+          <code class="language-css">
+              html { background: red; }
+
+              @media (min-width: 600px) {
+                html { background: green; }
+              }
+          </code>
+        </pre>
+        
+        
+        <p><span style="font-family: arial, helvetica, sans-serif;"><span style="font-size: 18pt;"><span class="token punctuation"></span>2 b Desktop First</span></span></span></p>
+      <p><span style="font-size: 12pt; font-family: arial, helvetica, sans-serif;">Your large screen styles are in your regular screen CSS and then as the screen gets smaller you override what you need to. So,<span style="color: #ff0000;">&nbsp;<code>max-width</code></span>&nbsp;media queries in general.</span></p>
+      <pre class=" language-css"><code class=" language-css"></code></pre>
+      <pre>
+          <code class="language-css">
+              //When the client has 600 width or less:
+              html { background: red; }
+
+              @media (max-width: 600px) {
+                html { background: green; }
+              }
+          </code>
+        </pre>
+=======================================================================================================================
+<h2>And</h2>
+For screen greather than 600 and less than 800px ie. between 600-800
+<pre>
+  <code class="language-css">
+      @media (min-width: 600px) and (max-width: 800px) {
+        html { background: red; }
+      }
+
+      OR
+
+      @media (600px <= width <= 800px ) {
+
+      }
+  </code>
+</pre>
+==================================================================================================
+<h2>OR </h2>
+For screen greater than 600 or less than 800
+<pre>
+    <code class="language-css">
+        @media (min-width: 600px) , (max-width: 800px) {
+          html { background: red; }
+        }
+    </code>
+  </pre>
+  
+  This is equivalent to 
+  <pre>
+  <code class="language-css">
+      @media (min-width: 600px) {
+        html { background: red; }
+      }
+
+      @media (max-width: 800px) {
+        html { background: red; }
+      }
+  </code>
+</pre>
+===============================================================================================================
+<h2>Font Size based on Screen</h2>
+<pre>
+    <code class="language-css">
+        @media (min-width: 600px) {
+         p{
+           font-size:1.25rem;
+         }
+        }
+        
+        @media (min-width: 800px) {
+          p{
+            font-size:1.5rem;
+            line-height:1.5;
+          }
+         }
+       
+    </code>
+  </pre>
+
+
+  <br>
+
+
+  <h2>Note</h2>
+  No media query in bootstrap because since this is the default in Bootstrap because it is "mobile first"
+=================================================================================================================
+      <script src="js/prism.js"></script>
+      <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+          {
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true,
+          });
+      </script>
+    </body>
+    </html>
+    
+    
+      </html>

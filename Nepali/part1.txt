@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<table style="border-collapse: collapse; width: 98.883%;" border="1">
+<tbody>
+<tr>
+<td style="width: 50%;">सत्तारुढ</td>
+<td style="width: 25%;">
+<pre id="tw-target-text" dir="ltr" data-placeholder="Translation">Ruling</pre>
+</td>
+<td style="width: 25%;">
+<p>सत्तारुढ दल नेकपा</p>
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 50%;">अडान</td>
+<td style="width: 25%;">
+<pre id="tw-target-text" dir="ltr" data-placeholder="Translation">Stand up</pre>
+</td>
+<td style="width: 25%;">
+<p>अमेरिकाले आफ्नो पुरानै अडान कायम राख्दै</p>
+</td>
+</tr>
+<tr>
+<td style="width: 50%;">अनुमोदित&nbsp;</td>
+<td style="width: 25%;">
+<pre id="tw-target-text" dir="ltr" data-placeholder="Translation">Approved</pre>
+</td>
+<td style="width: 25%;">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 50%;">अनुमोदन</td>
+<td style="width: 25%;">Approval
+<h3>&nbsp;</h3>
+</td>
+<td style="width: 25%;">
+<p>२०७६ असार ३० मा अर्थ मन्त्रालयले संसदमा <span style="color: #e03e2d;"><strong>अनुमोदन</strong></span>को लागि दर्ता गरेको उक्त सम्झौताको <strong><span style="color: #e03e2d;">दस्तावेज</span></strong>लाई लिएर नेकपाभित्र आन्तरिक विवाद भएपछि यो संसदबाट अघि बढ्न सकेको छैन&nbsp;।</p>
+</td>
+</tr>
+<tr>
+<td style="width: 50%;">दस्तावेज</td>
+<td style="width: 25%;">
+<pre id="tw-target-text" dir="ltr" data-placeholder="Translation">Document</pre>
+</td>
+<td style="width: 25%;">
+<h3>&nbsp;</h3>
+</td>
+</tr>
+<tr>
+<td style="width: 50%;">प्रतिवेदन</td>
+<td style="width: 25%;">
+<pre id="tw-target-text" dir="ltr" data-placeholder="Translation">Report</pre>
+</td>
+<td style="width: 25%;">
+<h3>&nbsp;</h3>
+</td>
+</tr>
+<tr>
+<td style="width: 50%;">नेपालस्थित</td>
+<td style="width: 25%;">
+<pre id="tw-target-text" dir="ltr" data-placeholder="Translation">Located in Nepal</pre>
+</td>
+<td style="width: 25%;">
+<h3>नेपालस्थित अमेरिकी दूतावास</h3>
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 50%;">रणनीति</td>
+<td style="width: 25%;">
+<pre id="tw-target-text" dir="ltr" data-placeholder="Translation">The strategy</pre>
+</td>
+<td style="width: 25%;">
+<h3>&nbsp;</h3>
+</td>
+</tr>
+<tr>
+<td style="width: 50%;">सम्झौता</td>
+<td style="width: 25%;">
+<pre id="tw-target-text" dir="ltr" data-placeholder="Translation">Agreement</pre>
+</td>
+<td style="width: 25%;">
+<h3>&nbsp;</h3>
+</td>
+</tr>
+<tr>
+<td style="width: 50%;">&nbsp;</td>
+<td style="width: 25%;">&nbsp;</td>
+<td style="width: 25%;">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../CSS SandBox/Sandbox/css/bootstrap.css">
+    <link rel="stylesheet" href="../CSS SandBox/Sandbox/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../CSS SandBox/Sandbox/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../CSS SandBox/Sandbox/css/dracula.css">
+    <link rel="stylesheet" href="../CSS SandBox/Sandbox/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+      <table style="border-collapse: collapse; width: 100%;" border="1">
+          <tbody>
+          <tr style="background-color: black;">
+          <td style="width: 50%;"><span style="font-size: 14pt; color: #ff0000;">Error</span></td>
+          <td style="width: 50%;"><span style="font-size: 14pt; color: #ff0000;">Exceptions</span></td>
+          </tr>
+          <tr>
+          <td style="width: 50%;">It is impossible to recover from error.</td>
+          <td style="width: 50%;">You can recover from exceptions by handling them through try catch blocks.</td>
+          </tr>
+          <tr>
+          <td style="width: 50%;">Kinds of error : <strong><span style="color: #ff0000;">User Error,Syntax Error , Runtime Error</span></strong></td>
+          <td style="width: 50%;">Runtime Error is Exception while can be handle at runtime via try catch blks</td>
+          </tr>
+          </tbody>
+          </table>
+
+          <p><span style="color: #ff0000;"><strong><span style="font-size: 14pt;">Syntax Error</span></strong></span></p>
+      <pre>
+          <code class="language-csharp">
+              bool flag=true
+              WHILE(flag)  //Error C# is Case Sensitive
+              {
+              
+              }
+              
+          </code>
+        </pre>
+      
+ 
+        <p><span style="color: #ff0000;"><strong><span style="font-size: 14pt;">Runtime Error</span></strong></span></p>
+        Runtime Error is also called Exception. This can be caused due to improper user inputs, improper design logic or system error.
+        <pre>
+            <code class="language-csharp">
+               int a=5;b=0;
+               int result= a/b;
+            </code>
+          </pre>
+============================================================================================================
+<p><span style="color: #ff0000;"><strong><span style="font-size: 14pt;">Logical Error</span></strong></span></p>
+Program Runs but doesnot produce desired result. Diffcult to find .
+<pre>
+    <code class="language-csharp">
+      int a=5;b=6;
+      double avg=a+b/2.0;
+    </code>
+  </pre>
+========================================================================================================
+<br>
+<h2>Environment Variable</h2>
+
+<p><span style="font-size: 12pt;">Those variables that describe the environment in which programs run.&nbsp;</span></p>
+<p><span style="font-size: 12pt;">In Windows,&nbsp;<strong>environment variables have a name and value</strong>.</span></p>
+<p><span style="font-size: 12pt;">For example, the variable <strong><span style="color: #000000;">name&nbsp; </span><span style="color: #ff0000;"><em>windir</em> </span></strong> may have the <strong><span style="color: #000000;">value</span> </strong><em>"<strong><span style="color: #ff0000;">C:\Windows</span></strong>".</em></span></p>
+<p><span style="font-size: 12pt;"><em>Many programs need to know where to find certain files, and the PATH variable tells them where they can find what they need. Those programs look for a PATH variable automatically, so you don't have to type it all in every time you run the program.</em></span></p>
+<h2><strong>Types of environment variables: <span style="color: #ff0000;">User</span></strong> and <strong><span style="color: #ff0000;">System</span></strong></h2>
+<p><span style="font-size: 14pt;"><strong><span style="color: #ff0000;">User environment variables</span> <span style="color: #000000;">have values that differ from user to user.</span></strong><span style="font-size: 12pt; color: #000000;">&nbsp;</span></span><span style="font-size: 12pt;">As their name implies, they are specific to your user account, and they store user specific data, like the location of your user profile, the folder where temporary files are stored for your account, the location of your OneDrive folder, and so on. They can be edited by that user account but not by other user accounts. These variables can be set by the user, by Windows or by different programs working with user specific locations.</span></p>
+<p><span style="font-size: 14pt;"><strong><span style="color: #ff0000;">System variables</span> <span style="color: #000000;">are global and cannot be changed by any user.</span></strong><span style="font-size: 12pt; color: #000000;">&nbsp;</span></span><span style="font-size: 12pt;">Their values are the same for all user accounts. They refer to locations of critical system resources, like the folder where Windows is installed, the location of Program Files, and so on. These variables are set by Windows, by different programs and drivers.</span></p>
+<p><span style="font-size: 12pt;">Run : Type<span style="color: #000000;"><strong> env</strong> </span>to open Environment Variable Setting Page</span></p>
+<p><span style="font-size: 12pt;">FInd all Environment Variable</span></p>
+<p><span style="font-size: 12pt;">In cmd type :<strong> <span style="color: #000000;">set&nbsp;</span></strong></span></p>
+<p><span style="font-size: 12pt;"><strong><span style="color: #000000;">=================================================================================================</span></strong></span></p>
+<p><span style="font-size: 18pt;"><strong><span style="color: #000000;">Set Java Environment Setting</span></strong></span></p>
+
+<h3>1)Set JAVA_HOME Environment variable</h3>
+In “System Properties window” click “Environment Variables…”
+<img src="img/system-properties-window.jpg">
+<p>Under &ldquo;<strong><span style="color: #ff0000;">System variables</span></strong>&rdquo; click the &ldquo;<strong><span style="color: #ff0000;">New</span></strong>&hellip;&rdquo; button and enter <strong><span style="color: #ff0000;">JAVA_HOME</span> </strong>as &ldquo;<strong><span style="color: #ff0000;">Variable name</span></strong>&rdquo; and the path to your Java JDK directory under &ldquo;<span style="color: #ff0000;"><strong>Variable value</strong></span>&rdquo;</p>
+<img src="img/add-java_home-as-system-variable.jpg">
+<h2>FOr updating Variable</h2>
+<img src="img/update-system-path-768x393.jpg">
+
+<p>1. In &ldquo;<strong><span style="color: #ff0000;">Environment Variables</span></strong>&rdquo; window under &ldquo;System variables&rdquo; select Path</p>
+<p>2. Click on &ldquo;<strong><span style="color: #ff0000;">Edit</span></strong>&hellip;&rdquo;</p>
+<p>3. In &ldquo;<span style="color: #ff0000;"><strong>Edit environment variable&rdquo;</strong></span> window click &ldquo;<span style="color: #ff0000;">New</span>&rdquo;</p>
+<p>4. Type in&nbsp;&nbsp;<strong><span style="color: #ff0000;"><code>%JAVA_HOME%\bin</code></span></strong></p>
+
+<h2>Test your configuration</h2>
+Type variable_name and will get value of path where it is set
+<pre>
+    <code class="language-csharp">
+        echo %JAVA_HOME%
+    </code>
+  </pre>
+
+  So ,when we run java program then it will automatically search in path of system environment variable and here each value is separated by
+  ';' and if it found jdk location there then it will run application.
+
+  =========================================================================================================================
+  <h2>Windows Service</h2>
+  <p><span style="font-size: 14pt;"><strong>Windows service</strong>&nbsp;is a&nbsp;computer program&nbsp;that<span style="color: #ff0000;">&nbsp;operates in the background</span>.The services run in the background and will usually kick in when the <span style="color: #ff0000;">machine is booted</span>.If you need a task which must be done in every second, minute or hour, you should choice Windows Service.</span></p>
+<p><strong><span style="font-size: 14pt; color: #000000;">Difference between Windows Service and General Application</span></strong></p>
+<ol>
+<li><span style="font-size: 14pt;">Windows Service runs in the <strong><span style="color: #000000;">background</span></strong></span></li>
+<li><span style="font-size: 14pt;">They can be configured to<strong><span style="color: #000000;"> start automatically when the system starts</span></strong></span></li>
+<li><span style="font-size: 14pt;">They <strong>don't have user interface</strong></span></li>
+<li><span style="font-size: 14pt;">Services run in a separate Windows session (mostly, session 0) and, therefore, are (most always) <span style="color: #000000;"><strong>shared between all users of a computer.</strong></span> And same for all your loggedin but not happend in application</span></li>
+<li><span style="font-size: 14pt;">Services <span style="color: #000000;"><strong>may offer recovery actions (what to do on first, second, and subsequent failures)</strong></span></span></li>
+</ol>
+<p><span style="font-size: 14pt;">Look at : services.msc where you would find services status like running ,stopped,disabled and many more.</span></p>
+<p><strong><span style="font-size: 18pt; color: #ff0000;">Svchost.exe(Service Host)</span></strong></p>
+<p><span style="font-size: 14pt;">The purpose for svchost.exe is to, as the name would imply,&nbsp;<em>host services</em>. Windows uses svchost.exe to group together services that need access to the same&nbsp;<a href="https://www.lifewire.com/what-is-a-dll-file-2625852" data-component="link" data-source="inlineLink" data-type="internalLink" data-ordinal="1">DLLs</a>&nbsp;so that they can run in one process, helping to reduce their demand for&nbsp;<a href="https://www.lifewire.com/what-is-a-system-resource-2626016" data-component="link" data-source="inlineLink" data-type="internalLink" data-ordinal="2">system resources</a>.</span></p>
+
+<p><span style="font-size: 14pt;">If you&rsquo;ve ever taken a look at the Services section in Control Panel, you&rsquo;ve probably noticed that Windows requires a lot of services. <span style="color: #000000;">If every single service ran under a one Service Host process, a failure in one service could potentially bring down all of Windows. Instead, they are separated out.</span></span></p>
+<p><span style="font-size: 14pt;"><strong><span style="color: #000000;">Services are organized into logical groups that are all somewhat related</span></strong>, and then a single Service Host&nbsp;instance is created to host each group. For example, <strong><span style="color: #000000;">one Service Host process&nbsp;runs the three services related to the firewall.</span> </strong>Another Service Host process might run all the services related to the user interface, and so on.&nbsp;</span></p>
+=============================================================================================
+
+<p><strong><span style="font-size: 14pt;">Different testing life cycle</span></strong></p>
+<img src="img/testinglifecylce.png">
+<p>Different between OEM,RC,RTM and Retail</p>
+<p><span style="font-size: 12pt;"><strong><span style="color: #ff0000;">OEM(&ldquo;Original Equipment Manufacturing&rdquo;)</span>.</strong>Windows 8 OEM is the edition which comes&nbsp;<em>preinstalled&nbsp;</em>on a computer. So when you buy a PC, the OS edition that you&rsquo;ll get is this one. <span style="color: #000000;"><strong>The OEM has the same&nbsp;<em>capabilities</em>&nbsp;as the Retail.</strong></span></span></p>
+<p><span style="font-size: 12pt;"><span style="color: #000000;"><strong><span style="color: #ff0000;">RTM:</span> &ldquo;Release to Manufacturing&rdquo;. Windows 8 RTM is an edition that is&nbsp;<em>no longer in the development stage,</em>&nbsp;but not released to customers yet. </strong></span></span></p>
+<p><span style="font-size: 12pt;"><span style="color: #000000;"><strong><span style="color: #ff0000;">RC(Release Candidate):</span>It is a beta version with potential to be a final product, which is ready to release unless significant <a class="mw-redirect" title="Computer bug" href="https://en.wikipedia.org/wiki/Computer_bug">bugs</a> emerge.Release candidates are NOT for production deployment, but they are for testing purposes only.</strong></span></span></p>
+<p><span style="font-size: 12pt;"><span style="color: #000000;"><strong><span style="color: #ff0000;">Retail:</span> This edition is the <em>same&nbsp;</em>as the OEM, but it&rsquo;s not preinstalled and sold separately in a box, usually at a higher price. You should buy it&nbsp;<em>only&nbsp;</em>if you have a computer that doesn&rsquo;t have any OS installed, maybe because you&rsquo;re building it yourself.</strong></span></span></p>
+    <script src="../CSS SandBox/Sandbox/js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/b">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+    <h2>For WebApi</h2>
+<pre>
+  <code class="language-csharp">
+
+public class RouteConfig
+{
+  public static void RegisterRoutes(RouteCollection routes)
+   {
+	routes.MapHttpRoute(
+	     name:"DefaultApi",
+	     routeTemplate:"api/{controller/{id}},
+	     defaults:new { id = RouteParameter.Optional}
+    }
+
+}
+  </code>
+</pre>
+
+Here. Order is always api then controller and id where id is optional
+====================================================================
+
+<h2>For Mvc Controller</h2>
+<pre>
+  <code class="language-csharp">
+
+    public class RouteConfig
+    {
+      public static void RegisterRoutes(RouteCollection routes)
+       {
+      routes.MapHttpRoute(
+           name:"DefaultApi",
+           routeTemplate:"{controller}/{action}/{id},
+           defaults:new 
+        {
+          controller = "Home",
+          action= "Index",
+          id = UrlParameter.Optional 
+        }
+        }
+    
+    }
+
+    Here always the order is controller then action and id where Id is optional
+        
+  </code>
+</pre>
+
+<div class="row">
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+        localhost:xxxx/Value/details
+          //Value === > Controller
+          // details ====> Action
+          // Optional Parameter ====> None
+      </code>
+    </pre>
+  </div>
+
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+        public ValueController
+        {
+          public ActionResult Details()
+          {
+          
+          }
+      }
+      </code>
+    </pre>
+  </div>
+
+</div>
+<br>
+================================================================================================
+<br>
+
+<div class="row">
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+        localhost:xxxx/Value/edit/10        
+        <!-- Here,
+        controller :value
+        Action : edit
+        Optional Parameter : 10
+         -->
+        
+      </code>
+    </pre>
+  </div>
+
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+        public ValueController
+        {
+          public ActionResult Edit(int myid)
+          {
+            Response.Write(myid);
+          }
+        }
+      </code>
+    </pre>
+  </div>
+
+</div>
+<br>
+================================================================================================
+<br>
+================================================================================================
+<br>
+
+<div class="row">
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+        localhost:xxxx/Value/edit/10        
+        <!-- Here,
+        controller :value
+        Action : edit
+        Optional Parameter : 10
+         -->
+        
+      </code>
+    </pre>
+  </div>
+
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+        public ValueController
+        {
+          public ActionResult Edit(int? myid)
+          {
+            Response.Write(myid);
+          }
+        }
+      </code>
+    </pre>
+  </div>
+
+</div>
+<br>
+================================================================================================
+<br>
+
+================================================================================================
+<br>
+================================================================================================
+<br>
+
+<div class="row">
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+        localhost:xxxx/Value/edit      
+        <!-- Here,
+        controller :value
+        Action : edit
+        Optional Parameter : 10
+         -->
+        
+      </code>
+    </pre>
+  </div>
+
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+        public ValueController
+        {
+          public ActionResult Edit(int? myid)
+          {
+            Response.Write(myid);
+          }
+        }
+      </code>
+    </pre>
+  </div>
+   
+</div>
+ <h4>It will hit</h4>
+<br>
+================================================================================================
+<br>
+================================================================================================
+<br>
+
+<div class="row">
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+        localhost:xxxx/Value/edit        
+        <!-- Here,
+        controller :value
+        Action : edit
+        Optional Parameter : 10
+         -->
+        
+      </code>
+    </pre>
+  </div>
+
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+        public ValueController
+        {
+          public ActionResult Edit(int myid)
+          {
+            Response.Write(myid);
+          }
+        }
+      </code>
+    </pre>
+  </div>
+
+</div>
+<h4>Error: Will not hit and generate error like this</h4>
+<br>
+================================================================================================
+<br>
+
+
+<div class="row">
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+        localhost:xxxx/Value/test/diwas        
+        <!-- Here,
+        controller :value
+        Action : test
+        Optional Parameter :  diwas
+        
+         -->
+      </code>
+    </pre>
+  </div>
+
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+        public ValueController
+        {
+          public ActionResult Edit(string name)
+          {
+            Response.Write(name);
+            return View();
+          }
+      }
+      </code>
+    </pre>
+  </div>
+
+</div>
+<br>
+================================================================================================
+<br>
+
+
+================================================================================================
+<br>
+
+<div class="row">
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+        localhost:xxxx/Value/test/name=diwas&sex=M&age=45
+        Here,
+        Controller : Value
+        Action: Test
+        Optional Parameter : name and sex
+      </code>
+    </pre>
+  </div>
+
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+        public ValueController
+        {
+          public ActionResult Test(string name, string sex , int age){
+
+          }          
+        }
+      </code>
+    </pre>
+  </div>
+
+</div>
+<br>
+================================================================================================
+<br>
+
+<div class="row">
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+        localhost:xxxx/Value/test/10?name=diwas&sex=M
+<!-- 
+        Here, 
+        controller: value
+        action :test
+        Optional Parameter : 10
+        querystring : ?name=diwas&sex=M&age=45
+        First Parameter Name : name
+        First Parameter Value : diwas -->
+        
+      </code>
+    </pre>
+  </div>
+
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+        public ValueController
+        {
+          public ActionResult test(int id ,string name, string sex )
+          {
+
+          }
+                   
+        }
+      </code>
+    </pre>
+  </div>
+
+</div>
+<br>
+================================================================================================
+<br>
+
+<div class="row">
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+        localhost:xxxx/Value/test/10?name=diwas&sex=M
+<!-- 
+        Here, 
+        controller: value
+        action :test
+        Optional Parameter : 10
+        querystring : ?name=diwas&sex=M&age=45
+        First Parameter Name : name
+        First Parameter Value : diwas -->
+        
+      </code>
+    </pre>
+  </div>
+
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+        public ValueController
+        {
+          public ActionResult test(int id ,string name, string sex )
+          {
+
+          }
+                   
+        }
+      </code>
+    </pre>
+  </div>
+
+</div>
+<br>
+<br>
+================================================================================================
+<br>
+
+<div class="row">
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+        localhost:xxxx/Value/test?name=diwas&sex=M
+
+        Here, 
+        controller: value
+        action :test
+        Optional Parameter : 
+        querystring : ?name=diwas&sex=M&age=45
+        First Parameter Name : name
+        First Parameter Value : diwas
+        
+        
+      </code>
+    </pre>
+  </div>
+
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+        public ValueController
+        {
+          public ActionResult test(int? id ,string name, string sex ){
+
+          }
+          
+                   
+        }
+      </code>
+    </pre>
+  </div>
+
+</div>
+<br>
+<h2>Now using Attribute Routing </h2>
+
+<div class="row">
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+        [Route("api/[controller]")]
+        public class ValuesController : Controller
+        {
+            [HttpGet("{id}")]
+            public string Get(int id, string foo, string bar)
+            {
+                return id + " " + foo + " " + bar;
+            }
+        }
+    
+      </code>
+    </pre>
+  </div>
+
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+        In this case, the action takes 3 parameters – id, foo and bar. 
+        However, only id is mandatory – because it’s part of the route,
+         the latter ones are optional. This means that all 4 of the following 
+         URLs would be valid and lead to our action:
+        
+        GET api/values/5
+        GET api/values/5?foo=a
+        GET api/values/5?bar=b
+        GET api/values/5?foo=a&bar=b
+        GET api/values?id=5&foo=a&bar=b   // here we donot have Optional parameter 
+        
+        But Get api/values will not work because here int id is not nullable . So must request in Url
+        
+      </code>
+    </pre>
+  </div>
+
+</div>
+
+<br>
+
+======================================================================================
+<br>
+
+<div class="row">
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+        public class ProductController
+        {
+          [Route("products/{id?}")]  
+              public ActionResult Details(string id)   
+              {  
+                  if (string.IsNullOrEmpty(id))   
+                  {  
+                      return View("List", GetProductList());  
+                  }  
+                    
+                  return View("Details", GetProductDetails());  
+              }  
+        }
+
+    
+      </code>
+    </pre>
+  </div>
+
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+        Both : Product/Details?id=diwas 
+                products/4
+              
+        will work        
+      </code>
+    </pre>
+  </div>
+
+</div>
+
+======================================================================================
+<br>
+
+<div class="row">
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+        public class TestController : Controller
+        {
+          [Route("testing/{id}/{name}")]
+          public ActionResult hello(int id, string name)
+          {
+            Response.Write("diwas");
+            return View();
+          }
+      }   
+      </code>
+    </pre>
+  </div>
+
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+        
+		localhost /testing/4/diwas  
+		localhost  / testing/4        ==>error        
+      </code>
+    </pre>
+  </div>
+
+</div>
+
+======================================================================================
+<br>
+
+<div class="row">
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+        public class TestController : Controller
+        {
+          [Route("testing/{id}/{name?}")]
+          public ActionResult hello(int id, string name)
+          {
+            Response.Write("diwas");
+            return View();
+          }
+        }     
+     
+      </code>
+    </pre>
+  </div>
+
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+        localhost /testing/4/diwas     error
+        localhost  / testing/4         ok
+        localhost /testing/4/5         ok    
+       
+      
+      </code>
+    </pre>
+  </div>
+
+</div>
+
+======================================================================================
+<br>
+
+<div class="row">
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+        [RoutePrefix("home")]
+	public class TestController : Controller
+    {
+
+		[Route("index/{id}/{name}")]
+		public ActionResult Index(int id, string name)
+		{
+			Response.Write("first");
+			return View();
+		}
+
+		[Route("show/{id}/{name}")]
+		public ActionResult Show(int id, string name)
+		{
+			Response.Write("second");
+			return View();
+		}
+      </code>
+    </pre>
+  </div>
+
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+      
+
+output on : 
+home/index/4/3
+home/show/5/4
+      
+      </code>
+    </pre>
+  </div>
+
+</div>
+
+======================================================================================
+<br>
+
+<div class="row">
+  <div class="col-lg-12">
+    <pre>
+      <code class="language-csharp">
+        [RoutePrefix("society")]
+
+        public class TestController : Controller
+          {
+      
+          [Route("")]
+          public ActionResult List()
+          {
+            Response.Write("first");
+            return View();
+          }
+          }
+      
+          Output: localhost: / society   will hit List
+      
+      
+      </code>
+    </pre>
+  </div>
+=============================================
+
+
+<div class="col-lg-12">
+  <pre>
+    <code class="language-csharp">
+      [RoutePrefix("society")]
+
+      public class TestController : Controller
+        {
+    
+        [Route("details")]
+        public ActionResult List()
+        {
+          Response.Write("first");
+          return View();
+        }
+        }
+
+          OUTPUT:     society/details
+    </code>
+  </pre>
+</div>
+
+
+
+<script src="js/prism.js"></script>
+      <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+          {
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true,
+            // 'break-lines': 10,
+            // 'indent': 2,
+            // 'remove-initial-line-feed': false,
+            // 'tabs-to-spaces': 4,
+            // 'spaces-to-tabs': 4
+          });
+      </script>
+    </body>
+    </html>

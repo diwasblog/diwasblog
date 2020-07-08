@@ -1,0 +1,104 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+    <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous"
+  />
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+
+  <h2>Add</h2>
+  <div class='row'>
+    <div class="col-lg-6">
+      <xmp class="prettyprint">
+        <croppa v-model="croppa"
+        id="test"
+        accept="image/jpg,image/png,image/jpeg,image/gif"
+        disable-click-to-choose
+        @@file-choose="handleFileChoose"
+        :zoom-speed="50"
+        :width="300"
+        :height="200"
+        :prevent-white-space="true"
+        :quality="6">
+      </croppa>
+      <button @@click="croppa.chooseFile()" type="button" style="margin-left:80px" class="btn btn-primary">Upload Photo</button>
+
+
+
+      data: {
+        croppa: {}
+    },
+      </xmp>
+    </div>
+
+    <div class="col-lg-6">
+      <xmp class="prettyprint">
+        submitNotice: function (e) {
+          let vm = this;
+          vm.$validator.validateAll().then((result) => {
+              if (result) {
+                  vm.croppa.generateBlob((blob) => {
+                      var fd = new FormData();
+                      fd.append('file', blob);  //croppa image 
+                      fd.append('Title', vm.title);   
+                      fd.append('Description', document.getElementById('summernote').value); //summernote data
+                      fd.append('PhotoTitle', vm.photoTitle); //from handleFileChoose function
+                      fd.append('DocumentFile', document.getElementById('documentfile').files[0]);  //just an attach file
+                      //console.log(blob);
+
+                      jQuery.ajax({
+                          enctype: 'multipart/form-data',
+                          url: '/admin/report/add',
+                          data: fd,
+                          type: 'POST',
+                          processData: false,
+                          contentType: false,
+                          success: function (data) {
+                              if (data) {
+                                  alert("Report is successfully Created");
+                              }
+                              else {
+                                  alert("Unable");
+                              }
+                              
+                          },
+                          error: function (jqXHR, textStatus, errorThrown) {
+                              alert(error);
+                          }
+                      });
+                  });
+              }
+              
+          }).catch(() => {
+              e.preventDefault();
+          });
+      },
+      handleFileChoose(file) {
+          let vm = this;
+          vm.photoTitle = file.name;
+      }
+
+  },
+      </xmp>
+    </div>
+  </div>
+
+  </body>
+  </html>

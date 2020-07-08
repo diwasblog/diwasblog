@@ -1,0 +1,31 @@
+HEIFER
+HEIFER.BLL
+	DTO
+		User
+			UserDTO.cs
+	Mapper
+	Repository 
+	Services
+HEIFER.CORE
+HEIFER.DAL
+	Connection
+		HeiferDbContext.cs
+	DbAccess
+		GenericRepository.cs
+		IRepository.cs
+		UnitOfWork.cs
+	Entities
+		User
+		  User.cs
+	
+	Function
+		fn_get_farmer_list.cs
+		
+
+Step 1: Create View 
+Step 2. Create BLL 
+Step 3 Create Core 
+Step 4 Create DAL 
+
+Step 5: Create Connection in DAL 
+Here: HeiferDbContext.cs		

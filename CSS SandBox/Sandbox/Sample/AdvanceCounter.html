@@ -1,0 +1,159 @@
+<html>
+  <head>
+
+  </head>
+
+  <body>
+      <h1>Run any job in X seconds. Exmaples:</h1>
+      <br>
+      
+      <button>Run</button>
+      <strong data-to='1000000'  data-easing='gompertz'>0</strong>
+      <br>
+      
+      <button>Run</button>
+      Cubic
+      <strong data-to='250' data-easing='easeInCubic'>0</strong>
+      <br>
+      
+      <button>Run</button>
+      Linear
+      <strong data-to='30' data-easing='linear'>0</strong>
+      <br>
+      
+      <button>Run</button>
+      Linear
+      <strong data-to='256' data-easing='linear'>128</strong>
+      <br>
+      
+      <button>Run</button>
+      Exponential
+      <strong data-to='100' data-easing='exp'>500</strong>
+      <br>
+      
+      <div class='time'>
+        Step
+        <time>0</time><span>3s</span>
+      <input class='speed' type="range" min="1" max="30" step="0.5" value="3">
+       
+      </div>
+      
+      <script src="do-in.js"></script>
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+      <script>
+
+var easing = {
+    // no easing, no acceleration
+    linear: function (t) { return t },
+    // accelerating from zero velocity
+    easeInQuad: function (t) { return t*t },
+    // decelerating to zero velocity
+    easeOutQuad: function (t) { return t*(2-t) },
+    // acceleration until halfway, then deceleration
+    easeInOutQuad: function (t) { return t<.5 ? 2*t*t : -1+(4-2*t)*t },
+    // accelerating from zero velocity 
+    easeInCubic: function (t) { return t*t*t },
+    // decelerating to zero velocity 
+    easeOutCubic: function (t) { return (--t)*t*t+1 },
+    // acceleration until halfway, then deceleration 
+    easeInOutCubic: function (t) { return t<.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1 },
+    // accelerating from zero velocity 
+    easeInQuart: function (t) { return t*t*t*t },
+    // decelerating to zero velocity 
+    easeOutQuart: function (t) { return 1-(--t)*t*t*t },
+    // acceleration until halfway, then deceleration
+    easeInOutQuart: function (t) { return t<.5 ? 8*t*t*t*t : 1-8*(--t)*t*t*t },
+    // accelerating from zero velocity
+    easeInQuint: function (t) { return t*t*t*t*t },
+    // decelerating to zero velocity
+    easeOutQuint: function (t) { return 1+(--t)*t*t*t*t },
+    // acceleration until halfway, then deceleration 
+    easeInOutQuint: function (t) { return t<.5 ? 16*t*t*t*t*t : 1+16*(--t)*t*t*t*t },
+    // exponential decelerating
+    exp: function (t) { return (1-Math.exp(-t*7)) },
+    gompertz : function(t){
+      return Math.exp(-30 * Math.exp(-13 * t));
+    }
+};
+
+//////////////////////////////////
+
+(function(){
+    var timeElm       = $('time')[0],
+        defaultEasing = easing.gompertz,
+        duration      = 3; // default duration (in seconds)
+  
+    // change time duration slider
+    $('input').on('change', changeTime);
+  
+    function changeTime(){
+        duration = this.value;
+        timeElm.nextElementSibling.innerHTML = duration + 's';
+    };
+
+    // click to start doing stuff
+    $('button').on('click', function(){
+        var $el = $(this.nextElementSibling),
+            task = $el.data('task') || new Task( $el[0] );
+
+        this.textContent = task.doin.isPlaying ? 'Run' :'Pause'; // set button's text
+        task.doin[task.doin.isPlaying ? 'pause' : 'start'](); // do some action
+
+        $el.data('task', task); // save reference to the instance
+    });
+
+  
+    ////////////////////////////////////////////////////
+    // constructor to run a specific job using Do-in
+    function Task(el){
+      this.el = el; // the element to run the task on
+      // get variables
+      this.initialValue = el.innerHTML|0;
+      this.toValue      = el.getAttribute('data-to') || 500;
+      this.delta        = this.toValue - this.initialValue;
+      this.easing       = easing[el.getAttribute('data-easing')] || easing.exp;
+
+      // Do-in settings object
+      var settings = {
+          step     : this.step.bind(this),
+          done     : this.done.bind(this),
+          duration : duration,
+       //   fps      : 5
+      }
+      // create an instance of Do-in
+      this.doin = new Doin(settings);
+    }
+ 
+    // a step of the thing we want to do
+    Task.prototype.step = function(t, elapsed){
+        // easing 
+        t = this.easing(t);
+  
+        // calculate new value
+        var value = this.delta * t + this.initialValue;
+      
+        // limit value
+        if( t > 0.999 )
+            value = this.toValue;
+      
+        value = (value|0).toLocaleString();
+        // print value 
+        this.el.innerHTML = value;
+        timeElm.innerHTML = elapsed.toFixed(2);
+    }
+    
+    // on DONE
+    Task.prototype.done = function(){
+        this.el.previousElementSibling.textContent = 'Run';
+        console.log(this.el, 'done counting!');
+        //$(this.el).removeData('doin');
+    }
+
+})();
+
+
+//////////////////////////////////////////////
+
+      </script>
+  </body>
+</html>

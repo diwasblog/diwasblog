@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../SQL SandBox/css/bootstrap.css">
+    <link rel="stylesheet" href="../SQL SandBox/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../SQL SandBox/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../SQL SandBox/css/dracula.css">
+    <link rel="stylesheet" href="../SQL SandBox/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+    <style>
+        kbd {
+            background: black
+        }
+    </style>
+</head>
+
+<body>
+    <p>&nbsp;</p>
+    <p>A widget is either stateful or stateless. If a widget can change&mdash;when a user interacts with it, for
+        example&mdash;it&rsquo;s stateful.</p>
+    <table style="border-collapse: collapse; width: 100%;" border="1">
+        <tbody>
+            <tr style="background: black; color: white;">
+                <td style="width: 50%;"><span style="font-size: 14pt;">Stateless Widgets</span></td>
+                <td style="width: 50%;"><span style="font-size: 14pt;">StateFul Widgets</span></td>
+            </tr>
+            <tr>
+                <td style="width: 50%;"><span style="font-size: 14pt; color: #000000;">The state of the Widgets
+                        <strong><span style="color: #2dc26b;">doesn't change over time.</span></strong></span></td>
+                <td style="width: 50%;"><span style="font-size: 14pt; color: #000000;">The state of the widgets<span
+                            style="color: #2dc26b;"><strong> changes over time.</strong></span></span></td>
+            </tr>
+            <tr>
+                <td style="width: 50%;">
+                    <ul>
+                        <li><span style="font-size: 14pt; color: #000000;"><strong><span style="color: #e03e2d;"><a
+                                            style="color: #e03e2d;"
+                                            href="https://api.flutter.dev/flutter/widgets/Icon-class.html"><code>Icon</code></a></span></strong>,&nbsp;<span
+                                    style="color: #e03e2d;"><a style="color: #e03e2d;"
+                                        href="https://api.flutter.dev/flutter/material/IconButton-class.html"><code>IconButton</code></a></span>,
+                                and&nbsp;<strong><span style="color: #e03e2d;"><a style="color: #e03e2d;"
+                                            href="https://api.flutter.dev/flutter/widgets/Text-class.html"><code>Text</code></a>&nbsp;</span></strong>are
+                                examples of stateless widgets. </span></li>
+                        <li><span style="font-size: 14pt; color: #000000;">Stateless widgets subclass&nbsp;<a
+                                    style="color: #000000;"
+                                    href="https://api.flutter.dev/flutter/widgets/StatelessWidget-class.html"><code>StatelessWidget</code></a>.
+                            </span></li>
+                    </ul>
+                </td>
+                <td style="width: 50%;">
+                    <ul>
+                        <li><span style="font-size: 14pt; color: #000000;"><strong><span style="color: #e03e2d;"><a
+                                            style="color: #e03e2d;"
+                                            href="https://api.flutter.dev/flutter/material/Checkbox-class.html"><code>Checkbox</code></a></span></strong>,
+                                <strong><span style="color: #e03e2d;"><a style="color: #e03e2d;"
+                                            href="https://api.flutter.dev/flutter/material/Radio-class.html"><code>Radio</code></a>,&nbsp;<a
+                                            style="color: #e03e2d;"
+                                            href="https://api.flutter.dev/flutter/material/Slider-class.html"><code>Slider</code></a>,&nbsp;<a
+                                            style="color: #e03e2d;"
+                                            href="https://api.flutter.dev/flutter/material/InkWell-class.html"><code>InkWell</code></a>,&nbsp;<a
+                                            style="color: #e03e2d;"
+                                            href="https://api.flutter.dev/flutter/widgets/Form-class.html"><code>Form</code></a></span></strong>,
+                                and&nbsp;<span style="color: #e03e2d;"><strong><a style="color: #e03e2d;"
+                                            href="https://api.flutter.dev/flutter/material/TextField-class.html"><code>TextField</code></a>&nbsp;</strong></span>are
+                                examples of stateful widgets.</span></li>
+                        <li><span style="font-size: 14pt; color: #000000;">They change with user input. </span></li>
+                        <li><span style="font-size: 14pt; color: #000000;">Stateful widgets subclass&nbsp;<a
+                                    style="color: #000000;"
+                                    href="https://api.flutter.dev/flutter/widgets/StatefulWidget-class.html"><code>StatefulWidget</code></a>.
+                            </span></li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 50%;"><span style="font-size: 14pt; color: #000000;">They are <span
+                            style="color: #e03e2d;">static. <span style="color: #000000;">We place all static content
+                                inside stateless widgets</span></span></span></td>
+                <td style="width: 50%;"><span style="font-size: 14pt; color: #000000;">They are <span
+                            style="color: #e03e2d;">dynamic</span></span></td>
+            </tr>
+        </tbody>
+    </table>
+    1) Create new flutter project and remove all the code then type below
+
+    <hr>
+    Step 1) Using Material App as Root Widgets and this widget property is home and has its value as Text widget with
+    text as "Hello Worlds"
+    <div class="row">
+        <div class="col-lg-6">
+            <pre>
+            <code class="language-dart">
+                import 'package:flutter/material.dart';
+
+                void main() => runApp(MaterialApp(
+                  home: Scaffold(
+                    appBar: AppBar(
+                      title:Text("First Flutter Apps"),
+                      centerTitle: true,
+                      backgroundColor: Colors.red[600],
+                    ),
+                    body:Material(
+                      color:Colors.lightBlueAccent,
+                      child:Center(
+                        child:Text(
+                          "This is body",
+                          style: TextStyle(
+                            fontSize:20.0,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 2.0,
+                            color:Colors.grey[600],
+                          ),
+                        ),
+                      ),
+                    ),
+                    floatingActionButton: FloatingActionButton(
+                      child: Text("Save"),
+                      backgroundColor: Colors.red[600],
+                    ),
+                  ),
+                ));
+                
+
+            </code>
+            </pre>
+        </div>
+
+        <div class="col-lg-6">
+            <img src="https://i.ibb.co/MMxVGJm/hellow-world.png" height="500px">
+        </div>
+    </div>
+    <h2>Creating Stateless Widgets</h2>
+    Just Create a Class Home and extends StatelessWidget
+    <div class="row">
+        <div class="col-lg-12">
+            <pre data-keep-tags="kbd, em">
+                <code class="language-dart">
+    
+                    import 'package:flutter/material.dart';
+
+                    void main() => runApp(MaterialApp(
+                      home: Scaffold(
+                        appBar: AppBar(
+                          title:Text("First Flutter Apps"),
+                          centerTitle: true,
+                          backgroundColor: Colors.red[600],
+                        ),
+                        body:Material(
+                          color:Colors.lightBlueAccent,
+                          child:Center(
+                            child:Text(
+                              "This is body",
+                              style: TextStyle(
+                                fontSize:20.0,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 2.0,
+                                color:Colors.grey[600],
+                              ),
+                            ),
+                          ),
+                        ),
+                        floatingActionButton: FloatingActionButton(
+                          child: Text("Save"),
+                          backgroundColor: Colors.red[600],
+                        ),
+                      ),
+                    ));
+                    
+                    <kbd>
+                        class Home extends StatelessWidget{
+                            @override
+                            Widget build(BuildContext context) {
+                              // TODO: implement build
+                              throw UnimplementedError();
+                            }
+                            
+                          }
+                    </kbd>
+                    
+    
+                </code>
+                </pre>
+        </div>
+    </div>
+
+    <h2>Creating Stateless Widgets</h2>
+    Bringing Static Scaffold contain inside Home class and return scaffold block.
+    <br>
+    Now we should not have to click on hot reload button.
+    <div class="row">
+        <div class="col-lg-12">
+            <pre data-keep-tags="kbd, em">
+                <code class="language-dart">
+                    import 'package:flutter/material.dart';
+
+                    void main() => runApp(MaterialApp(
+                      home:<kbd>Home()</kbd>,  // Using Own Home Widget 
+                    ));
+                    
+                    class Home extends StatelessWidget{
+                      @override
+                      Widget build(BuildContext context) {
+                        // TODO: implement build
+                        <kbd>return Scaffold(
+                         appBar: AppBar(
+                           title:Text("First Flutter Apps"),
+                           centerTitle: true,
+                           backgroundColor: Colors.red[600],
+                         ),
+                         body:Material(
+                           color:Colors.lightBlueAccent,
+                           child:Center(
+                             child:Text(
+                               "This is body",
+                               style: TextStyle(
+                                 fontSize:20.0,
+                                 fontWeight: FontWeight.bold,
+                                 letterSpacing: 2.0,
+                                 color:Colors.grey[600],
+                               ),
+                             ),
+                           ),
+                         ),
+                         floatingActionButton: FloatingActionButton(
+                           child: Text("Save"),
+                           backgroundColor: Colors.red[600],
+                         ),
+                       );
+                      }
+                    </kbd>
+                    }
+
+                    //Now when make any change to static content automatically reload it and show the effect
+                </code>
+                </pre>
+        </div>
+    </div>
+
+
+    <script src="../SQL SandBox/js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+
+        (function () {
+            if (!self.Prism) {
+                return;
+            }
+
+            var div = document.createElement('div');
+
+            Prism.hooks.add('before-highlight', function (env) {
+                var elt = env.element;
+                if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                    elt = elt.parentNode;
+                }
+                var tags = elt.getAttribute('data-keep-tags');
+                if (!tags) {
+                    return;
+                }
+                var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+                env.keepTags = true;
+                env.keepTagsPlaceholder = placeholder;
+
+                tags = tags.split(/\s*,\s*/).join('|');
+                var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+                env.keepTagsRegex = tags_regex;
+
+                env.tokenStack = [];
+                env.backupCode = env.code;
+
+                var code = env.element.innerHTML;
+                code = code.replace(tags_regex, function (match) {
+                    env.tokenStack.push(match);
+                    return placeholder.replace('{n}', env.tokenStack.length);
+                });
+                env.element.innerHTML = code;
+                code = env.element.textContent;
+                code = code.replace(/^(?:\r?\n|\r)/, '');
+
+                env.code = code;
+            });
+
+            Prism.hooks.add('after-highlight', function (env) {
+                if (!env.keepTags) {
+                    return;
+                }
+                for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                    t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                        div.innerHTML = inside;
+                        inside = div.textContent;
+                        return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                    });
+
+                    env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                    env.element.innerHTML = env.highlightedCode;
+                }
+            });
+
+        }());
+
+        Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+            v.classList.add("language-sql");
+        });
+        Prism.highlightAll();
+
+    </script>
+</body>
+
+</html>

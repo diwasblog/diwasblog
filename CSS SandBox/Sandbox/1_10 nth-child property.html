@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+      <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+          <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+    
+  <style>
+  xmp.prettyprint{
+      font-size:12pt;
+      font-family:monospace;
+  
+  }
+  </style>
+  </head>
+
+  <body>
+
+    ================================================================================================================
+
+<div class="row">
+  <div class="col-lg-6">
+    <xmp class="prettyprint">
+    <ol>
+        <li>Text1</li>
+        <li>Text2</li>
+        <li>Text3</li>
+        <li>Text4</li>
+        <li>Text5</li>
+        <li>Text6</li>
+        <li>Text7</li>
+        <li>Text8</li>
+        <li>Text9</li>
+      </ol>
+    </xmp>
+  </div>
+
+  <div class="col-lg-6">
+    <xmp class="prettyprint">
+    li:nth-child(1){
+      background:blue;
+    }
+    
+    li:nth-child(5){
+      background:blue;
+    }        
+    </xmp>
+  </div>
+</div>
+
+Output: 
+<p data-height="265" data-theme-id="dark" data-slug-hash="JBzPVv" data-default-tab="html,result" data-user="DiwasPoudel" data-pen-title="nth child(number)" class="codepen">See the Pen <a href="https://codepen.io/DiwasPoudel/pen/JBzPVv/">nth child(number)</a> by Diwas Poudel (<a href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="http://static.codepen.io/assets/embed/ei.js"></script>
+===========================================================================================================
+<h2>POSITIVE CHILD RANGES </h2>
+<xmp class="prettyprint">
+    li:nth-child(n+6){
+      background:blue;
+    }
+</xmp>
+
+<h2><strong>Using the&nbsp;<span style="color: #ff00ff;">:nth-child(n+6)</span>&nbsp;like this allows you pick&nbsp;<span style="color: #ff00ff;">:nth-child(6)</span>&nbsp;and above</strong></h2>
+
+<p data-height="265" data-theme-id="dark" data-slug-hash="wxOvvK" data-default-tab="html,result" data-user="DiwasPoudel" data-pen-title="nth child with range" class="codepen">See the Pen <a href="https://codepen.io/DiwasPoudel/pen/wxOvvK/">nth child with range</a> by Diwas Poudel (<a href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="http://static.codepen.io/assets/embed/ei.js"></script>
+
+====================================================================================================================
+<h2>Negative Child index</h2>
+<xmp class="prettyprint">
+    li:nth-child(-n+5){
+      background:red; 
+     }
+</xmp>
+
+<h2><strong>Using the<span style="color: #ff00ff;">&nbsp;:nth-child(-n+5)</span>&nbsp;like this allows you pick<span style="color: #ff00ff;">&nbsp;:nth-child(5)</span>&nbsp;and below</strong></h2>
+
+<p data-height="265" data-theme-id="dark" data-slug-hash="WKmNbx" data-default-tab="html,result" data-user="DiwasPoudel" data-pen-title="WKmNbx" class="codepen">See the Pen <a href="https://codepen.io/DiwasPoudel/pen/WKmNbx/">WKmNbx</a> by Diwas Poudel (<a href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="http://static.codepen.io/assets/embed/ei.js"></script>
+
+===================================================================================================================
+<h2>Odd range and Even range</h2>
+<xmp class="prettyprint">
+    li:nth-child(odd){  /* 2n+1  will also work*/ 
+      background:blue;  
+    }
+    
+    li:nth-child(even){ /* 2n  will also work*/   
+      background:gray;
+    }
+</xmp>
+
+<p data-height="265" data-theme-id="dark" data-slug-hash="GBeRpK" data-default-tab="html,result" data-user="DiwasPoudel" data-pen-title="nth child odd and even" class="codepen">See the Pen <a href="https://codepen.io/DiwasPoudel/pen/GBeRpK/">nth child odd and even</a> by Diwas Poudel (<a href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="http://static.codepen.io/assets/embed/ei.js"></script>
+
+
+======================================================================================================
+
+<xmp class="prettyprint">
+    li:nth-child(n+4):nth-child(-n+7){
+      background:blue;
+    }
+</xmp>
+
+<p data-height="265" data-theme-id="dark" data-slug-hash="GBeRZK" data-default-tab="html,result" data-user="DiwasPoudel" data-pen-title="generic nth child with between range" class="codepen">See the Pen <a href="https://codepen.io/DiwasPoudel/pen/GBeRZK/">generic nth child with between range</a> by Diwas Poudel (<a href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="http://static.codepen.io/assets/embed/ei.js"></script>
+====================================================================================================================
+    <script src="js/prism.js"></script>
+    <script type="text/javascript">
+      Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+          'remove-trailing': true,
+          'remove-indent': true,
+          'left-trim': true,
+          'right-trim': true,
+          // 'break-lines': 10,
+          // 'indent': 2,
+          // 'remove-initial-line-feed': false,
+          // 'tabs-to-spaces': 4,
+          // 'spaces-to-tabs': 4
+        });
+    </script>
+  </body>
+</html>

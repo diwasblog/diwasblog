@@ -1,0 +1,34 @@
+-- View: transactions.transaction_details_verification_view
+
+-- DROP VIEW transactions.transaction_details_verification_view;
+
+CREATE OR REPLACE VIEW transactions.transaction_details_verification_view AS
+ SELECT td.transaction_detail_id,
+    td.tran_id,
+    td.statement_reference,
+    deposit.get_account_number(transactions.get_deposit_account_id(td.transaction_detail_id)) AS deposit_account,
+    l.loan_account_number AS loan_account,
+    s.account_number AS share_account,
+    g.account_name AS gl_account,
+        CASE
+            WHEN td.loan_id IS NOT NULL THEN lc.customer_name::character varying::text
+            WHEN td.share_account_id IS NOT NULL THEN sc.customer_name::character varying::text
+            WHEN td.account_number_id IS NOT NULL THEN dc.customer_name::character varying::text
+            ELSE deposit.get_customer_name(transactions.get_deposit_account_id(td.transaction_detail_id))
+        END AS customer_name,
+    r.repository_name,
+    td.check_number,
+    COALESCE(td.debit, '$0.00'::money) AS debit,
+    COALESCE(td.credit, '$0.00'::money) AS credit
+   FROM transactions.transaction_details td
+     LEFT JOIN deposit.account_holders d ON td.account_number_id = d.account_number_id
+     LEFT JOIN loan.loan_grant l ON td.loan_id = l.loan_id
+     LEFT JOIN core.share_accounts s ON td.share_account_id = s.share_account_id
+     JOIN core.gl_accounts g ON td.gl_account_id = g.gl_account_id
+     LEFT JOIN office.repository r ON td.repository_id = r.repository_id
+     LEFT JOIN core.customers_view lc ON lc.customer_id = l.customer_id
+     LEFT JOIN core.customers_view dc ON dc.customer_id = d.customer_id
+     LEFT JOIN core.customers_view sc ON sc.customer_id = s.customer_id;
+
+ALTER TABLE transactions.transaction_details_verification_view
+    OWNER TO postgres;

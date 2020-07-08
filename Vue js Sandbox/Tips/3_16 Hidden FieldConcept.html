@@ -1,0 +1,62 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+    font-size:11pt;
+    font-family:monospace;
+
+}
+</style>
+ 
+</head>
+<body>
+
+<xmp class="prettyprint">
+   public class Test{
+     public string DateAD{get;set;}
+   }
+</xmp>
+
+
+<xmp class="prettyprint">
+    <form action="/bims/misc/notice/edit" method="post" id="noticeForm" v-on:submit.prevent="submitNotice" >
+    <input type="hidden" id="hiddenDateValue" name="DateAD" /> //passing date from here 
+    <date :datead="notice.dateAD" name="DateAD" :dateoptions="{enginputid:'englishnoticedate',nepinputid:'nepalibilldate',labelname:'BillDateAD'}"></date>
+    <input type="button" @@click="submitNotice" value="Update" class="btn btn-primary" />
+  </form>
+</xmp>
+
+<xmp class="prettyprint">
+
+    notice: {
+      Id:'@Model.Id',
+      dateAD: '@Model.DateAD',
+  }
+
+
+
+    methods: {
+      submitNotice: function (e) {
+
+          let vm = this;
+
+          vm.notice.dateAD = document.querySelector('#englishnoticedate').value;
+          document.querySelector('#hiddenDateValue').value = vm.notice.dateAD;
+
+          this.$validator.validateAll().then((result) => {
+
+              if (result) {
+                  document.querySelector('#noticeForm').submit();
+              }
+  },
+
+</xmp>
+
+  </body>
+
+  </html>

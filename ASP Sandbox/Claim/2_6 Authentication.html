@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+
+
+<pre>
+
+<code class="language-csharp">
+using AuthManager.Models;
+using Microsoft.Ajax.Utilities;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Net;
+using System.Runtime.Remoting.Contexts;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Security;
+using Vereyon.Web;
+
+namespace AuthManager.Controllers
+{
+    public class HomeController : Controller
+    {
+        private ApplicationUserManager _userManager;
+        private ApplicationDbContext _context;
+        private ApplicationSignInManager _signInManager;
+        public RoleManager<IdentityRole> RoleManager { get; private set; }
+
+        public HomeController()
+        {  
+            _context = new ApplicationDbContext();
+            RoleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_context));
+        }
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+
+        public ApplicationSignInManager SignInManager
+        {
+            get
+            {
+                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            }
+            private set
+            {
+                _signInManager = value;
+            }
+        }
+
+
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        public ActionResult AllUser()
+        {
+            List<User> userlst = new List<User>();
+            var usermanager= UserManager.Users.ToList();
+            foreach (var item in usermanager)
+            {
+                User user = new User();
+                user.Email = item.Email;
+                user.PhoneNumber = item.PhoneNumber;
+                user.UserName = item.UserName;
+                user.Id = item.Id;
+                userlst.Add(user);
+            }
+            return View(userlst);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> DeleteUser(string UserId)
+        {
+            if (ModelState.IsValid)
+            {
+                if (UserId == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                var user = await UserManager.FindByIdAsync(UserId);
+                var logins = user.Logins;
+                var rolesForUser = await UserManager.GetRolesAsync(UserId);
+
+                using (var transaction = _context.Database.BeginTransaction())
+                {
+                    foreach (var login in logins.ToList())
+                    {
+                        await UserManager.RemoveLoginAsync(login.UserId, new UserLoginInfo(login.LoginProvider, login.ProviderKey));
+                    }
+
+                    if (rolesForUser.Count() > 0)
+                    {
+                        foreach (var item in rolesForUser.ToList())
+                        {
+                            // item should be the name of the role
+                            var result = await UserManager.RemoveFromRoleAsync(user.Id, item);
+                        }
+                    }
+
+                    await UserManager.DeleteAsync(user);
+                    transaction.Commit();
+                }
+                FlashMessage.Confirmation("User Deleted Successfully");
+                return Redirect("/home/alluser");
+            }
+            else
+            {
+                FlashMessage.Danger("Unable to delete User");
+                return View();
+            }
+
+        }
+
+        public ActionResult ResetUserPassword(string Id, string UserName)
+        {
+            ResetUserPasswordViewModal vm = new ResetUserPasswordViewModal();
+            vm.Username = UserName.ToString();
+            vm.UserId = Id.Trim().ToString();
+            return View(vm);
+        }
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public ActionResult ResetUserPassword(ResetUserPasswordViewModal model)
+        {
+            if (ModelState.IsValid)
+            {
+                UserManager<IdentityUser> userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>());
+                if (userManager.HasPassword(model.UserId))
+                {
+                    userManager.RemovePassword(model.UserId);
+                    userManager.AddPassword(model.UserId, model.ConfirmPassword);
+                }
+                return Redirect("/home/alluser");
+            }
+            return Redirect("/home/alluser");
+
+        }
+
+        public ActionResult GetAllRoles()
+        {
+            var roleStore = new RoleStore<IdentityRole>(_context);
+            var roleMngr = new RoleManager<IdentityRole>(roleStore);
+
+            var data = roleMngr.Roles.ToList();
+            List<Role> roles = new List<Role>();
+            foreach (var item in data)
+            {
+                Role role = new Role();
+                role.Id = item.Id;
+                role.Name = item.Name;
+                roles.Add(role);
+            }
+            return View(roles);
+        }
+        
+        [HttpPost]
+        public ActionResult DeleteRole(string Name)
+        {
+            var role = _context.Roles.Where(d => d.Name == Name).FirstOrDefault();
+            _context.Roles.Remove(role);
+            _context.SaveChanges();
+            return Redirect("/home/getallroles");
+        }
+
+        [HttpGet]
+        public ActionResult AssignRole()
+        {
+            UserRole userRole = getAssignRoleView();
+
+            return View(userRole);
+        }
+
+        private UserRole getAssignRoleView()
+        {
+            UserRole userRole = new UserRole();
+            var roleStore = new RoleStore<IdentityRole>(_context);
+            var roleMngr = new RoleManager<IdentityRole>(roleStore);
+
+            var data = roleMngr.Roles.ToList();
+            List<Role> roles = new List<Role>();
+            foreach (var item in data)
+            {
+                Role role = new Role();
+                role.Id = item.Id;
+                role.Name = item.Name;
+                roles.Add(role);
+            }
+            userRole.RoleList = roles;
+
+            List<User> userlst = new List<User>();
+            var usermanager = UserManager.Users.ToList();
+            foreach (var item in usermanager)
+            {
+                User user = new User();
+                user.Email = item.Email;
+                user.PhoneNumber = item.PhoneNumber;
+                user.UserName = item.UserName;
+                user.Id = item.Id;
+                userlst.Add(user);
+            }
+            userRole.UserList = userlst;
+            return userRole;
+        }
+
+        [HttpPost]
+        public ActionResult AssignRole(RoleAssign roleAssign)
+        {
+            roleAssign.RoleIds = roleAssign.RoleIds.TrimEnd(',');
+            var userName = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(roleAssign.UserId).UserName;
+            string[] roles= roleAssign.RoleIds.Split(new string[] { "," },StringSplitOptions.None);
+
+            var rolesForUser =  UserManager.GetRolesAsync(roleAssign.UserId).Result.ToArray();
+            for (int i = 0; i < roles.Length; i++)
+            {
+               for(int j = 0; j < rolesForUser.Length; j++)
+                {
+                    if (rolesForUser[j] == roles[i])
+                    {
+                        FlashMessage.Danger("Already Assigned the role :"+rolesForUser[i]);
+                        return Redirect("/home/assignrole");
+                    }
+                }
+            }
+
+            for (int i = 0; i < roles.Length; i++)
+            {
+               
+                UserManager.AddToRole(roleAssign.UserId, roles[i]);
+            }
+
+            return Redirect("/home/alluser");
+        }
+
+        [HttpGet]
+        public ActionResult CreateRole()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult CreateRole(Role obj)
+        {
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(_context));
+            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(_context));
+            var role = new Microsoft.AspNet.Identity.EntityFramework.IdentityRole();
+            if (!roleManager.RoleExists(obj.Name))
+            {
+                role.Name = obj.Name;
+                roleManager.Create(role);
+                FlashMessage.Confirmation("Successfully Created");
+                return Redirect("/home/getallroles");
+            }
+            else
+            {
+                FlashMessage.Danger("Roles Already Exists");
+                return View(obj);
+            }
+            
+        }
+
+        [HttpGet]
+        public ActionResult RegisterUser()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> RegisterUser(RegisterUser usr) 
+        {
+            if (!ModelState.IsValid)
+            {
+                string messages = string.Join("; ", ModelState.Values
+                                           .SelectMany(x => x.Errors)
+                                           .Select(x => x.ErrorMessage));
+                FlashMessage.Danger(messages);
+                return View(usr); 
+            }
+            else
+            {
+                var user = new ApplicationUser { UserName = usr.Email, Email = usr.Email,PhoneNumber=usr.PhoneNumber };
+                var result = await UserManager.CreateAsync(user, usr.Password);
+                if (result.Succeeded)
+                {
+
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    return Redirect("/home/alluser");
+                }
+            }
+            return Redirect("/home/alluser");
+        }
+
+        [HttpGet]
+        public ActionResult DeleteRoleOfUser()
+        {
+            UserRole userRole = getAssignRoleView();
+            return View(userRole);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteRoleOfUser(RoleAssign roleAssign)
+        {
+            //var account = new AccountController();
+            var userName = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(roleAssign.UserId).UserName;
+            ApplicationUser user = _context.Users.Where(u => u.UserName.Equals(userName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+
+            if (UserManager.IsInRole(user.Id, roleAssign.RoleIds))
+            {
+                UserManager.RemoveFromRole(user.Id, roleAssign.RoleIds);
+                FlashMessage.Confirmation("Role removed from this user successfully");
+            }
+            else
+            {
+                FlashMessage.Danger("This user doesnot belongs to selected roles");
+            }
+            // prepopulat roles for the view dropdown
+            var list = _context.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
+            ViewBag.Roles = list;
+            return Redirect("/home/deleteroleofuser");
+        }
+
+        [HttpGet]
+        public ActionResult EditRole(Role obj)
+        {
+            return View(obj);
+        }
+
+        [HttpPost]
+        public ActionResult EditRole([Bind(Include = "Name,Id")] IdentityRole obj)
+        {
+            if (ModelState.IsValid)
+            {
+                var role = _context.Roles.First(r => r.Id == obj.Id);
+                    _context.Entry(role).State = EntityState.Modified;
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(obj);
+        }
+    }
+}
+</code>  
+
+</pre>  
+
+
+     <script src="js/prism.js"></script>
+
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>   

@@ -1,0 +1,159 @@
+<html>
+  <head>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+      crossorigin="anonymous"
+    />
+
+    <style>
+      xmp.prettyprint {
+        font-size: 12pt;
+        font-family: "Consolas, 'Courier New', monospace";
+      }
+    </style>
+  </head>
+  <body>
+
+    <h2>For ElementUI Component Details</h2>
+<xmp class="prettyprint">
+    https://element.eleme.io/#/en-US/component/installation
+</xmp>
+====================================================================================
+<br>
+
+<p><strong><span style="font-size: 14pt; font-family: verdana, geneva, sans-serif;">When you install vue cli 3 then it automatically comes with element ui</span></strong></p>
+<br>
+<h2>Setup ElementUi</h2>
+<xmp class="prettyprint">
+    npm i element-ui -S
+</xmp>
+
+
+<br>
+<h2>In main.js</h2>
+<div class="row">
+
+  <div class="col-lg-6">
+      For Fully Importing
+    <xmp class="prettyprint">
+        import Vue from 'vue';
+        import ElementUI from 'element-ui';
+        import 'element-ui/lib/theme-chalk/index.css';
+        import App from './App.vue';
+        
+        Vue.use(ElementUI);
+        
+        new Vue({
+          el: '#app',
+          render: h => h(App)
+        });
+        
+        
+    </xmp>
+  </div>
+
+  <div class="col-lg-6">
+    For partial importing (only button and select)
+<xmp class="prettyprint">
+    import Vue from 'vue';
+    import { Button, Select } from 'element-ui';   //only importing Button and select
+    import App from './App.vue';
+    
+    Vue.component(Button.name, Button);
+    Vue.component(Select.name, Select);
+    /* or
+     * Vue.use(Button)
+     * Vue.use(Select)
+     */
+    
+    new Vue({
+      el: '#app',
+      render: h => h(App)
+    });
+    </xmp>
+  </div>
+</div>
+
+=============================
+<br>
+<h2>App.vue</h2>
+
+<xmp class="prettyprint">
+    <template>
+        <div id="app">
+          <img alt="Vue logo" src="./assets/logo.png">
+          <HelloWorld msg="Welcome to Your Vue.js App"/>
+        </div>
+      </template>
+      
+      <script>
+      import HelloWorld from './components/HelloWorld.vue'
+      
+      export default {
+        name: 'app',
+        components: {
+          HelloWorld
+        }
+      }
+      </script>
+      
+      <style>
+      
+      </style>
+      
+</xmp>
+<br>
+<h2>NOw lets use Element UI in helloworld.vue component</h2>
+
+<xmp class="prettyprint">
+    <template>
+        <div>
+           <el-select v-model="value" placeholder="Select">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+          {{value}}
+        </div>
+      </template>
+      <script>
+      
+      export default {
+        name: 'HelloWorld',
+        data() {
+            return {
+              options: [
+                {value: '1',label: 'Option1'}, 
+                {value: '2',label: 'Option2'},
+                {value: '3',  label: 'Option3'},
+                {value: '4', label: 'Option4'}, 
+                {value: '5',label: 'Option5'
+              }],
+              value: ''
+            }
+          }
+      }
+      </script>
+      
+      <style scoped>
+      
+      </style>
+      
+</xmp>
+
+I have just use select option , u can use any from this link:  https://element.eleme.io/#/en-US/component/installation
+    
+<xmp class="prettyprint">
+  //for input field
+    <el-input placeholder="Organization Name" v-model="orgName"></el-input>
+</xmp>
+
+</body>
+    </html>

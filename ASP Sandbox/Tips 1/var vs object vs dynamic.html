@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../css//dracula.css">
+    <link rel="stylesheet" href="../css/dracula-prism.css">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+==========================================================================================================
+<h2>Var Type</h2>
+It is static type and its type is known at compile time.
+<pre>
+    <code class="language-csharp">
+            var x = "test";  // hover here mouse you will see x is string and is known at compile time
+            int len = x.Length;   // above line is compiled so we can get Length property.  // compiled time check is possible
+    </code>
+</pre>
+=======================================================================================================
+<h2>Dynamic Type</h2>
+It is dynamic type and its type is known at runtime 
+
+<pre>
+    <code class="language-csharp">
+            dynamic y ="test2"   // It is not known at compiled time, we only known y at runtime . Hover mouse here , it will say dynamic
+            int len = y.Length;  // here we will not get intellisense for Length because y is dynamic typed, so we get automatically Length supported at run time only.
+            //compile time checking isnot possible.
+    </code>
+</pre>
+At compilation a dynamic is converted into a System.object and the compiler will emit the code for type safety during runtime. It suffers from boxing and unboxing because it is treated as a System.Object and also the application's performance will suffer siince the compiler emits the code for all the type safety.
+
+============================================================================================================
+<h2>Object</h2>
+<pre>
+        <code class="language-csharp">
+                object y ="test2"   // It is not known at compiled time, we only known y at runtime . Hover mouse here , it will say dynamic
+                int len = y.Length;  // here we will not get intellisense for Length because y is dynamic typed, so we get automatically Length supported at run time only.
+                //compile time checking isnot possible.
+        </code>
+    </pre>
+    <br>
+    <img src="https://csharpcorner-mindcrackerinc.netdna-ssl.com/UploadFile/ff2f08/object-vs-var-vs-dynamic-type-in-C-Sharp/Images/Table.jpg">
+
+    <script src="../js/prism.js"></script>
+
+    <script type="text/javascript">
+      Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+          'remove-trailing': true,
+          'remove-indent': true,
+          'left-trim': true,
+          'right-trim': true,
+          // 'break-lines': 10,
+          // 'indent': 2,
+          // 'remove-initial-line-feed': false,
+          // 'tabs-to-spaces': 4,
+          // 'spaces-to-tabs': 4
+        });
+    </script>
+    </body>
+    </html>
+    

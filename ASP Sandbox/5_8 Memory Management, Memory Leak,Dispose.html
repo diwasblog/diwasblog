@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+
+    <p><span style="font-size: 18pt;"><strong>Where are Stack and Heap Located?</strong></span></p>
+    <ul>
+        <li><span style="font-size: 14pt;">Both are located in <span style="color: #e03e2d;"><strong>RAM
+                        memory</strong></span>.</span></li>
+    </ul>
+    <h2>How do&nbsp; stack and heap work in multithreading?</h2>
+    <p style="text-align: justify;"><span style="font-size: 14pt;"><span style="color: #000000;">In a multi-threaded
+                application,</span> <strong><span style="color: #e03e2d;">each thread will have its own
+                    stack</span></strong>. But, <span style="color: #2dc26b;">all the different threads will share the
+                heap</span>. Because the<strong><span style="color: #e03e2d;"> different threads share the
+                    heap</span></strong> in a multi-<span style="color: #000000;">threaded application, this also means
+                that there has to be some coordination between the threads so that they don&rsquo;t try to access and
+                manipulate the same piece(s) of memory in the heap at the same time.</span></span></p>
+    <h2>Can an object be stored on the stack instead of the heap?</h2>
+
+    <pre>
+        <code class="language-csharp">
+            void somefunction( )
+{
+/* create an object "m" of class Member
+    this will be put on the stack since the 
+    "new" keyword is not used, and we are 
+   creating the object inside a function
+*/
+  
+  Member m;
+
+} //the object "m" is destroyed once the function ends
+
+        </code>
+    </pre>
+    <p style="text-align: justify;"><span style="font-size: 14pt;"><span style="color: #e03e2d;"><strong>Yes, an object
+                    can be stored on the stack. </strong></span><span style="color: #000000;">If you create an object
+                inside a function without using the &ldquo;new&rdquo; operator then this will create and store the
+                object on the stack, and not on the heap. Suppose we have a C++ class called Member, for which we want
+                to create an object. We also have a function called</span> <strong><span
+                    style="color: #e03e2d;">somefunction</span></strong>( ). <span style="color: #000000;">Here is what
+                the code would look like:</span></span></p>
+    <p style="text-align: justify;">&nbsp;</p>
+    <p style="text-align: justify;"><span style="font-size: 14pt;"><span style="color: #000000;">So, the object
+                &ldquo;m&rdquo; is destroyed once the function has run to completion &ndash; or, in other words, when it
+                &ldquo;goes out of scope&rdquo;. The memory being used for the object &ldquo;m&rdquo; on the stack will
+                be removed once the function is done running.</span></span></p>
+    <p style="text-align: justify;">&nbsp;</p>
+    <h2>Code to create an object on the heap:</h2>
+
+    <pre>
+        <code class="language-csharp">
+            void somefunction( )
+            {
+            /* create an object "m" of class Member
+                this will be put on the heap since the 
+                "new" keyword is used, and we are 
+               creating the object inside a function
+            */
+              
+              Member* m = new Member( ) ;
+              
+              /* the object "m" must be deleted
+                  otherwise a memory leak occurs
+              */
+            
+              // So use disponse or using class
+            } 
+            
+        </code>
+    </pre>
+    <p><span style="font-size: 14pt; color: #000000;">You can see that the &ldquo;m&rdquo; object is created inside a
+            function using the &ldquo;new&rdquo; keyword. This means that &ldquo;m&rdquo; will be created on the heap.
+            But, since &ldquo;m&rdquo; is created using the &ldquo;new&rdquo; keyword, that also means that we must
+            delete the &ldquo;m&rdquo; object on our own as well&nbsp;</span></p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <h2>How long does memory on the stack last versus memory on the heap?[</h2>
+    <p><span style="font-size: 14pt; color: #000000;">Once a function call runs to completion, any data on the stack
+            created specifically for that function call will automatically be deleted. Any data on the heap will remain
+            there until it&rsquo;s manually deleted by the programmer.</span></p>
+    <h2>Can the stack grow in size? Can the heap grow in size?</h2>
+    <table border="0" cellspacing="0" cellpadding="10" align="left">
+        <tbody>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+        </tbody>
+    </table>
+    <p><span style="font-size: 14pt;">The stack is set to a fixed size, and can not grow past it&rsquo;s fixed size
+            depends on OS. So, if there is <strong>not</strong>&nbsp;enough room on the stack to handle the memory being
+            assigned to it, a&nbsp;<span style="color: #e03e2d;"><strong><em>stack
+                        overflow</em></strong>&nbsp;</span>occurs. This often happens when a lot of nested functions are
+            being called, or if there is an infinite recursive call.</span></p>
+    <p>&nbsp;</p>
+    <p><span style="font-size: 14pt;">If the current size of the heap is too small to accommodate new memory, then more
+            memory can be added to the heap by the operating system. This is one of the big differences between the heap
+            and the stack. </span></p>
+    <p>&nbsp;</p>
+    <h2>Which is faster &ndash; the stack or the heap? And why?</h2>
+    <p><span style="font-size: 14pt;">The stack is much faster than the heap. This is because of the way that memory is
+            allocated on the stack. Allocating memory on the stack is as simple as moving the stack pointer up.</span>
+    </p>
+    <p><span style="font-size: 14pt;">&nbsp;If you add items A, B, C to a stack, you can't remove B without removing C
+            first. This means that adding a new item to a stack always means adding it to the&nbsp;<em>end</em>&nbsp;of
+            the stack, which is a very simple operation. You just move the pointer that points to the end of the
+            stack.</span></p>
+    <p><span style="font-size: 14pt;">On a heap, on the other hand, you <em>can</em> remove items out of order. And as
+            long as you don't move the other items around afterward in memory (as some garbage collected heaps do), your
+            heap then has "hole" in the middle. I.e. if you add <strong><span style="color: #e03e2d;">A,B,
+                    C</span></strong> to a heap and remove B, your heap looks like this in memory: <span
+                style="color: #e03e2d;"><strong>A _ C</strong></span> where _ is a block of unused (free) memory. If you
+            add a new item D now, the allocator has to find a continuous free space big enough to fit D. Depending on
+            how many continuous free spaces there are in your memory, this can be an expensive operation. And it's
+            almost always more expensive than just moving the "last element" pointer of a stack.</span></p>
+    <p><span style="font-size: 14pt;">So, stack is simple and is faster.</span></p>
+    <p>&nbsp;</p>
+    <h2>How is memory deallocated on the stack and heap?</h2>
+    <ul>
+        <li><span style="font-size: 14pt;">Data on the stack
+                is&nbsp;<strong><em>automatically</em></strong>&nbsp;deallocated when variables go out of scope in C and
+                other languages as well. When PopUp then memory get deallocated :)</span></li>
+        <li><span style="font-size: 14pt;"> However, in languages like C and C++, data stored on the heap has to be
+                deleted&nbsp;<strong>manually</strong> by the programmer using one of the built-in keywords
+                like&nbsp;<strong>free, delete, or delete[ ]. Other languages like Java and .NET <span
+                        style="color: #169179;">use garbage collection to automatically delete memory from the
+                        heap</span>, without the programmer having to do anything.</strong></span></li>
+    </ul>
+    <p>&nbsp;</p>
+    <h2>What can go wrong with the stack and the heap?</h2>
+    <p><span style="font-size: 14pt;">If the stack runs out of memory, then this is called a&nbsp;<em>stack
+                overflow</em>&nbsp;&ndash; and could cause the program to crash. The heap could have the problem
+            of&nbsp;<em>fragmentation</em>, which occurs when the available memory on the heap is being stored as
+            noncontiguous (or disconnected) blocks &ndash; because&nbsp;<em>used</em>&nbsp;blocks of memory are in
+            between the&nbsp;<em>unused</em>&nbsp;memory blocks. When excessive fragmentation occurs, allocating new
+            memory may be impossible because of the fact that even though there is enough memory for the desired
+            allocation, there may not be enough memory in one big block for the desired amount of memory.</span></p>
+    <h2>Which one should I use &ndash; the stack or the heap?</h2>
+    <p><span style="font-size: 14pt;">For people new to programming, it&rsquo;s probably a good idea to use the stack
+            since it&rsquo;s easier.</span><br /><span style="font-size: 14pt;">Because the stack is small, you would
+            want to use it when you know exactly how much memory you will need for your data, or if you know the size of
+            your data is very small. It&rsquo;s better to use the heap when you know that you will need a lot of memory
+            for your data, or you just are not sure how much memory you will need (like with a dynamic array).</span>
+    </p>
+
+    <p><span style="font-size: 24pt; color: #000000;">Memory Leak may cause by:</span></p>
+    <p><span style="font-size: 18pt;">1)Remember that all <span style="color: #e03e2d;"><strong>static
+                    variables</strong></span>, static collection, static events are Garbage Collector Roots(they are
+            never collect by GC), so they are never collected by the GC. Static variable is class level variable so this
+            types of variable get disposed only when the class where this variable presents gets disposed. </span></p>
+    <p><span style="font-size: 18pt;">2)<strong><span style="color: #e03e2d;">Caching
+                    functionality</span></strong>&nbsp;&ndash; Any type of caching mechanism can easily cause memory
+            leaks. By storing cache information in-memory, eventually, it will fill up and cause
+            an&nbsp;OutOfMemory&nbsp;exception. The solution can be to periodically delete older caching or limit your
+            caching amount.</span></p>
+    <p><span style="font-size: 18pt;">3) <span style="color: #e03e2d;"><strong>Threads</strong> </span>that never
+            terminate may cause memory leaks.</span></p>
+    <hr />
+    <h2><span style="color: #2dc26b;"><strong>using statement</strong></span></h2>
+    <p><span style="color: #000000; font-size: 18pt;"><strong>Using-blocks are convenient way to automatically dispose
+                objects that implement <span style="color: #e03e2d;">IDisposable</span> interface to release resources
+                that garbage collection cannot automatically manage.</strong></span></p>
+    <p><span style="color: #000000; font-size: 18pt;"><strong>Manually Disposing DisposableDemoClass
+                class</strong></span></p>
+    <p>&nbsp;</p>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <h2>Manually Disposable</h2>
+            <pre>
+            <code class="language-csharp">
+        using System;
+        
+        class DisposableDemoClass : IDisposable
+        {
+            public void Dispose()
+            {
+                Console.WriteLine("Dispose called!");
+            }
+        }
+        
+        class Hello 
+        {
+            static void Main() 
+            {
+                var disp = new DisposableDemoClass();
+                disp.Dispose();
+            }
+        }
+            </code>
+        </pre>
+        </div>
+
+        <div class="col-lg-6">
+            <h2>Automatically disposeed DisposableDemoClass</h2>
+            <pre>
+            <code class="language-csharp">
+                using System;
+
+                class DisposableDemoClass : IDisposable
+                {
+                    public void Dispose()
+                    {
+                        Console.WriteLine("Dispose called!");
+                    }
+                }
+                
+                class Hello 
+                {
+                    static void Main() 
+                    {
+                        using(var disp = new DisposableDemoClass())
+                        {
+
+                        }
+                    }
+                }
+            </code>
+        </pre>
+        </div>
+    </div>
+    <h2 id="dispose-pattern"><span style="color: #2dc26b;"><strong>Use the Dispose pattern to prevent unmanaged memory
+                leaks</strong></span></h2>
+    <p><span style="font-size: 18pt;">Your .NET application constantly uses <span
+                style="color: #000000;"><strong>unmanaged resources/code</strong></span> like <strong><span
+                    style="color: #e03e2d;">Streams</span> </strong>class, <strong><span
+                    style="color: #e03e2d;">Graphics</span> </strong>class,dbCollection,File Class,Sockets <strong><span
+                    style="color: #e03e2d;">File</span> </strong>Class.&nbsp; A</span></p>
+    <p><span style="font-size: 18pt;">.NET framework classes that use unmanaged code usually
+            implement&nbsp;<strong><span style="color: #e03e2d;">IDisposable</span></strong>. That&rsquo;s because
+            <strong><span style="color: #e03e2d;">unmanaged resources</span></strong> need to be <strong><span
+                    style="color: #e03e2d;">explicitly</span> </strong>freed, and that happens in the Dispose method.
+            Your only job is to remember and call the Dispose method.</span></p>
+    <p><span style="font-size: 18pt;"> If possible, use the using statement for that.</span></p>
+    <pre><code class="language-csharp">
+        public void Foo()
+{
+    using (var stream = new FileStream(@"C:\Temp\SomeFile.txt",
+                                       FileMode.OpenOrCreate)) 
+    {
+        // do stuff
+        //Actually FileStream has internally implement IDisposable so we shouldnot need to worry about it.
+ 
+    }// stream.Dispose() will be called even if an exception occurs
+    </code></pre>
+
+    <hr>
+    <div class="row">
+        <div class="col-lg-6">
+            <h2>Manually Disposable</h2>
+            <pre>
+                    <code class="language-csharp">
+                            
+                            try
+                            {
+                                var stream = new FileStream(@"C:\Temp\SomeFile.txt",FileMode.OpenOrCreate)
+                            }
+                            finally
+                            {
+                                if (stream != null)
+                                {
+                                    stream.Close();
+                                }
+                            }
+                    </code>
+                </pre>
+        </div>
+
+        <div class="col-lg-6">
+            <h2>Automatically disposeed DisposableDemoClass</h2>
+            <pre>
+                    <code class="language-csharp">
+                            public void Foo()
+                            {
+                                using (var stream = new FileStream(@"C:\Temp\SomeFile.txt",
+                                                                   FileMode.OpenOrCreate)) 
+                                {
+                                    // do stuff
+                                    //Actually FileStream has internally implement IDisposable so we shouldnot need to worry about it.
+                             
+                                }// stream.Dispose() will be called even if an exception occurs
+                    </code>
+                </pre>
+        </div>
+    </div>
+
+    <hr>
+    <h2>Multiple using clause</h2>
+    <p><span style="font-size: 18pt;">The&nbsp;<span
+                style="color: #e03e2d;"><strong>using&nbsp;</strong></span>statement transforms the code into
+            a&nbsp;<span style="color: #000000;"><strong>try / finally</strong></span>&nbsp;statement behind the scenes,
+            where the&nbsp;Dispose&nbsp;method is called in the&nbsp;<span
+                style="color: #e03e2d;"><strong>finally&nbsp;</strong></span>clause.</span></p>
+    <p><span style="font-size: 18pt;">But, even if you don&rsquo;t call the&nbsp;<strong><span
+                    style="color: #e03e2d;">Dispose&nbsp;method,</span></strong> those resources will be freed because
+            .NET classes use the&nbsp;<strong><span style="color: #e03e2d;"><a style="color: #e03e2d;"
+                        href="https://docs.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-dispose">Dispose
+                        Pattern</a>.</span></strong> This basically means that if Dispose wasn&rsquo;t called before,
+            it&rsquo;s called from the&nbsp;Finalizer&nbsp;when the object is garbage collected. That is, if you
+            don&rsquo;t have a memory leak and the <span style="color: #e03e2d;"><strong>Finalizer</strong>
+            </span>really is called.</span></p>
+    <p><span style="font-size: 18pt;">When you&rsquo;re allocating unmanaged resources yourself, then you definitely
+            should use the Dispose pattern. Here&rsquo;s an example:</span></p>
+    <pre><code class="language-csharp">
+        public class MyClass : IDisposable
+{
+
+    private bool _disposed = false;
+ 
+    public MyClass()
+    {
+        ...
+    }
+ 
+    // Protected implementation of Dispose pattern.
+    protected virtual void Dispose(bool disposing)
+    {
+        if (_disposed)
+            return;
+ 
+        if (disposing)
+        {
+            // Free any other managed objects here.
+        }
+ 
+        // Free any unmanaged objects here.
+     
+        _disposed = true;
+    }
+ 
+
+    // Public implementation of Dispose pattern callable by consumers.
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+ 
+    ~MyClass()
+    {
+        Dispose(false);
+    }
+}
+    </code></pre>
+    <p><span style="font-size: 18pt;">The disposing parameter is a <span style="color: #000000;"><strong><a
+                        style="color: #000000;" href="https://docs.microsoft.com/en-us/dotnet/api/system.boolean"
+                        data-linktype="absolute-path">Boolean</a>&nbsp;</strong></span>that indicates whether the method
+            call comes from a&nbsp;<span style="color: #e03e2d;"><a style="color: #e03e2d;"
+                    href="https://docs.microsoft.com/en-us/dotnet/api/system.idisposable.dispose"
+                    data-linktype="absolute-path">Dispose</a>&nbsp;method</span> (its value is&nbsp;<span
+                style="color: #000000;"><strong><code>true</code></strong></span>) or from a <strong><span
+                    style="color: #e03e2d;">finalizer</span> </strong>(its value is&nbsp;<span
+                style="color: #000000;"><strong><code>false</code></strong></span>).</span></p>
+    <p style="text-align: justify;"><span style="font-size: 18pt;">Memory Management</span></p>
+    <p style="text-align: justify;"><span style="font-size: 18pt; color: #000000;">In some programming languages like C
+            and C++ memory must be managed manually but programming language like Java and C# memory are managed
+            automatically. This automatic memory management is known as garbage collection. The GC was never meant to
+            manage resources; it was designed to manage memory allocation, and it does an excellent job at managing
+            memory allocated directly to native .NET objects. It was not designed to deal with unmanaged memory and
+            operating system allocated memory, so it becomes the responsibility of the developer to manage these
+            resources. </span></p>
+    <p style="text-align: justify;">&nbsp;</p>
+    <p style="text-align: justify;"><span style="font-size: 18pt;"><span style="color: #000000;">Before the memory
+                associated with an object is reclaimed by the GC, the </span><strong><span
+                    style="color: #ba372a;">Finalize method</span></strong><span style="color: #000000;">(if it is
+                present) is invoked. This method is not tied to the lifetime of the object, so the timing of when( or
+                even if) Finalize is called is undefined. This is what is meant by saying that the GC performs
+                non-deterministic finalization.</span></span></p>
+    <p style="text-align: justify;"><span style="font-size: 18pt;">The&nbsp;<span
+                style="color: #000000;"><strong><code>public void Dispose()</code></strong></span>&nbsp;method should be
+            left final (in other words, <strong><span style="color: #ba372a;">don't make this
+                    a&nbsp;<code>virtual</code>&nbsp;method</span></strong>), and should always look like this: </span>
+    </p>
+    <pre><strong><span style="color: #000000;">public void Dispose()
+{
+    Dispose(true);
+    GC.SupressFinalize(this);
+}</span></strong><br /><br /><span style="font-size: 18pt;"><strong><span style="color: #e03e2d;">The order of the two calls is important, and shouldn't be changed</span></strong>. <span style="color: #000000;">This order ensures that&nbsp;<code>GC.SupressFinalize()</code>&nbsp;only gets called if the&nbsp;<code>Dispose</code>&nbsp;operation completes successfully. </span></span><br /><span style="font-size: 18pt; color: #000000;">When&nbsp;<code>Dispose</code>&nbsp;calls&nbsp;<code>Dispose(true)</code>, the call may fail, but when&nbsp;<code>Finalize</code>&nbsp;is called later, it calls&nbsp;<code>Dispose(false)</code>. In reality, these are two different calls which can execute different </span><br /><span style="font-size: 18pt; color: #000000;">portions of the code, so even though&nbsp;<code>Dispose(true)</code>&nbsp;fails,&nbsp;<code>Dispose(false)</code>&nbsp;may not. </span><br /><br /></pre>
+    <ul>
+        <li style="text-align: justify;"><span style="font-size: 18pt;">If&nbsp;<span
+                    style="color: #e03e2d;"><strong><code>disposing</code></strong></span>&nbsp;equals&nbsp;<strong><span
+                        style="color: #e03e2d;"><code>true</code></span></strong>, the method has been called directly
+                or indirectly by a user's code. <strong><span style="color: #000000;">Managed and unmanaged resources
+                        can be disposed</span></strong>.</span></li>
+        <li style="text-align: justify;"><span style="font-size: 18pt;">If&nbsp;<span
+                    style="color: #e03e2d;"><strong><code>disposing</code>&nbsp;</strong></span>equals&nbsp;<span
+                    style="color: #e03e2d;"><strong><code>false</code></strong></span>, the method has been called by
+                <strong><span style="color: #e03e2d;">the runtime from inside the finalizer</span></strong>, and you
+                should not reference other objects. <strong><span style="color: #000000;">Only unmanaged resources can
+                        be disposed.</span></strong></span></li>
+    </ul>
+    <hr />
+    <h2>These two are equivalent</h2>
+    <div class="row">
+        <div class="col-lg-6">&nbsp;</div>
+        <div class="col-lg-6">&nbsp;</div>
+        <div class="col-lg-6">&nbsp;</div>
+        <div class="col-lg-6">
+            <hr />
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+        </div>
+    </div>
+    <p>https://stackoverflow.com/questions/55566872/create-3-tier-architecture-in-dotnet-core-2-2-web-api-c-sharp
+        https://www.infoq.com/articles/advanced-architecture-aspnet-core/
+        https://fullstackmark.com/post/18/building-aspnet-core-web-apis-with-clean-architecture</p>
+
+    <script src="js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+    </script>
+
+</body>
+
+</html>

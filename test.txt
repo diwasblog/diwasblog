@@ -1,0 +1,73 @@
+https://jsfiddle.net/h9p61vco/5/
+
+
+Javascript donot gives static time error ( error at development time) while
+TypeScript will give static time error.
+
+
+https://coderwall.com/p/cjinag/upload-a-image-using-ajax-and-formdata
+https://stackoverflow.com/questions/49106045/preview-an-image-before-it-is-uploaded-vuejs
+
+
+Sequential search is also called Table Scan in db term
+If not set primary key to table then while searching item then it will search sequential.
+
+
+If search by B Tree structure then it is called as Index seek or Index scan.
+
+
+B Tree Scan range of rows.
+
+Indexes makes searches fast but slow insert and update and delete .
+Indexes are not suitable if you have high transaction for insert, update and delete and no 
+
+
+
+Primary Key automatically create clustered index
+
+https://stackoverflow.com/questions/3102819/disable-same-origin-policy-in-chrome
+
+https://www.ozkary.com/2016/03/web-api-anti-forgery-token-angularjs.html
+https://www.dotnetcurry.com/aspnet/1343/aspnet-core-csrf-antiforgery-token
+https://devnet.kentico.com/articles/protection-against-cross-site-request-forgery-(csrf-xsrf)
+https://www.dotnetcurry.com/aspnet/890/prevent-csrf-hacks-attacks-aspnet-webapi
+https://www.dotnetcurry.com/aspnet/890/prevent-csrf-hacks-attacks-aspnet-webapi
+https://dotnetthoughts.net/antiforgery-validation-with-asp-net-mvc-and-angular/
+https://www.ozkary.com/2016/03/web-api-anti-forgery-token-angularjs.html
+https://www.ozkary.com/2016/04/web-api-owin-cors-handling-no-access.html
+https://edi.wang/post/2018/9/19/aspnet-core-anti-forgery-token-jquery-ajax
+https://dotnetcoretutorials.com/2017/05/18/csrf-tokens-angularjsjquery-asp-net-core/
+https://dotnetthoughts.net/preventing-cross-site-request-forgery-csrf-attacks-in-webapi/
+http://www.lambdatwist.com/dot-net-vuejs/
+https://blog.sqreen.com/authentication-best-practices-vue/
+https://auth0.com/docs/security/store-tokens
+
+https://developers.facebook.com/docs/facebook-login/access-tokens/refreshing/
+
+https://www.mobilefish.com/services/hash_generator/hash_generator.php
+https://www.youtube.com/watch?v=2PPSXonhIck&t=226s
+https://www.youtube.com/watch?v=-CGuxS5jiGI
+
+
+
+
+
+https://csharp.hotexamples.com/
+
+
+=============================================================================================
+
+How to host a website so that within the network you can use it.
+
+
+1)Host it  at 192.168.10.84:8454
+2)Open Port 8454
+
+
+
+
+
+
+
+
+

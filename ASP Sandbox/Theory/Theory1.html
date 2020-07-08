@@ -1,0 +1,388 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+</head>
+<body>
+
+<h2><span style="color: #ff00ff;"><strong><a style="color: #ff00ff;" rel="noopener" name="ExplaintheconceptofMVCScaffolding"></a>MVC Scaffolding</strong></span></h2>
+<p><span style="font-size: 12pt;"><span style="color: #ff0000;"><strong>Scaffolding</strong></span> is a technique in which the<span style="color: #ff0000;"><strong> MVC template</strong></span> helps to<span style="color: #ff0000;"><strong> auto-generate CRUD code.</strong>&nbsp;</span></span></p>
+<p><span style="font-size: 12pt;">So to generate code using scaffolding technique we need to select one of the types of templates (leave the empty one).</span></p>
+
+
+<h1><span style="font-size: 24pt;"><strong><span style="color: #000000;">Roslyn</span></strong></span></h1>
+<h1><strong><span style="font-size: 14pt; color: #000000;">Roslyn is Microsoft&rsquo;s brand-new implementation of the C# and VB compilers shipping with Visual Studio 2015. Instead of treating the compiler as a black hole where source code goes in and binaries come out, Roslyn exposes all parts of the compiler, from parsing to code generation, through a clean and consistent API.&nbsp;</span></strong></h1>
+<p><strong><span style="font-size: 14pt; color: #000000;">Roslyn is the project to fully <span style="color: #ff0000;">rewrite the Visual Basic and C# compilers</span> <span style="color: #ff0000;">and language services</span> (i.e. the language editing experiences) in their own respective managed code language;&nbsp;</span></strong></p>
+
+
+
+<h2>ViewBag , ViewData, TempData , Session , Cookies</h2>
+
+<p><span style="color: #ff00ff;"><strong><span style="font-size: 24pt;">ViewBag</span></strong></span></p>
+<p><span style="font-size: 14pt;">Used to pass data from controller to view</span></p>
+<p><span style="font-size: 14pt;">It uses dynamic feature that was introduced in C#4.</span></p>
+<p><span style="font-size: 14pt;">Here name: countries is dynamically given and object type is <strong>determine at runtime</strong>. Here<strong> string and is determined at runtime.</strong></span></p>
+
+<div class="row">
+  <div class="col-lg-6">
+    <xmp class="prettyprint">
+        public HomeController
+        {
+          public IActionResult About()
+          {
+            ViewBag.Message = "My Message.";
+            var lst = new List<string>() 
+              {
+                 "Nepal", "India", "Korea" 
+              };
+              ViewBag.Countries = lst;return View();
+            }
+          }
+    </xmp>
+  </div>
+  <div class="col-lg-6">
+    <h4>aboutus.cshtml</h4>
+      <xmp class="prettyprint">
+          @ViewBag.Message
+
+          @foreach (var item in ViewBag.Countries)
+          {
+            @item
+          }
+      </xmp>
+    </div>
+</div>
+<p><span style="font-size: 18pt; color: #ff0000;">Drawback:</span></p>
+<p><span style="font-size: 12pt;">If you miss-spell keys or property names , you wouldn't get any compile time error.</span></p>
+<p>ie.</p>
+
+<div class="row">
+    <div class="col-lg-6">
+        <p><span style="color: #ff00ff;"><strong><span style="font-size: 14pt;">In controller :</span></strong></span></p>
+      <xmp class="prettyprint">
+        
+         ViewBag.Countries=lst;
+      </xmp>
+    </div>
+    <div class="col-lg-6">
+      <h4>aboutus.cshtml</h4>
+        <xmp class="prettyprint">
+
+            @foreach (var item in ViewBag.Country)
+            {
+              @item
+            }
+        </xmp>
+      </div>
+  </div>
+  <p><span style="font-size: 14pt;">When run will give <strong>run time error</strong>. because in controller we use ViewBag.Countries and in View we have ViewBag,Country . And this will not know at <strong>complile time</strong> ,which is drawback.</span></p>
+  <p>&nbsp;</p>
+
+  =============================================================================================
+  <br>
+  <h2>View Data</h2>
+  Pass Data from controller to view only
+  <div class="row">
+      <div class="col-lg-6">
+          <h4>Home Controller</h4>
+        <xmp class="prettyprint">
+            public HomeController
+            {
+              public IActionResult About()
+              {
+                ViewData["Message"] = "My Message.";
+                var lst = new List<string>() 
+                  {
+                     "Nepal", "India", "Korea" 
+                  };
+                  ViewData["Countries"] = lst;return View();
+                }
+              }
+        </xmp>
+      </div>
+      <div class="col-lg-6">
+        <h4>aboutus.cshtml</h4>
+          <xmp class="prettyprint">
+              @ViewData["Message"]   // simple type no type cast required
+    
+              @foreach (var item in (List<string>)ViewData["Countries"])
+              { 
+                //Countries  is enumerable type and type cast required
+                  @item
+              }
+                  
+          </xmp>
+        </div>
+    </div>
+
+    <h2 style="color:red">Drawback</h2>
+    Same as ViewBag ie. We donot have compile type check
+    =========================================================================================================
+    <h2>Tempdata</h2>
+    TempData can be used for passing value from Controller to View and also from Controller to Controller.
+    Ie. can we use in place of ViewBag and ViewData
+
+    <h5>Example:a string value is set in the TempData object in Controller and it is redirected to another Controller and finally it is displayed in View
+
+    </h5>
+    <div class="row">
+        <div class="col-lg-6">
+            <h4>First Controller</h4>
+          <xmp class="prettyprint">
+      public class FirstController : Controller
+    {
+        // GET: First
+        public ActionResult Index()
+        {
+            TempData["Message"] = "Hello MVC!";
+            return new RedirectResult(@"~\Second\");
+        }
+    }
+          </xmp>
+        </div>
+        <div class="col-lg-6">
+          <h4>Second Controller</h4>
+            <xmp class="prettyprint">
+      public class SecondController : Controller
+      {
+          // GET: Second
+          public ActionResult Index()
+          {
+              return View();
+          }
+      }  
+            </xmp>
+          </div>
+      </div>
+
+      SecondControllerView (Once the view is displayed then its life is finished)
+      <xmp class="prettyprint">
+          <html>
+              <head>
+                  <meta name="viewport" content="width=device-width"/>
+                  <title>Index</title>
+              </head>
+              <body>
+                  <div>
+                      @TempData["Message"];
+                  </div>
+              </body>
+              </html>
+      </xmp>
+
+
+      <table style="border-collapse: collapse; width: 99.7867%;" border="1">
+          <tbody>
+          <tr style="background: gray; color: white;">
+          <td style="width: 35.3255%;">ViewData</td>
+          <td style="width: 34.6852%;">ViewBag</td>
+          <td style="width: 29.8826%;">TempData</td>
+          </tr>
+          <tr>
+          <td style="width: 35.3255%;">
+          <p>It is derived from <span style="color: #ff0000;">ViewDataDictionary</span> class and is basically a <strong><span style="color: #ff00ff;">Dictionary object</span></strong> ie<strong><span style="color: #ff0000;">. Key and values</span> </strong>where keys are string and values are object.</p>
+          <p>&nbsp;</p>
+          <p><span style="color: #000000;"><strong><span class="kwd">public</span> <span class="typ">ViewDataDictionary</span> <span class="typ">ViewData</span> <span class="pun">{</span><span class="pln"> get</span><span class="pun">;</span> <span class="typ">set</span><span class="pun">;</span> <span class="pun">}</span></strong></span></p>
+          </td>
+          <td style="width: 34.6852%;">
+          <p>A Wrapper built around <u>ViewData</u></p>
+          <p><strong><span style="color: #000000;"><span class="kwd">public</span> <span class="typ">Object</span> <span class="typ">ViewBag</span> <span class="pun">{</span><span class="pln"> get</span><span class="pun">;</span> <span class="pun">}</span></span></strong></p>
+          </td>
+          <td style="width: 29.8826%;">
+          <p>TempData is a <strong>dictionary object</strong> that is derived from <span style="color: #ff0000;"><strong>TempDataDictionary class </strong></span>and stored in short lives session.</p>
+          <p><span style="color: #000000;"><strong><span class="kwd">public</span> <span class="typ">TempDataDictionary</span> <span class="typ">TempData</span> <span class="pun">{</span><span class="pln"> get</span><span class="pun">;</span> <span class="typ">set</span><span class="pun">;</span> <span class="pun">}</span></strong></span></p>
+          </td>
+          </tr>
+          <tr>
+          <td style="width: 35.3255%;">Data is <strong>stored as Object in ViewData</strong>.</td>
+          <td style="width: 34.6852%;">ViewBag is a <strong>dynamic property</strong> and it makes use of the C# 4.0 dynamic features.</td>
+          <td style="width: 29.8826%;">&nbsp;</td>
+          </tr>
+          <tr>
+          <td style="width: 35.3255%;">
+          <p><strong>Type Conversion code</strong> is required while <strong><span style="color: #ff0000;">enumerating</span></strong></p>
+          <p>&nbsp;While retrieving, the data it needs to be Type Casted to its original type as the data is stored as objects and it also requires NULL checks while retrieving.</p>
+          </td>
+          <td style="width: 34.6852%;">While retrieving, <span style="color: #ff0000;"><strong>there is no need for Type Casting data.</strong></span></td>
+          <td style="width: 29.8826%;"><span style="color: #ff0000;"><strong>Type Conversion code</strong> </span>is required while <strong><span style="color: #000000;">enumerating</span></strong></td>
+          </tr>
+          <tr>
+          <td style="width: 35.3255%;">
+          <p><span style="font-size: 12pt;">ViewData is available only for Current Request.</span></p>
+          <p><span style="font-size: 12pt;"> It will be destroyed on redirection.</span></p>
+
+          Short life means value becomes null when redirection occurs. This is because their goal is to provide a way to communicate between controllers and views.
+          </td>
+          <td style="width: 34.6852%;">
+          <p><span style="font-size: 12pt;">ViewBag is available only for Current Request. </span></p>
+          <p><span style="font-size: 12pt;">It will be destroyed on redirection.</span></p>
+          </td>
+          <td style="width: 29.8826%;">
+          <p>It&rsquo;s life is very short and lies only till the <span style="color: #ff0000;"><strong>target view is fully loaded</strong></span>.</p>
+          <p>ie.TempData can be used for <strong>passing value from Controller to View</strong> and also from <strong>Controller to Controller</strong></p>
+          <p><span style="font-size: 12pt;">TempData is available for Current and Subsequent Requests. </span></p>
+          <p><span style="font-size: 12pt;">It will not be destroyed on redirection.</span></p>
+          </td>
+          </tr>
+          </tbody>
+          </table>
+
+          <table style="border-collapse: collapse; width: 100%;" border="1">
+              <tbody>
+              <tr>
+              <td style="width: 50%;">ViewBag</td>
+              <td style="width: 50%;">ViewData</td>
+              </tr>
+              <tr>
+              <td style="width: 50%;">No required Typecast</td>
+              <td style="width: 50%;">Required typecast if data is enumerable</td>
+              </tr>
+              <tr>
+              <td style="width: 50%;">Not in key value pair</td>
+              <td style="width: 50%;">Always in key value form</td>
+              </tr>
+              </tbody>
+              </table>
+          ==============================================================================
+          <h2>Sesssion</h2>
+          <ol class="orderlist">
+              <li>
+              <p><span style="font-size: 12pt;">Session is valid for all requests, not for a single redirect.</span></p>
+              </li>
+              <li>
+              <p><span style="font-size: 12pt;">It&rsquo;s also required typecasting for getting data and check for null values to avoid error.</span></p>
+              </li>
+              </ol>
+
+              <p><span style="font-size: 12pt;"><strong>Session</strong> is a <strong>State Management Technique</strong>. </span></p>
+<p><span style="font-size: 12pt;">A Session can store the value on the Server.</span></p>
+<p><span style="font-size: 12pt;">A session is one of the best techniques for State Management because it stores the data as client-based, </span></p>
+<p><span style="font-size: 12pt;">in other words the data is stored for every user separately and the data is secured also because it is on the server.&nbsp;</span></p>
+
+Session["UserName"] = "diwaspoudel";
+
+
+
+
+
+<br>
+<table class="mtb-table">
+  <thead>
+  <tr>
+  <th>
+  <h4>#</h4>
+  </th>
+  <th>
+  <h4><strong><span style="color: #ff00ff;">ViewModel</span></strong></h4>
+  </th>
+  <th>
+  <h4><strong><span style="color: #ff00ff;">ViewData</span></strong></h4>
+  </th>
+  <th>
+  <h4><strong><span style="color: #ff00ff;">ViewBag</span></strong></h4>
+  </th>
+  <th>
+  <h4><strong><span style="color: #ff00ff;">TempData</span></strong></h4>
+  </th>
+  <th>
+  <h4><strong><span style="color: #ff00ff;">Session</span></strong></h4>
+  </th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td>1</td>
+  <td>Is a class. It is a model specific for rendering a view.</td>
+  <td>Is a key-value dictionary derived from ViewDataDictionary.</td>
+  <td>Is a Dynamic property. It is a wrapper around ViewData.</td>
+  <td>Is a key-value dictionary derived from TempDataDictionary.</td>
+  <td>Is a key-value dictionary derived from TempDataDictionary.</td>
+  </tr>
+  <tr>
+  <td>2</td>
+  <td>Strongly typed class. So, no need for type-casting.</td>
+  <td>Un-typed. So, needs type-casting for complex data.</td>
+  <td>Type casting is not required.</td>
+  <td>Un-typed: Needs type-casting for complex data type.</td>
+  <td>Un-typed: Needs type-casting and null checking.</td>
+  </tr>
+  <tr>
+  <td>3</td>
+  <td>Represents only the data from a model required for rendering the view.</td>
+  <td>Used to pass data between controller and view.</td>
+  <td>Used to pass data between controller and view.</td>
+  <td>Used to pass data between requests. I.e. it helps to pass data from one controller to another controller.</td>
+  <td>Used to store a small amount of data for the duration of the user visiting the website.</td>
+  </tr>
+  <tr>
+  <td>4</td>
+  <td>The lifespan is only for the current request.</td>
+  <td>The lifespan is only for the current request.</td>
+  <td>The lifespan is only for the current request.</td>
+  <td>Lifespan is for the current and subsequent request. The lifespan of TempData can be increased beyond the first redirection using TempData.Keep() method.</td>
+  <td>lifespan of a session persists till it is forcefully destroyed by the server or the user.</td>
+  </tr>
+  <tr>
+  <td>5</td>
+  <td>On redirection the ViewModel object will be destroyed.</td>
+  <td>On redirection, the value in the ViewData becomes Null.</td>
+  <td>On redirection, the value in the ViewData becomes Null.</td>
+  <td>The data stored in TempData persists only during redirection.</td>
+  <td>The data stored in Session persists during any number of redirection.</td>
+  </tr>
+  <tr>
+  <td>6</td>
+  <td>Provides compile-time error checking and Intellisense support.</td>
+  <td>Does not provide compile-time error checking.</td>
+  <td>Does not provide compile-time error checking.</td>
+  <td>Does not provide compile-time error checking.</td>
+  <td>Does not provide compile-time error checking.</td>
+  </tr>
+  <tr>
+  <td>7</td>
+  <td>It is safe to use ViewModel in webfarm (server cluster) environment as they are not dependent on session.</td>
+  <td>ViewData is safe to use in webfarm environment as they are not dependent on session.</td>
+  <td>It is safe to use ViewBag in webfarm environment as they are not dependent on session.</td>
+  <td>TempData is not reliable in webfarm with cluster of servers as the TempData uses ASP.NET Session for storage. The workaround is to set Session State Mode to Out-of-Process and make the data stored in the TempData serializable.</td>
+  <td>Session is not reliable in web farm as they are stored on server&rsquo;s memory. In a webfarm scenario, if a session is created by a server and the return request goes to another server in the cluster, then the session will be lost. The workaround is to set Session State Mode to Out-of-Process.</td>
+  </tr>
+  <tr>
+  <td>8</td>
+  <td>
+  <h5>Usage:</h5>
+  <p>(a) Display data in a table with master child relationship.<br />(b) Reports with aggregate and summary.<br />(c) Paging data in a table.<br />(d) Flexible with very simple as well as highly complex data from multiple data-source.</p>
+  </td>
+  <td>
+  <h5>Usage:</h5>
+  <p>(a) To pass a list of data to render a drop down list.<br />(b) To pass small amount of data to be rendered in the view.<br />(c) Not ideal for complex data involving multiple data sources.</p>
+  </td>
+  <td>
+  <h5>Usage:</h5>
+  <p>(a) To pass a list of data to render a drop down list.<br />(b) To pass small amount of data to be rendered in the view.<br />(c) Not ideal for complex data involving multiple data sources.</p>
+  </td>
+  <td>
+  <h5>Usage:</h5>
+  <p>(a) Useful for storing one time messages like error message and validation messages.<br />(b) Used in scenarios to pass small data from one action to another action or one controller call to another controller call.</p>
+  </td>
+  <td>
+  <h5>Usage:</h5>
+  <p>(a) To check whether the user is logged in to the website.<br />(b) To store the user&rsquo;s permission information.</p>
+  </td>
+  </tr>
+  </tbody>
+  </table>
+
+</body>
+
+</html>

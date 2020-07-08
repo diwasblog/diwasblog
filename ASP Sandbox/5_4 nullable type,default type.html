@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/b">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+
+      <p><span style="font-size: 14pt; color: #ff00ff;">DataTypes in C#</span></p>
+      <p><span style="font-size: 12pt;">Data types in C# are divided into two main categories: <strong>Value Type</strong>&nbsp;and&nbsp;<strong>Reference Type</strong>.&nbsp;</span></p>
+
+
+      <pre>
+        <code class="language-csharp">
+            int x=null; //error  cannot convert null to int because it is non-nullable types
+        </code>
+      </pre>
+      <p><span style="font-size: 12pt;">But we can assign null value to integer&nbsp;</span></p>
+
+      <pre>
+          <code class="language-csharp">
+                int ? x = null;
+          </code>
+        </pre>
+
+        <p><span style="font-size: 12pt; color: #ff0000;"><strong>So we convert non nullable type to nullable types as above</strong></span></p>
+
+
+        <p><span style="font-size: 14pt;"><strong>Nullable types has two member : <span style="color: #ff0000;">HasValue</span> and <span style="color: #ff0000;">Value</span></strong></span></p>
+<p><span style="font-size: 14pt;"><strong><span style="color: #ff0000;">HasValue</span>: <code>HasValue</code>&nbsp;is of type boolean value. It is set to true when the variable contains a non-null value.</strong></span></p>
+
+<div class="row">
+  <div class="col-6">
+      <pre>
+          <code class="language-csharp">
+              static void Main(string[] args)  
+              {  
+              int? x = 5;  
+              if(x.HasValue)  
+              {  
+              Console.WriteLine(x.Value.ToString());  
+              }  
+              else  
+              {  
+              Console.WriteLine("contain Null value.");  
+              }  
+              Console.ReadLine();
+        
+              //Output: 5
+          </code>
+        </pre>
+  </div>
+  <div class="col-6">
+      <pre>
+          <code class="language-csharp">
+              static void Main(string[] args)  
+              {  
+              int? x = null;  
+              if(x.HasValue)  
+              {  
+              Console.WriteLine(x.Value.ToString());  
+              }  
+              else  
+              {  
+              Console.WriteLine("contain Null value.");  
+              }  
+              Console.ReadLine();
+        
+              //Output: contain Null Value
+          </code>
+        </pre>
+  </div>
+</div>
+
+
+<p><span style="font-size: 14pt;">Null Coalescing Operator(??) is <span style="color: #ff0000;">binary operator</span> &nbsp;that simplifies checking for null values.so,&nbsp;It<span style="color: #ff0000;"> simplifies null tests.</span></span></p>
+<p><span style="font-size: 14pt;">It is used to <span style="color: #ff0000;">assign a default value to a variable when the value is null</span>.</span></p>
+
+<pre>
+  <code class="language-csharp">
+      string name = null;  
+      string myname = name ?? "Laxmi";  
+      Console.WriteLine(myname);  //Laxmi
+  </code>
+</pre>
+===================================================================
+
+<h2>Differentiate nullable type and default type </h2>
+<div class="row">
+<div class="col-lg-6">
+<h4>Nullable</h4>
+<pre>
+<code class="language-csharp">
+
+int i = 5;
+int j = null;
+int k = 6;
+func(i,j)             will hit  =======> func(int i ,int? j)
+
+</code>
+</pre>
+</div>
+
+<div class="col-lg-6">
+<h4>Default</h2>
+<pre>
+<code class="language-csharp">
+int i =7;
+int k = 4;
+func(i)            will hit    =====> func(int i,int k = 0)
+func(i,k)          will hit    =====> func(int i, int k =0)
+funct(i,null)       ????????
+</code>
+</pre>
+</div>
+</div>
+
+obj.PalikaId = obj.PalikaId == null ? 0 : obj.PalikaId;   ====        obj.PalikaId = obj.PalikaId.GetValueOrDefault();
+
+
+
+
+
+
+https://www.pgadmin.org/docs/pgadmin4/development/import_export_data.html
+
+https://timeandupdate.com/2017/02/data-centers-nepal/
+
+<script src="js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

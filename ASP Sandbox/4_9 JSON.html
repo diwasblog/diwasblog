@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/b">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+
+<p><span style="font-size: 18pt;">JSON</span></p>
+<p><span style="font-size: 12pt;">It is just a format for transferring data from client to server and server to client.</span></p>
+<p><span style="font-size: 12pt;">Lets take about initial ways of transfering data.Past days we use HTML to build static pages but now world is changing and we are focusing on creating dynamic website.</span></p>
+<p><span style="font-size: 12pt;">Say we are requesting asynchronous request to facebook ,then facebook can send back response in any format like HTML, JSON format.&nbsp;</span></p>
+<p><span style="font-size: 12pt;"><strong>HTML format</strong> :Contain data as well as css and html</span></p>
+<p><span style="font-size: 12pt;"><strong>JSON format:</strong> Just contain data. And this is coming from server.</span></p>
+<p><span style="font-size: 12pt;">Generally Server will send data to client side in JSON format(ie. object format of string)</span></p>
+<p><span style="font-size: 12pt;">Modern JSON implementation generally falls into one of two categories:</span></p>
+<ul>
+<li><span style="font-size: 12pt;">Web service APIs use JSON format to make data available to third-party applications.</span></li>
+<li><span style="font-size: 12pt;">AJAX interactions often use JSON to shuttle data between a server and a visitor&rsquo;s browser.</span></li>
+</ul>
+<p><span style="font-size: 12pt;">In both cases, client-side manipulation of JSON with JavaScript will be necessary to render the data.</span></p>
+<p><span style="font-size: 12pt;"> In addition, if the data is going to be used to perform any action on a web server, then a server-side programming language and language-specific JSON library will do the work on the server.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 12pt;">In .NET Programming</span></p>
+<p><span style="font-size: 12pt;">We use Newtonsoft.Json package for processing JSON related data.</span></p>
+<h3><strong>Serializing the objects</strong></h3>
+<p><span style="font-size: 12pt;">Serialization is the process of converting the runtime objects to a plain-text string format.</span></p>
+
+<div class="row">
+  <div class="col-6">
+      <pre>
+          <code class="language-csharp">
+              // Create the person
+              Person myself = new Person { 
+                                  ID = 123, 
+                                  Name = "Diwas", 
+                                  Gender = true, 
+                                  DateOfBirth = new DateTime(1995, 08, 29) 
+                              };
+              
+              // Serialize it.
+               string serializedJson = JsonConvert.SerializeObject(myself);
+              
+              // Print on the screen.
+               Console.WriteLine(serializedJson);
+          </code>
+        </pre>
+  </div>
+
+  <div class="col-6">
+      <pre>
+          <code class="language-csharp">
+              {
+                "ID": 123,
+                "Name": "Diwas",
+                "Gender": true,
+                "DateOfBirth": "1995-08-29T00:00:00"
+            }
+          </code>
+        </pre>
+  </div>
+</div>
+
+Same as Json.stringify(myself) in JS
+
+<h2>Deserializing (COnverting string text to object)</h2>
+<div class="row">
+  <div class="col-6">
+      <pre>
+          <code class="language-csharp">
+              string data = "{\"ID\": 123,\"Name\": 
+              \"Afzaal Ahmad Zeeshan\",\"Gender\": 
+              true,\"DateOfBirth\": \"1995-08-29T00:00:00\"}";
+          </code>
+        </pre>
+  </div>
+
+  <div class="col-6">
+      <pre>
+          <code class="language-csharp">
+              // Serialize it.
+              Person obj = JsonConvert.DeserializeObject<Person>(data);
+              
+              // Print on the screen.
+              Console.WriteLine(obj.ID);
+
+              OR
+              ===================================
+              dynamic obj = JsonConvert.DeserializeObject(data);
+              Console.WriteLine(obj.ID);
+              //Here no need to specify object like Person
+          </code>
+        </pre>
+  </div>
+</div>
+Here,above we are just getting one object.
+Let's deserialize list of object as below
+
+<pre>
+    <code class="language-csharp">
+        var listOfObjects = JsonConvert.DeserializeObject<List<Person>>(data);
+          //Here we are converting string list of object in List of Person
+    </code>
+  </pre>
+  ==============================================================================================
+  <br>
+  <pre id="pre277385" class="notranslate" data-lang-guess="C#">&nbsp;</pre>
+<table style="border-collapse: collapse; width: 100%; height: 156px;" border="1">
+<tbody>
+<tr style="height: 49px; color: white; background: gray;">
+<td style="width: 50%; height: 49px;">Javascript</td>
+<td style="width: 50%; height: 49px;">Json</td>
+</tr>
+<tr style="height: 107px;">
+<td style="width: 50%; height: 107px;">
+<p><span class="code-keyword">var</span> obj = { <span class="code-string">"</span><span class="code-string">name"</span>: <span class="code-string">"Diwas</span><span class="code-string">"</span> };</p>
+<p>or&nbsp;</p>
+<p><span class="code-keyword">var</span> obj = { name: <span class="code-string">"Diwas</span><span class="code-string">"</span> };</p>
+</td>
+<td style="width: 50%; height: 107px;"><span class="code-keyword">var</span> obj = { <span class="code-string">"</span><span class="code-string">name"</span>: <span class="code-string">"Diwas</span><span class="code-string">"</span> };</td>
+</tr>
+
+Note:Json is subset of Javascript
+In JS==>stringify ===serialize (.net)  ==> Convert object /array of object into string
+IN JS ==>parse==deserialize(.net)  ===> COnvert string to object/ array of object
+================================================================================================
+<br>
+<h2>Using JSONRESULT</h2>
+<div class="row">
+  <div class="col-6">
+    <pre>
+      <code class="language-csharp">
+        public class HomeController:Controller{
+  
+          public JsonResult GetAllCustomers()
+          {
+            var customers=new List<Customer>();
+            customers.Add(new Cusotmer(){Id=1,Name="Diwas"});
+            customers.Add(new Cusotmer(){Id=2,Name="Hari"});
+            return Json(customers);
+          }
+        
+        }
+      </code>
+    </pre>
+  </div>
+  <div class="col-6">
+    <pre>
+      <code class="language-csharp">
+      Url : localhost:4512/getallcustomers
+
+      Output:
+      [{"Id":1,"Name":"Diwas"},{"Id":2,"Name":"Hari"}]
+      </code>
+    </pre>
+  </div>
+</div>
+
+
+<script src="js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

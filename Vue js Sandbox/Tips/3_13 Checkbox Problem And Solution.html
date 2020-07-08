@@ -1,0 +1,161 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+        integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <script
+        src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+    <script src="https://unpkg.com/vue"></script>
+
+    <style>
+        xmp.prettyprint {
+
+            font-size: 12pt;
+            font-family: "Consolas, 'Courier New', monospace";
+
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <xmp class="prettyprint">
+        <div class="form-group checkbox">
+            <label>
+                <input type="checkbox" name="IsActive" @(Model.IsActive ? "checked" : "" )
+                    value="true" /><b>IsActive</b>
+                <!-- <input type="checkbox" name="IsActive" @(Model.IsActive==true ? "checked" : "") value="true" /><b>IsActive</b> -->
+                <input type="hidden" name="IsActive" value="false" />
+            </label>
+        </div>
+    </xmp>
+
+    <xmp class="prettyprint">
+        //binding dropdown data
+        <option @(Model.Address.DistrictId==district.Id ? ("selected") : "" ) value="@district.Id">@district.Name
+        </option>
+    </xmp>
+    =============================================================================================
+
+    <xmp class="prettyprint">
+        <div class="checkbox">
+            <label>
+                <input name="IsExamClosed" id="check" @@change="checkClosedExam" type="checkbox" /> Copy Setting
+            </label>
+        </div>
+    </xmp>
+
+    ==============================================================================================
+    <h2>Uncheck checkbox</h2>
+    <xmp class="prettyprint">
+        document.getElementById('checkbox').checked = false;
+    </xmp>
+
+    =================================================================================================================
+
+    <h2>Adding class dynamically</h2>
+
+    Here, btn is for all button but
+    btn-primary active is for currentpagination page
+    <xmp class="prettyprint">
+        @for (long i = 1; i < (pageCount + 1); i++) { <button class="btn @(Model.SearchModel.CurrentPage == i ? "
+            btn-primary active" : "" )" type="button" value="@i" id="@i">@i</button>
+            }
+
+    </xmp>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ========================================================================================================
+    <h2>Checkbox dynamic handling in asp.net mvc </h2>
+
+    <h3>Insert</h3>
+
+    <xmp class="prettyprint">
+        //In View
+        @foreach (var subCommodity in Model.SubCommodityForPlant)
+        {
+        <div class="i-checks" id="subCommodity">
+            <label>
+                <input type="checkbox" name="CheckedPlant" value="@subCommodity.id"> <i></i> @subCommodity.name
+            </label>
+        </div>
+        }
+
+        //In Model
+
+        public List<int> CheckedPlant { get; set; }
+            ==============================================
+            <br>
+            So now id parts get captured ie. value
+            When 3 checkbox are selected then:
+
+            Output:
+            CheckPlant: Count :3
+            [0]: 2
+            [1]: 9
+            [2]: 12
+
+            Where 2, 9 and 12 are ids of dynamic checkbox
+
+    </xmp>
+
+
+    <br>
+    =================================================================================================
+    <br>
+    <h2>Access Checkbox property of LOOP</h2>
+    <xmp class="prettyprint">
+        @foreach (var item in Model){
+
+        <table>
+            ....
+            <td>
+                <center>
+                    <input type="checkbox" onclick='handleCheckEvent(this,"@item.fiscal_year")' name="memberId"
+                        value="@item.id" id="IsGals" class="chkBoxForEligible">
+                </center>
+            </td>
+        </table>
+        }
+
+        // in js
+        function handleCheckEvent(cb,fiscalYear) {
+
+        console.log(cb);
+	// On consoling we get whole check box element
+        //<input type="checkbox" onclick='handleCheckEvent(this,"@item.fiscal_year")' name="memberId" value="5" id="IsGals" class="chkBoxForEligible">
+
+        //then you can access each and every property like class , name ,value ,id ,type
+        //as below
+
+        console.log(cb.id);
+        console.log(cb.value);
+        console.log(cb.name);
+        console.log(cb.class);
+
+
+	//You can disable checked from here bested on Id
+        $(".chkBoxForEligible[value=" + memberId + "]").prop("disabled", true);
+
+
+        }
+    </xmp>
+
+</body>
+
+</html>

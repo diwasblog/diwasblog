@@ -1,0 +1,215 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+
+<!--Explaination-->
+
+<!--########################Main Code######################################-->
+
+<!--##############################################################-->
+
+
+<!--|#########################DISPLAY############################################-->
+
+
+<xmp class="prettyprint">
+
+   axios.post("/HRMS/employee/api/insertleavedata", { "Data": JSON.stringify(vm.leaveTypeData) })
+                    .then(function () {
+                        vm.getallLeaveTypes();
+                        vm.leaveDataLoading = false;
+                    })
+                    .catch(function () {
+                        vm.leaveDataLoading = false;
+                        vm.errorMessage = errors.response.data.Message;
+                        //console.log("catching error");
+                    });
+            }
+</xmp>
+
+<h3>For using Json in .net we need  newtonsoft.json  and install it as :<strong><span style="color: #339966;">Install-Package Newtonsoft.Json</span></strong></h3>
+<xmp class="prettyprint">
+[Route("employee/api/insertleavedata")]
+        [HttpPost]
+        public IHttpActionResult InsertLeaveData(LeaveTypePostModal postData)
+        {
+            LeaveTypeInsertModal leavetypeInsertModal = new LeaveTypeInsertModal();
+            try
+            {
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                List<LeaveTypeEmployeeAssociation> list = serializer.Deserialize<List<LeaveTypeEmployeeAssociation>>(postData.Data);
+                DataTable leaveTypeData = new DataTable();
+                leaveTypeData.Columns.Add("EmployeeId");
+                leaveTypeData.Columns.Add("LeaveTypeId");
+                leaveTypeData.Columns.Add("LeaveCount");
+                leaveTypeData.Columns.Add("LeaveForward");
+                foreach(var item in list)
+                {
+                    leaveTypeData.Rows.Add(item.EmployeeId, item.Id, item.LeaveCount, item.LeaveForward);
+                }
+
+                leavetypeInsertModal.AdminName = User.Identity.Name;
+                leavetypeInsertModal.InstitutionId = GetInstitutionId();
+                leavetypeInsertModal.DtLeaveType = leaveTypeData;
+                _leaveTypeService.InsertLeaveTypeForEmployee(leavetypeInsertModal);
+                _apiResponse.StatusCode = (int)HttpStatusCode.OK;
+                return Ok(_apiResponse);
+            }
+            catch (Exception ex)
+            {
+                _apiResponse.ErrorMessage = ex.Message;
+                return BadRequest(ex.Message);
+            }
+          </xml>
+
+
+        <xmp class="prettyprint">
+        public class LeaveType
+        {
+            public int Id { get; set; }
+            public int InstitutionId { get; set; }
+            public string Name { get; set; }
+            public string Alias { get; set; }
+            public int LeaveCount { get; set; }
+            public bool LeaveForward { get; set; }
+            public bool IsActive { get; set; }
+            public string AdminName { get; set; }
+        }
+        
+        public class LeaveTypeEmployeeAssociation
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public int LeaveCount { get; set; }
+            public bool LeaveForward { get; set; }
+            public bool IsInserted { get; set; }
+            public int EmployeeId { get; set; }
+        }
+        
+        public class LeaveTypePostModal
+        {
+            public string Data { get; set; }
+        }
+        
+        //for updating
+        public class LeaveTypeInsertModal 
+        {
+            public int InstitutionId { get; set; }
+            public string  AdminName { get; set; }
+            public DataTable DtLeaveType { get; set; }  
+        }
+        </xmp>
+
+         
+<!--####################################################-->
+
+
+<h2>Passing data in comma separate value</h2>
+<xmp class="prettyprint">
+data=data+","
+</xmp>
+
+<h2>Interpreting  array data </h2>
+<xmp class="prettyprint">
+    <script>
+        var test={"success": true,
+        "counters": 
+        [{"name": "dsd", "type": "sds", "unit": "sds" }, 
+        { "name": "gdg", "type": "dfd", "unit": "ds" }, 
+        { "name": "sdsData", "type": "sds", "unit": " dd " }, 
+        { "name": "Stoc final", "type": "number ", "unit": "litri " }, 
+        { "name": "Consum GPL", "type": "number ", "unit": "litri " },
+        { "name": "sdg", "type": "dfg", "unit": "gfgd" }, 
+        { "name": "dfgd", "type": "fgf", "unit": "liggtggggri " },
+        { "name": "fgd", "type": "dfg", "unit": "kwfgf " },
+        { "name": "dfg", "type": "dfg", "unit": "dg" },
+        { "name": "gd", "type": "dfg", "unit": "dfg" } ] 
+        };
+        
+        var s = JSON.stringify(test); //converting object into string
+
+        var jsonData =JSON.parse(s);   //converting string to json object and can acceess by using dot operator
+
+        var jsonData =test;
+        for (var i = 0; i < jsonData.counters.length; i++) {
+            var counter = jsonData.counters[i];
+            console.log(counter.name);
+        }
+        </script>
+
+        //output : dsd  
+                   gdg
+                   sdsData
+                   Stoc final
+                   Consum
+                   sdg
+                   dfgd
+</xmp>
+======================================================================================================================
+<h2>Json Object</h2>
+
+<xmp class="prettyprint">
+    var jason = {
+        "age" : "24",
+        "hometown" : "Missoula, MT",
+        "gender" : "male"
+    };
+
+document.write('Jason is ' jason.age); // Output: Jason is 24
+document.write('Jason is a ' jason.gender); // Output: Jason is a male
+</xmp>
+===========================================================================================================================
+<h2>Json Array</h2>
+<xmp class="prettyprint">
+    var family = [{
+        "name" : "Jason",
+        "age" : "24",
+        "gender" : "male"
+    },
+    {
+        "name" : "Kyle",
+        "age" : "21",
+        "gender" : "male"
+    }];
+
+    document.write(family[1].name); // Output: Kyle
+document.write(family[0].age); // Output: 24
+</xmp>
+================================================================================================================================
+
+<h2>Nested Json </h2>
+<xmp class="prettyprint">
+    var family = {
+        "jason" : {
+            "name" : "Jason Lengstorf",
+            "age" : "24",
+            "gender" : "male"
+        },
+        "kyle" : {
+            "name" : "Kyle Lengstorf",
+            "age" : "21",
+            "gender" : "male"
+        }
+    }
+    document.write(family.jason.name); // Output: Jason Lengstorf
+    document.write(family.kyle.age); // Output: 21
+    document.write(family.jason.gender); // Output: male
+</xmp>
+    </body>
+
+</html>

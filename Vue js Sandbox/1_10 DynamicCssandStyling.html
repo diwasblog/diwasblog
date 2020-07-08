@@ -1,0 +1,102 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+
+<!--Explaination-->
+
+<!--########################Main Code######################################-->
+
+<style>
+    .demo{
+      width:100px;
+      height:100px;
+      background-color:green;
+      display:inline-block;
+      margin:10px;
+        }
+  
+        .red{
+          background-color:red;
+        }
+  </style>
+
+<div id="app">
+    <div class="demo" @click="attachRed=!attachRed" :class="{red:attachRed}"></div>
+    </div>
+    <script src="https://unpkg.com/vue"></script>
+    
+    <script>
+    const app=new Vue({
+      el:'#app',
+      data:{
+        attachRed:false
+      }
+      
+    })
+    </script>
+<!--##############################################################-->
+
+
+<!--|#########################DISPLAY############################################-->
+<?prettify linenums=1?>
+<xmp class="prettyprint"
+   >
+
+   <html>
+      <head>
+         <title>Changing CSS Dynamically</title>
+      </head>
+      <body>
+
+          <style>
+              .demo{
+                width:100px;
+                height:100px;
+                background-color:green;
+                display:inline-block;
+                margin:10px;
+                  }
+            
+                  .red{
+                    background-color:red;
+                  }
+            </style>
+          
+          <div id="app">
+              <div class="demo" @click="attachRed=!attachRed" :class="{red:attachRed}"></div>
+              </div>
+              <script src="https://unpkg.com/vue"></script>
+              
+              <script>
+              const app=new Vue({
+                el:'#app',
+                data:{
+                  attachRed:false
+                }
+                
+              })
+              </script>
+      </body>
+   </html>
+</xmp>
+<!--####################################################-->
+<a href="http://bridge.net/">
+  <img src="https://img.shields.io/badge/built%20with-Bridge.NET-blue.svg" title="Built with Bridge.NET" />
+</a>
+
+    </body>
+
+</html>

@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+<body>
+  <h2>Rank Function</h2>
+  =================================================================================================================
+  <h2>How to Get Top N Records Per Group((using Ranking Function)) ?</h2>
+
+
+  Question:simple table with four columns containing Student Name, Class Name along with the marks each student got.
+  <table style="border-collapse: collapse; width: 11.8878%; height: 318px;" border="1">
+      <tbody>
+      <tr style="color: white; background: gray;">
+      <td style="width: 25%;">Id</td>
+      <td style="width: 25%; ">StudentName</td>
+      <td style="width: 25%;">ClassName</td>
+      <td style="width: 22.7695%; ">Marks</td>
+      </tr>
+      <tr>
+      <td style="width: 25%;">1</td>
+      <td style="width: 25%;">Roger</td>
+      <td style="width: 25%;">Science</td>
+      <td style="width: 22.7695%;">50</td>
+      </tr>
+      <tr style="">
+      <td style="width: 25%; ">2&nbsp;</td>
+      <td style="width: 25%;">Sara&nbsp;</td>
+      <td style="width: 25%; ">Science&nbsp;</td>
+      <td style="width: 22.7695%;">40</td>
+      </tr>
+      <tr >
+      <td style="width: 25%; ">3&nbsp;</td>
+      <td style="width: 25%; ">Jimmy</td>
+      <td style="width: 25%; ">Science&nbsp;</td>
+      <td style="width: 22.7695%; ">30</td>
+      </tr>
+      <tr >
+      <td >4&nbsp;</td>
+      <td >Mike&nbsp;</td>
+      <td >Maths&nbsp;</td>
+      <td >50</td>
+      </tr>
+      <tr>
+      <td >5</td>
+      <td >Mona&nbsp;</td>
+      <td >Maths&nbsp;</td>
+      <td>30</td>
+      </tr>
+      <tr >
+      <td >6&nbsp;</td>
+      <td >Ronnie&nbsp;</td>
+      <td>Maths&nbsp;</td>
+      <td >10</td>
+      </tr>
+      <tr >
+      <td >7</td>
+      <td>James</td>
+      <td>Art</td>
+      <td >50</td>
+      </tr>
+      <tr >
+      <td >8&nbsp;</td>
+      <td >Mona</td>
+      <td >Art&nbsp;</td>
+      <td>35</td>
+      </tr>
+      <tr style="height: 14px;">
+      <td style="width: 25%; height: 14px;">9&nbsp;</td>
+      <td style="width: 25%; height: 14px;">Roger&nbsp;</td>
+      <td style="width: 25%; height: 14px;">Art&nbsp;</td>
+      <td style="width: 22.7695%; height: 14px;">25</td>
+      </tr>
+      </tbody>
+      </table>
+      ==========================================================================================================
+      <br>
+      <h2>Find top 2 student Scoring high for each ClassName</h2>
+<div class="row">
+  <div class="col">
+  
+      <pre>
+          <code class="language-sql">
+              SELECT *
+              FROM (
+              SELECT ROW_NUMBER()
+              OVER(PARTITION BY ClassName
+              ORDER BY Marks DESC) AS StRank, *
+              FROM StudentClass) n
+              WHERE StRank IN (1,2)
+              GO 
+          </code>
+        </pre>
+ 
+</div>
+
+<div class="col">
+    <table style="border-collapse: collapse; width: 14.1842%; height: 235px;" border="1">
+        <tbody>
+        <tr style="background: gray; color: white;">
+        <td style="width: 20%;">StRank</td>
+        <td style="width: 20%;">Id</td>
+        <td style="width: 20%;">StudentName</td>
+        <td style="width: 20%;">ClassName</td>
+        <td style="width: 20%;">Marks</td>
+        </tr>
+        <tr>
+        <td style="width: 20%;">1</td>
+        <td style="width: 20%;">7</td>
+        <td style="width: 20%;">James</td>
+        <td style="width: 20%;">Art</td>
+        <td style="width: 20%;">50</td>
+        </tr>
+        <tr>
+        <td style="width: 20%;">2</td>
+        <td style="width: 20%;">8</td>
+        <td style="width: 20%;">Mona</td>
+        <td style="width: 20%;">Art</td>
+        <td style="width: 20%;">34</td>
+        </tr>
+        <tr>
+        <td style="width: 20%;">1</td>
+        <td style="width: 20%;">4</td>
+        <td style="width: 20%;">Mike</td>
+        <td style="width: 20%;">Maths&nbsp;</td>
+        <td style="width: 20%;">50</td>
+        </tr>
+        <tr>
+        <td style="width: 20%;">2</td>
+        <td style="width: 20%;">5</td>
+        <td style="width: 20%;">Mona</td>
+        <td style="width: 20%;">Maths</td>
+        <td style="width: 20%;">30</td>
+        </tr>
+        <tr>
+        <td style="width: 20%;">1</td>
+        <td style="width: 20%;">1</td>
+        <td style="width: 20%;">Roger</td>
+        <td style="width: 20%;">Science</td>
+        <td style="width: 20%;">50</td>
+        </tr>
+        <tr>
+        <td style="width: 20%;">2</td>
+        <td style="width: 20%;">2</td>
+        <td style="width: 20%;">Sara</td>
+        <td style="width: 20%;">Science</td>
+        <td style="width: 20%;">40</td>
+        </tr>
+        </tbody>
+        </table>
+</div>
+</div>
+
+<p><strong><span style="font-size: 12pt;">Here partition by is similar to group by .</span></strong></p>
+<p><span style="font-size: 12pt;">Here <span style="color: #ff0000;">Group by</span> is done on the basis of ClassName and then <span style="color: #ff0000;">order</span> it by <span style="color: #ff0000;">marks</span> then each such group is given <span style="color: #ff0000;">serial number as StRank</span> and we are taking out first 2 Student whose StRank is between(1,2).</span></p>
+<p><span style="font-size: 12pt;">So getting top 2 student in group with highest mark.</span></p>
+
+===================================================================================================
+
+<h1 class="w-blogpost-title entry-title"><span style="color: #ff00ff;"><strong><span style="font-size: 18pt;">Query to Get Unique Distinct Data Based on Condition &ndash; Eliminate Duplicate Data from Resultset</span></strong></span></h1>
+
+<img src="img/removeduplicate.jpg">
+
+<div class="row">
+  <div class="col">
+      <pre>
+          <code class="language-sql">
+              SELECT Product, Price, Color
+              FROM
+              (SELECT Table1.*,
+              ROW_NUMBER() OVER (PARTITION BY Product ORDER BY Price DESC) AS RN
+              FROM Table1) AS t
+              WHERE RN = 1
+              ORDER BY ID
+              GO
+          </code>
+        </pre>
+  </div>
+
+  <div class="col">
+      <table style="border-collapse: collapse; width: 16.1264%; height: 164px;" border="1">
+          <tbody>
+          <tr style="background: gray; color: white;">
+          <td style="width: 33.3333%;">Product</td>
+          <td style="width: 33.3333%;">Price</td>
+          <td style="width: 33.3333%;">Color</td>
+          </tr>
+          <tr>
+          <td style="width: 33.3333%;">Toy</td>
+          <td style="width: 33.3333%;">100</td>
+          <td style="width: 33.3333%;">Black</td>
+          </tr>
+          <tr>
+          <td style="width: 33.3333%;">Pen</td>
+          <td style="width: 33.3333%;">100</td>
+          <td style="width: 33.3333%;">Black</td>
+          </tr>
+          <tr>
+          <td style="width: 33.3333%;">Pencil</td>
+          <td style="width: 33.3333%;">200</td>
+          <td style="width: 33.3333%;">Yellow</td>
+          </tr>
+          <tr>
+          <td style="width: 33.3333%;">Cup</td>
+          <td style="width: 33.3333%;">400</td>
+          <td style="width: 33.3333%;">Brown</td>
+          </tr>
+          </tbody>
+          </table>
+  </div>
+</div>
+
+
+================================================================================================================
+<br>
+
+<div class="row">
+    <div class="col">
+        Phones
+        <table style="background-color:black;color:white">
+            <tbody>
+            <tr>
+            <td style="width: 25%;">Id</td>
+            <td style="width: 25%;">Person_Id</td>
+            <td style="width: 25%;">Phone_Number</td>
+            <td style="width: 25%;">Phone_Number_Type</td>
+            </tr>
+            <tr>
+            <td style="width: 25%;">1</td>
+            <td style="width: 25%;">1</td>
+            <td style="width: 25%;">555-1234</td>
+            <td style="width: 25%;">cell</td>
+            </tr>
+            <tr>
+            <td style="width: 25%;">2</td>
+            <td style="width: 25%;">1</td>
+            <td style="width: 25%;">555-9876</td>
+            <td style="width: 25%;">home</td>
+            </tr>
+            <tr>
+            <td style="width: 25%;">3</td>
+            <td style="width: 25%;">2</td>
+            <td style="width: 25%;">555-4321</td>
+            <td style="width: 25%;">cell</td>
+            </tr>
+            <tr>
+            <td style="width: 25%;">4</td>
+            <td style="width: 25%;">2</td>
+            <td style="width: 25%;">555-7777</td>
+            <td style="width: 25%;">cell</td>
+            </tr>
+            </tbody>
+            </table>
+    </div>
+
+    <div class="col">
+        Person
+        <table style="background-color:black;color:white">
+            <tbody>
+            <tr>
+            <td >Id</td>
+            <td >First_Name</td>
+            <td >Last_Name</td>
+            </tr>
+            <tr>
+            <td style="width: 33.3333%;">1</td>
+            <td style="width: 33.3333%;">Homer</td>
+            <td style="width: 33.3333%;">Simpson</td>
+            </tr>
+            <tr>
+            <td style="width: 33.3333%;">2</td>
+            <td style="width: 33.3333%;">Ned</td>
+            <td style="width: 33.3333%;">Flanders</td>
+            </tr>
+            <tr>
+            <td style="width: 33.3333%;">3</td>
+            <td style="width: 33.3333%;">Lisa</td>
+            <td style="width: 33.3333%;">Simpson</td>
+            </tr>
+            </tbody>
+            </table>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col">
+            <pre>
+                    <code class="language-sql">
+                            SELECT 
+                            id,
+                            person_id,
+                            phone_number,
+                            ROW_NUMBER() OVER (PARTITION BY person_id ORDER BY id DESC) AS row
+                       FROM phones
+                       WHERE phone_number_type='cell'
+                            AND phone_number IS NOT NULL
+                            AND LTRIM(RTRIM(phone_number)) != ''
+                    </code>
+                </pre>
+    </div>
+
+    <div class="col">
+            <table style="border-collapse: collapse; width: 100%;" border="1">
+                    <tbody>
+                    <tr style="background: gray; color: white;">
+                    <td style="width: 25%;">Id</td>
+                    <td style="width: 25%;">Person_Id</td>
+                    <td style="width: 25%;">Phone_Number</td>
+                    <td style="width: 25%;">row</td>
+                    </tr>
+                    <tr>
+                    <td style="width: 25%;">1</td>
+                    <td style="width: 25%;">1</td>
+                    <td style="width: 25%;">555-1234</td>
+                    <td style="width: 25%;">1</td>
+                    </tr>
+                    <tr>
+                    <td style="width: 25%;">4</td>
+                    <td style="width: 25%;">2</td>
+                    <td style="width: 25%;">555-7777</td>
+                    <td style="width: 25%;">1</td>
+                    </tr>
+                    <tr>
+                    <td style="width: 25%;">3</td>
+                    <td style="width: 25%;">2</td>
+                    <td style="width: 25%;">555-4321</td>
+                    <td style="width: 25%;">2</td>
+                    </tr>
+                    </tbody>
+                    </table>
+    </div>
+</div>
+
+===
+
+<div class="row">
+        <div class="col">
+                <pre>
+                        <code class="language-sql">
+ SELECT id, person_id, phone_number
+ FROM (
+      SELECT
+           id,
+           person_id,
+           phone_number,
+           ROW_NUMBER() OVER (PARTITION BY person_id ORDER BY id DESC) AS row
+      FROM phones
+      WHERE phone_number_type='cell'
+           AND phone_number IS NOT NULL
+           AND LTRIM(RTRIM(phone_number)) != ''
+ ) results
+ WHERE row=1
+                        </code>
+                    </pre>
+        </div>
+    
+        <div class="col">
+                <table style="border-collapse: collapse; width: 100%;" border="1">
+                        <tbody>
+                        <tr style="background: gray; color: white;">
+                        <td style="width: 25%;">Id</td>
+                        <td style="width: 25%;">Person_Id</td>
+                        <td style="width: 25%;">Phone_Number</td>
+                        </tr>
+                        <tr>
+                        <td style="width: 25%;">1</td>
+                        <td style="width: 25%;">1</td>
+                        <td style="width: 25%;">555-1234</td>
+                        </tr>
+                        <tr>
+                        <td style="width: 25%;">4</td>
+                        <td style="width: 25%;">2</td>
+                        <td style="width: 25%;">555-7777</td>
+                        </tr>
+                        </tbody>
+                        </table>
+        </div>
+    </div>
+
+    
+    ====================================================
+
+
+
+
+
+
+
+
+
+
+
+
+==================================================================================================================
+<br>
+<pre>
+  <code class="language-sql">
+      CREATE OR ALTER PROCEDURE usp_Student_SelectInquiry
+      (
+         @InstitutionId int
+      )
+      WITH ENCRYPTION
+      AS
+      BEGIN
+          SELECT  si.Id ,convert(varchar, si.ModifiedDate, 23) as [Date],si.Name,si.StudentName,c.Name as Course,ins.Name as InquiryStatus  
+          FROM [Student.Inquiry] si
+          INNER JOIN [Course] c ON si.InterestedCourse = c.Id
+          INNER JOIN 
+          (
+              SELECT sis.Id,sis.InquiryStatusId ,sis.StudentInquiryId, ROW_NUMBER()OVER(PARTITION BY sis.StudentInquiryId ORDER BY sis.modifiedDate DESC)RN
+              FROM [Student.InquiryStatus] sis
+          ) stss ON stss.StudentInquiryId = si.Id AND stss.RN = 1
+          INNER JOIN [InquiryStatus] ins ON ins.Id = stss.InquiryStatusId
+          WHERE si.InstitutionId=@InstitutionId
+          ORDER BY si.ModifiedDate DESC
+      END
+      GO
+      EXEC usp_Student_SelectInquiry 1
+      
+  </code>
+</pre>
+====================================================================================================
+<br>
+<h2>From Basic</h2>
+
+<div class="row">
+    <div class="col-6">
+    <pre>
+            <code class="language-sql">
+                    SELECT CustomerName,ProductName,Amount,VendorName From Sales
+            </code>
+        </pre>
+    </div>
+
+    <div class="col-6">
+            <table style="border-collapse: collapse; width: 100%;" border="1">
+                    <tbody>
+                    <tr>
+                    <td style="width: 25%; background: black; color: white;">CustomerName</td>
+                    <td style="width: 25%; background: black; color: white;">ProductName</td>
+                    <td style="width: 25%; background: black; color: white;">Amount</td>
+                    <td style="width: 25%; background: black; color: white;">VendorName</td>
+                    </tr>
+                    <tr>
+                    <td style="width: 25%;">Shiv</td>
+                    <td style="width: 25%;">Shoes</td>
+                    <td style="width: 25%;">100.24</td>
+                    <td style="width: 25%;">Bata</td>
+                    </tr>
+                    <tr>
+                    <td style="width: 25%;">Raju</td>
+                    <td style="width: 25%;">Bag</td>
+                    <td style="width: 25%;">203.45</td>
+                    <td style="width: 25%;">Bata</td>
+                    </tr>
+                    <tr>
+                    <td style="width: 25%;">Sukesh</td>
+                    <td style="width: 25%;">Perfume</td>
+                    <td style="width: 25%;">102.00</td>
+                    <td style="width: 25%;">Archies</td>
+                    </tr>
+                    <tr>
+                    <td style="width: 25%;">Rajendra</td>
+                    <td style="width: 25%;">Books</td>
+                    <td style="width: 25%;">119.00</td>
+                    <td style="width: 25%;">Archies</td>
+                    </tr>
+                    <tr>
+                    <td style="width: 25%;">Rajendra</td>
+                    <td style="width: 25%;">Pens</td>
+                    <td style="width: 25%;">302.00</td>
+                    <td style="width: 25%;">Archies</td>
+                    </tr>
+                    </tbody>
+                    </table>
+    </div>
+</div>
+==================================================================================================
+<br>
+<div class="row">
+        <div class="col-6">
+<pre>
+    <code class="language-sql">
+            SELECT  row_number() over (order by customername) as ordernumber,
+            CustomerName,
+            ProductName,
+            Amount,
+            VendorName
+    From    Sales
+    //This will give unique row number based on customername
+    </code>
+    </pre>
+        </div>
+    
+        <div class="col-6">
+                <table style="border-collapse: collapse; width: 0%;" border="1">
+                        <tbody>
+                        <tr>
+                        <td style="width: 12.5%; background: black; color: white;">ordernumber</td>
+                        <td style="width: 12.5%; background: black; color: white;">CustomerName</td>
+                        <td style="width: 25%; background: black; color: white;">ProductName</td>
+                        <td style="width: 25%; background: black; color: white;">Amount</td>
+                        <td style="width: 25%; background: black; color: white;">VendorName</td>
+                        </tr>
+                        <tr>
+                        <td style="width: 12.5%;">1</td>
+                        <td style="width: 12.5%;">Rajendra</td>
+                        <td style="width: 25%;">Books</td>
+                        <td style="width: 25%;">119.00</td>
+                        <td style="width: 25%;">Archies</td>
+                        </tr>
+                        <tr>
+                        <td style="width: 12.5%;">2</td>
+                        <td style="width: 12.5%;">Rajendra</td>
+                        <td style="width: 25%;">Pens</td>
+                        <td style="width: 25%;">302.00</td>
+                        <td style="width: 25%;">Archies</td>
+                        </tr>
+                        <tr>
+                        <td style="width: 12.5%;">3</td>
+                        <td style="width: 12.5%;">Raju</td>
+                        <td style="width: 25%;">Bag</td>
+                        <td style="width: 25%;">203.45</td>
+                        <td style="width: 25%;">Bata</td>
+                        </tr>
+                        <tr>
+                        <td style="width: 12.5%;">4</td>
+                        <td style="width: 12.5%;">Shiv</td>
+                        <td style="width: 25%;">Shoes</td>
+                        <td style="width: 25%;">100.24</td>
+                        <td style="width: 25%;">Bata</td>
+                        </tr>
+                        <tr>
+                        <td style="width: 12.5%;">5</td>
+                        <td style="width: 12.5%;">Sukesh</td>
+                        <td style="width: 25%;">Perfume</td>
+                        <td style="width: 25%;">102.00</td>
+                        <td style="width: 25%;">Archies</td>
+                        </tr>
+                        </tbody>
+                        </table>
+        </div>
+    </div>
+    ==================================================================================================
+    <br>
+    <div class="row">
+            <div class="col-6">
+    <pre>
+        <code class="language-sql">
+        SELECT  row_number() over (order by customername) as ordernumber,
+                row_number() over (partition by vendorname order by vendorname) as vendorordernumber
+                CustomerName,
+                ProductName,
+                Amount,
+                VendorName
+        From    Sales
+        //This will give unique row number based on customername and 
+        //create partition and 
+        //create unique number based on vendor name
+        </code>
+        </pre>
+            </div>
+        
+            <div class="col-6">
+                    <table style="border-collapse: collapse; width: 0%;" border="1">
+                            <tbody>
+                            <tr>
+                            <td style="width: 12.5%; background: black; color: white;">ordernumber</td>
+                            <td style="width: 6.25%; background: black; color: white;">vendorordernumber</td>
+                            <td style="width: 6.25%; background: black; color: white;">CustomerName</td>
+                            <td style="width: 25%; background: black; color: white;">ProductName</td>
+                            <td style="width: 19.8052%; background: black; color: white;">Amount</td>
+                            <td style="width: 30.1948%; background: black; color: white;">VendorName</td>
+                            </tr>
+                            <tr>
+                            <td style="width: 12.5%;">1</td>
+                            <td style="width: 6.25%;">1</td>
+                            <td style="width: 6.25%;">Rajendra</td>
+                            <td style="width: 25%;">Books</td>
+                            <td style="width: 19.8052%;">119.00</td>
+                            <td style="width: 30.1948%;">Archies</td>
+                            </tr>
+                            <tr>
+                            <td style="width: 12.5%;">2</td>
+                            <td style="width: 6.25%;">2</td>
+                            <td style="width: 6.25%;">Rajendra</td>
+                            <td style="width: 25%;">Pens</td>
+                            <td style="width: 19.8052%;">302.00</td>
+                            <td style="width: 30.1948%;">Archies</td>
+                            </tr>
+                            <tr>
+                            <td style="width: 12.5%;">5</td>
+                            <td style="width: 6.25%;">3</td>
+                            <td style="width: 6.25%;">Sukesh</td>
+                            <td style="width: 25%;">Perfume</td>
+                            <td style="width: 19.8052%;">102.00</td>
+                            <td style="width: 30.1948%;">Archies</td>
+                            </tr>
+                            <tr>
+                            <td style="width: 12.5%;">3</td>
+                            <td style="width: 6.25%;">1</td>
+                            <td style="width: 6.25%;">Raju</td>
+                            <td style="width: 25%;">Bag</td>
+                            <td style="width: 19.8052%;">203.45</td>
+                            <td style="width: 30.1948%;">Bata</td>
+                            </tr>
+                            <tr>
+                            <td style="width: 12.5%;">4</td>
+                            <td style="width: 6.25%;">2</td>
+                            <td style="width: 6.25%;">Shiv</td>
+                            <td style="width: 25%;">Shoes</td>
+                            <td style="width: 19.8052%;">100.24</td>
+                            <td style="width: 30.1948%;">Bata</td>
+                            </tr>
+                            </tbody>
+                            </table>
+            </div>
+        </div>
+
+        ==================================================================================================
+        <br>
+        <div class="row">
+                <div class="col-6">
+        <pre>
+            <code class="language-sql">
+            SELECT  row_number() over (order by customername) as ordernumber,
+                    row_number() over (partition by vendorname order by vendorname) as vendorordernumber,
+                    rank() over (order by customername) as customername,
+                    CustomerName,
+                    ProductName,
+                    Amount,
+                    VendorName
+            From    Sales
+            //This will give unique row number based on customername and 
+            //create partition and 
+            //create unique number based on vendor name
+            </code>
+            </pre>
+                </div>
+            
+                <div class="col-6">
+                        <table style="border-collapse: collapse; width: 0%;" border="1">
+                                <tbody>
+                                <tr>
+                                <td style="width: 12.5%; background: black; color: white;">ordernumber</td>
+                                <td style="width: 6.25%; background: black; color: white;">vendorordernumber</td>
+                                <td style="width: 3.125%; background: black; color: white;">customernumber</td>
+                                <td style="width: 3.125%; background: black; color: white;">CustomerName</td>
+                                <td style="width: 25%; background: black; color: white;">ProductName</td>
+                                <td style="width: 19.8052%; background: black; color: white;">Amount</td>
+                                <td style="width: 30.1948%; background: black; color: white;">VendorName</td>
+                                </tr>
+                                <tr>
+                                <td style="width: 12.5%;">1</td>
+                                <td style="width: 6.25%;">1</td>
+                                <td style="width: 3.125%;">1</td>
+                                <td style="width: 3.125%;">Rajendra</td>
+                                <td style="width: 25%;">Books</td>
+                                <td style="width: 19.8052%;">119.00</td>
+                                <td style="width: 30.1948%;">Archies</td>
+                                </tr>
+                                <tr>
+                                <td style="width: 12.5%;">2</td>
+                                <td style="width: 6.25%;">2</td>
+                                <td style="width: 3.125%;">1</td>
+                                <td style="width: 3.125%;">Rajendra</td>
+                                <td style="width: 25%;">Pens</td>
+                                <td style="width: 19.8052%;">302.00</td>
+                                <td style="width: 30.1948%;">Archies</td>
+                                </tr>
+                                <tr>
+                                <td style="width: 12.5%;">5</td>
+                                <td style="width: 6.25%;">3</td>
+                                <td style="width: 3.125%;">5</td>
+                                <td style="width: 3.125%;">Sukesh</td>
+                                <td style="width: 25%;">Perfume</td>
+                                <td style="width: 19.8052%;">102.00</td>
+                                <td style="width: 30.1948%;">Archies</td>
+                                </tr>
+                                <tr>
+                                <td style="width: 12.5%;">3</td>
+                                <td style="width: 6.25%;">1</td>
+                                <td style="width: 3.125%;">3</td>
+                                <td style="width: 3.125%;">Raju</td>
+                                <td style="width: 25%;">Bag</td>
+                                <td style="width: 19.8052%;">203.45</td>
+                                <td style="width: 30.1948%;">Bata</td>
+                                </tr>
+                                <tr>
+                                <td style="width: 12.5%;">4</td>
+                                <td style="width: 6.25%;">2</td>
+                                <td style="width: 3.125%;">4</td>
+                                <td style="width: 3.125%;">Shiv</td>
+                                <td style="width: 25%;">Shoes</td>
+                                <td style="width: 19.8052%;">100.24</td>
+                                <td style="width: 30.1948%;">Bata</td>
+                                </tr>
+                                </tbody>
+                                </table>
+                </div>
+            </div>
+            ==================================================================================================
+            <br>
+            <div class="row">
+                    <div class="col-6">
+            <pre>
+                <code class="language-sql">
+                SELECT  row_number() over (order by customername) as ordernumber,
+                        row_number() over (partition by vendorname order by vendorname) as vendorordernumber,
+                        rank() over (order by customername) as customernumber,
+                        CustomerName,
+                        ProductName,
+                        Amount,
+                        VendorName
+                From    Sales
+                //This will give unique row number based on customername and 
+                //create partition and 
+                //create unique number based on vendor name
+                //create numbering based on customer name 
+                //here we get customer in serial order
+                </code>
+                </pre>
+                    </div>
+                
+                    <div class="col-6">
+                            <table style="border-collapse: collapse; width: 0%;" border="1">
+                                    <tbody>
+                                    <tr>
+                                    <td style="width: 12.5%; background: black; color: white;">ordernumber</td>
+                                    <td style="width: 6.25%; background: black; color: white;">vendorordernumber</td>
+                                    <td style="width: 3.125%; background: black; color: white;">customernumber</td>
+                                    <td style="width: 3.125%; background: black; color: white;">CustomerName</td>
+                                    <td style="width: 25%; background: black; color: white;">ProductName</td>
+                                    <td style="width: 19.8052%; background: black; color: white;">Amount</td>
+                                    <td style="width: 30.1948%; background: black; color: white;">VendorName</td>
+                                    </tr>
+                                    <tr>
+                                    <td style="width: 12.5%;">1</td>
+                                    <td style="width: 6.25%;">1</td>
+                                    <td style="width: 3.125%;">1</td>
+                                    <td style="width: 3.125%;">Rajendra</td>
+                                    <td style="width: 25%;">Books</td>
+                                    <td style="width: 19.8052%;">119.00</td>
+                                    <td style="width: 30.1948%;">Archies</td>
+                                    </tr>
+                                    <tr>
+                                    <td style="width: 12.5%;">2</td>
+                                    <td style="width: 6.25%;">2</td>
+                                    <td style="width: 3.125%;">1</td>
+                                    <td style="width: 3.125%;">Rajendra</td>
+                                    <td style="width: 25%;">Pens</td>
+                                    <td style="width: 19.8052%;">302.00</td>
+                                    <td style="width: 30.1948%;">Archies</td>
+                                    </tr>
+                                    <tr>
+                                    <td style="width: 12.5%;">5</td>
+                                    <td style="width: 6.25%;">3</td>
+                                    <td style="width: 3.125%;">5</td>
+                                    <td style="width: 3.125%;">Sukesh</td>
+                                    <td style="width: 25%;">Perfume</td>
+                                    <td style="width: 19.8052%;">102.00</td>
+                                    <td style="width: 30.1948%;">Archies</td>
+                                    </tr>
+                                    <tr>
+                                    <td style="width: 12.5%;">3</td>
+                                    <td style="width: 6.25%;">1</td>
+                                    <td style="width: 3.125%;">2</td>
+                                    <td style="width: 3.125%;">Raju</td>
+                                    <td style="width: 25%;">Bag</td>
+                                    <td style="width: 19.8052%;">203.45</td>
+                                    <td style="width: 30.1948%;">Bata</td>
+                                    </tr>
+                                    <tr>
+                                    <td style="width: 12.5%;">4</td>
+                                    <td style="width: 6.25%;">2</td>
+                                    <td style="width: 3.125%;">3</td>
+                                    <td style="width: 3.125%;">Shiv</td>
+                                    <td style="width: 25%;">Shoes</td>
+                                    <td style="width: 19.8052%;">100.24</td>
+                                    <td style="width: 30.1948%;">Bata</td>
+                                    </tr>
+                                    </tbody>
+                                    </table>
+                    </div>
+                </div>
+
+                ==================================================================================================
+            <br>
+            <div class="row">
+                    <div class="col-6">
+            <pre>
+                <code class="language-sql">
+                SELECT  row_number() over (order by customername) as ordernumber,
+                        row_number() over (partition by vendorname order by vendorname) as vendorordernumber,
+                        dense_rank() over (order by customername) as customernumber,
+                        CustomerName,
+                        ProductName,
+                        Amount,
+                        VendorName
+                From    Sales
+                //This will give unique row number based on customername and 
+                //create partition and 
+                //create unique number based on vendor name
+                //create numbering based on customer name 
+                //but not in serial order like 1  1 2 3 .
+                //here we donot have 2
+                </code>
+                </pre>
+                    </div>
+                
+                    <div class="col-6">
+                            <table style="border-collapse: collapse; width: 0%;" border="1">
+                                    <tbody>
+                                    <tr>
+                                    <td style="width: 12.5%; background: black; color: white;">ordernumber</td>
+                                    <td style="width: 6.25%; background: black; color: white;">vendorordernumber</td>
+                                    <td style="width: 3.125%; background: black; color: white;">customernumber</td>
+                                    <td style="width: 3.125%; background: black; color: white;">CustomerName</td>
+                                    <td style="width: 25%; background: black; color: white;">ProductName</td>
+                                    <td style="width: 19.8052%; background: black; color: white;">Amount</td>
+                                    <td style="width: 30.1948%; background: black; color: white;">VendorName</td>
+                                    </tr>
+                                    <tr>
+                                    <td style="width: 12.5%;">1</td>
+                                    <td style="width: 6.25%;">1</td>
+                                    <td style="width: 3.125%;">1</td>
+                                    <td style="width: 3.125%;">Rajendra</td>
+                                    <td style="width: 25%;">Books</td>
+                                    <td style="width: 19.8052%;">119.00</td>
+                                    <td style="width: 30.1948%;">Archies</td>
+                                    </tr>
+                                    <tr>
+                                    <td style="width: 12.5%;">2</td>
+                                    <td style="width: 6.25%;">2</td>
+                                    <td style="width: 3.125%;">1</td>
+                                    <td style="width: 3.125%;">Rajendra</td>
+                                    <td style="width: 25%;">Pens</td>
+                                    <td style="width: 19.8052%;">302.00</td>
+                                    <td style="width: 30.1948%;">Archies</td>
+                                    </tr>
+                                    <tr>
+                                    <td style="width: 12.5%;">5</td>
+                                    <td style="width: 6.25%;">3</td>
+                                    <td style="width: 3.125%;">5</td>
+                                    <td style="width: 3.125%;">Sukesh</td>
+                                    <td style="width: 25%;">Perfume</td>
+                                    <td style="width: 19.8052%;">102.00</td>
+                                    <td style="width: 30.1948%;">Archies</td>
+                                    </tr>
+                                    <tr>
+                                    <td style="width: 12.5%;">3</td>
+                                    <td style="width: 6.25%;">1</td>
+                                    <td style="width: 3.125%;">3</td>
+                                    <td style="width: 3.125%;">Raju</td>
+                                    <td style="width: 25%;">Bag</td>
+                                    <td style="width: 19.8052%;">203.45</td>
+                                    <td style="width: 30.1948%;">Bata</td>
+                                    </tr>
+                                    <tr>
+                                    <td style="width: 12.5%;">4</td>
+                                    <td style="width: 6.25%;">2</td>
+                                    <td style="width: 3.125%;">4</td>
+                                    <td style="width: 3.125%;">Shiv</td>
+                                    <td style="width: 25%;">Shoes</td>
+                                    <td style="width: 19.8052%;">100.24</td>
+                                    <td style="width: 30.1948%;">Bata</td>
+                                    </tr>
+                                    </tbody>
+                                    </table>
+                    </div>
+                </div>
+<script src="js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

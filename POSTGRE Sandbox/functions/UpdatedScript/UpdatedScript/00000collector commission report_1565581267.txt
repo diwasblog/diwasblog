@@ -1,0 +1,74 @@
+-- FUNCTION: deposit.get_collector_commission_report(integer, date, date)
+
+-- DROP FUNCTION deposit.get_collector_commission_report(integer, date, date);
+
+CREATE OR REPLACE FUNCTION deposit.get_collector_commission_report(
+	office_id_ integer,
+	from_ date,
+	to_ date)
+    RETURNS TABLE(office_id integer, collector_id integer, employee_code text, collector_name character varying, deposit_product_name character varying, rate numeric, total_collection numeric, commission numeric) 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+
+BEGIN
+
+	CREATE TEMP TABLE _t(
+	office_id int,
+	collector_id int,
+	employee_code text,	
+	collector_name character varying,
+	deposit_product_name character varying,
+	rate numeric,
+	total_collection numeric(10,2),
+	commission numeric(10,2)	
+	) ON COMMIT DROP;
+
+	IF office_id_>0 THEN	
+
+	INSERT INTO _t(office_id, collector_id, collector_name,deposit_product_name, total_collection)
+	SELECT t.office_id, t.collector_id, c.collector_name, t.deposit_product_name, SUM(COALESCE(credit,'0'))::numeric bal  FROM deposit.collection_transaction_view t
+	INNER JOIN office.collectors c ON t.collector_id = c.collector_id
+	INNER JOIN office.offices o ON c.office_id = o.office_id																						   
+	WHERE t.tran_date BETWEEN from_ AND to_	
+	AND t.office_id = office_id_
+	AND t.office_id = o.office_id																						   
+	GROUP BY t.office_id, t.collector_id, c.collector_name, t.deposit_product_name;
+																							   
+	ELSE																						   
+	INSERT INTO _t(office_id, collector_id, collector_name,deposit_product_name, total_collection)
+	SELECT t.office_id, t.collector_id, c.collector_name, t.deposit_product_name, SUM(COALESCE(credit,'0'))::numeric bal  FROM deposit.collection_transaction_view t
+	INNER JOIN office.collectors c ON t.collector_id = c.collector_id
+	INNER JOIN office.offices o ON c.office_id = o.office_id																						   
+	WHERE t.tran_date BETWEEN from_ AND to_	
+	AND t.office_id = o.office_id																						   
+	GROUP BY t.office_id, t.collector_id, c.collector_name, t.deposit_product_name;
+	
+	END IF;																						   
+																							   
+																							   
+																							   
+--SELECT * FROM deposit.get_collector_commission_report(1,'2019-01-01','2019-01-15')
+																							   
+	UPDATE _t SET rate = p.commission_rate
+	FROM core.deposit_products p
+	WHERE _t.deposit_product_name = p.deposit_product_name;	
+
+	UPDATE _t SET commission = (_t.total_collection * _t.rate)/100;		
+	
+	UPDATE _t SET employee_code = c.employee_code
+	FROM office.collectors c WHERE _t.collector_id = c.collector_id;																					   
+																							   
+	RETURN QUERY (
+	SELECT _t.office_id, _t.collector_id, _t.employee_code,_t.collector_name, _t.deposit_product_name,	_t.rate, _t.total_collection , _t.commission FROM _t  
+	GROUP BY _t.office_id, _t.collector_id, _t.employee_code,_t.collector_name, _t.deposit_product_name,	_t.rate, _t.total_collection , _t.commission	ORDER BY office_id, collector_id);
+END
+
+$BODY$;
+
+ALTER FUNCTION deposit.get_collector_commission_report(integer, date, date)
+    OWNER TO postgres;
+

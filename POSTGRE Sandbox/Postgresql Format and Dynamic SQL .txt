@@ -1,0 +1,39 @@
+-- FUNCTION: public.fn_get_baseline_asset_from_filtering(text, integer, boolean)
+
+-- DROP FUNCTION public.fn_get_baseline_asset_from_filtering(text, integer, boolean);
+
+--select * from public.fn_get_baseline_asset_from_filtering('loan',10,false)
+
+CREATE OR REPLACE FUNCTION public.fn_get_baseline_asset_from_filtering(
+	moneyfieldid text,
+	topid integer,
+	isbaseline boolean)
+    RETURNS TABLE(id integer, group_name text, member_name text, created_by character varying, created_on text, total_money numeric) 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+BEGIN
+RETURN QUERY 
+		   
+EXECUTE format('select ba.id,
+(select g.group_name from groups g where g.id = ba.group_id),
+(select concat(m.first_name  , m.last_name)   from  members m where m.id = ba.member_id) as member_name,
+(select u.user_name from users u where u.user_id = ba.created_by),
+ba.created_on::date::text, %I  as total_money
+from baseline_assets ba where ba.is_baseline =  %L  order by %I  desc
+fetch first %s  rows only',moneyfieldid,isbaseline,moneyfieldid,topid);			   
+			   
+			   
+ END
+$BODY$;
+
+ALTER FUNCTION public.fn_get_baseline_asset_from_filtering(text, integer, boolean)
+    OWNER TO postgres;
+
+
+
+
+Note: for text : %s   , for boolean %L  ,   for table_name or column_name ==>  %I

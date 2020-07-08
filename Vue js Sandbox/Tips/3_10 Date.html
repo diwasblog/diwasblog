@@ -1,0 +1,99 @@
+<html>
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+
+<!--Explaination-->
+
+<!--########################Main Code######################################-->
+
+<!--##############################################################-->
+BIMS/View/setting/acedemicperiodnew.cshtml
+
+<!--|#########################DISPLAY############################################-->
+
+
+
+<xmp class="prettyprint">
+  <fieldset class="custom-fieldset-border">
+    <legend class="custom-fieldset-border">Start Date *</legend>
+    <date :datead="academicPeriod.startDateAD" :dateoptions="{enginputid:'engstartdate',nepinputid:'nepstartdate',labelname:'StartDate'}"></date>
+</fieldset>
+<span v-if="academicPeriod.startDateError" class="text-danger">The Start Date is Required.</span>
+</xmp>
+
+
+<xmp class="prettyprint">
+
+  <script type="text/javascript">
+    Vue.component('date', QubexDate);
+    //many more
+    </script>
+    
+</xmp>
+
+
+
+
+ <xmp class="prettyprint">
+    methods: {
+      newAcademicPeriodSubmit: function (e) {
+          let startDateAD = document.querySelector('#engstartdate').value;
+     
+          if (startDateAD.length == 0) {
+              this.academicPeriod.startDateError = true;
+              e.preventDefault();
+          }
+        $validator.validateAll().then((result) => {
+              if (startDateAD.length == 0) {
+                  this.academicPeriod.startDateError = true;
+                  result = false;
+              }
+              if (result) {
+                  document.querySelector('#newAcademicPeriodForm').submit();
+              }
+          }).catch(() => {
+              var errorBag = this.$validator.getErrors();
+              document.querySelector('[name="' + errorBag.errors[0].field + '"]').focus();
+              e.preventDefault();
+          });
+      }
+  }
+  </xmp>
+
+
+<xmp class="prettyprint">
+  data:{
+    academicPeriod: {
+    startDateAD: '@Model.AcademicPeriod.StartDate.CleanNullableDateTime()',
+    startDateError: false,
+     }
+    }
+</xmp>
+
+==================================================================================
+<xmp class="prettyprint">
+   @Convert.ToDateTime(Model.Date, CultureInfo.CurrentCulture).ToString("yyyy MMMM dd")
+</xmp>
+
+
+
+
+    </body>
+
+</html> -->

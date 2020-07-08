@@ -1,0 +1,109 @@
+<html>
+
+<head>
+    <script
+        src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://unpkg.com/vue"></script>
+
+    <style>
+        xmp.prettyprint {
+
+            font-size: 12pt;
+            font-family: "Consolas, 'Courier New', monospace";
+
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h2>JS UnChange</h2>
+    <div class="row">
+        <div class="col-lg-6">
+
+            <xmp class="prettyprint">
+                <select id="mySelect" onchange="mySelectedValue(this)">
+                    <option value="Audi">Audi</option>
+                    <option value="BMW">BMW</option>
+                    <option value="Mercedes">Mercedes</option>
+                    <option value="Volvo">Volvo</option>
+                </select>
+            </xmp>
+        </div>
+        <div class="col-lg-6">
+            <xmp class="prettyprint">
+                <script>
+                    function mySelectedValue(data) {
+                        console.log(data);
+                        //Output
+                        // <select id="mySelect" onchange="mySelectedValue(this)">
+                        //     <option value="Audi">Audi</option>
+                        //     <option value="BMW">BMW</option>
+                        //     <option value="Mercedes">Mercedes</option>
+                        //     <option value="Volvo">Volvo</option>
+                        // </select>
+                        alert(data.value);  //return Audi , BMW, Mercedes, Volvo
+
+                    }
+                </script>
+
+
+            </xmp>
+        </div>
+    </div>
+
+    <h2>Alternative Ways onChange Event</h2>
+    <div class="row">
+        <div class="col-lg-6">
+            <xmp class="prettyprint">
+                <select id="mySelect" onchange="mySelectedValue()">
+                    <option value="Audi">Audi</option>
+                    <option value="BMW">BMW</option>
+                    <option value="Mercedes">Mercedes</option>
+                    <option value="Volvo">Volvo</option>
+                </select>
+            </xmp>
+        </div>
+        <div class="col-lg-6">
+            <xmp class="prettyprint">
+                <script>
+                    function mySelectedValue(data) {
+                        var x = document.getElementById("mySelect").value;
+                        alert(x);
+
+                    }
+                </script>
+            </xmp>
+        </div>
+    </div>
+
+    <br>
+    <hr>
+    <h2>JS OnClick Event</h2>
+    <div class="row">
+        <div class="col-lg-6">
+
+            <xmp class="prettyprint">
+                <button onclick="myFunction()">Click me</button>
+            </xmp>
+        </div>
+        <div class="col-lg-6">
+            <xmp class="prettyprint">
+                <script>
+                    function myFunction() {
+                        alert("called Function")
+                    }
+                </script>
+
+
+            </xmp>
+        </div>
+    </div>
+
+</body>
+
+</html>

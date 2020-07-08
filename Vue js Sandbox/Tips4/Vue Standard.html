@@ -1,0 +1,281 @@
+<html>
+  <head>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+      crossorigin="anonymous"
+    />
+    <script src="https://unpkg.com/vue"></script>
+
+    <style>
+      xmp.prettyprint {
+        font-size: 12pt;
+        font-family: "Consolas, 'Courier New', monospace";
+      }
+    </style>
+  </head>
+
+  <body>
+    <h3 style="text-align: center;">
+      <span style="color: #e03e2d;"
+        ><strong
+          ><span
+            style="font-family: 'comic sans ms', sans-serif; font-size: 24pt;"
+            >Best Practices to Follow</span
+          ></strong
+        ></span
+      >
+    </h3>
+    <h3>
+      <span style="font-family: 'comic sans ms', sans-serif; font-size: 24pt;"
+        >A : Essential
+        <span style="color: #000000;"
+          ><strong>For Error Prevention</strong></span
+        ></span
+      >
+    </h3>
+    <h3>
+      <span style="font-family: 'comic sans ms', sans-serif; font-size: 24pt;"
+        >B: Strongly Recommended
+        <span style="color: #000000;"
+          ><strong>For Improve Readability</strong></span
+        ></span
+      >
+    </h3>
+    <h3>
+      <span style="font-family: 'comic sans ms', sans-serif; font-size: 24pt;"
+        >C: Recommended
+        <span style="color: #000000;"
+          ><strong>For making consistency</strong></span
+        >
+        throughout project.</span
+      >
+    </h3>
+    <p>
+      <span style="font-family: 'comic sans ms', sans-serif; font-size: 24pt;"
+        >&nbsp;D:&nbsp;</span
+      >
+    </p>
+    <p>&nbsp;</p>
+    <p>
+      <strong
+        ><span style="font-size: 24pt; color: #e03e2d;"
+          >1) Multiple word component name ( A )</span
+        ></strong
+      >
+    </p>
+    <p style="text-align: justify;">
+      <span style="font-size: 18pt;"
+        >Component names should always be
+        <span style="color: #e03e2d;"><strong>multi-word</strong></span
+        >, except for root<strong
+          ><span style="color: #e03e2d;">&nbsp;<code>App</code></span></strong
+        >&nbsp;components, and built-in components provided by Vue, such
+        as&nbsp;<span style="color: #e03e2d;"
+          ><strong><code>&lt;transition&gt;</code></strong
+          >&nbsp;</span
+        >or&nbsp;<strong
+          ><span style="color: #e03e2d;"
+            ><code>&lt;component&gt;</code>.</span
+          ></strong
+        ></span
+      >
+    </p>
+    <p style="text-align: justify;">
+      <span style="font-size: 18pt; color: #000000;"
+        ><strong
+          >Why? <span style="color: #e03e2d;">To prevent</span
+          ><a
+            style="color: #000000;"
+            href="http://w3c.github.io/webcomponents/spec/custom/#valid-custom-element-name"
+            target="_blank"
+            rel="noopener"
+            ><span style="color: #e03e2d;">&nbsp;conflict</span>s</a
+          >
+          with existing and future HTML elements, since all HTML elements are a
+          single word like &lt;textarea&gt; , &lt;checkbox&gt;</strong
+        ></span
+      >
+    </p>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <h4>Bad (single name)</h4>
+        <xmp class="prettyprint"
+>
+                Vue.component('todo', {
+                    // ...
+                })
+            </xmp
+        >
+      </div>
+
+      <div class="col-lg-6">
+        <h4>Good (multiple name)</h4>
+        <xmp class="prettyprint"
+>
+                Vue.component('todo-item', {
+                    // ...
+                })
+            </xmp
+        >
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <xmp class="prettyprint"
+>
+                export default {
+                     name: 'Todo',
+                // ...
+                }
+            </xmp
+        >
+      </div>
+
+      <div class="col-lg-6">
+        <xmp class="prettyprint"
+>
+                export default {
+                    name: 'TodoItem',
+                // ...
+                }
+            </xmp
+        >
+      </div>
+    </div>
+
+    <p>
+      <span style="font-size: 24pt; font-family: 'comic sans ms', sans-serif;"
+        >2 ) <span style="color: #000000;">Component</span>
+        <span style="color: #e03e2d;"><strong>data</strong> </span
+        ><span style="color: #000000;">must be the</span>
+        <strong><span style="color: #e03e2d;">function</span></strong></span
+      >
+    </p>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <h4>Bad ()</h4>
+        <xmp class="prettyprint"
+>
+                Vue.component('some-comp', {
+                    data: {
+                    foo: 'bar'
+                    }
+                })
+
+            </xmp
+        >
+      </div>
+
+      <div class="col-lg-6">
+        <h4>Good (multiple name)</h4>
+        <xmp class="prettyprint"
+>
+                Vue.component('some-comp', {
+                    data: function () {
+                    return {
+                        foo: 'bar'
+                    }}
+                })
+            </xmp
+        >
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <xmp class="prettyprint"
+>
+                //In a .vue file
+                export default {
+                    data: {
+                        foo: 'bar'
+                    }
+                }
+            </xmp
+        >
+      </div>
+
+      <div class="col-lg-6">
+        <xmp class="prettyprint"
+>
+                // In a .vue file
+                export default {
+                    data () {
+                    return {
+                        foo: 'bar'
+                        }
+                    }
+                }
+            </xmp
+        >
+      </div>
+    </div>
+
+    <p>
+      <span style="color: #000000;"
+        ><span style="font-family: comic sans ms, sans-serif;"
+          ><span style="font-size: 32px;"
+            ><span style="font-family: 'comic sans ms', sans-serif;"
+              >3 )
+              <span style="color: #e03e2d;"><strong>Prop</strong> </span
+              >definitions should be as
+              <strong><span style="color: #e03e2d;">detailed</span> </strong>as
+              possible.</span
+            >
+          </span></span
+        ></span
+      >
+    </p>
+    If some one document this then it will be easy
+
+    <div class="row">
+      <div class="col-lg-6">
+        <h4>Bad</h4>
+        <xmp class="prettyprint"
+>
+                // This is only OK when prototyping
+                props: ['status']
+            </xmp
+        >
+      </div>
+
+      <div class="col-lg-6">
+        <h4>Good</h4>
+        <xmp class="prettyprint"
+>
+                props: {
+                status: String
+                }
+            </xmp
+        >
+        <h4>Better</h4>
+        <xmp class="prettyprint"
+>
+                // Even better!
+                props: {
+                    status: {
+                        type: String,
+                        required: true,
+                        validator: function (value) {
+                        return [
+                        'syncing',
+                        'synced',
+                        'version-conflict',
+                        'error'
+                        ].indexOf(value) !== -1
+                        }
+                    }
+                }
+            </xmp
+        >
+      </div>
+    </div>
+  </body>
+</html>

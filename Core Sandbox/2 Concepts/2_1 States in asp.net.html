@@ -1,0 +1,21 @@
+<p><strong>&nbsp;State Management</strong><br />HTTP is a stateless protocol. Without taking additional steps, HTTP requests are independent messages that don't <br />retain user values or app state. This article describes several approaches to preserve user data and app state between requests.</p>
+<p><strong>Cookies</strong></p>
+<ul>
+<li>Cookies store data across requests.</li>
+<li>Because cookies are sent with every request, their size should be kept to a minimum.</li>
+<li>Most browsers restrict cookie size to 4096 bytes.</li>
+<li>Only a limited number of cookies are available for each domain.</li>
+</ul>
+<p><strong>Session</strong></p>
+<ul>
+<li>ASP.NET Core maintains session state <strong>by providing a cookie to the client that contains a session ID</strong>, <br /><strong>which is sent to the app with each request. The app uses the session ID to fetch the session data.</strong></li>
+<li>Session isn't supported in <span style="color: #e74c3c;">SignalR</span> apps because a SignalR Hub may execute <strong>independent</strong> of an <strong>HTTP context</strong>.</li>
+<li>Because the session cookie is specific to the browser, s<strong>essions aren't shared across browsers.</strong></li>
+<li>Session cookies are <strong>deleted when the browser session ends.</strong></li>
+<li>If a cookie is received for an expired session, a new session is created that uses the same session cookie.</li>
+</ul>
+<p><strong><span style="color: #fb0000;">Warning</span></strong></p>
+<p>Don't store sensitive data in session state. The user might not close the browser and clear the session cookie.</p>
+<p>&nbsp;</p>
+<p>To Learn</p>
+<p>sticky sessions</p>

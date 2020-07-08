@@ -1,0 +1,549 @@
+<html>
+  <head>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+      crossorigin="anonymous"
+    />
+
+    <style>
+      xmp.prettyprint {
+        font-size: 12pt;
+        font-family: "Consolas, 'Courier New', monospace";
+      }
+    </style>
+  </head>
+  <body>
+    <div class="row">
+      <div class="col-lg-4">
+        <xmp class="prettyprint"
+>
+                export	default	{	
+                    data()	{		
+                        return	{		
+                            hello:	'Hello	World!'		
+                            }		
+                            }
+                     }
+                
+        </xmp>
+      </div>
+
+      <div class="col-lg-4">
+        <xmp class="prettyprint"
+>
+                export	default	{	
+                    data:function()	{		
+                        return	{		
+                            hello:	'Hello	World!'		
+                            }		
+                            }
+                     }
+        </xmp>
+      </div>
+
+      <div class="col-lg-4">
+        <xmp class="prettyprint"
+>
+                export	default	{	
+                    data:() =>	{		
+                        return	{		
+                            hello:	'Hello	World!'		
+                            }		
+                            }
+                     }
+        </xmp>
+      </div>
+    </div>
+    <br />
+    <hr />
+    <hr />
+    <h2>Using Class and Style binding</h2>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <h2>Static</h2>
+        <xmp class="prettyprint">
+                <template>		
+                    <p	style="text-decoration:	underline">Hi!</p> 
+                </template>
+                <script> export	default	{
+                    		data()	{	
+                                			
+                                return	{	
+                                    decoration:	'underline'			
+                                    	}
+                                    } 
+                             } 
+                </script>
+                
+                      
+              </xmp>
+      </div>
+
+      <div class="col-lg-6">
+        <h2>Dynamic</h2>
+        <xmp class="prettyprint">
+            <template>		
+                    <p	:style="{'text-decoration': decoration}">Hi!</p> 
+                    <!--Auto Compiled to:
+                         <p	style="text-decoration:underline">Hi!</p>  -->
+                </template>
+                <script> export	default	{
+                            data()	{	      
+                                return	{	
+                                    decoration: 'underline'
+                                        }
+                                    } 
+                            } 
+                </script>
+    
+              </xmp>
+      </div>
+    </div>
+
+    <hr />
+    <h4>Instead of binding object to style lets bind to computed</h4>
+    <div class="row">
+      <div class="col-lg-6">
+        <xmp class="prettyprint">
+                        <template>
+                            <p :style="styling">Hi!</p>
+                        </template>
+            
+                        <script>
+                            export default {
+                                data() {
+                                    return {
+                                    textDecoration: 'underline',
+                                    textWeight: 'bold'
+                                    }
+                                },
+                                computed: {
+                                    styling: function() {
+                                        return {
+                                        textDecoration: this.textDecoration,
+                                        textWeight: this.textWeight
+                                        }
+                                    }
+                                }
+                            }
+                        </script>
+                </xmp>
+      </div>
+      <div class="col-lg-6">
+        <h2>OR</h2>
+        <xmp class="prettyprint">
+                        <template>
+                            <p :style="styling">Hi!</p>
+                            <!-- Compiled back to <p style="text-decoration:underline,font-size:64px" -->
+                        </template>
+            
+                        <script>
+                            export default {
+                                data() {
+                                    return {
+                                        styling:{
+                                            textDecoration: 'underline',
+                                            fontSize:'68px'
+                                            }
+                                   
+                                    }
+                                },
+                            }
+                        </script>
+                </xmp>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-4">
+        <xmp class="prettyprint">
+                <template>
+                    <p class="underline">Hi!</p>
+                </template>
+                <style>
+                     .underline { text-decoration: underline; }
+                </style>
+                        
+        </xmp>
+      </div>
+
+      <div class="col-lg-4">
+        Making dynamic , where when condition is true then apply text deocration
+        underline
+        <xmp class="prettyprint">
+                    <template>		
+                        <p	:class="{underLine:	isUnderlined}">Hi!</p> 
+                    </template>
+                    <script> 
+                    export	default	{	
+                        	data()	{	
+                                return	{			
+                                    isUnderlined:	true	
+                                }		
+                              }
+                             }
+                    </script>
+                <style> 
+                .underLine
+                	{	
+                        text-decoration:	underline;
+                    }
+                </style>
+
+                            
+            </xmp>
+      </div>
+
+      <div class="col-lg-4">
+        Making dynamic , where when condition is true then apply text deocration
+        underline
+        <xmp class="prettyprint">
+                    <template>		
+                        <p	:class="{underline:	isUnderlined}">Hi!</p>
+                     </template>
+                    <script>
+                     export	default	{	
+                         	data()	{			
+                                return	{	
+                                    isUnderlined:	true
+                                    }	
+                                 }
+                                }
+                                     </script>
+                    <style> 
+                    .underline	{	
+                        text-decoration:	underline;
+                        	}
+                         </style>
+
+                </xmp>
+      </div>
+    </div>
+
+    <hr />
+    <h3>Binding multiple class</h3>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <h5>Ways 1</h5>
+        <xmp class="prettyprint">
+                    <template>		
+                        <p	:class="[decoration,	weight]">Hi!</p>
+                        </template>
+
+                    <script> 
+                        export	default	{		
+                            data()	{			
+                                	return	{				
+                                        decoration:	'underline',					
+                                        weight:	'weight',			
+                                        }		
+                                        } 
+                                    } 
+                    </script>
+                    <style> 
+                    .underline	{	
+                        text-decoration:	underline;
+                        	} 
+                    .weight
+                    {	
+                        font-weight:	bold;
+                    } 
+                    </style>
+
+                              
+              </xmp>
+      </div>
+
+      <div class="col-lg-6">
+        <h5>Ways 2</h5>
+        <xmp class="prettyprint">
+                        <template>		
+                            <p	:class="{underline:	isUnderlined,	weight:	isBold}">Hi!</p> 
+                        </template>
+                        <script> 
+                        export	default	{	
+                            	data()	{			
+                                    	return	{				
+                                                isUnderlined:	true,	
+                                                isBold:	true		
+                                                }		
+                                            } 
+                                         } 
+                                                                                </script>
+                        <style> 
+                        .underline	{	text-decoration:	underline;	}
+                         .weight	{	font-weight:	bold;	} 
+                         </style>
+                        
+                  </xmp>
+      </div>
+    </div>
+    <hr />
+    <h2>Use of prevent.default</h2>
+    <br />
+    <br />
+    <hr />
+    <div class="row">
+      <div class="col-lg-6">
+        <xmp class="prettyprint">
+                                <template>		
+                                    <a	@click="handleClick($event)">Click	me!</a>
+                                 </template>
+
+                                <script> export	default
+                                {	
+                                    methods:
+                                    {	
+                                        handleClick:function(event)	
+                                        {
+                                            event.preventDefualt();
+                                            console.log(event)				
+                                        }		
+                                        } 
+                                    }
+                                 </script>
+                                
+                        </xmp>
+      </div>
+
+      <div class="col-lg-6">
+        <xmp class="prettyprint">
+                                    <template>		
+                                        <a	@click.prevent="handleClick()">Click	me!</a>
+                                     </template>
+    
+                                    <script> export	default
+                                    {	
+                                        methods:
+                                        {	
+                                            handleClick:function(event)	
+                                            {
+                                                console.log(event)				
+                                            }		
+                                            } 
+                                        }
+                                     </script>
+                                    
+                            </xmp>
+      </div>
+    </div>
+
+    <hr />
+    <h2>Watchers</h2>
+    <h1>
+      <span style="font-size:20px"
+        ><strong
+          >A Vue watcher allows you to
+          <span style="color:#c0392b">listen </span>to the component data and
+          run whenever a particular property changes.</strong
+        ></span
+      ><br />
+      &nbsp;
+    </h1>
+
+    <p>
+      <span style="font-size:20px"
+        >A watcher is a special Vue.js feature that allows you to spy on one
+        property of the component state, and run a function when that property
+        value changes.</span
+      >
+    </p>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <h2>Example 1</h2>
+        When name data property changes then we do console.log
+        <xmp class="prettyprint">
+        <template>
+                <p>My name is {{name}}</p>
+                <button @click="changeName()">Change my name!</button>
+        </template>
+                
+    <script>
+            export default {
+            data() {
+                return {
+                name: 'Flavio'
+                }
+            },
+            methods: {
+                changeName: function() {
+                this.name = 'Flavius'
+                }
+            },
+            watch: {
+                name: function() {
+                    console.log(this.name);
+                }
+            }
+            }
+            </script>
+                                    
+                            </xmp>
+      </div>
+
+      <div class="col-lg-6">
+        <h2>Example 2</h2>
+        <xmp class="prettyprint">
+        <template>
+            <div>
+                <h1>{{ count }}</h1>
+                <button @click="count += 1;">Increment</button>
+            </div>
+        </template>
+                
+        <script>
+        export default {
+        data: function() {
+            return {
+            count: 0
+            };
+        },
+        watch: {
+            //the function runs every time when a count data property changes
+            count: function(value) {
+            // we can access the count value in function parameter
+            if (value === 5) {
+                setTimeout(() => {
+                // resetting the count value
+                this.count = 0;
+                }, 300);
+            }
+            }
+        }
+        };
+        </script>
+                                </xmp>
+      </div>
+    </div>
+
+    Note:
+    <h2
+      style="color:rgba(0, 0, 0, 0.7);border:2px solid rgba(27,27,27,.13);background : #fff8e4; border-radius:4px; margin: 1.5rem 0;padding:.5rem .7rem;"
+    >
+      <p style="color:red">
+        Note: The name of the watch function and data property should be same.
+        Here: name and count
+      </p>
+    </h2>
+    <hr />
+    <hr />
+
+    <p>
+      <span style="font-size: 18pt; color: #e03e2d;"
+        >When to use <strong>method&nbsp;</strong></span
+      ><br /><span style="color: #000000;"
+        ><strong
+          ><span style="font-size: 18pt;"
+            >1) When you want to call an event like button click</span
+          ></strong
+        ></span
+      >
+    </p>
+    <hr />
+    <p>
+      <span style="font-size: 18pt; color: #e03e2d;"
+        >When to use <strong>computed&nbsp;</strong></span
+      ><br /><strong
+        ><span style="font-size: 18pt; color: #000000;"
+          >1)You need to compose new data from existing data sources</span
+        ></strong
+      >
+    </p>
+
+    <p>
+      <strong
+        ><span style="font-size: 18pt; color: #000000;"
+          >2)Concatenating strings of data together.</span
+        ></strong
+      >
+    </p>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <xmp class="prettyprint"
+>
+use as : {{fullName}}
+
+user: {
+    name_first: 'Sunil',
+    name_last: 'Sandhu',
+}
+
+computed: {
+
+    fullName() {
+        return `${this.user.name_first} ${this.user.name_last}`
+    }
+}
+        </xmp>
+      </div>
+
+      <div class="col-lg-6">
+       
+      </div>
+    </div>
+
+    <p>
+      <strong
+        ><span style="font-size: 18pt; color: #000000;"
+          >3) Doing complex and nested calculations like sum, push, map, filter,
+          etc</span
+        ></strong
+      >
+    </p>
+
+    <div class="row">
+            <div class="col-lg-12">
+              <xmp class="prettyprint"
+      >
+
+      {{answer}}
+      data() {
+        return {
+            num1: 0,
+            num2: 0
+        }
+    },
+    
+    computed: {
+        answer() {
+            return this.num1 + this.num2
+        }
+    },
+
+      </xmp>
+      </div>
+
+      <div class="row">
+            <div class="col-lg-12">
+              <xmp class="prettyprint"
+      >
+
+      computed: {
+        shoppingCartTotal() {
+            return this.cart.map(item => item.price).reduce((total, amount) => total + amount);
+        },
+    
+    formattedText: function () {
+             return this.text.replace(‘ ‘, ‘’).reverse().toUpperCase()
+          },
+    
+    },
+    
+
+      </xmp>
+      </div>
+
+
+      </div>
+
+      <p><span style="font-size: 14pt;">Like a varible in computed eg. <span style="color: #e03e2d;"><strong>formattedText(), shoppingCartTotal(),formatedDate()</strong></span></span><br /><br /><span style="font-size: 14pt;">For method like :<strong><span style="color: #236fa1;">formatText(),formatDate()</span></strong></span></p>
+  </body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../Ef/css/bootstrap.css">
+    <link rel="stylesheet" href="../Ef/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../Ef/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../Ef/css/dracula.css">
+    <link rel="stylesheet" href="../Ef/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+    <div class="row">
+        <div class="col-lg-6">
+
+            <pre>
+                        <code class="language-csharp">
+                CREATE OR REPLACE FUNCTION rec_insert()
+                RETURNS trigger AS
+                $$
+                BEGIN
+                INSERT INTO emp_log(emp_id,salary,edittime)
+                VALUES(NEW.employee_id,NEW.salary,current_date);
+
+                RETURN NEW;
+                END;
+                $$
+                LANGUAGE 'plpgsql';
+                        </code>
+                        </pre>
+        </div>
+
+        <div class="col-lg-6">
+
+            <pre>
+                        <code class="language-csharp">
+                CREATE TRIGGER any_trigger_name
+                AFTER INSERT
+                ON emp_details
+                FOR EACH ROW
+                EXECUTE PROCEDURE rec_insert();
+            </code>
+        </pre>
+        </div>
+    </div>
+
+    When inserting data into emp_details table then just run rec_insert() function and insert 'employee_id
+    ','salary','current_date' into emp_log table
+    <br>
+    <hr>
+
+    <div class="row">
+        <div class="col-lg-8">
+
+            <pre>
+                        <code class="language-csharp">
+                                CREATE OR REPLACE FUNCTION my_simple_trigger_function()
+                                 RETURNS TRIGGER AS $BODY$
+                                BEGIN  
+
+                                        // TG_TABLE_NAME :name of the table that caused the trigger invocation
+
+                                   IF (TG_TABLE_NAME = 'users') THEN
+
+                                        //TG_OP : operation the trigger was fired 
+
+                                     IF (TG_OP = 'INSERT') THEN    
+
+                                        //NEW.id is holding the new database row value (in here id is the id column in users table)    
+                                        //NEW will return null for DELETE operations   
+
+                                       INSERT INTO log_table (date_and_time, description) VALUES (NOW(), 'New user inserted. User ID: '|| NEW.id);  
+                                        RETURN NEW;   
+
+                                    ELSIF (TG_OP = 'DELETE') THEN 
+
+                                     //OLD.id is holding the old database row value (in here id is the id column in users table)   
+                                     //OLD will return null for INSERT operations  
+
+                                     INSERT INTO log_table (date_and_time, description) VALUES (NOW(), 'User deleted.. User ID: ' || OLD.id);   
+                                     RETURN OLD;             
+                                    END IF;
+                                   RETURN NULL; 
+                                  END IF;
+                                END; $BODY$ LANGUAGE plpgsql VOLATILE COST 100;
+                        </code>
+                        </pre>
+        </div>
+
+        <div class="col-lg-4">
+
+            <pre>
+                        <code class="language-csharp">
+                                CREATE TRIGGER my_trigger
+                                AFTER INSERT OR DELETE ON users 
+                                FOR EACH ROW 
+                                EXECUTE PROCEDURE my_simple_trigger_function();
+            </code>
+        </pre>
+        </div>
+    </div>
+
+    <hr>
+    <br>
+    <h2>Best Way</h2>
+    <div class="row">
+        <div class="col-lg-6">
+            <pre>
+            <code class="language-csharp">
+                work_flow Table
+
+                  id - pk
+                  created_by
+                  remarks 
+            </code>
+        </pre>
+        </div>
+
+        <div class="col-lg-6">
+            <pre>
+              <code class="language-csharp">
+            WorkFlow History Table
+
+            id           //donot put primary key or auto increment or serial in history as done in "WorkFlow" Table
+            created_by
+            remarks
+            created_on
+              </code>
+          </pre>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <pre>
+            <code class="language-csharp">
+                //This is function which is created on fly when below trigger is called
+                
+
+
+                CREATE OR REPLACE FUNCTION work_flow_details() RETURNS trigger AS $$
+                BEGIN
+                    IF (TG_OP == 'DELETE') THEN
+                        INSERT INTO work_flow_details
+                        SELECT now(),o.* FROM old_table o;
+                    ELSIF (TG_OP == 'UPDATE') THEN
+                        INSERT INTO work_flow_details
+                        SELECT now(),n.* FROM new_table n;     // insert now() and what ever data in workflow table
+                    ELSIF (TG_OP == 'INSERT') THEN
+                        INSERT INTO work_flow_details
+                        SELECT now(),n.* FROM new_table n;
+                    END IF;
+                    RETURN NULL;  -- we are using in after trigger so don't need to return update
+                
+                END;
+                $$ LANGUAGE plpgsql;
+            </code>
+        </pre>
+        </div>
+
+        <div class="col-lg-12">
+
+            <pre>
+              <code class="language-csharp">
+           DROP TRIGGER IF EXISTS workflow_details_insert ON work_flow;
+
+
+            //This triggers says when we insert data in "work_flow" table then work_flow_details() function is called
+            //(above) and as TG_OP is insert so goto insert part and insert data to "work_flow_details"
+
+            CREATE TRIGGER workflow_details_insert AFTER INSERT ON work_flow                   // Main
+            REFERENCING NEW TABLE AS new_table
+            FOR EACH STATEMENT EXECUTE Procedure work_flow_details();
+
+            DROP TRIGGER IF EXISTS workflow_details_update ON work_flow;
+
+            CREATE TRIGGER workflow_details_update AFTER UPDATE ON work_flow                   //Main
+            REFERENCING NEW TABLE AS new_table
+            FOR EACH STATEMENT EXECUTE Procedure work_flow_details();
+
+            DROP TRIGGER IF EXISTS workflow_details_delete ON work_flow;
+
+            CREATE TRIGGER workflow_details_delete AFTER DELETE ON work_flow                    // Main
+            REFERENCING OLD TABLE AS old_table
+            FOR EACH STATEMENT EXECUTE Procedure work_flow_details(); // Procedure is needed here.
+
+              </code>
+          </pre>
+        </div>
+    </div>
+
+
+
+
+    <script src="../EF/js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+    </script>
+</body>
+
+</html>

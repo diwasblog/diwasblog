@@ -1,0 +1,125 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+    <p><span style="color: #ff0000;"><strong><span style="font-size: 14pt;">Object {__ob__: Observer}&nbsp;</span></strong></span></p>
+    <p><span style="color: #000000;"><strong><span style="font-size: 14pt;">It is creative object.</span></strong></span></p>
+    <p><span style="color: #000000;"><strong><span style="font-size: 14pt;">Reactive Arrary: [ {0} , {1} ,&nbsp; {_ob_:Observer}]</span></strong></span></p>
+    <p><span style="color: #000000;"><strong><span style="font-size: 14pt;">Non Reactive :[{0},{1}]</span></strong></span></p>
+
+    <p><strong><span style="font-size: 12pt; color: #000000;">If Array is defined in data of vue js and assign value to it then it will be reactive as below :</span></strong></p>
+
+    <xmp class="prettyprint">
+        data{
+          vm.itemData=[];
+          }
+          
+          vm.itemData=[];
+          vm.itemData=response.data   //[{0],{1},{2},{obj_observer}}]
+    </xmp>
+    <p><span style="font-size: 14pt;"><strong>If Array is not defined in data but just defined and use then we will not be reactive part :ie. obj_observer as below</strong></span></p>
+    <xmp class="prettyprint">
+        data{
+
+        }
+        vm.itemData=[];
+        vm.itemData=response.Data;  // [{0],{1},{2}]
+    </xmp>
+
+
+    Vue will like to use reactive type which javascript donot have. But dont worry both will work.
+
+
+    <h3 data-v-44d3881a=""><strong><span style="color: #ff00ff;">Markup != DOM</span></strong></h3>
+<p data-v-44d3881a=""><span style="font-size: 14pt;">Let's make a distinction between&nbsp;<em data-v-44d3881a="">markup</em>&nbsp;and the&nbsp;<em data-v-44d3881a="">DOM</em>. Markup is the HTML you write. The browser will then parse that and turn it into the DOM.</span></p>
+<p data-v-44d3881a=""><span style="font-size: 14pt;">Vue uses the DOM as a template, not the markup you write. Why is that a problem? The DOM parser and Vue do not always agree on what is acceptable markup. Non-standard markup may be changed or removed from the page, causing unpredictable results.</span></p>
+
+<h1 class="grid--cell fs-headline1 fl1 wb-break-all"><span style="color: #ff00ff;"><strong>&lt;template&gt; vs &lt;div&gt; in loop or condition</strong></span></h1>
+<p><span style="font-size: 12pt;"><strong>A big difference is that the&nbsp;<code>&lt;template&gt;</code>&nbsp;node&nbsp;<em>does not appear in the DOM</em>.</strong></span></p>
+
+Valid one
+<xmp class="prettyprint">
+    <ul>
+        <template v-if="something">
+          <li>Text</li>
+          <li>Text</li>
+        </template>
+      </ul>
+</xmp>
+
+=====
+Invalid one
+<xmp class="prettyprint">
+    <ul>
+        <div v-if="something">
+          <li>Text</li>
+          <li>Text</li>
+        </div>
+      </ul>
+</xmp>
+=======================================================================
+<h2>Different between vm and this?</h2>
+
+<xmp class="prettyprint">
+    AddTicket: function () {
+        // "this", on this line, refers to the Vue
+        // and you can safely use "this" to get any of the
+        // data properties of the Vue
+          axios.post('/api/Tickets', ...)
+            .then(function (response) {
+              // "this" HERE, does NOT refer to the Vue!!
+              // The reason why explained below              
+            })
+      }
+</xmp>
+
+<p><span style="font-size: 14pt;">The first comment could be replaced with code that uses <strong><span style="color: #ff0000;">this</span> </strong>to get data properties or call methods of the Vue (this.tickets). </span></p>
+<p><span style="font-size: 14pt;">The second comment, however is inside a <span style="color: #ff0000;"><strong>new function context</strong></span>, and <strong>this will NOT refer to the Vue</strong>. This is because in Javascript when you declare a new function using the function() {} syntax, that <span style="color: #ff0000;"><strong>function has its own function context which is different from the function in which it is declared.</strong></span></span></p>
+
+<br>
+There are several ways to deal with this in Javascript. The most common these days are to either use a closure to capture the correct this, or to use an arrow function. Consider this code:
+
+<xmp class="prettyprint">
+    AddTicket: function () {
+        // As before, "this" here is the Vue
+          axios.post('/api/Tickets', ...)
+            .then((response) => {
+              // "this" HERE is ALSO the Vue
+            })
+      }
+</xmp>
+
+<p><span style="font-size: 14pt;">Note that in this example, the callback is defined using an arrow function<strong><span style="color: #ff0000;"> (() =&gt; {})</span></strong>. Arrow functions do NOT create their own function context and use the context in which they are declared. This is also known as having a lexical scope.</span></p>
+
+==================================================================================================
+<br>
+<h2>Note :If you use v-bind, you can't use mustache {{}}. So you can do something like this:</h2>
+<xmp class="prettyprint">
+
+
+<div class="flash-container" :class="styleClass">
+</div>
+or
+
+<div :class="`flash-container ${styleClass}`">
+</div>
+or
+
+<div class="flash-container" :class={'styleClass': true}>
+</div>
+Read this https://vuejs.org/v2/guide/class-and-style.htm
+</xmp>
+</body>
+</html>

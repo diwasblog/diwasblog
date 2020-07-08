@@ -1,0 +1,104 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:14pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+
+<!--Explaination-->
+
+<p><span style="font-size: 12pt;">&nbsp;<span style="font-family: 'arial black', sans-serif; color: #ff0000;"><em>Dynamically binds an attribute to an expression.Some html attribute are : id,src,title,style,width,height, disabled etc</em></span></span><br /><span style="font-family: arial black, sans-serif;"><strong>Can be Used as</strong></span></p>
+<p style="text-align: center;"><span style="font-family: georgia, palatino, serif;"><strong> v-bind:id</strong></span></p>
+<p style="text-align: center;"><span style="font-family: georgia, palatino, serif;"><strong>&nbsp;v-bind:src="myimage"</strong></span></p>
+<p style="text-align: center;"><span style="font-family: georgia, palatino, serif;"><strong>&nbsp; v-bind:style="color:red", </strong></span></p>
+<p style="text-align: center;"><span style="font-family: georgia, palatino, serif;"><strong>v-bind:href</strong>&nbsp;</span>&nbsp;<br />&nbsp;Eg :<strong>&lt;item optional="1"&gt;...&lt;/item&gt; Here, place of optional is Attribute Name(Attribute) and "1" is attribute value(Expression)</strong></p>
+
+<p style="text-align: center;"><span style="color: #003300; font-size: 14pt;">Example</span>
+<!--########################Main Code######################################-->
+<style>
+.active {
+    background: red;
+}
+</style>
+
+<div id='app'>
+       <p v-if="inventory>10">In Stock</p>
+       <p v-else-if="inventory<10 && inventory>0">Almost Solid</p>
+        <p v-else>Out of Stock</p>
+</div>
+
+<script>
+const app=new Vue({
+    el:'#app',
+    data:{
+      inventory:0
+    }
+});
+</script>
+<!--##############################################################-->
+
+
+<!--|#########################DISPLAY############################################-->
+
+
+<div class='row'>
+    <div class='col-lg-6'>
+
+        <xmp class="prettyprint">
+                <html>
+                        <head>
+                           <title>If Else</title>
+                        </head>
+                        <body>
+                  
+                           <style>
+                              .active {
+                                  background: red;
+                              }
+                          </style>
+                  
+                  <div id='app'>
+                      <p v-if=" inventory > 10 ">In Stock</p>
+                      <p v-else-if=" inventory < 10 && inventory > 0">Almost Solid</p>
+                       <p v-else>Out of Stock</p>
+                  
+                  </div>
+        </xmp>
+    </div>
+
+    <div class='col-lg-6'>
+    <xmp class="prettyprint">
+    <script>
+            const app=new Vue({
+                el:'#app',
+                data:{
+                inventory:0
+                }
+            });
+            </script>
+        </body>
+    </html>
+    </xmp>
+        </div>
+</div>
+
+
+<!--####################################################-->
+
+
+    </body>
+
+</html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+
+  <body>
+
+    ================================================================================================================
+
+    <h2>Applying same style to multiple element</h2><br>
+
+<div class="row">
+  <div class="col-lg-6">
+    <pre>
+      <code class="language-html">
+        &lt;p> I am paragraph&lt;/p>
+
+        &lt;h1>I am header1&lt;/h1>
+
+        &lt;span>I am span&lt;/span>
+
+        &lt;ul>
+        &lt;li>first list&lt;/li>
+        &lt;li>second list&lt;/li>
+        &lt;/ul> 
+      </code>
+    </pre>  
+  </div>
+
+  <div class="col-lg-6">
+    <pre>
+      <code class="language-css">
+        p, h1, span,li{
+          color:red;
+        }
+      </code>
+    </pre> 
+  </div>
+</div>
+
+<br>
+Output: <br>
+<p data-height="265" data-theme-id="dark" data-slug-hash="LBqogr" data-default-tab="html,result" data-user="DiwasPoudel" data-pen-title="targeting mutiple element " class="codepen">See the Pen <a href="https://codepen.io/DiwasPoudel/pen/LBqogr/">targeting mutiple element </a> by Diwas Poudel (<a href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="http://static.codepen.io/assets/embed/ei.js"></script>
+
+
+
+===========================================================================================================
+
+<p><span style="color: #ff00ff;"><strong><span style="font-size: 24pt;">There are four different combinators in CSS:</span></strong></span></p>
+<ul>
+<li><span style="font-size: 18pt;"><strong>descendant selector (space)</strong></span></li>
+<li><span style="font-size: 18pt;"><strong>child selector (&gt;)</strong></span></li>
+<li><span style="font-size: 18pt;"><strong>adjacent sibling selector (+)</strong></span></li>
+<li><span style="font-size: 18pt;"><strong>general sibling selector (~)</strong></span></li>
+</ul>
+
+<p><strong><span style="font-size: 18pt; color: #ff00ff; font-family: 'comic sans ms', sans-serif;">Descendent Selector</span></strong></p>
+<p><span style="color: #000000; font-size: 12pt;"><span style="font-family: 'comic sans ms', sans-serif;">A descendant selector in CSS is any selector with white space between two selectors without a combinator.</span></span></p>
+<br>
+Descendant means anywhere nested within it in the DOM tree.
+<br> Could be a direct child, could be five levels deep, it is still a descendant.
+<br>
+Example
+<br>
+
+<div class='row'>
+
+    <div class='col-lg-6'>
+       <h2>Normal Selector</h2>
+      <pre>
+        <code class='language-css'>
+            div,p{
+  
+            }
+        </code>
+      </pre>
+    </div>
+  
+  
+    <div class='col-lg-6'>
+       <h2>Descendent Selector</h2>
+      <pre>
+        <code class='language-css'>
+          div p{
+  
+          }
+        </code>
+      </pre>
+    </div>
+  </div>
+=======================================================================================================
+
+<div class='row'>
+  <div class='col-lg-6'>
+    <pre>
+      <code class='language-css'>
+          &lt;h2>This willnot be selected&lt;/h2>
+
+          &lt;div>
+          &lt;h2>This heading will be selected&lt;/h2>
+          &lt;span>
+                &lt;h2>This heading will be selected&lt;/h2>
+          &lt;/div>
+      </code>
+    </pre>
+  </div>
+
+
+  <div class='col-lg-6'>
+    <pre>
+      <code class='language-css'>
+          div h2{
+            color:red;
+          }
+      </code>
+    </pre>
+  </div>
+</div>
+
+
+<p data-height="265" data-theme-id="dark" data-slug-hash="yqZdVz" data-default-tab="html,result" data-user="DiwasPoudel" data-pen-title="descebdebt selector" class="codepen">See the Pen <a href="https://codepen.io/DiwasPoudel/pen/yqZdVz/">descebdebt selector</a> by Diwas Poudel (<a href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="http://static.codepen.io/assets/embed/ei.js"></script>
+==========================================================================================================
+<h3><strong><span style="color: #ff00ff;">Direct Child Selector</span></strong></h3>
+The child combinator (>) is placed between two CSS selectors.
+Elements matched by the second selector must be the immediate children of the elements matched by the first selector
+
+<div class='row'>
+    <div class='col-lg-6'>
+      <pre>
+        <code class='language-css'>
+            &lt;div>
+            &lt;p>Paragraph 1 in the div.&lt;/p>
+            &lt;p>Paragraph 2 in the div.&lt;/p>
+            &lt;span>&lt;p>Paragraph 3 in the div.&lt;/p>&lt;/span> <!-- not Child but Descendant -->
+            &lt;/div>
+              
+            &lt;p>Paragraph 4. Not in a div.&lt;/p>
+            &lt;p>Paragraph 5. Not in a div.&lt;/p>
+        </code>
+      </pre>
+    </div>
+  
+  
+    <div class='col-lg-6'>
+      <pre>
+        <code class='language-css'>
+            div > p {
+              background-color: yellow;
+          }
+        </code>
+      </pre>
+    </div>
+  </div>
+  
+  <p data-height="265" data-theme-id="dark" data-slug-hash="MBLMdq" data-default-tab="html,result" data-user="DiwasPoudel" data-pen-title="Direct Child Selector W3School" class="codepen">See the Pen <a href="https://codepen.io/DiwasPoudel/pen/MBLMdq/">Direct Child Selector W3School</a> by Diwas Poudel (<a href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+  <script async src="http://static.codepen.io/assets/embed/ei.js"></script>  
+
+
+  ======================================================================================================================
+
+  <h2><span style="color: #ff00ff;"><strong>Adjacent Sibling Selector</strong></span></h2>
+<p><span style="font-size: 14pt;">The adjacent sibling selector selects all elements that are the adjacent siblings of a specified element.</span></p>
+<p><span style="font-size: 14pt;">Sibling elements must have the same parent element, and "adjacent" means "immediately following".</span></p>
+
+<div class='row'>
+    <div class='col-lg-6'>
+      <pre>
+        <code class='language-css'>
+            <div id="allarticles">
+                &lt;h1>Article 1&lt;/h1>
+                &lt;p>paragraph1&lt;/p> <!--adjacent selector of h1-->
+                &lt;p>paragraph2&lt;/p>
+                
+                &lt;h1>Article 2&lt;/h1>
+                &lt;p>paragraph3&lt;/p>   <!--adjacent selector of h1-->
+                &lt;p>paragraph4&lt;/p>
+                
+                &lt;h1>Article 3&lt;/h1>
+                &lt;p>paragraph5&lt;/p>    <!--adjacent selector of h1-->
+                &lt;p>paragraph6&lt;/p>
+              </div>
+        </code>
+      </pre>
+    </div>
+  
+  
+    <div class='col-lg-6'>
+      <pre>
+        <code class='language-css'>
+            #allarticles h1+p{
+              color:red;
+            }
+        </code>
+      </pre>
+    </div>
+  </div>
+
+
+
+
+  <p data-height="265" data-theme-id="dark" data-slug-hash="jpdgrp" data-default-tab="html,result" data-user="DiwasPoudel" data-pen-title="jpdgrp" class="codepen">See the Pen <a href="https://codepen.io/DiwasPoudel/pen/jpdgrp/">jpdgrp</a> by Diwas Poudel (<a href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+  <script async src="http://static.codepen.io/assets/embed/ei.js"></script>
+
+=======================================================================================================================
+<h2>Pseudo Class Selector</h2>
+
+<pre>
+  <code class="language-css">
+      selector:pseudo-class {
+        property: value;
+      }
+  </code>
+</pre>
+
+Some Pseudo class are : 
+:active
+:nth-child
+:last-child
+:link
+:focus and soon
+
+
+
+<div class='row'>
+    <div class='col-lg-9'>
+      <pre>
+        <code class='language-html'>
+            &lt;p>&lt;b>&lt;a href="www.google.com" target="_blank">This is a link&lt;/a>&lt;/b>&lt;/p>
+            &lt;p>&lt;b>Note:</b> a:hover MUST come after a:link and a:visited in the CSS definition in order to be effective.&lt;/p>
+            &lt;p>&lt;b>Note:</b> a:active MUST come after a:hover in the CSS definition in order to be effective.&lt;/p>
+            
+        </code>
+      </pre>
+    </div>
+  
+  
+    <div class='col-lg-3'>
+      <pre>
+        <code class='language-css'>
+          /* unvisited link */
+          a:link {
+              color: #FF0000;
+          }
+
+          /* visited link */
+          a:visited {
+              color: #00FF00;
+          }
+
+          /* mouse over link */
+          a:hover {
+              color: #FF00FF;
+          }
+
+          /* selected link */
+          a:active {
+              color: #0000FF;
+          }
+
+        </code>
+      </pre>
+    </div>
+  </div>
+
+
+
+
+  <p data-height="265" data-theme-id="dark" data-slug-hash="WKPVPP" data-default-tab="html,result" data-user="DiwasPoudel" data-pen-title="pseudoclasses selector w3school" class="codepen">See the Pen
+     <a href="http://codepen.io/DiwasPoudel/pen/WKPVPP/">pseudoclasses selector w3school</a> by Diwas Poudel (<a href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+
+
+    <script src="js/prism.js"></script>
+    <script type="text/javascript">
+      Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+          'remove-trailing': true,
+          'remove-indent': true,
+          'left-trim': true,
+          'right-trim': true,
+          // 'break-lines': 10,
+          // 'indent': 2,
+          // 'remove-initial-line-feed': false,
+          // 'tabs-to-spaces': 4,
+          // 'spaces-to-tabs': 4
+        });
+    </script>
+  </body>
+</html>

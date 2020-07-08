@@ -1,0 +1,5 @@
+ads.txt file is added to wwwroot/ folder of ourtechroom   ====> for ads verification ( provided by google adsense)
+
+
+
+google search verification code like google-site-verification=0nAiIVZuVYgZ9iq3MLlUSmF7WmtkvWPrOOGGZQZmwZE  is added to DNS Setting page of website(ourtechroom.com)

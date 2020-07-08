@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+
+    <pre>
+        <code class="language-csharp">
+            public int CreateBaselineIntervemtion(BaselineIntervention baselineIntervention,int userId)
+            {
+                using (var transaction = _unitOfWork.BeginTransaction())
+                {
+                    try
+                    {
+                        if(baselineIntervention.Id == 0)
+                        {
+                            baselineIntervention.CreatedOn = DateTime.Now;
+                            baselineIntervention.CreatedBy = userId;
+                            var intervention = _unitOfWork.BaselineInterventionRepository.Add(baselineIntervention);
+    
+                            transaction.Commit();
+                            return intervention.Id;
+                        }
+                        else
+                        {
+                            var oldBaselineIntervention = _unitOfWork.BaselineInterventionRepository.FindBy(x => x.Id == baselineIntervention.Id); 
+                            // this step is very important we always have to get data from database and assign changes to that file and save it.
+
+
+                            //using this method you have to mapp all data between baselineIntervention to oldBaselineIntervention and save old data 
+                            oldBaselineIntervention.UserName = baselineIntervention.UserName;
+                            oldBaselineIntervention.ModifiedOn = DateTime.Now;
+
+
+                            _unitOfWork.BaselineInterventionRepository.Update(oldBaselineIntervention);
+    
+                            transaction.Commit();
+                            return baselineIntervention.Id;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        throw ex;
+                    }
+                }
+            }
+        </code>
+    </pre>
+
+</body>
+<script src="js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+    </body>
+    </html>
+
+</html>

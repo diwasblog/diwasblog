@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<p><span style="font-size: 24pt;">Nuxt js automatically comes with vuejs, vuex, Vue-router, vue meta, vue server renderer, webpack, Vue loader, babel-loader.</span></p>
+<p><span style="font-size: 18pt;"><strong><span style="color: #2dc26b;">Webpack</span></strong>: bundle file</span><br /><span style="font-size: 18pt;"><strong><span style="color: #2dc26b;">Vue loader :</span></strong> To load vue file</span><br /><span style="font-size: 18pt;"><strong><span style="color: #2dc26b;">Babel Loader :</span></strong> convert to es 2015</span></p>
+<p><span style="font-size: 24pt; color: #2dc26b;">Why Nuxt is good?</span><br /><strong><span style="font-size: 18pt; color: #000000;">1) SSR (Server Side Rendering)</span></strong><br /><strong><span style="font-size: 18pt; color: #000000;">2) SPA (Single Page Application)</span></strong><br /><strong><span style="font-size: 18pt; color: #000000;">3) Static Site Generation ( Pre Rendered)</span></strong><br /><strong><span style="font-size: 18pt; color: #000000;">4) Global Plugin access</span></strong><br /><strong><span style="font-size: 18pt; color: #000000;">5) SEO Friendly</span></strong><br /><strong><span style="font-size: 18pt; color: #000000;">4) Middleware to project authenticated contents</span></strong></p>
+<p><span style="font-size: 24pt;">Normal Request vs SPA Request</span><br /><span style="font-size: 18pt;">&nbsp;<strong> &nbsp; &nbsp;<span style="color: #000000;">In normal request, in each request server response with an HTML page, js and css</span></strong></span><br /><span style="color: #000000;"><strong><span style="font-size: 18pt;">&nbsp; &nbsp; &nbsp;In SPA request, in each request server response with JSON data via API.</span></strong></span></p>
+<p><span style="font-size: 24pt;">Limitations in SPA</span><br /><span style="color: #e03e2d;"><strong><span style="font-size: 14pt;">1)SEO Optimization</span></strong></span><br /><strong><span style="color: #000000;">When Google bots crawl the website then everything like Meta tag does not change when going from one URL to another.</span></strong></p>
+<p><span style="color: #e03e2d;"><strong><span style="font-size: 18pt;">2)Security Issue</span></strong></span></p>
+<p><span style="color: #e03e2d;"><strong><span style="font-size: 18pt;">3)Scalability</span></strong></span></p>
+<p><span style="color: #e03e2d;"><strong><span style="font-size: 18pt;">4)Universal Apps</span></strong></span><br /><strong><span style="font-size: 18pt; color: #000000;">&nbsp; &nbsp;i) Pre render data on server.</span></strong><br /><strong><span style="font-size: 18pt; color: #000000;">&nbsp; ii) Ready html before load</span></strong><br /><strong><span style="font-size: 18pt; color: #000000;">&nbsp;iii) SEO friendly</span></strong><br /><strong><span style="font-size: 18pt; color: #000000;">&nbsp;iv) Nextjs uses fetch() and asyncData() functions</span></strong></p>
+<p><span style="font-size: 24pt;">Vue Router</span><br /><span style="font-size: 18pt; color: #000000;">1)No need to creates routes.</span><br /><span style="font-size: 18pt; color: #000000;">2) Pages you create is automatically added as route name.</span><br /><span style="font-size: 18pt; color: #000000;">3) Create dynamic routes with page name prefixed with '_'</span></p>
+</body>
+</html>
+
+Hosted Platform and Self Hosting Platform
+
+Self Hosting Websites :
+Self hosting is when you pay a webhost company like bluehost, agmhosting to host your sites on the internet.
+Here you own your own website and you have unlimited capabilities to do with it.
+
+Here, Hosting Platform : Bluehost, Agmhosting, Wordpress.org
+
+
+
+
+Non Self Hosting Website
+It is one that you have not paid for , one that you host on 'free' website platform such as Tumblr, Blogger,
+Wix , wordpress.com or some other non paid host.
+
+Here you have limited capability to do, you cannot monetize it.
+
+
+Importance of self hosted website:
+1)Full Ownership and unlimited capabilities
+2)A self hosting website is professional
+3)Can monetize
+
+Wordpress.com is hosted platform where you set up website for free and you cannot use custom plugins and software .
+
+Pros of Using WordPress.com
+Simple to Set Up
+Support Staff
+Always Up-to-Date
+Managed Server
+Connect with other blogs
+
+Cons of Using WordPress.com
+Limited Themes & Plugins
+No Code-Level Access
+No Uploading Themes & Plugins
+
+
+
+
+
+
+Pros of Using WordPress.org
+Massive Theme & Plugin Library
+Code-Level Access
+Customize Everything
+Custom Designed Sites
+
+
+Cons of Using WordPress.org
+Manage Your Own Server
+Install and Upgrade Platform
+Plugin Conflicts
+Forum Support Only
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<p>SEO</p>
+<p>When google crawler comes to see the page then it finds empty and that is not good for SEO purposes.Also user should wait for content to load for later. We can solve this by rendering first initial page on a server so that google crawler will see full content even on the first page.</p>
+<p>&nbsp;</p>
+<p>So, for any given URL, that any page can be prerendered on the server on the fly when the user /Googlebot requested.&nbsp;&nbsp;</p>
+</body>
+</html>
+
+
+
+
+
+

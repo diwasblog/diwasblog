@@ -1,0 +1,74 @@
+
+-- DROP VIEW deposit.deposit_accounts_view;
+
+CREATE OR REPLACE VIEW deposit.deposit_accounts_view AS
+ SELECT a.account_number_id,
+    a.creation_date,
+    a.account_open_date,
+    core.date_bs_from_ad(a.account_open_date::date) AS account_open_date_bs,
+    a.office_id,
+    f.office_name,
+    a.customer_id,
+    a.account_number,
+    c.customer_name,
+    c.contact_number,
+    c.permanent_address,
+    c.type_of_customer,
+    p.deposit_product_id,
+    p.deposit_product_name,
+    p.product_code,
+    p.prefix,
+    p.suffix,
+    p.minimum_balance,
+    p.maximum_overdraft_limit,
+    p.account_termination_fee,
+    a.overdraft_interest_rate,
+    a.opening_balance,
+    a.status,
+    a.is_old_account,
+    a.term_account_start_date,
+    a.collector_id,
+    co.collector_name,
+    a.duration_in_days,
+    a.interest_rate,
+    a.is_suspended,
+    u.user_name,
+    a.termination_date,
+    c.unit_name,
+    a.int_posting_frequency_id,
+    fq.frequency_name,
+    n.account_number_id AS nominee_account_number_id,
+    n.account_number AS nominee_account_number,
+    nc.customer_name AS nominee_name,
+    nc.permanent_address AS nominee_address,
+    nc.contact_number AS nominee_contact,
+    n.deposit_product_id AS nominee_product_id,
+    np.deposit_product_name AS nominee_product_name,
+    a.allow_statement_printing,
+    a.statement_printing_frequency,
+    a.deduct_statement_printing_overuse_charge,
+    a.statement_printing_overuse_charge,
+    a.transaction_restriction,
+    a.is_deal,
+    a.ac_nominee,
+    a.nominee_relation,
+    a.nominee_contact AS ac_nominee_contact,
+    a.installments,
+    a.inst_amount,
+    a.is_pb_provided,
+	a.bonus_rate,
+	a.bonus_amount
+   FROM deposit.account_holders a
+     JOIN office.offices f ON a.office_id = f.office_id
+     JOIN core.deposit_products p ON a.deposit_product_id = p.deposit_product_id
+     JOIN core.customers_view c ON a.customer_id = c.customer_id
+     LEFT JOIN office.collectors co ON a.collector_id = co.collector_id
+     LEFT JOIN office.users u ON a.audit_user_id = u.user_id
+     LEFT JOIN core.frequencies fq ON a.int_posting_frequency_id = fq.frequency_id
+     LEFT JOIN deposit.account_holders n ON a.interest_nominee_account_number_id = n.account_number_id
+     LEFT JOIN core.deposit_products np ON n.deposit_product_id = np.deposit_product_id
+     LEFT JOIN core.customers_view nc ON n.customer_id = nc.customer_id
+  WHERE a.verification_status_id > 0;
+
+ALTER TABLE deposit.deposit_accounts_view
+    OWNER TO postgres;

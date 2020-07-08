@@ -1,0 +1,115 @@
+-- FUNCTION: deposit.collector_account_list(date, date, integer, integer)
+
+-- DROP FUNCTION deposit.collector_account_list(date, date, integer, integer);
+
+
+--SELECT * FROM deposit.collector_account_list('2019-01-01','2019-02-01',0,0)
+CREATE OR REPLACE FUNCTION deposit.collector_account_list(
+	from_ date,
+	to_ date,
+	collector_id_ integer,
+	office_id_ integer)
+    RETURNS TABLE(id integer, office_id integer, collector_id integer, creation_date date, customer_id bigint, account_number character varying, customer_name text, permanent_address text, contact_number text, collector_name character varying, product_name character varying, interest_rate double precision, maturity_date character varying, unit_name character varying) 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+
+BEGIN
+	CREATE TEMP TABLE _t(
+    id                  SERIAL,
+    office_id           int,
+    collector_id	int,
+    creation_date	date,
+    customer_id         bigint,
+    account_number      character varying(50),
+    customer_name       text,
+    permanent_address   text,
+    contact_number      text,
+    collector_name      character varying(150),
+    product_name        character varying(150),
+    interest_rate       double precision,
+    maturity_date       character varying(150),
+	unit_name			character varying
+    ) ON COMMIT DROP;
+
+
+	IF collector_id_=0 AND office_id_=0 THEN
+	INSERT INTO _t(office_id, collector_id, creation_date, customer_id, account_number, customer_name, permanent_address, contact_number, collector_name, product_name,interest_rate, maturity_date, unit_name)
+	SELECT ac.office_id,
+	co.collector_id, 
+	ac.creation_date, 
+	ac.customer_id ,            
+	ac.account_number, 
+	c.customer_name , 
+	c.permanent_address , 
+	c.contact_number, 
+	co.collector_name,            
+	p.deposit_product_name , 
+	ac.interest_rate , 
+	core.date_bs_from_ad(deposit.get_marurity_date(ac.account_number_id))"maturity_date",
+	c.unit_name											   						   
+FROM deposit.account_holders ac INNER JOIN core.customers_view c ON ac.customer_id = c.customer_id               
+INNER JOIN core.deposit_products p ON ac.deposit_product_id = p.deposit_product_id                  
+JOIN office.collectors co ON ac.collector_id = co.collector_id 
+WHERE ac.creation_date between from_ and to_ AND ac.verification_status_id>0
+ORDER BY ac.office_id, ac.creation_date;
+	
+	ELSEIF collector_id_ > 0 THEN
+	INSERT INTO _t(office_id, collector_id, creation_date, customer_id, account_number, customer_name, permanent_address, contact_number, collector_name, product_name,interest_rate, maturity_date, unit_name)
+	SELECT ac.office_id,
+	co.collector_id, 
+	ac.creation_date, 
+	ac.customer_id ,            
+	ac.account_number, 
+	c.customer_name , 
+	c.permanent_address , 
+	c.contact_number, 
+	co.collector_name,            
+	p.deposit_product_name , 
+	ac.interest_rate , 
+	core.date_bs_from_ad(deposit.get_marurity_date(ac.account_number_id))"maturity_date",
+	c.unit_name											   
+FROM deposit.account_holders ac INNER JOIN core.customers_view c ON ac.customer_id = c.customer_id               
+INNER JOIN core.deposit_products p ON ac.deposit_product_id = p.deposit_product_id                  
+JOIN office.collectors co ON ac.collector_id = co.collector_id 
+WHERE ac.creation_date between from_ and to_
+AND ac.verification_status_id>0												   
+AND co.collector_id = collector_id_
+AND ac.office_id = office_id_ ;
+ELSE
+
+	INSERT INTO _t(office_id, collector_id, creation_date, customer_id, account_number, customer_name, permanent_address, contact_number, collector_name, product_name,interest_rate, maturity_date, unit_name)
+	SELECT ac.office_id,
+	co.collector_id, 
+	ac.creation_date, 
+	ac.customer_id ,            
+	ac.account_number, 
+	c.customer_name , 
+	c.permanent_address , 
+	c.contact_number, 
+	co.collector_name,            
+	p.deposit_product_name , 
+	ac.interest_rate , 
+	core.date_bs_from_ad(deposit.get_marurity_date(ac.account_number_id))"maturity_date",
+	c.unit_name											   
+FROM deposit.account_holders ac INNER JOIN core.customers_view c ON ac.customer_id = c.customer_id               
+INNER JOIN core.deposit_products p ON ac.deposit_product_id = p.deposit_product_id                  
+JOIN office.collectors co ON ac.collector_id = co.collector_id 
+WHERE ac.creation_date between from_ and to_
+AND ac.verification_status_id>0												   
+AND ac.office_id = office_id_;
+END IF;
+
+	RETURN QUERY(SELECT _t.id, _t.office_id, _t.collector_id, _t.creation_date, _t.customer_id, _t.account_number, _t.customer_name, _t.permanent_address, _t.contact_number, 
+	_t.collector_name, _t.product_name, _t.interest_rate, _t.maturity_date, _t.unit_name FROM _t );
+END
+
+$BODY$;
+
+ALTER FUNCTION deposit.collector_account_list(date, date, integer, integer)
+    OWNER TO postgres;
+
+

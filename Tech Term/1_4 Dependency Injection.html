@@ -1,0 +1,395 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+<img src="../Tech Term/img/layer.PNG">
+
+Here ,we have 3 Layer UI , Bussiness and Database layer
+<div class="row">
+  <div class="col-lg-6">
+      <pre>
+          <code class="language-csharp">
+            namespace DependencyInjection
+        {
+            //UI layer
+            class Program
+            {
+                static void Main(string[] args)
+                {
+                  Customer c = new Customer();
+                  c.CustomerName = "diwas";
+                  c.Add();
+                }
+            }
+        
+            //middle Layer ie Business Layer
+            public class Customer
+            {
+                public string CustomerName { get; set; }
+                private SQLServerDal Odal = new SQLServerDal();
+        
+                public void Add()
+                {
+                    // DAL 
+                }
+            }
+        
+            //DAL
+            public class SQLServerDal
+            {
+                public void Add()
+                {
+                    Console.WriteLine("SQL Server inserted");
+                }
+            }
+            
+        }
+        
+          </code>
+        </pre>
+  </div>
+
+  <div class="col-lg-6">
+      <p><strong><span style="font-size: 14pt; color: #ff0000;">What is the problem of this 3 layer architecture. What is the problem here is ?</span></strong></p>
+      <ul>
+      <li><span style="font-size: 12pt;">Tight Coupling : Making change one module will affect other as well.</span></li>
+      </ul>
+      <p><span style="font-size: 12pt;">So here we have <strong>SQLServerDAL</strong> is tight coupled with customer class .</span></p>
+      <p><span style="font-size: 12pt;">Suppose now we need to have access to OracleServer also in customer class then we have to make change in customer class  like below.</span></p>
+  </div>
+  </div>
+
+<div class="row">
+    <div class="col-lg-6">
+<pre>
+  <code class="language-csharp">
+      //middle Layer ie Business Layer
+      public class Customer
+      {
+          public string CustomerName { get; set; }
+          private SQLServerDal sDal = new SQLServerDal();
+          private OracleServerDal oDal = new OracleServerDal(); 
+          //added here also to make use of OracleServerDal
+  
+          public void Add()
+          {
+              if (true)  //based on condition like config file or any, select add function
+              {
+                  sDal.Add();  // SQLServer
+              }
+              else
+              {
+                  oDal.Add();  //OracleServer
+              }
+          }
+      }
+
+  public class OracleServerDal
+  {
+      public void Add()
+      {
+          Console.WriteLine("Oracle Server Inserted");
+      }
+  }
+  </code>
+</pre>
+    </div>
+
+    <div class="col-lg-6">
+        <p><span style="font-size: 12pt;">So when we add this OracleServerDal class in project then to use this by customer then customer has to create instance of OracleServerDal in customer class a</span><span style="font-size: 12pt;">s well .So adding OracleServerDal class we have to make change in Customer Class also to make use of it . So here Customer class is tightly coupled with OracleServerDal.</span></p>
+    </div>
+  </div>
+
+  <p><span style="font-size: 18pt;">Here we have highly dependent between Customer class and SQLServerDAL.</span></p>
+<p><span style="font-size: 14pt;">Note : <strong><span style="color: #ff0000;">C<strong>h</strong>anges should happens but affect should be minimum across the application.</span></strong></span></p>
+<p><span style="font-size: 14pt;">To convert tightly coupled architecture like above to loosely coupled architecture&nbsp; we have to use interface.Think decoupling two layer we need interface</span></p>
+<img src="img/tight to loose couple.PNG">
+<h2>Using interface</h2>
+
+<div class="row">
+  <div class="col-lg-6">
+    <pre>
+      <code class="language-csharp">
+          //UI layer
+          class Program
+          {
+              static void Main(string[] args)
+              {
+                  Customer c = new Customer();
+                  c.CustomerName = "diwas";
+                  c.Add();
+              }
+          }
+      
+          //middle Layer ie Business Layer
+          public class Customer
+          {
+              public string CustomerName { get; set; }
+              private IDal iDal;   //changed
+      
+              public void Add()
+              {
+                  if (true)  //based on condition
+                  {
+                      iDal =  new SQLServerDal();    //changed
+                  }
+                  else
+                  {
+                      iDal = new OracleServerDal();    //changed
+                  }
+                  iDal.Add();
+              }
+          }
+      </code>
+    </pre>
+  </div>
+  <div class="col-lg-6">
+      <pre>
+          <code class="language-csharp">
+              public interface IDal   //changed
+              {
+                   void Add();
+              }
+          
+          
+              public class OracleServerDal:IDal  //changed
+              {
+                  public void Add()
+                  {
+                      Console.WriteLine("Oracle Server Inserted");
+                  }
+              }
+          
+              //DAL
+              public class SQLServerDal:IDal  //changed
+              {
+                  public void Add()
+                  {
+                      Console.WriteLine("SQL Server inserted");
+                  }
+              }
+          </code>
+      </pre>
+  </div>
+</div>
+
+<p><span style="font-size: 12pt;">Note here using interface we have just reduce the number of line of&nbsp; code but we haven't remove tight couple between <strong><span style="color: #ff0000;">customer</span> </strong>and <span style="color: #ff0000;"><strong>dataaccess layer</strong> </span>class because here also we have object creation on inside Customer class which is not good.&nbsp;</span></p>
+Also making class depends on abstraction instead on concreate class
+<br>
+=============================================================================================
+<br>
+<p><span style="font-size: 12pt;">This middle layer should&nbsp; works to do <span style="color: #ff0000;"><strong>business logic</strong></span> and <span style="color: #ff0000;"><strong>calculation</strong> </span>but<strong><span style="color: #ff0000;"> not object creation</span></strong>.&nbsp; Business layer should not decide whether to choose sqlserverdal and oracleserverdal.
+  So lets give UI for object creation as below&nbsp;</span></p>
+<br>
+<div class="row">
+    <div class="col-lg-6">
+      <pre>
+        <code class="language-csharp">
+            class Program
+            {
+                static void Main(string[] args)
+                {
+                    Customer c = new Customer(new SQLServerDal());
+                    c.CustomerName = "diwas";
+                    c.Add();
+                }
+            }
+        
+            //middle Layer ie Business Layer
+            public class Customer
+            {
+                public string CustomerName { get; set; }
+                private IDal _iDal;
+                
+                public Customer(IDal iDal)
+                {
+                    _iDal = iDal;
+                }
+        
+                public void Add()
+                {
+                    if (true)  //based on condition
+                    {
+                        _iDal =  new SQLServerDal();
+                    }
+                    else
+                    {
+                        _iDal = new OracleServerDal(); 
+                    }
+                    _iDal.Add();
+                }
+            }
+        </code>
+      </pre>
+    </div>
+    <div class="col-lg-6">
+        <pre>
+            <code class="language-csharp">
+                public interface IDal
+                {
+                     void Add();
+                }
+            
+            
+                public class OracleServerDal:IDal
+                {
+                    public void Add()
+                    {
+                        Console.WriteLine("Oracle Server Inserted");
+                    }
+                }
+            
+                //DAL
+                public class SQLServerDal:IDal
+                {
+                    public void Add()
+                    {
+                        Console.WriteLine("SQL Server inserted");
+                    }
+                }
+            </code>
+        </pre>
+    </div>
+  </div>
+  <p><span style="font-size: 14pt;">But still our aim of creating decouple architecture is not fullfilled .Because we only shift object creation from Business layer to UI layer.</span></p>
+  <br>
+  <p><span style="font-size: 14pt;">Here what the problem is : when we again want to add another data access layer like : PostgreSQL then we have to make change in both UI as well as Business Layer.</span></p>
+  <br>
+  ==============================================================================
+
+  <p><strong><span style="font-size: 14pt;">So first removing couple between class we have to use external third party framework like<span style="color: #ff0000;"> Autofac , or Unit or NInject</span>y for Object Creation . Because if we have to create object creation then it can be either middle layer or UI or database layer, so to solve this we use External Library for object creation for the purpose of decoupble between class</span></strong></p>
+  <br>
+  <p><span style="font-size: 12pt;">From Nuget package Install :&nbsp;<span style="color: #ff0000;"><strong> Unity Container</strong></span></span></p>
+
+
+<p><span style="font-size: 12pt;">&nbsp;Register all object that is required. Here we have register <span style="color: #ff0000;"><strong>Customer</strong> </span>,<span style="color: #ff0000;"><strong>SqlServer</strong></span>, <span style="color: #ff0000;"><strong>OracleServer <span style="color: #000000;">as shown below</span></strong></span></span></p>
+<img src="img/unitycontainer.PNG">
+<img src="img/resolve and register.PNG">
+<div class="row">
+    <div class="col-lg-6">
+      <pre>
+        <code class="language-csharp">
+            //UI layer
+            class Program
+            {
+                static void Main(string[] args)
+                {
+                    IUnityContainer objContainer = new UnityContainer();
+                    objContainer.RegisterType&lt;Customer>();
+                    objContainer.RegisterType&lt;IDal, OracleServerDal>();
+                    objContainer.RegisterType&lt;IDal, SQLServerDal>();
+                    Customer obj = objContainer.Resolve&lt;Customer&gt;();
+                
+                    obj.Add();
+                }
+            }
+        
+            //middle Layer ie Business Layer
+            public class Customer
+            {
+                public string CustomerName { get; set; }
+                private IDal _iDal;
+                
+                public Customer(IDal iDal)
+                {
+                    _iDal = iDal;
+                }
+        
+                public void Add()
+                {
+                    if (true)  //based on condition
+                    {
+                        _iDal =  new SQLServerDal();
+                    }
+                    else
+                    {
+                        _iDal = new OracleServerDal(); 
+                    }
+                    _iDal.Add();
+                }
+            }
+        </code>
+      </pre>
+    </div>
+    <div class="col-lg-6">
+        <pre>
+            <code class="language-csharp">
+                public interface IDal
+    {
+         void Add();
+    }
+
+
+    public class OracleServerDal:IDal
+    {
+        public void Add()
+        {
+            Console.WriteLine("Oracle Server Inserted");
+        }
+    }
+
+    //DAL
+    public class SQLServerDal:IDal
+    {
+        public void Add()
+        {
+            Console.WriteLine("SQL Server inserted");
+        }
+    }
+    
+            </code>
+        </pre>
+    </div>
+  </div>
+  <p><span style="font-size: 12pt;">&nbsp;Here we have two query connection via <strong><span style="color: #ff0000;">sql</span> </strong>and via <strong><span style="color: #ff0000;">oracle</span> </strong>but <strong><span style="color: #ff0000;">interface</span> </strong>is same. So at run time&nbsp; sqlserverdal object is created and passed to customer class because last registered type in the container as sqlserverDal is register last in the code . This happens only if you have same Interface for both class.</span></p>
+  <p><span style="font-size: 12pt;">If we have multiple Interface then object for all interface is created.</span></p>
+
+Look instance of SqlServer is only created because it is lastly registered
+<div class="row">
+  <div class="col-lg-6">
+    <img src="img/injecting object of dataaccesslayer.PNG">
+  </div>
+
+  <div class="col-lg-6">
+    <img src="img/passing injected object to customer class.PNG">
+  </div>
+</div>
+
+So, here have external library for having creating object so we finally decoupled the class.
+
+
+Dependency : Means one class depends upon another.
+Suppose A and B are class and A uses methods from B Then we can say
+A depends /relies on B for its operations to be successful.
+This means A has some copy of instance of B inside A
+<script src="../ASP Sandbox/js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

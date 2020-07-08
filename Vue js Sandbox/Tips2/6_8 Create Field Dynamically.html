@@ -1,0 +1,245 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+
+  <div class="row">
+    <div class="col-lg-6">
+       <xmp class="prettyprint">
+new Vue({
+el: '#app',
+data: {
+  inputs: [],
+},
+methods:{
+addRow() {
+      let vm = this;
+      vm.inputs.push({
+          quantity: '',
+          unitPrice: '',
+          sellingUnitPrice: '',
+          location: ''
+      });
+    }
+deleteRow(index) {
+      let vm = this;
+      vm.inputs.splice(index, 1);
+    },
+submitData() {
+      var vm = this;
+      if (vm.inputs.length != 0) {
+      vm.$validator.validateAll().then((result) => {
+        if (result) {
+      
+              axios.post('/inventory/item/api/order/insert', { "Data": JSON.stringify(vm.inputs) })
+                  .then(function (response) {
+                        if (response.data.Result) {
+                            alert("successfully inserted");
+                            }
+                          }).catch(function (error) {
+                              alert(error.response.data.Message);
+                  });
+                  }
+              });
+        }
+    }
+  }
+       </xmp>
+      </div>
+
+      <div class="col-lg-6">
+       <xmp class="prettyprint">
+          <div class="row" v-for="(input, index) in inputs">
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label>Quantity *</label>
+                    <input type="number" v-model="input.quantity" name="Quantity" />
+                </div>
+            </div>
+        
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label>Unit Price *</label>
+                    <input type="number" v-model="input.unitPrice"  name="UnitPrice" />
+                </div>
+            </div>
+          
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label>Selling Unit Price *</label>
+                    <input type="number" " v-model="input.sellingUnitPrice" name="SellingUnitPrice" />
+                </div>
+            </div>
+          
+            <div class="col-lg-2">
+                <div class="form-group">
+                    <label>Location *</label>
+                    <input type="text" v-model="input.location"  name="Location" />
+
+                </div>
+            </div>
+          
+            <div class="col-lg-1">
+                <div class="form-group">
+                    <span>
+                        <a @@click="deleteRow(index)">Delete</a>
+                    </span>
+                </div>
+            </div>
+          </div>
+           <!-- End of loop here -->
+          <div class="col-lg-12 col-md-12" id="addRow">
+                          <button @@click="addRow" class="btn btn-default pull-right" > Add Item</button>
+                      </div>
+          
+          <div class="col-lg-12 col-md-12">
+                          <button @@click="submitData" class="btn btn-primary pull-left">  Submit Item</button>
+            </div>
+
+       </xmp>
+      </div>
+  </div>
+
+
+  <h2>Step</h2>
+  <br>
+  Step 1 : First we have empty array ==> inputs:[] <br>
+  Step 2 : When u click on Add Item then addRow() methods gets called and added 4 new field :<br>
+            quantity, unitPrice, sellingUnitPrice, location<br>
+  Step 3: These 4 item gets pushed into inputs array 
+  Step 4 : And these data array are looped and display on the screen and this is done by below line: <br>
+    <xmp class="prettyprint">
+            <div class="row" v-for="(input, index) in inputs">
+                ....
+            </div>    
+    </xmp>
+   Step 5 : Data gets automatically binds to field via v-model  <br>
+   Step 6: Then push inputs to server side as below <br> 
+   <xmp class="prettyprint">
+        submitData() {
+            var vm = this;
+            axios.post('/inventory/item/api/order/insert', { "Data": JSON.stringify(vm.inputs))
+                .then(function (response) {
+                    if (response.data.Result) {
+                        window.location.href = "/inventory/item/orders";
+                       
+                    }
+                }).catch(function (error) {
+                    
+                });
+            }
+        }
+   </xmp>
+
+   <xmp class="prettyprint">
+        [HttpPost]
+        [Route("item/api/order/insert")]
+        public IHttpActionResult InsertItemOrder(InventoryItemOrder inventoryItem)
+        {
+            InventoryItemOrderInsertModel obj = new InventoryItemOrderInsertModel();
+            try
+            {
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                List<InventoryItemDataModel> list = serializer.Deserialize<List<InventoryItemDataModel>>(inventoryItem.Data);
+                DataTable inventoryItemOrderData = new DataTable();
+                inventoryItemOrderData.Columns.Add("Id");
+                inventoryItemOrderData.Columns.Add("Quantity");
+                inventoryItemOrderData.Columns.Add("PurchaseUnitPrice");
+                inventoryItemOrderData.Columns.Add("SellingUnitPrice");
+                inventoryItemOrderData.Columns.Add("Location");
+                
+                foreach (var item in list)
+                {
+                    inventoryItemOrderData.Rows.Add(item.ItemId, item.Quantity, item.PurchaseUnitPrice,item.SellingUnitPrice,item.Location);
+                }
+                 obj.DtItems = inventoryItemOrderData;
+                _inventoryItemOrderService.Insert(obj);
+                _apiResponse.Result = string.Format("The Inventory Item  has been inserted.");
+                _apiResponse.StatusCode = (int)HttpStatusCode.OK;
+                return Ok(_apiResponse);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+   </xmp>
+<h3>Completed :)</h3>
+============================================================================================================================================
+<br>
+<h2>Next Ways</h2>
+<xmp class="prettyprint">
+  
+        <div class="row" >
+          <div class="col-lg-6">
+              <div class="form-group">
+                  <label for="item">Item</label>
+                  <input type="text" name="Quantity" v-model="item.Name" class="form-control" id="quantity" />
+              </div>
+          </div>
+        
+          <div class="col-lg-4">
+              <div class="form-group">
+                  <label for="quantity">Quantity</label>
+                  <input type="number" name="Quantity" v-model="item.Quantity" class="form-control" id="quantity" />
+              </div>
+          </div>
+          <div class="col-lg-2">
+              <div class="form-group">
+                  <div style="height:25px;"> &nbsp; </div>
+                  <button @@click="addItem" class="btn btn-primary"><i class="fa fa-plus"></i> Add</button>
+              </div>
+          </div>
+        </div>
+        
+        <v-client-table :data="lstItem"  :columns="columns" :options="options">
+          <template slot="Action" slot-scope="props">
+              <div>
+                  <button class="btn btn-xs btn-danger" @@click="deleteRow(props.row.Id).prevent"><i class="fa fa-times"></i> Delete</button>
+              </div>
+          </template>
+        </v-client-table>
+        
+        data: {
+          generatedId: 0
+          item:{
+            Name:'',
+            Quantity:''
+          },
+          lstItem:[]
+        }
+        addItem() {
+          let vm = this;
+          var itemLst = {};
+          itemLst.ItemName = vm.item.Name;
+          itemLst.Quantity = vm.item.Quantity;
+        
+          vm.lstItem.push(itemLst);
+        
+          vm.selectedItem.Name = 0;
+          vm.item.Quantity = 0;
+          vm.generatedId++;
+        },
+        deleteRow(index) {
+          let vm = this;
+          vm.lstItem.splice(index, 1);
+          console.log(vm.lstItem);
+        }
+        </xmp>
+</body>
+</html>

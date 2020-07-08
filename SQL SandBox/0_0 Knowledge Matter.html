@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+        <head>
+                <meta charset="utf-8">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+                <link rel="stylesheet" href="css/bootstrap.css">
+                <link rel="stylesheet" href="css/bootstrap-grid.css">
+                <link rel="stylesheet" href="css/bootstrap-reboot.css">
+                <link rel="stylesheet" href="css/dracula.css">
+                <link rel="stylesheet" href="css/dracula-prism.css">
+                <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+              </head>
+<body>
+<p class="ui_qtext_para"><span style="font-size: 14pt;"><span style="color: #ff00ff;"><strong>SQL SERVER</strong> :</span> <span style="font-family: 'comic sans ms', sans-serif;">Microsoft RDMS (Relational Database Management System)</span></span></p>
+<p class="ui_qtext_para"><span style="font-size: 14pt;"><span style="color: #ff00ff;"><strong>SQL EXPRESS</strong></span>:<span style="font-family: 'comic sans ms', sans-serif;"> Subset of SQL Server for small/embedded applications.SQL Server Express is a free version of Microsoft&rsquo;s primary relational database management system (RDBMS) &ndash; the SQL Server.</span></span></p>
+<p class="ui_qtext_para"><strong>Max DB Size</strong></p>
+<p class="ui_qtext_para">SQL SERVER : 10 GB</p>
+<p class="ui_qtext_para">SQL EXPRESS: 4 GB</p>
+<p class="ui_qtext_para"><strong>Services</strong></p>
+<p class="ui_qtext_para">SQL SERVER : DB creation, update, transaction management, recovery, encryption, services</p>
+<p class="ui_qtext_para">SQL EXPRESS: Create, Alter, Drop, Delete, Queries, Triggers, Commands on DB</p>
+<p class="ui_qtext_para"><strong>Location</strong></p>
+<p class="ui_qtext_para">SQL SERVER : Host computer</p>
+<p class="ui_qtext_para">SQL EXPRESS: Computer System</p>
+<p class="ui_qtext_para"><strong>Domain</strong></p>
+<p class="ui_qtext_para">SQL SERVER : Desktop Applications and Websites</p>
+<p class="ui_qtext_para">SQL EXPRESS: Smaller, embedded applications</p>
+<p class="ui_qtext_para"><strong>Max memory RAM utilized</strong></p>
+<p class="ui_qtext_para">SQL SERVER : Enterprise- OS Max 2016 Standard- 128 GB</p>
+<p class="ui_qtext_para">SQL EXPRESS: 1 GB</p>
+<p class="ui_qtext_para"><strong>Min Memory Required</strong></p>
+<p class="ui_qtext_para">SQL SERVER : 4 GB, CPU 1GHz (32 bit), or better 64 bit</p>
+<p class="ui_qtext_para">SQL EXPRESS: 1 GB</p>
+<p class="ui_qtext_para"><strong>Storage Objects</strong></p>
+<p class="ui_qtext_para">SQL SERVER : FileTables and FileStreams</p>
+<p class="ui_qtext_para">SQL EXPRESS: DB Files, Backups</p>
+<p class="ui_qtext_para"><strong>SQL Server Agent</strong></p>
+<p class="ui_qtext_para">SQL SERVER : Schedules jobs and handles other automated tasks</p>
+<p class="ui_qtext_para">SQL EXPRESS: Not present</p>
+<p class="ui_qtext_para"><strong>Paid Version</strong></p>
+<p class="ui_qtext_para">SQL SERVER : Yes, exists</p>
+<p class="ui_qtext_para">SQL EXPRESS: Free</p>
+<p class="ui_qtext_para"><strong>Reporting Services</strong></p>
+<p class="ui_qtext_para">SQL SERVER : Yes</p>
+<p class="ui_qtext_para">SQL EXPRESS: No</p>
+<p class="ui_qtext_para"><strong>Analysis Services, OLAP and data mining tool</strong></p>
+<p class="ui_qtext_para">SQL SERVER : Yes, online analytical processing is supported.</p>
+<p class="ui_qtext_para">SQL EXPRESS: No</p>
+<p class="ui_qtext_para"><strong>Notification Services, data migration, Encryption</strong></p>
+<p class="ui_qtext_para">SQL SERVER : Yes</p>
+<p class="ui_qtext_para">SQL EXPRESS: No</p>
+<p class="ui_qtext_para"><strong>SQL Profiler</strong></p>
+<p class="ui_qtext_para">SQL SERVER : Yes, to see where DB resources are going</p>
+<p class="ui_qtext_para">SQL EXPRESS: Faster ExpressProfiler</p>
+<p class="ui_qtext_para"><strong>Remote Access</strong></p>
+<p class="ui_qtext_para">SQL SERVER : No</p>
+<p class="ui_qtext_para">SQL EXPRESS: No</p>
+<p class="ui_qtext_para"><strong>Machine Learning</strong></p>
+<p class="ui_qtext_para">SQL SERVER : No Limited parallelism</p>
+<p class="ui_qtext_para">SQL EXPRESS: No</p>
+<p class="ui_qtext_para"><strong>Multi-tenant</strong></p>
+<p class="ui_qtext_para">SQL SERVER : No</p>
+<p class="ui_qtext_para">SQL EXPRESS: No</p>
+<p class="ui_qtext_para"><strong>Scalability</strong></p>
+<p class="ui_qtext_para">SQL SERVER : Yes with LDF files</p>
+<p class="ui_qtext_para">SQL EXPRESS: Yes, only through multiple interconnected DBs</p>
+<p class="ui_qtext_para"><strong>Instances Per Computer</strong></p>
+<p class="ui_qtext_para">SQL SERVER : 5</p>
+<p class="ui_qtext_para">SQL EXPRESS: 16</p>
+<p class="ui_qtext_para">&nbsp;</p>
+
+==========================================================================
+<h2>Char vs Varchar</h2>
+<table style="border-collapse: collapse; width: 100%; height: 245px;" border="1">
+    <tbody>
+    <tr style="background: black; color: white;">
+    <td style="width: 50%; height: 49px;">Char</td>
+    <td style="width: 50%; height: 49px;">Varchar</td>
+    </tr>
+    <tr style="height: 49px;">
+    <td style="width: 50%; height: 49px;">Column length is fixed</td>
+    <td style="width: 50%; height: 49px;">Variable</td>
+    </tr>
+    <tr style="height: 49px;">
+    <td style="width: 50%; height: 49px;">Can hold 255 Character</td>
+    <td style="width: 50%; height: 49px;">4000 character</td>
+    </tr>
+    <tr style="height: 49px;">
+    <td style="width: 50%; height: 49px;">50% faster than Varchar</td>
+    <td style="width: 50%; height: 49px;">50% slower than Char</td>
+    </tr>
+    <tr style="height: 49px;">
+    <td style="width: 50%; height: 49px;">Static memory Allocation</td>
+    <td style="width: 50%; height: 49px;">Dynamic memory Allocation</td>
+    </tr>
+    </tbody>
+    </table>
+
+    ====================================================================================================================
+    <h2>Join Concept</h2>
+
+    <p><span style="font-size: 14pt;"><strong><span style="color: #ff0000;">One-to-One Relationship :</span> </strong>Husband and Wife</span></p>
+<p><span style="font-size: 14pt;"><strong><span style="color: #ff0000;">One to Many Relationship :</span> </strong>Mother and Children (ie. One Mother can have many children)</span></p>
+<p><span style="font-size: 14pt;"><span style="color: #ff0000;"><strong>Many to Many Relationship :</strong></span> Student and Subject</span></p>
+<p><span style="font-size: 14pt;"><span style="color: #ff0000;"><strong>One to Many :</strong> </span>MOther can have 2 or more child</span></p>
+<p><span style="font-size: 14pt;"><span style="color: #ff0000;"><strong>Many to One :</strong></span> Those 2 child can have a single Mother</span></p>
+<p>&nbsp;</p>
+
+<h2>Many TO Many Relationship</h2>
+
+<div class="row">
+    <div class="col">
+           <h3> Student</h3>
+            <table style="border-collapse: collapse; width: 9.11949%; height: 159px;" border="1">
+                    <tbody>
+                    <tr style="height: 51px; background-color: black; color: white;">
+                    <td style="width: 3.87841%; height: 51px;"><strong><span style="font-size: 12pt;">Id</span></strong></td>
+                    <td style="width: 10.989%; height: 51px;"><strong><span style="font-size: 12pt;">Name</span></strong></td>
+                    </tr>
+                    <tr style="height: 49px;">
+                    <td style="width: 3.87841%; height: 49px;">1</td>
+                    <td style="width: 10.989%; height: 49px;">Tom</td>
+                    </tr>
+                    <tr style="height: 49px;">
+                    <td style="width: 3.87841%; height: 49px;">2</td>
+                    <td style="width: 10.989%; height: 49px;">Sam</td>
+                    </tr>
+                    <tr style="height: 10px;">
+                    <td style="width: 3.87841%; height: 10px;">3</td>
+                    <td style="width: 10.989%; height: 10px;">Hari</td>
+                    </tr>
+                    </tbody>
+                    </table>
+    </div>
+    <div class="col">
+        <h3>Courses</h3>
+            <table style="border-collapse: collapse; width: 12.369%;" border="1">
+                    <tbody>
+                    <tr style="background-color: black; color: white;">
+                    <td style="width: 3.66876%;">Id</td>
+                    <td style="width: 8.70017%;">Name</td>
+                    </tr>
+                    <tr>
+                    <td style="width: 3.66876%;">1</td>
+                    <td style="width: 8.70017%;">SQL Server</td>
+                    </tr>
+                    <tr>
+                    <td style="width: 3.66876%;">2</td>
+                    <td style="width: 8.70017%;">C#</td>
+                    </tr>
+                    <tr>
+                    <td style="width: 3.66876%;">3</td>
+                    <td style="width: 8.70017%;">SharePoint</td>
+                    </tr>
+                    </tbody>
+                    </table>
+        </div>
+</div>
+
+<div><span style="font-size: 12pt;">Tom can take both Course(SQL Server and C#)</span></div>
+<div><span style="font-size: 12pt;">SQL Server can be taken by many Student( So, one to many relationship exists from both side ie. One Student(one) can take many Courses(many) also, one Course can be taken by many Student)</span></div>
+
+<h3>So, How to make Relationship?</h3>
+
+============================================================================================
+<p><span style="font-size: 14pt; color: #ff0000;">If one to many this will work like this :</span></p>
+<div class="row">
+
+    <div class="col">
+            <table style="border-collapse: collapse; width: 9.11949%; height: 159px;" border="1">
+                    <tbody>
+                    <tr style="height: 51px; background-color: black; color: white;">
+                    <td style="width: 3.87841%; height: 51px;"><strong><span style="font-size: 12pt;">Id</span></strong></td>
+                    <td style="width: 10.989%; height: 51px;"><strong><span style="font-size: 12pt;">Name</span></strong></td>
+                    </tr>
+                    <tr style="height: 49px;">
+                    <td style="width: 3.87841%; height: 49px;">1</td>
+                    <td style="width: 10.989%; height: 49px;">Tom</td>
+                    </tr>
+                    <tr style="height: 49px;">
+                    <td style="width: 3.87841%; height: 49px;">2</td>
+                    <td style="width: 10.989%; height: 49px;">Sam</td>
+                    </tr>
+                    <tr style="height: 10px;">
+                    <td style="width: 3.87841%; height: 10px;">3</td>
+                    <td style="width: 10.989%; height: 10px;">Hari</td>
+                    </tr>
+                    </tbody>
+                    </table>
+    </div>
+    <div class="col">
+         
+            <table style="border-collapse: collapse; width: 20.7547%;" border="1">
+            <tbody>
+            <tr>
+            <td style="width: 4.5073%;">Id</td>
+            <td style="width: 10.587%;">Name&nbsp;</td>
+            <td style="width: 5.66032%;">StudId</td>
+            </tr>
+            <tr>
+            <td style="width: 4.5073%;">1</td>
+            <td style="width: 10.587%;">SQLServer</td>
+            <td style="width: 5.66032%;">1</td>
+            </tr>
+            <tr>
+            <td style="width: 4.5073%;">2</td>
+            <td style="width: 10.587%;">C#</td>
+            <td style="width: 5.66032%;">2</td>
+            </tr>
+            <tr>
+            <td style="width: 4.5073%;">3</td>
+            <td style="width: 10.587%;">Sharepoint</td>
+            <td style="width: 5.66032%;">1</td>
+            </tr>
+            </tbody>
+            </table>
+    </div>
+</div>
+
+<h3>Here ,Tom takes 2 Courses</h3>
+
+Actually, Here it is many to many so, let's do 
+
+<h1><span style="color: #ff0000;"><strong>1)Cheating Ways</strong></span></h1>
+<p><span style="color: #ff0000;"><strong>StudentCourseTable</strong></span></p>
+<table style="border-collapse: collapse; width: 23.6897%;" border="1">
+<tbody>
+<tr style="background-color: black; color: white;">
+<td style="width: 5.76517%;">Id</td>
+<td style="width: 9.958%;">Name</td>
+<td style="width: 7.96643%;">StudID</td>
+</tr>
+<tr>
+<td style="width: 5.76517%;">1</td>
+<td style="width: 9.958%;">SQL Server</td>
+<td style="width: 7.96643%;">1</td>
+</tr>
+<tr>
+<td style="width: 5.76517%;">2</td>
+<td style="width: 9.958%;">C#</td>
+<td style="width: 7.96643%;">2</td>
+</tr>
+<tr>
+<td style="width: 5.76517%;">3</td>
+<td style="width: 9.958%;">Sharepoint</td>
+<td style="width: 7.96643%;">1,3</td>
+</tr>
+</tbody>
+</table>
+
+<h1><span style="color: #ff0000;"><strong>1)Best Ways</strong></span></h1>
+
+<div class="row">
+    <div class="col">
+            <table style="border-collapse: collapse; width: 9.11949%; height: 159px;" border="1">
+                    <tbody>
+                    <tr style="height: 51px; background-color: black; color: white;">
+                    <td style="width: 3.87841%; height: 51px;"><strong><span style="font-size: 12pt;">Id</span></strong></td>
+                    <td style="width: 10.989%; height: 51px;"><strong><span style="font-size: 12pt;">Name</span></strong></td>
+                    </tr>
+                    <tr style="height: 49px;">
+                    <td style="width: 3.87841%; height: 49px;">1</td>
+                    <td style="width: 10.989%; height: 49px;">Tom</td>
+                    </tr>
+                    <tr style="height: 49px;">
+                    <td style="width: 3.87841%; height: 49px;">2</td>
+                    <td style="width: 10.989%; height: 49px;">Sam</td>
+                    </tr>
+                    <tr style="height: 10px;">
+                    <td style="width: 3.87841%; height: 10px;">3</td>
+                    <td style="width: 10.989%; height: 10px;">Hari</td>
+                    </tr>
+                    </tbody>
+                    </table>
+    </div>
+
+    <div class="col">
+            <table style="border-collapse: collapse; width: 22.2222%;" border="1">
+                    <tbody>
+                    <tr style="background-color: black; color: white;">
+                    <td style="width: 4.61213%;">Id</td>
+                    <td style="width: 8.90985%;">StudentId</td>
+                    <td style="width: 8.70022%;">CourseId</td>
+                    </tr>
+                    <tr>
+                    <td style="width: 4.61213%;">1</td>
+                    <td style="width: 8.90985%;">1</td>
+                    <td style="width: 8.70022%;">1</td>
+                    </tr>
+                    <tr>
+                    <td style="width: 4.61213%;">2</td>
+                    <td style="width: 8.90985%;">1</td>
+                    <td style="width: 8.70022%;">3</td>
+                    </tr>
+                    <tr>
+                    <td style="width: 4.61213%;">3</td>
+                    <td style="width: 8.90985%;">2</td>
+                    <td style="width: 8.70022%;">2</td>
+                    </tr>
+                    <tr>
+                    <td style="width: 4.61213%;">4</td>
+                    <td style="width: 8.90985%;">3</td>
+                    <td style="width: 8.70022%;">3</td>
+                    </tr>
+                    </tbody>
+                    </table>
+    </div>
+
+    <div class="col">
+            <table style="border-collapse: collapse; width: 20.7547%;" border="1">
+                    <tbody>
+                    <tr>
+                    <td style="width: 4.5073%;">Id</td>
+                    <td style="width: 10.587%;">Name&nbsp;</td>
+                    <td style="width: 5.66032%;">StudId</td>
+                    </tr>
+                    <tr>
+                    <td style="width: 4.5073%;">1</td>
+                    <td style="width: 10.587%;">SQLServer</td>
+                    <td style="width: 5.66032%;">1</td>
+                    </tr>
+                    <tr>
+                    <td style="width: 4.5073%;">2</td>
+                    <td style="width: 10.587%;">C#</td>
+                    <td style="width: 5.66032%;">2</td>
+                    </tr>
+                    <tr>
+                    <td style="width: 4.5073%;">3</td>
+                    <td style="width: 10.587%;">Sharepoint</td>
+                    <td style="width: 5.66032%;">1</td>
+                    </tr>
+                    </tbody>
+                    </table>
+    </div>
+</div>
+Here, Tom Takes SQL Server and Sharepoint .... Also Sharepoint can be taken by more than one Student
+
+=================================================================================================================
+<h2><span style="color: #ff0000;"><strong>The order of your Keyword in Queries</strong></span></h2>
+<ol>
+<li><span style="font-size: 14pt;"><strong><code>SELECT</code></strong></span></li>
+<li><span style="font-size: 14pt;"><strong><code>FROM</code></strong></span></li>
+<li><span style="font-size: 14pt;"><strong><code>WHERE</code></strong></span></li>
+<li><span style="font-size: 14pt;"><strong><code>GROUP BY</code></strong></span></li>
+<li><span style="font-size: 14pt;"><strong><code>ORDER BY</code></strong></span></li>
+<li><span style="font-size: 14pt;"><strong><code>LIMIT</code></strong></span></li>
+</ol>
+<p><strong><span style="font-size: 12pt; color: #ff0000;">If you don&rsquo;t use it in this order, your query won&rsquo;t work. Simple as that.</span></strong></p>
+<p>It&rsquo;s good to know that this is not the same order&nbsp;in which the computer processes the query. The logical order is this:</p>
+<ol>
+<li><span style="font-size: 14pt;"><strong><code>FROM</code></strong></span></li>
+<li><span style="font-size: 14pt;"><strong><code>WHERE</code></strong></span></li>
+<li><span style="font-size: 14pt;"><strong><code>GROUP BY</code></strong></span></li>
+<li><span style="font-size: 14pt;"><strong><code>SELECT</code></strong></span></li>
+<li><span style="font-size: 14pt;"><strong><code>ORDER BY</code></strong></span></li>
+<li><span style="font-size: 14pt;"><strong><code>LIMIT</code></strong></span></li>
+</ol>
+<p><span style="font-size: 12pt;">SQL first checks which data table we will work with. Then it checks the filters. After that it groups the data. Finally it gets the data &ndash; and if&nbsp;necessary, sorts it and prints only the first X lines.</span><br /><strong><span style="font-size: 14pt; color: #ff0000;">It&rsquo;s great to keep this logic in mind, but the writing order is more important for now &ndash; so learn that one!</span></strong></p>
+<!DOCTYPE html>
+
+<h2>Order by Execution</h2>
+<p><span style="font-size: 14pt; color: #000000;">Each query begins with finding the data that we need in a database and then filtering that data down into something that can be processed and understood as quickly as possible.&nbsp;</span></p>
+<p><span style="font-size: 14pt; color: #000000;">1) FROM and JOIN</span></p>
+<p><span style="font-size: 14pt; color: #000000;">The <code>FROM</code>&nbsp;clause, and subsequent&nbsp;<code>JOIN</code>s is first executed to determine <strong><span style="color: #e03e2d;">the total working set of data that is being queried</span></strong>.</span></p>
+<hr />
+<p><span style="font-size: 14pt; color: #000000;">2)WHERE</span></p>
+<p><span style="font-size: 14pt; color: #000000;">Once we have the total working set of data, tthen <code>WHERE</code>&nbsp;constraints are applied to the <span style="color: #e03e2d;">individual rows</span>, and rows that <em><span style="color: #e03e2d;">do not satisfy the constraint are discarded</span></em>.&nbsp;</span></p>
+<hr />
+<p><span style="font-size: 14pt; color: #000000;">3)GROUP BY</span></p>
+<p><span style="font-size: 14pt; color: #000000;">The remaining rows after the&nbsp;<code>WHERE</code>&nbsp;constraints are applied are then grouped based on common values in the column specified in the&nbsp;<code>GROUP BY</code>&nbsp;clause. As a result of the grouping, there will only be as many rows as there are unique values in that column. Implicitly, this means that you should only need to use this when you have aggregate functions in your query.</span></p>
+<hr />
+<p><span style="font-size: 14pt; color: #000000;">4)HAVING</span></p>
+<p><span style="font-size: 14pt; color: #000000;">If the query has a&nbsp;<code>GROUP BY</code>&nbsp;clause, then the constraints in the&nbsp;<code>HAVING</code>&nbsp;clause are then applied to the grouped rows, discard the grouped rows that don't satisfy the constraint. Like the&nbsp;<code>WHERE</code>&nbsp;clause, aliases are also not accessible from this step in most databases.</span></p>
+<hr />
+<p><span style="font-size: 14pt; color: #000000;">5)SELECT</span></p>
+<p><span style="font-size: 14pt; color: #000000;">Any expressions in the&nbsp;<code>SELECT</code>&nbsp;part of the query are finally computed.</span></p>
+<hr />
+<h2>.&nbsp;<code>DISTINCT</code></h2>
+<p><span style="font-size: 14pt;">Of the remaining rows, rows with duplicate values in the column marked as&nbsp;<code>DISTINCT</code>&nbsp;will be discarded.</span></p>
+<hr />
+<h2>7.&nbsp;<code>ORDER BY</code></h2>
+<p><span style="font-size: 14pt;">If an order is specified by the&nbsp;<code>ORDER BY</code>&nbsp;clause, the rows are then sorted by the specified data in either ascending or descending order. Since all the expressions in the&nbsp;<code>SELECT</code>&nbsp;part of the query have been computed, you can reference aliases in this clause.</span></p>
+<hr />
+<h2>8.&nbsp;<code>LIMIT</code>&nbsp;/&nbsp;<code>OFFSET</code></h2>
+<p><span style="font-size: 14pt;">Finally, the rows that fall outside the range specified by the&nbsp;<code>LIMIT</code>&nbsp;and&nbsp;<code>OFFSET</code>&nbsp;are discarded, leaving the final set of rows to be returned from the query.</span></p>
+<hr />
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+
+
+</body>
+</html>

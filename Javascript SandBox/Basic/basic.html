@@ -1,0 +1,490 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+
+
+<style>
+xmp.prettyprint{
+    font-size:10pt;
+    font-family:monospace;
+
+}
+</style>
+ 
+</head>
+<body>
+
+<!--######################## Main Code ######################################-->
+<h2>"type" attribute is required in HTML 4, but optional in HTML5.</h2>
+<xmp class="prettyprint">
+    3; // = 3
+    1.5; // = 1.5
+    
+    // Some basic arithmetic works as you'd expect.
+    1 + 1; // = 2
+    0.1 + 0.2; // = 0.30000000000000004 (funky floating point arithmetic--be careful!)
+    8 - 1; // = 7
+    10 * 2; // = 20
+    35 / 5; // = 7
+    
+    // Including uneven division.
+    5 / 2; // = 2.5
+    
+    // Bitwise operations also work; when you perform a bitwise operation your float
+    // is converted to a signed int *up to* 32 bits.
+    1 << 2; // = 4
+    
+    // Precedence is enforced with parentheses.
+    (1 + 3) * 2; // = 8
+    
+    // There are special primitive values:
+    Infinity; // result of e.g. 1/0
+    -Infinity; // result of e.g. -1/0
+    NaN; // result of e.g. 0/0
+    undefined; // never use this yourself. This is the default value for "not assigned"
+    null; // use this instead. This is the programmer setting a var to "not assigned"
+    
+    // There's also a boolean type.
+    true;
+    false;
+    
+    // Strings are created with single quotes (') or double quotes (").
+    'abc';
+    "Hello, world";
+
+    // Negation uses the ! symbol
+    !true; // = false
+    !false; // = true
+
+    // Strings are concatenated with +
+    "Hello " + "world!"; // = "Hello world!"
+
+    // Or to set default values
+    x = x || "default" 
+    // if x exists, do nothing and short-circuit, else set x to a default 
+
+    // figuring out types of literals and vars
+    typeof "Hello"; // = "string"
+    typeof 42; // = "number"
+    typeof undefined // = "undefined"
+    typeof null // = 'object' THIS IS A JS BUG!
+
+    // figuring out if an object is an instance of another object
+    // checks all the way down the prototype chain
+    var x = {}
+    x instanceof Object // = true
+    x instanceof Function // = false
+
+</xmp>
+
+<p style="text-align: center;"><span style="font-family: 'comic sans ms', sans-serif; color: #ff00ff; font-size: 14pt;"><strong> document.write</strong></span></p>
+
+<html>
+  <body>
+    <script>
+     document.write("Hello world");
+    </script>
+  </body>
+</html>
+
+<!--|#########################Print############################################-->
+
+<xmp class="prettyprint">
+    <html>
+        <body>
+          <script>
+           document.write("Hello world");
+          </script>
+        </body>
+      </html>
+  </xmp>
+
+<!--################################## Main Code ##############################################-->
+<p style="text-align: center;"><span style="font-family: 'comic sans ms', sans-serif; color: #ff00ff; font-size: 14pt;"><strong>Use of function and global variable</strong></span></p>
+  <html>
+      <body>
+        <script>
+         var data=200;
+         function a(){document.write(data);}
+         function b(){document.write(data);}
+         a();
+         b();
+        </script>
+      </body>
+    </html>
+
+    <!--#################################Print###############################################-->
+
+<xmp class="prettyprint">
+  <html>
+    <body>
+      <script>
+       var data=200;
+       function a(){document.write(data);}
+       function b(){document.write(data);}
+       a();
+       b();
+      </script>
+    </body>
+  </html>
+</xmp>
+<!--####################################################-->
+
+
+<!-- <html>
+    <body>
+      <script>
+        function a(){alert("a is function");}
+       a();
+      </script>
+    </body>
+  </html> -->
+  <p style="text-align: center;"><span style="font-family: 'comic sans ms', sans-serif; color: #ff00ff; font-size: 14pt;"><strong>Alert</strong></span></p>
+<xmp class="prettyprint">
+    <html>
+        <body>
+          <script>
+            function a(){alert("a is function");}
+           a();
+          </script>
+        </body>
+      </html>
+</xmp>
+
+<p style="text-align: center;"><span style="font-family: 'comic sans ms', sans-serif; color: #ff00ff; font-size: 14pt;"><strong>var can hold any types of value:stirng,number,array</strong></span></p>
+<xmp class="prettyprint">
+  var i=45;
+  var str="diwas";
+</xmp>
+
+
+
+<!--##############################################################################-->
+<p style="text-align: center;"><span style="font-family: 'comic sans ms', sans-serif; color: #ff00ff; font-size: 14pt;"><strong>If Statement</strong></span></p>
+
+
+
+<script>
+  var a=20;
+  if (a%2==0)
+  document.write("even");
+  else
+  document.write("odd");
+</script>
+
+<xmp class="prettyprint">
+    <script>
+        var a=20;
+        if (a%2==0)
+        document.write("even");
+        else
+        document.write("odd");
+      </script>
+</xmp>
+
+<!--#####################################################################################################-->
+
+
+<p style="text-align: center;"><span style="font-family: 'comic sans ms', sans-serif; color: #ff00ff; font-size: 14pt;"><strong>Switch</strong></span></p>
+
+<script>
+  var grade='B';
+  var result;
+
+  switch(grade)
+  {
+    case 'A':
+    result="A grade";
+    case 'B':
+    result="B grade";
+    case 'C':
+    result="C grade";
+    default:
+    result="no grade";
+  }  
+  document.write(result);
+</script>
+
+<xmp class="prettyprint">
+    <script>
+        var grade='B';
+        var result;
+      
+        switch(grade)
+        {
+          case 'A':
+          result="A grade";
+          case 'B':
+          result="B grade";
+          case 'C':
+          result="C grade";
+          default:
+          result="no grade";
+        }  
+        document.write(result);
+      </script>
+</xmp>
+
+<!--#######################################################################-->
+<p style="text-align: center;"><span style="font-family: 'comic sans ms', sans-serif; color: #ff00ff; font-size: 14pt;"><strong>Use of For Loop</strong></span></p>
+
+<script>
+   for(i=1;i<=5;i++)
+   {
+     document.write(i+"<br>");
+   }
+</script>
+
+<xmp class="prettyprint">
+    <script>
+    for(i=1;i<=5;i++)
+    {
+      document.write(i+"<br>");
+    }
+ </script>
+</xmp>
+
+<p><span style="color: #008000;">###################################################################################################################</span></p>
+<!--#######################################################################-->
+<p style="text-align: center;"><span style="font-family: 'comic sans ms', sans-serif; color: #ff00ff; font-size: 14pt;"><strong>Use of While</strong></span></p>
+
+<script>
+  var i=1;
+  while(i<=5)
+  {
+    document.write(i+"<br>");
+    i++;
+  }
+</script>
+
+<xmp class="prettyprint">
+    var i=1;
+    while(i<=5)
+    {
+      document.write(i+"<br>");
+      i++;
+    }
+  </script>
+</xmp>
+
+<!--########################################################################-->
+
+<p style="text-align: center;"><span style="font-family: 'comic sans ms', sans-serif; color: #ff00ff; font-size: 14pt;"><strong>Use of  Array</strong></span></p>
+
+<p ><span style="font-family: 'comic sans ms', sans-serif; color: #ff00ff; font-size: 14pt;"><strong>Method 1</strong></span></p>
+<script>
+  var emp=["diwas","ram","shyam","hari"];
+  for(i=0;i<emp.length;i++)
+  document.write(emp[i]+"<br>");
+</script>
+
+
+<xmp class="prettyprint">
+    <script>
+        var emp=["diwas","ram","shyam","hari"];
+        for(i=0;i<emp.length;i++)
+        document.write(emp[i]+"<br>");
+    </script>
+
+</xmp>
+
+<!--##############################################################################################-->
+
+
+<p ><span style="font-family: 'comic sans ms', sans-serif; color: #ff00ff; font-size: 14pt;"><strong>Method 2</strong></span></p>
+<script>
+  var i;
+  var emp=new Array();
+  emp[0]="diwas";
+  emp[1]="ram";
+  emp[2]="shyam";
+  emp[3]="hari";
+  for(i=0;i<emp.length;i++){document.write(emp[i]+"<br>");}
+</script>
+
+
+<xmp class="prettyprint">
+    <script>
+        var i;
+        var emp=new Array();
+        emp[0]="diwas";
+        emp[1]="ram";
+        emp[2]="shyam";
+        emp[3]="hari";
+        for(i=0;i<emp.length;i++){document.write(emp[i]+"<br>");}
+      </script>
+
+</xmp>
+
+
+<p ><span style="font-family: 'comic sans ms', sans-serif; color: #ff00ff; font-size: 14pt;"><strong>Method 3</strong></span></p>
+
+<script>
+  var i;
+  var emp=new Array(["diwas","ram","shyam","hari"]);
+  for(i=0;i<emp.length;i++)
+  {
+    document.write(emp[i]+"<br>");
+  }
+</script>
+
+<xmp class="prettyprint">
+    <script>
+      var i;
+        var emp=new Array(["diwas","ram","shyam","hari"]);
+        for(i=0;i<emp.length;i++)
+        {
+          document.write(emp[i]+"<br>");
+        }
+      </script>
+</xmp>
+
+
+<!--#########################################################################-->
+<<p style="text-align: center;"><span style="font-size: 18pt; color: #ff00ff;">"==" vs '==="&nbsp;</span></p>
+<p style="text-align: left;">double equal "==" is an auto-type conversion and it checks only <strong><span style="color: #ff0000;">value not type.</span></strong></p>
+<p style="text-align: left;">Three equal "==="&nbsp; is not auto-type conversion and it check <span style="color: #ff0000;"><strong>value and type both.</strong></span></p>
+<p style="text-align: left;">&nbsp;</p>
+<p style="text-align: left;">&nbsp;</p>
+
+
+<xmp class="prettyprint">
+  if(1 == "1")
+//Its returns true because it's an auto-type conversion and it checks only value not data type.
+
+if(1 === "1")
+//Its returns false because it's not auto-type conversion and it check value and type both.
+
+
+[10] === 10    // is false
+[10]  == 10    // is true
+'10' == 10     // is true
+'10' === 10    // is false
+ []  == 0     // is true
+ [] ===  0     // is false
+ '' == false   // is true but true == "a" is false
+ '' ===   false // is false 
+ 0==false      // true
+ 0=== false     //false
+ null==undefined  //true
+ null===undefined  //false
+ 1===parseInt("1")  //true
+</xmp>
+
+==================================================================================================================
+<h3>Finding min and max in arrary</h3>
+<xmp class="prettyprint">
+  var  numbers = [5, 458 , 120 , -215 , 228 , 400 , 122205, -85411]; 
+  var maxInNumbers = Math.max.apply(Math, numbers);   // 122205
+  var minInNumbers = Math.min.apply(Math, numbers);   //-85411 
+</xmp>
+
+=======================================================================================================================
+<h3>Shuffling an array</h3>
+<xmp class="prettyprint">
+     var numbers = [5, 458 , 120 , -215 , 228 , 400 , 122205, -85411];
+    numbers = numbers.sort(function(){ return Math.random() - 0.5});
+    /* the array numbers will be equal for example to [120, 5, 228, -215, 400, 458, -85411, 122205]  */
+</xmp>
+====================
+======================================================================================================================
+
+<h3>Get random number from array</h3>
+<xmp class='prettyprint'>
+  var items = [12, 548 , 'a' , 2 , 5478 , 'foo' , 8852, , 'Doe' , 2145 , 119];
+  var  randomItem = items[Math.floor(Math.random() * items.length)];
+</xmp>
+===========================================================================================================================
+
+
+<h3>Get Random number between specific range (both max and min are inclusive)</h3>
+<xmp class="prettyprint">
+
+var x = Math.floor(Math.random() * (max - min + 1)) + min;
+
+</xmp>
+
+
+
+========================================================================================================================
+
+<h3> Generate an array of numbers with numbers from 0 to max</h3>
+
+<xmp class="prettyprint">
+  var numbersArray = [] , max = 100;
+  for( var i=1; numbersArray.push(i++) < max;);  // numbers = [1,2,3 ... 100] 
+</xmp>
+=====================================================================================================================
+
+
+========================================================================================================================
+
+<h3>Emptying an array</h3>
+
+<xmp class="prettyprint">
+  var myArray = [12 , 222 , 1000 ];  
+  myArray.length = 0; // myArray will be equal to [].
+</xmp>
+=====================================================================================================================
+
+========================================================================================================================
+
+<h3>Rounding a number to specific digit </h3>
+
+<xmp class="prettyprint">
+  var num =2.443242342;
+  num = num.toFixed(4);  // num will be equal to 2.4432
+</xmp>
+=====================================================================================================================
+<h2>Bad For loop</h2>
+<xmp class="prettyprint">
+  for (i = 0; i < myArray.length; i++) {
+</xmp>
+
+<h2>Better For loop</h2>
+<xmp class="prettyprint">
+length = myArray.length;
+for (i = 0; i < length; i++) {
+  </xmp>
+  In the first case, the length property is constantly accessed with each iteration, although it does not need to be looped and can be placed outside of the loop itself.
+
+  ================================================================================================================================================================================
+<h2>Getting integer from decimal</h2>
+
+<div class="row">
+  <div class="col-lg-6">
+    Instead of this
+      <xmp class="prettyprint">
+      Math.round(Math.random*100)
+      </xmp>
+  </div>
+  <div class="col-lg-6">
+    Use this
+      <xmp class="prettyprint">
+      ~~ (Math.random*100)
+      </xmp>
+  </div>
+</div>
+
+===============================================================================================
+<h2>  Convert from everything to Number.</h2>
+<xmp class="prettyprint">
+  const foo = '21'
+  const toNumber = +foo
+  console.log(toNumber) // 21
+  const toNegativeNumber = -foo
+  console.log(toNegativeNumber) // -21
+</xmp>
+===========================================================================================
+<h2>  Convert Array to Object</h2>
+<xmp class="prettyprint">
+  const arr = [ 'foo', 'bar', 1]
+  const obj = { ...arr }
+  console.log(obj) // {0: "foo", 1: "bar", 2: 1}
+</xmp>
+==========================================================================
+    </body>
+
+</html>

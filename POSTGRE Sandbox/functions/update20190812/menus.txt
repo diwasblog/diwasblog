@@ -1,0 +1,3 @@
+INSERT INTO core.menus (menu_text,url,parent_menu_id)
+VALUES('Collectorwise Collection Report','~/Report/Deposit/CollectorwiseCollectionReport.aspx',
+	   (SELECT menu_id FROM core.menus where menu_text='Deposit Report'))

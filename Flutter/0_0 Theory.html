@@ -1,0 +1,46 @@
+<p><span style="font-size: 18pt;">Flutter</span></p>
+<p><span style="font-size: 14pt;">A Cross-platform framework for building <strong><span style="color: #ff0000;">native mobile applications</span>.</strong></span></p>
+<p><span style="font-size: 14pt;">Flutter is an <span style="color: #ff0000;"><strong>open source project</strong></span>, with contributions from Google and the community.</span></p>
+<p><span style="font-size: 14pt;">It is <span style="color: #ff0000;">Google&rsquo;s mobile app SDK&nbsp;</span></span></p>
+<p><span style="font-size: 14pt;"><span style="color: #ff0000;">Created by Google</span> and uses <span style="color: #ff0000;">Dart</span> (A programming language created by Google, similar to JavaScript).</span></p>
+<p><span style="font-size: 14pt;"><span style="color: #ff0000;">Flutter</span> is different from other cross platform mobile frameworks and libraries such as <span style="color: #ff0000;">Ionic, NativeScript, React native or Xamarin</span> etc. <strong><span style="color: #ff0000;">Because the final built application is an actual native application with no web container</span></strong> like in the case of hybrid frameworks (Ionic) or JavaScript runtimes like in the case of NativeScript for example. As a result, apps built using Flutter provide <span style="color: #ff0000;"><strong>more performance</strong></span> and <span style="color: #ff0000;"><strong>better integration</strong> </span>with the underlying device.</span></p>
+
+<h2>Flutter installation Step</h2>
+<p>=========================================================================</p>
+<p>Download flutter file from official site then extract it and set environment like this in path of environment variable</p>
+<p>E:\FlutterStable\flutter\bin</p>
+<p>======================================================</p>
+<p>cmd :<strong>flutter doctor</strong></p>
+<p>You will found flutter sdk found but android sdk not found so follow below steps</p>
+<p>=====================================================</p>
+<p>Before installing <strong><span style="color: #ff0000;">android sdk</span> </strong>we need to install <strong><span style="color: #ff0000;">java sdk</span></strong> and <strong><span style="color: #ff0000;">set its path in env .</span></strong></p>
+<p>After setuping java sdk we do for android sdk</p>
+Note: javasdk already comes with jre so we no need to worry about runtime environment
+<p>First Configure android sdk on android Studio to say any API version then inside C:\Users\DIWAS\AppData\Local\Android\Sdk\build-tools we get required sdk version of android. Best is always update your android sdk from android studio</p>
+<p>1)Run <strong><span style="color: #ff0000;">flutter -doctor</span></strong></p>
+<p><span style="color: #000000;"><strong>You may get below error</strong></span></p>
+<p><span style="color: #ff0000;"> Android toolchain - develop for Android devices&nbsp; not found</span></p>
+<p>Solution:<strong>flutter config --android-sdk &lt;path-to-your-android-sdk-path&gt;</strong></p>
+<p><strong>Example :<span style="color: #000000;"> flutter config --android-sdk C:\Users\DIWAS\AppData\Local\Android\Sdk&nbsp; ===&gt; in cmd</span></strong></p>
+<p><strong>=======================================================================================</strong></p>
+<p><span style="color: #ff0000;"><strong>Licensing Problem</strong></span></p>
+<p><span style="color: #000000;"><strong><span style="color: #333333;">Go to SDK root</span><br /><span style="color: #333333;"><code>C:\Users\%user%\AppData\Local\Android\Sdk\tools\bin</code></span><br /><span style="color: #333333;">open a Terminal on this folder, and run the command:</span><br /><code>sdkmanager --licenses</code></strong></span></p>
+<p><span style="color: #000000;"><strong><code>================================================================================</code></strong></span></p>
+<p><span style="color: #ff0000;"><strong><code>No Device found Problem</code></strong></span></p>
+<p><span style="color: #ff0000;"><strong><span style="color: #000000;">Connect your phone to computer</span></strong></span></p>
+<p>Enable debugging mode in mobile (Setting&gt;About Device&gt;Software info&gt; Press Build Number 7 times)</p>
+<p>Then type : <strong><span style="color: #ff0000;">flutter devices</span></strong> in cmd you will find one device connected like this as below</p>
+<p>1 connected device:</p>
+<p>SM J210F &bull; 4200403edc666300 &bull; android-arm &bull; Android 6.0.1 (API 23)</p>
+<p><span style="color: #ff0000;"><strong><span style="color: #000000;">==============================================================</span></strong></span></p>
+<p><span style="color: #000000;"><strong><code>Install dart and flutter plugin in vs code</code></strong></span></p>
+<p>Then press CTRL +Shift +D (Debugger ) then on top select Debug then we get result in mobile&nbsp;</p>
+<p><span style="color: #000000;"><strong><code>==============================================</code></strong></span></p>
+<p>Note : run cmd :flutter run only inside project folder otherwise will not find&nbsp; any things</p>
+
+<ol class="postList">
+  <li id="6dc6" class="graf graf--li graf-after--li"><span style="font-size: 14pt;">The application is&nbsp;<strong class="markup--strong markup--li-strong">compiled ahead-of-time into native ARM code</strong>, not at runtime as in React Native. This gives better performance because <span style="color: #ff0000;">there&rsquo;s&nbsp;<strong class="markup--strong markup--li-strong">no JS bridge</strong>&nbsp;in the middle to parse and execute the code.</span> However it also means there&rsquo;s no over-the-air update option by downloading a new bundle of JS code at runtime.</span></li>
+  <li class="graf graf--li graf-after--li"><span style="font-size: 14pt;">Flutter is also&nbsp;<span style="color: #ff0000;"><strong class="markup--strong markup--li-strong">based on a &lsquo;unidirectional data flow&rsquo; architecture, or reactive programming</strong></span></span></li>
+  <li class="graf graf--li graf-after--li"><span style="font-size: 14pt;"><strong class="markup--strong markup--li-strong">Again, similarly to React Native, there is&nbsp;hot reloading&nbsp;(thank God!). You just change something in the code editor, save, and the UI refreshes on the Android emu or iOS sim</strong></span></li>
+  <li class="graf graf--li graf-after--li"><span style="font-size: 14pt;"><strong class="markup--strong markup--li-strong">Open-source software development kit (SDK), developed by Google, to quickly build iOS and Android apps,&nbsp;sharing most of the code. It works in conjunction with the Android and iOS SDKs, which also means you still need a macOS machine to build for iOS (just like you do for React Native and Xamarin).</strong></span></li>
+  </ol>

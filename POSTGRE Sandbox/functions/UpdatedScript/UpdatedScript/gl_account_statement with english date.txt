@@ -1,0 +1,108 @@
+-- Function: core.get_gl_account_statement(integer, bigint, date, date)
+
+-- DROP FUNCTION core.get_gl_account_statement(integer, bigint, date, date);
+
+CREATE OR REPLACE FUNCTION core.get_gl_account_statement(
+    IN office_id_ integer,
+    IN gl_account_id_ bigint,
+    IN from_ date,
+    IN to_ date)
+  RETURNS TABLE(tran_id bigint, tran_date character varying, tran_date_ad character varying, value_date character varying, value_date_ad character varying, statement_reference text, debit money, credit money, balance money, office_id integer) AS
+$BODY$
+
+	DECLARE _opening_balance    money;
+	DECLARE _is_debit           boolean;
+BEGIN
+	IF core.get_primary_account(gl_account_id_) = 'Assets' THEN
+		_is_debit = true;
+	ELSIF core.get_primary_account(gl_account_id_) = 'Expenses' THEN
+		_is_debit = true;
+	ELSE
+		_is_debit = false;
+	END IF;
+	
+	CREATE TEMP TABLE _t(
+		id		            serial,
+		tran_id			bigint,
+		tran_date	        character varying(20),
+		tran_date_ad	        character varying(20),
+		value_date	        character varying(20),
+		value_date_ad	        character varying(20),
+		statement_reference	text,
+		debit		        money,
+		credit		        money,
+		balance		        money,
+		office_id			int
+	) ON COMMIT DROP;
+
+    IF office_id_ > 0 THEN
+        SELECT CASE WHEN _is_debit = false THEN SUM(COALESCE(t.credit, '0')) - SUM(COALESCE(t.debit, '0')) ELSE SUM(COALESCE(t.debit, '0')) - SUM(COALESCE(t.credit, '0')) END INTO _opening_balance
+        FROM transactions.transactions_view  t
+        WHERE t.gl_account_id = gl_account_id_ AND t.office_id = office_id_
+        AND t.tran_date < from_;
+    ELSE 
+        SELECT CASE WHEN _is_debit = false THEN SUM(COALESCE(t.credit, '0')) - SUM(COALESCE(t.debit, '0')) ELSE SUM(COALESCE(t.debit, '0')) - SUM(COALESCE(t.credit, '0')) END INTO _opening_balance
+        FROM transactions.transactions_view t
+        WHERE t.gl_account_id = gl_account_id_ AND t.tran_date < from_;
+    END IF;
+
+	IF(_opening_balance <> '0' AND _is_debit = false) THEN
+		INSERT INTO _t(tran_id,tran_date, tran_date_ad, value_date, value_date_ad, statement_reference, debit, credit)
+		SELECT 0,core.date_bs_from_ad(from_),from_, core.date_bs_from_ad(from_),from_, 'Balance b/d.', 
+		CASE WHEN _opening_balance < '0' THEN _opening_balance * (-1) ELSE NULL END, CASE WHEN _opening_balance > '0' 
+		THEN _opening_balance ELSE NULL END;
+	END IF;
+
+	IF(_opening_balance <> '0' AND _is_debit = true) THEN
+		INSERT INTO _t(tran_id, tran_date, tran_date_ad, value_date, value_date_ad, statement_reference, debit, credit)
+		SELECT 0,core.date_bs_from_ad(from_),from_, core.date_bs_from_ad(from_), from_, 'Balance b/d.', 
+		CASE WHEN _opening_balance > '0' THEN _opening_balance ELSE NULL END, CASE WHEN _opening_balance < '0' THEN _opening_balance * (-1) ELSE NULL END;
+	END IF;
+
+    IF office_id_ > 0 THEN
+        INSERT INTO _t(tran_id, tran_date, tran_date_ad, value_date, value_date_ad, statement_reference, debit, credit,office_id)
+        SELECT 
+            t.tran_id,core.date_bs_from_ad(t.tran_date),t.tran_date, core.date_bs_from_ad(t.value_date), t.value_date, t.statement_reference, t.debit, t.credit,t.office_id
+        FROM transactions.transactions_view t
+        WHERE t.gl_account_id = gl_account_id_
+        AND t.office_id = office_id_
+        AND t.tran_date BETWEEN from_ AND to_
+        ORDER BY t.tran_date, t.tran_id;
+    ELSE
+        INSERT INTO _t(tran_id, tran_date, tran_date_ad, value_date, value_date_ad, statement_reference, debit, credit,office_id)
+        SELECT 
+            t.tran_id, core.date_bs_from_ad(t.tran_date), t.tran_date, core.date_bs_from_ad(t.value_date), t.value_date, t.statement_reference, t.debit, t.credit,t.office_id
+        FROM transactions.transactions_view t
+        WHERE t.gl_account_id = gl_account_id_
+        AND t.tran_date BETWEEN from_ AND to_
+        ORDER BY t.tran_date, t.tran_id;
+    END IF;
+
+	UPDATE _t SET 
+		balance = child.balance
+	FROM (
+		SELECT 
+			p.id,
+			SUM(COALESCE(c.credit, '0') - COALESCE(c.debit, '0')) balance
+		FROM _t p, _t c
+		WHERE c.id <= p.id
+		GROUP BY p.id
+	) child
+	WHERE _t.id = child.id;
+
+	IF _is_debit = true THEN
+	UPDATE _t SET balance = _t.balance * (-1);
+	END IF;
+
+    INSERT INTO _t(statement_reference, debit, credit)
+    SELECT '           Total', SUM(COALESCE(_t.debit, 0::money)), SUM(COALESCE(_t.credit, 0::money)) FROM _t;
+
+	RETURN QUERY(SELECT _t.tran_id, _t.tran_date, _t.tran_date_ad, _t.value_date, _t.value_date_ad, _t.statement_reference, _t.debit, _t.credit, _t.balance, _t.office_id FROM _t ORDER BY id);
+END
+
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100
+  ROWS 1000;
+ALTER FUNCTION core.get_gl_account_statement(integer, bigint, date, date)
+  OWNER TO postgres;

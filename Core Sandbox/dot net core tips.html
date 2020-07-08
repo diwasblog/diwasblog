@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
+<body>
+    <div>
+        <div>&nbsp;</div>
+        <div><span style="font-size: 24pt;">Visual Studio Support</span></div>
+        <div><span style="font-size: 18pt;"><strong><span style="color: #f1c40f;">.NET Core 2.2</span></strong> does
+                have support inside Visual Studio but only from version <strong><span style="color: #f1c40f;">15.9
+                        Preview 3 onwards</span></strong>. So update your visual studio.</span></div>
+        <div>&nbsp;</div>
+        <div>
+            <hr />
+        </div>
+        <div>&nbsp;</div>
+        <div><span style="color: #e03e2d; font-size: 24pt;"><strong>.Net Core&nbsp;</strong></span></div>
+        <div><span style="font-size: 18pt;">.Net core has two parts.</span></div>
+        <div>&nbsp;</div>
+        <div><span style="font-size: 18pt;">1) SDK&nbsp;</span></div>
+        <div><span style="font-size: 18pt;">2) runtime</span></div>
+        <div>
+            <hr />
+        </div>
+        <div>&nbsp;</div>
+        <div><span style="color: #e03e2d;"><strong><span style="font-size: 18pt;">SDK</span></strong></span></div>
+        <div><span style="font-size: 18pt;">Always download the latest SDK whatever .net core project you have.</span>
+        </div>
+        <div>&nbsp;</div>
+        <div><span style="font-size: 18pt;">Suppose you have .net core application build using <strong><span
+                        style="color: #ba372a;">2.1 version runtime</span></strong> then when you give that code source
+                to your friends then he/she also needs the same version of .net core runtime. He can have any version of
+                .net core SDK.</span></div>
+        <div>&nbsp;</div>
+        <div><span style="font-size: 18pt;">The software development kit (<strong>SDK</strong>) includes everything you
+                need to build and run .NET Core applications, using command line tools and any editor (including Visual
+                Studio).</span></div>
+        <div>&nbsp;</div>
+        <div><span style="font-size: 18pt;">To develop, build and publish an application will require an SDK.</span>
+        </div>
+        <div>&nbsp;</div>
+        <div>&nbsp;</div>
+        <div><strong><span style="font-size: 18pt; color: #e03e2d;">runtime</span></strong></div>
+        <div><span style="font-size: 18pt;">runtime is required to run .net core application.&nbsp;</span></div>
+        <div>&nbsp;</div>
+        <div><span style="font-size: 18pt;">The&nbsp;<span
+                    style="color: #e03e2d;"><strong>runtime</strong>&nbsp;</span>includes just the resources required to
+                run existing .NET Core applications. The runtime is included in the SDK.</span></div>
+        <div>&nbsp;</div>
+        <div>
+            <hr />
+        </div>
+        <div>&nbsp;</div>
+        <div>
+            <p><strong>Runtime</strong>: to run apps (Developer need this)</p>
+            <p><strong>SDK (Runtime + Tooling)</strong>: to build and run apps (Developer need this) </p>
+            <p><strong>AspNetCoreModule :</strong>Actually server need to install this to run .net core application</p>
+            <hr />
+        </div>
+        <div>&nbsp;</div>
+        <div><span style="text-decoration: underline;"><strong><span
+                        style="font-size: 18pt; color: #e03e2d; text-decoration: underline;">Check SDK and runtime in
+                        your system</span></strong></span></div>
+        <div>&nbsp;</div>
+        <div><span style="font-size: 18pt;">1) Open <span style="color: #000000;"><strong>cmd</strong> </span>and type
+                <strong><span style="color: #000000;">dotnet --info</span></strong></span></div>
+        <div><span style="font-size: 18pt;"><strong><span style="color: #000000;"><img
+                            src="https://i.ibb.co/Zgy9LKp/runtime.png" /></span></strong></span></div>
+        <div><span style="font-size: 18pt;"><strong><span style="color: #000000;">you will get both runtime and
+                        sdk.</span></strong></span></div>
+        <div>&nbsp;</div>
+        <div><span style="font-size: 18pt;"><strong><span style="color: #000000;">From sdk 2.x onward , it will
+                        automatically install same runtime. i.e <span style="color: #e03e2d;">Installing an SDK also
+                            installs the runtime. </span></span></strong></span></div>
+        <div>
+            <hr />
+        </div>
+        <div>&nbsp;</div>
+
+
+
+
+
+        ========================================================================================
+        <h2>So, For Using .net You need Only SDK and runtime will automatically gets installed</h2>
+
+        Install from this link: https://dotnet.microsoft.com/download/dotnet-core
+
+
+        <br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        ==============================================================================================
+        <h4>
+            But For hosting .net core application, server must have AspNetCoreModule . Currently AgmHosting also added
+            this
+            in their server and I am able to publish my .net core website there</h4>
+
+        <h2>Installing AspNetCoreModule</h2>
+        U must install aspnetcoremodule from
+        <xmp class="prettyprint">
+
+            https://dotnet.microsoft.com/download/thank-you/dotnet-runtime-2.1.0-windows-hosting-bundle-installer
+        </xmp>
+
+        <xmp class="prettyprint">
+            https://neelbhatt.com/2018/01/30/deploy-net-core-application-to-iis-step-by-step-guide/
+        </xmp>
+
+</body>
+
+</html>

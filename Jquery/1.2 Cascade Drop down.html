@@ -1,0 +1,90 @@
+
+<html>
+<head>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+
+<style>
+xmp.prettyprint{
+    font-size:12pt;
+    font-family:monospace;
+
+}
+</style>
+ 
+
+
+
+</head>
+
+
+<body>
+<xmp class="prettyprint">
+<div class="col-md-4">
+	<label for="district">District *</label>
+	<select id="dropdownDistrict" name="InfrastructureDistrictId" required="required" size='1' class="form-control" data-live-search="true">
+		<option value="">Select District</option>
+		@foreach (var district in Model.District)
+		{
+			<option value="@district.DistrictId">@district.DistrictName</option>
+		}
+	</select>
+</div>
+
+<div class="col-md-4">
+	<label for="dropdownVDC">VDC *</label>
+	<select id="dropdownVDC" name="InfrastructureVdcId" required="required" class=" form-control" data-live-search="true">
+		<option value="">Select VDC</option>
+	</select>
+</div>
+</xmp>
+
+
+Then inside document.ready in script file
+
+<xmp class="prettyprint">
+ <script>
+  $(document).ready(function(){
+	$('#dropdownDistrict').on('change', function () {
+			var Id = $('#dropdownDistrict option:selected').val();
+			if (Id == '')
+			{
+				Id = 0;
+			}
+			$.ajax({
+				type: 'GET',
+				data: { districtId: Id },
+				url: '@Url.Action("GetVdcByDistrict", "FetchData")',
+				success: function (result) {
+					console.log(result);
+					var s = '<option value="">Select VDC</option>';
+					for (var i = 0; i < result.length; i++) {
+						s += '<option value="' + result[i].Id + ' ">' + result[i].Name + '</option>';
+					}
+					$('#dropdownVDC').html(s);
+				}
+			})
+		});
+  });
+ 
+ <script>
+</xmp>
+
+
+
+<xmp class="prettyprint">
+//infrastructure/getvdcbydistrict
+public ActionResult GetVdcByDistrict(int districtId)
+		{
+			var data = db.VDCs.Where(x => x.DistrictId == districtId).Select(x => new { Id = x.VdcId, Name = x.VdcName }).ToList();
+
+
+			return Json(data, JsonRequestBehavior.AllowGet);
+		}
+
+</xmp>
+</body>
+
+</html>

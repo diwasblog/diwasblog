@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<p><span style="color: #000000;"><strong><span style="font-size: 24pt;">Authentication and Authorization History</span></strong></span></p>
+<p><span style="font-size: 14pt;">Asp.Net framework provides authentication in 3 different ways :</span></p>
+<p><br /><span style="color: #000000;"><strong><span style="font-size: 14pt;">1) Forms Authentication</span></strong></span><br /><span style="color: #000000;"><strong><span style="font-size: 14pt;">2) Windows Authentication</span></strong></span><br /><span style="color: #000000;"><strong><span style="font-size: 14pt;">3)Passport Authentication</span></strong></span></p>
+<p><span style="font-size: 14pt;"><span style="color: #000000;">In Normal Forms Authentication, the asp.net framework </span><span style="color: #2dc26b;">does not create any table related to the user</span> <span style="color: #000000;">and we have to create ourself table. And Manage own authentication and authorization. Which is called</span>&nbsp;</span><span style="font-size: 14pt;"><strong><span style="color: #e03e2d;">Custom Form Authentication.</span></strong></span></p>
+<p><strong><span style="font-size: 24pt;"><img src="https://www.techstrikers.com/Articles/Images/identity/identity-history.png" /></span></strong></p>
+<p>&nbsp;</p>
+<p><strong><span style="font-size: 24pt;">Classic Membership</span></strong></p>
+<p><span style="font-size: 14pt;"><span style="color: #000000;">Then the next came the provider-based model, which is called</span> <strong><span style="color: #e03e2d;">Asp.Net Membership</span></strong> <span style="color: #000000;">which </span><strong><span style="color: #2dc26b;">simplified the process of Authentication and Authorization </span></strong><span style="color: #000000;">to store user profile information. This is called as Classic Membership. It was introduced in 2005 NOV, with ASP.Net 2.0</span></span></p>
+<p><span style="color: #000000;"><strong><span style="font-size: 18pt;">Features of Classic Membership</span></strong></span></p>
+<ul>
+<li><span style="font-size: 14pt; color: #000000;">Great at that time.</span></li>
+<li><span style="font-size: 14pt; color: #000000;">It is mainly designed for <strong><span style="color: #2dc26b;">SQL Server only</span></strong> to store data for users.</span></li>
+<li><span style="font-size: 14pt; color: #000000;">It generally involved <strong><span style="color: #2dc26b;">username/password-based registration.</span></strong></span></li>
+<li><span style="font-size: 14pt; color: #000000;">Here required full SQL server for default cases. they depend on stored procedure supports, and they rely on SQL server</span><br /><span style="font-size: 14pt; color: #000000;">cache dependencies.</span></li>
+<li><span style="font-size: 14pt; color: #000000;">It doesn't work with SQL Server family-like SQL Azure, SQL Server, SQL Server CE, SQL Server Express, LocalDb </span></li>
+<li><span style="font-size: 14pt; color: #000000;">SQL server-based providers do not&nbsp;work well on SQL Server CE, SQL Azure and It is not simple to extend default functionality and add custom user fields,or to move data to other kinds of database. The membership database schema is designed for SQL Server only. It is hard to move data to other data sources, especially to non-relational databases.</span></li>
+<li><span style="font-size: 14pt; color: #000000;">It has generated its own table, store procedure, and view. So we should not have to do our effort in creating those things and uses Form-Based Authentication in C#.</span></li>
+<li><span style="font-size: 14pt; color: #000000;"><img src="http://farm9.static.flickr.com/8296/7883787192_44be268b3c.jpg" /></span></li>
+</ul>
+<p><strong><span style="font-size: 24pt; color: #000000;">Universal Provider:</span></strong></p>
+<ul>
+<li><span style="font-size: 14pt; color: #000000;">Came in May 2012&nbsp; AD. It now works well on<span style="color: #2dc26b;"><strong> SQL Server family </strong></span>like now work well on SQL Azure, SQL Server, SQL Server CE, SQL Server Express, LocalDb.</span></li>
+<li><span style="font-size: 14pt; color: #000000;">It simplified Classic Membership by removing Store Procedure and Views. and also simplified table structure.</span></li>
+</ul>
+<p><span style="font-size: 14pt; color: #000000;"><img src="http://farm9.static.flickr.com/8295/7940059070_44b051b692_b.jpg" /></span></p>
+<p><strong><span style="font-size: 24pt; color: #000000;">Simple Membership</span></strong></p>
+<ul>
+<li><span style="font-size: 14pt; color: #000000;">It was introduced in Aug 2012 and WebMatrix.</span></li>
+<li><span style="font-size: 14pt; color: #000000;">Advantages of SimpleMembership over classic Membership is :in simple membership, it is easier to customize user profiles.&nbsp;</span></li>
+<li><span style="font-size: 14pt; color: #000000;">Has all features of the above two methods, but it<strong><span style="color: #2dc26b;"> doesn't work with other databases like Mysql and No SQL. </span></strong>Also, <strong><span style="color: #2dc26b;">OWIN support doesn't exists.</span></strong></span></li>
+<li><span style="font-size: 14pt; color: #000000;"><strong>It doesn't works with external authentication providers like Facebook, Gmail, Twitter etc.</strong></span></li>
+</ul>
+<p><span style="font-size: 14pt; color: #000000;">All of these above only works with <span style="color: #e03e2d;">Form Authentication</span> and<strong><span style="color: #e03e2d;"> IIS Integrated Authentication</span></strong>, <span style="color: #3598db;"><strong>SQL Server Environment</strong></span>, <span style="color: #b96ad9;"><strong>Dependency on System.Web</strong></span>.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 14pt; color: #000000;">As the internet is evolving day by day and people are comfortable with social media identity to log in to various services instead of managing separate credentials for every service. So Microsoft developed ASp.Net Identity System.</span></p>
+<p><span style="font-size: 24pt; color: #000000;">Asp.Net Identity</span></p>
+<p><span style="font-size: 14pt; color: #000000;">Asp.Net Identity is newly designed and built from scratch addressing all of above problems.So, It is designed to make it the next single Identity system to work accross systems like MVC, WebForms, WebPages(WebMatrix), Web API, SignalR, SmartPhone,Hybrid System, Social Credential etc.</span></p>
+<p><span style="font-size: 14pt; color: #000000;">Has two version : Asp.Net Identity V1 (2013 ) , Asp.Net Identity V2 (2014)</span></p>
+<p><span style="font-size: 14pt; color: #000000;">Features:</span></p>
+<ul>
+<li><span style="font-size: 14pt; color: #000000;">Fully Support OWIN</span></li>
+<li><span style="font-size: 14pt; color: #000000;">Works well with External Login Providers or OAuth Providers through middleware components. </span></li>
+<li><span style="font-size: 14pt; color: #000000;">Works across applications, Phone, MVC, WebForms, Hybrid-app, etc. </span></li>
+<li><span style="font-size: 14pt; color: #000000;">Supports Role based and more powerful Claims Based Identity system.</span></li>
+<li><span style="font-size: 14pt; color: #000000;">Works from MVC 5</span></li>
+<li><span style="font-size: 14pt; color: #000000;"><strong><span style="color: #e03e2d;">Provides persistence with Entity Framework Code-First</span></strong>, <strong><span style="color: #2dc26b;">thus it will support all databases that supports EF. </span></strong></span></li>
+</ul>
+<p><span style="font-size: 14pt; color: #000000;">In visual studio 2013, we donot have form authentication but instead we have Individual Authentication for ASp.Net MVC 5 Project .So this Individual Authentication is ASP.NET IDENTITY. Asp.Net Identity is part of all Web project template from Visual Studio 2013. </span></p>
+<p><span style="font-size: 14pt; color: #000000;"><img src="https://i.stack.imgur.com/TP1Mt.png" /></span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 14pt; color: #000000;">Note: Currently in Office, I am using Custom FormsAuthentication.So in this case I am neither using Membership nor Identity.</span></p>
+<p>&nbsp;</p>
+<ul>
+<li><span style="color: #000000;"><strong><span style="font-size: 24pt;">What is OWIN (Open Web Interface for .Net. ) ?</span></strong></span><br /><span style="color: #000000;"><span style="font-size: 14pt;">ASP.NET was always<strong><span style="color: #169179;"> tightly integrated with IIS.</span></strong> </span></span></li>
+<li><span style="color: #000000;"><span style="font-size: 14pt;">It was quite difficult to run .NET web apps outside IIS. </span></span></li>
+<li><span style="color: #000000;"><span style="font-size: 14pt;">The reason for OWIN was to provide a modular and extensible HTTP server pipeline that would be able to run without IIS dependencies. </span></span></li>
+<li><span style="color: #000000;"><span style="font-size: 14pt;">This allows e.g. self-hosting ASP.NET Web API or SignalR applications in Windows Service and other interesting scenarios.</span><span style="font-size: 14pt;">OWIN Security is a set of middlewares which handle the authentication.</span></span></li>
+</ul>
+</body>
+</html>

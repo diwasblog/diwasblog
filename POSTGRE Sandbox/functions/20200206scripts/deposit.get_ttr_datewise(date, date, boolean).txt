@@ -1,0 +1,84 @@
+-- FUNCTION: deposit.get_ttr_datewise(date, date, boolean)
+
+-- DROP FUNCTION deposit.get_ttr_datewise(date, date, boolean);
+
+CREATE OR REPLACE FUNCTION deposit.get_ttr_datewise(
+	from_ date,
+	to_ date,
+	above_only_ boolean)
+    RETURNS TABLE(sn integer, tran_date text, customer_name text, contact_number text, account_number text, amount money, tran_type text, description text) 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+BEGIN
+	CREATE TEMP TABLE _t(
+	sn serial,
+	trans_date date,
+	tran_date text,
+	account_number_id bigint,
+	customer_name text,
+	contact_number text,
+	account_number text,	
+	amount money,
+	tran_type text,
+	description text
+	) ON COMMIT DROP;
+
+	
+	IF above_only_ = FALSE THEN
+	
+	INSERT INTO _t(trans_date, account_number_id, customer_name, contact_number, account_number, tran_type, amount )
+	SELECT t.tran_date, tr.account_number_id, a.customer_name, a.contact_number, a.account_number, 'Deposit',SUM(COALESCE(tr.credit,'0')) FROM transactions.transaction_detailstr
+	INNER JOIN transactions.transactions t ON tr.tran_id = t.tran_id
+	INNER JOIN deposit.account_holders_view a ON tr.account_number_id = a.account_number_id
+	WHERE t.tran_date BETWEEN from_  AND to_
+	AND t.verification_status_id>0
+	AND tr.source_detail_id IS NULL
+	GROUP BY t.tran_date, tr.account_nuMber_id, a.customer_name, a.contact_number,a.account_number
+	HAVING SUM(COALESCE(tr.credit,'0'))>='1000000'
+	UNION ALL
+	SELECT t.tran_date, tr.account_number_id, a.customer_name, a.contact_number, a.account_number, 'Withdrawal',SUM(COALESCE(tr.debit,'0')) FROM transactions.transaction_detailstr
+	INNER JOIN transactions.transactions t ON tr.tran_id = t.tran_id
+	INNER JOIN deposit.account_holders_view a ON tr.account_number_id = a.account_number_id
+	WHERE t.tran_date BETWEEN from_  AND to_
+	AND t.verification_status_id>0
+	AND tr.source_detail_id IS NULL
+	GROUP BY t.tran_date, tr.account_nuMber_id, a.customer_name, a.contact_number,a.account_number
+	HAVING SUM(COALESCE(tr.debit,'0'))>='1000000'
+	UNION ALL
+	SELECT t.tran_date, tr.loan_id, a.customer_name, a.contact_number, a.loan_account_number, 'LoanReturn',SUM(COALESCE(tr.credit,'0')) FROM transactions.transaction_detailstr
+	INNER JOIN transactions.transactions t ON tr.tran_id = t.tran_id
+	INNER JOIN loan.loan_grant_view a ON tr.loan_id = a.loan_id
+	WHERE t.tran_date BETWEEN from_  AND to_
+	AND t.verification_status_id>0
+	GROUP BY t.tran_date, tr.loan_id, a.customer_name, a.contact_number,a.loan_account_number
+	HAVING SUM(COALESCE(tr.credit,'0'))>='1000000';
+	
+	ELSE
+	INSERT INTO _t(trans_date, account_number_id, customer_name, contact_number, account_number, amount, tran_type, description )
+	SELECT t.tran_date, tr.account_number_id, a.customer_name, a.contact_number, a.account_number, 'Deposit',COALESCE(tr.credit,'0'), s.detail FROM transactions.transaction_detailstr
+INNER JOIN transactions.transactions t ON tr.tran_id = t.tran_id
+INNER JOIN deposit.account_holders_view a ON tr.account_number_id = a.account_number_id
+INNER JOIN deposit.source_details s ON tr.source_detail_id = s.source_detail_id
+WHERE t.tran_date BETWEEN from_ AND to_
+AND t.verification_status_id>0
+AND tr.source_detail_id IS NOT NULL	;
+
+	END IF;
+
+	INSERT INTO _t(customer_name,  amount) 
+	SELECT '		Total', SUM(COALESCE(_t.amount, '0')) FROM _t;
+	
+	UPDATE _t SET tran_date = d.date_in_bs
+	FROM core.date_conversion d 
+	WHERE _t.trans_date = d.date_in_ad;
+
+	RETURN QUERY(SELECT _t.sn,_t.tran_date, _t.customer_name, _t.contact_number, _t.account_number, _t.amount, _t.tran_type,_t.description FROM _t ORDER BY _t.sn);
+END
+$BODY$;
+
+ALTER FUNCTION deposit.get_ttr_datewise(date, date, boolean)
+    OWNER TO postgres;

@@ -1,0 +1,110 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+
+<!--Explaination-->
+<p>Component is reusable Vue instance.They accept the same options as&nbsp;<code>new Vue</code>, such as&nbsp;<code>data</code>,&nbsp;<code>computed</code>,&nbsp;<code>watch</code>,&nbsp;<code>methods</code>, and lifecycle hooks. The only exceptions are a few root-specific options like&nbsp;<code>el</code>.</p>
+<p><span style="color: #ff0000;">Data Must be Function</span></p>
+<p>&nbsp;You may have noticed that&nbsp;<code>data&nbsp;</code>wasn&rsquo;t directly provided an object, like this:</p>
+<figure class="highlight js">
+<table>
+<tbody>
+<tr>
+<td class="code">
+<pre><span class="line">data: {</span><br /><span class="line">  count: <span class="number">0</span></span><br /><span class="line">}</span></pre>
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p>Instead,&nbsp;<strong>a component&rsquo;s&nbsp;<code>data</code>&nbsp;option must be a function</strong>, so that each instance can maintain an independent copy of the returned data object:</p>
+<figure class="highlight js">
+<table>
+<tbody>
+<tr>
+<td class="code">
+<pre><span class="line">data: <span class="function"><span class="keyword">function</span> () </span>{</span><br /><span class="line">  <span class="keyword">return</span> {</span><br /><span class="line">    count: <span class="number">0</span></span><br /><span class="line">  }</span><br /><span class="line">}</span></pre>
+</td>
+</tr>
+</tbody>
+</table>
+</figure>
+<p>If Vue didn&rsquo;t have this rule, clicking on one button would affect the data of&nbsp;<em>all other instances</em>, like below:</p>
+
+
+<p style="text-align: center;"><span style="color: #ff0000; font-size: 14pt;"><strong>Example</strong></span></p>
+<!--########################Main Code######################################-->
+
+<div id = "component_test1">
+  <testcomponent></testcomponent>
+</div>
+
+<div id = "component_test2">
+  <testcomponent></testcomponent>
+</div>
+
+<script type = "text/javascript" src = "js/vue_component.js"></script>
+
+
+<!--##############################################################-->
+
+
+<!--|#########################DISPLAY############################################-->
+<?prettify linenums=1?>
+<xmp class="prettyprint"
+   >
+
+   <html>
+      <head>
+         <title>Using This</title>
+      </head>
+      <body>
+      
+        <div id = "component_test1">
+          <testcomponent></testcomponent>
+        </div>
+        
+        <div id = "component_test2">
+          <testcomponent></testcomponent>
+        </div>
+        
+        <script type = "text/javascript" src = "js/vue_component.js"></script>
+
+      </body>
+   </html>
+</xmp>
+
+<p><span style="font-size: 12pt;"><strong><span style="color: #ff0000;">vue_component.js</span></strong></span></p>
+
+<xmp class="prettyprint"
+   >
+   Vue.component('testcomponent',{
+    data:function(){
+    return {
+        status:'Critical'
+    }
+  },
+     template : '<div><h1>This is coming from component and Status is:{{status}}</h1></div>'
+  });
+  var vm = new Vue({
+     el: '#component_test1'
+  });
+  var vm1 = new Vue({
+     el: '#component_test2'
+  });
+</xmp>

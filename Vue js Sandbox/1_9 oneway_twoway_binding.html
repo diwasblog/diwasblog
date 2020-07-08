@@ -1,0 +1,96 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+
+<!--Explaination-->
+<table style="width: 100.63%; border-collapse: collapse; height: 165px;" border="1">
+    <tbody>
+    <tr style="height: 49px;">
+    <td style="width: 50%; height: 49px;"><span style="font-size: 14pt;"><strong><span style="color: #ff0000;">One Way Data Binding</span></strong></span></td>
+    <td style="width: 50%; height: 49px;"><span style="font-size: 14pt;"><strong><span style="color: #ff0000;">Two Way Data Binding</span></strong></span></td>
+    </tr>
+    <tr style="height: 67px;">
+    <td style="width: 50%; height: 67px;">Data flows only from object to UI and not vice versa</td>
+    <td style="width: 50%; height: 67px;">Data Flow in both direction becoz data schronization occur here. We use v-model for this.</td>
+    </tr>
+    <tr style="height: 49px;">
+    <td style="width: 50%; height: 49px;">The UI binded with the object having property;when the object value changes .It will be reflected on UI, no update in object property.</td>
+    <td style="width: 50%; height: 49px;">Here , any change in object is reflected to UI and any change in UI is reflected in object.</td>
+    </tr>
+    </tbody>
+    </table>
+    <br>
+    <p style="text-align: center;"><span style="font-size: 14pt;"><strong><span style="color: #ff0000;">Example</span></strong></span></p>
+<!--########################Main Code######################################-->
+<div id='app'>
+  <div><b>One Way binding</b> <input type="text" :value="name"></div>
+
+  <h4><b>One Way binding as Text</b> {{name}}</h4>
+
+  <div><b>Two way binding:</b> <input type="text" v-model="name"></div>
+</div>
+
+<script>
+const app=new Vue({
+    el:'#app',
+    data:{
+      name:'Diwas',
+    }
+    
+});
+</script>
+<!--##############################################################-->
+
+
+<!--|#########################DISPLAY############################################-->
+<?prettify linenums=1?>
+<xmp class="prettyprint"
+   >
+
+   <html>
+      <head>
+         <title>Using This</title>
+      </head>
+      <body>
+
+        <div id='app'>
+          <div><b>One Way binding</b> <input type="text" :value="name"></div>
+        
+          <h4><b>One Way binding as Text</b> {{name}}</h4>
+        
+          <div><b>Two way binding:</b> <input type="text" v-model="name"></div>
+        </div>
+        
+        <script>
+        const app=new Vue({
+            el:'#app',
+            data:{
+              name:'Diwas',
+            }
+            
+        });
+        </script>
+      </body>
+   </html>
+</xmp>
+<!--####################################################-->
+
+
+    </body>
+
+</html>

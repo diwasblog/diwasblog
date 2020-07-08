@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<script
+    src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+<!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+
+<style>
+    xmp.prettyprint {
+        font-size: 12pt;
+        font-family: monospace;
+    }
+</style>
+</head>
+
+<body>
+    <xmp class="prettyprint">
+        <h5 id="task-title" class="main-class-content">Hello world</h5>
+    </xmp>
+
+    <xmp class="prettyprint">
+        console.log(document.getElementById('task-title'));
+        // <h5 id="task-title" class="main-class-content">Hello world</h5>
+    </xmp>
+
+    <xmp class="prettyprint">
+        console.log(document.getElementById('task-title').id);
+        // main-content
+    </xmp>
+
+
+
+    <xmp class="prettyprint">
+        console.log(document.getElementById('task-title').className);
+        // task-title
+    </xmp>
+
+    <h2>Styling</h2>
+    <xmp class="prettyprint">
+        document.getElementById('task-title').style.background ='#fff';
+        document.getElementById('task-title').style.color ='#fff';
+        document.getElementById('task-title').style.padding ='5px';
+        document.getElementById('task-title').style.display ='none';
+    </xmp>
+
+    <h2>Change Content</h2>
+    <xmp class="prettyprint">
+        document.getElementById('task-title').textContent ='Hello Diwas';
+        document.getElementById('task-title').innerText ='Hello Diwas';
+        document.getElementById('task-title').innerHTML ='<span style="color:red">Helllllo world</span>';
+    </xmp>
+
+    <h2>QuerySelector</h2>
+    <xmp class="prettyprint">
+        console.log( document.querySelector('#task-title'))
+        console.log( document.querySelector('.main-class-content'))
+        console.log( document.querySelector('h5'))
+        document.querySelector('#task-title').style.color= 'red'
+        document.querySelector('ul li').style.color= 'red'
+        document.querySelector('li:last-child').style.color= 'red'
+    </xmp>
+</body>
+
+</html>

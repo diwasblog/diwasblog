@@ -1,0 +1,105 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+    font-size:12pt;
+    font-family:monospace;
+
+}
+</style>
+ 
+</head>
+<body>
+
+
+<h1><span style="background-color: rgb(255, 0, 255);">Computed Properties&nbsp;</span><br></h1><p><span style="font-size: 18px; color: rgb(0, 0, 0);"><b><em><span style="font-size: 24px;">Computed properties</span></em><span style="font-size: 24px;">&nbsp;can be used to do quick calculations of properties that are displayed in the view. These calculations will be cached and will only update when needed.</span></b></span></p>
+
+<div class="row">
+  <div class="col-lg-6">
+    <xmp class="prettyprint">
+        data: {
+          results: [{ name: 'English', marks: 70 },
+                    { name: 'Math', marks: 80 },
+                    { name: 'History', marks: 90 }
+                    ],
+                },
+    </xmp>
+    </div>
+
+    <div class="col-lg-6">
+        <xmp class="prettyprint">
+            computed: {
+              totalMarks: function () {
+                  let total = 0;
+                  for (let i = 0; i < this.results.length; i++) {
+                      total += parseInt(this.results[i].marks);
+                  }
+                  return total;
+              }
+          },
+          </xmp>
+    </div>
+</div>
+
+Then using this as :
+<xmp class="prettyprint">
+    <span>
+        Total marks are: {{ totalMarks }}
+    </span>
+</xmp>
+
+
+<h2>Output</h2>
+Total marks are : 240
+===========================================================================================================
+<br>
+<h2>Achieving Same with Function</h2>
+<xmp class="prettyprint">
+    <span>
+        Total marks are: {{ totalMarks() }}
+    </span>
+</xmp>
+
+<xmp class="prettyprint">
+  methods:{
+    <xmp class="prettyprint">
+          totalMarks: function () {
+              let total = 0;
+              for (let i = 0; i < this.results.length; i++) {
+                  total += parseInt(this.results[i].marks);
+              }
+              return total;
+          }
+      </xmp>
+  }
+</xmp>
+
+
+<h2>Output</h2>
+Total marks are : 240
+
+<br>
+==========================================================================================
+
+<br>
+<h2 style="color:red">Both gives same result then whats the difference between Method and Computed?</h2>
+
+<p><span style="font-size:28px">Main difference is performance hits.Using this(Method ways) syntax, the <span style="color:#8e44ad">totalMarks() </span>method gets executed every time the page renders (ie: with every change).</span></p>
+
+<p><span style="font-size:28px">If instead we had a computed property, Vue remembers the values that the computed property is dependent on (ex: In the previous example, that would be results). By doing so, Vue can calculate the values only if the dependency changes. Otherwise, the previously cached values will be returned.</span></p>
+
+<p><span style="font-size:28px">Because of this, the function must be a pure function. It can&rsquo;t have side-effects. The output must only be dependent on the values passed into the function.</span></p>
+
+
+
+
+https://codingexplained.com/coding/front-end/vue-js/optimizing-performance-computed-properties
+==================================================================================
+</body>
+</html>

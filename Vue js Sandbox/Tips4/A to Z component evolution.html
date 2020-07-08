@@ -1,0 +1,496 @@
+<html>
+  <head>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+      crossorigin="anonymous"
+    />
+    <script src="https://unpkg.com/vue"></script>
+
+    <style>
+      xmp.prettyprint {
+        font-size: 12pt;
+        font-family: "Consolas, 'Courier New', monospace";
+      }
+    </style>
+  </head>
+
+  <body>
+    <hr />
+    <hr />
+    <h2>Local Ways of Component Declaration</h2>
+    <h4>
+      Here in local component we hold a component with variable name as shown
+      below
+    </h4>
+    <div class="row">
+      <div class="col-lg-6">
+        <h4>Ways 1</h4>
+        <xmp class="prettyprint">
+                <div id="app">
+                    <user-component></user-component>
+                </div>
+
+                <script>
+                    const user = { //Defining variable for component
+                        template: '<aside>Sidebar Hero</aside>'
+                    }
+
+                    new Vue({
+                        el: '#app',
+                        components: {
+                            "user-component": user
+                        }
+                    })
+
+                </script>
+
+            </xmp>
+      </div>
+      <div class="col-lg-6">
+        <h4>Ways 2</h4>
+        <xmp class="prettyprint">
+                <div id="app">
+                    <usercomponent></usercomponent>
+                </div>
+
+                <script>
+                    const usercomponent = { //Defining variable for component
+                        template: '<aside>Sidebar Hero</aside>'
+                    }
+
+                    new Vue({
+                        el: '#app',
+                        components: {
+                            usercomponent
+                        }
+                    })
+                </script>
+            </xmp>
+      </div>
+    </div>
+    <img src="https://i.ibb.co/MnTkh0N/steps.jpg" />
+    <hr />
+    <hr />
+    <div class="row">
+      <div class="col-lg-6">
+        <h4>Ways 3</h4>
+        <xmp class="prettyprint">
+                <div id="app">
+                    <user-component></user-component>
+                </div>
+
+                <script>
+                    const userComponent = { //Defining variable for component
+                        template: '<aside>Sidebar Hero</aside>'
+                    }
+
+                    new Vue({
+                        el: '#app',
+                        components: {
+                            "user-component": userComponent
+                        }
+                    })
+                </script>
+
+            </xmp>
+      </div>
+      <div class="col-lg-6">
+        <h4>Ways 4</h4>
+        <xmp class="prettyprint">
+                <div id="app">
+                    <User></User>
+                    <!-- Works because here first letter capital -->
+                </div>
+
+                <script>
+                    new Vue({
+                        el: '#app',
+                        components: {
+                            "User": user
+                        }
+                    })
+                </script>
+            </xmp>
+      </div>
+    </div>
+
+    <h2>Passsing value in local component</h2>
+    <div class="row">
+      <div class="col-lg-6">
+        <xmp class="prettyprint">
+                <div id="app">
+                    <usercomponent test="hello"></usercomponent>
+                </div>
+
+                const usercomponent = { //Defining variable for component
+                props: ["test"],
+                template: `<aside>Sidebar Hero {{test}}</aside>`
+                }
+
+                new Vue({
+                el: '#app',
+                components:{
+                usercomponent
+                }
+                })
+
+            </xmp>
+      </div>
+      <div class="col-lg-6">
+        <xmp class="prettyprint">
+                Note one things:
+                <usercomponent></usercomponent> // we can do this
+                <userComponent></userComponent> // we can do this
+                <user-component></user-component> // we can do this
+                <UserComponent></UserComponent> //we cannot do this
+                <User></User> //we can do this
+
+                Which means component inside html parts only support camelcase.
+
+            </xmp>
+      </div>
+    </div>
+    <br />
+    <hr />
+    <h2>Global Ways of Component Declaration ( using as Vue.component() )</h2>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <h4>Ways 1</h4>
+        <xmp class="prettyprint">
+                <div id="app">
+                    <user-name name="Flavio"></user-name>
+                </div>
+
+                <script>
+                    Vue.component('user-name', {
+                        //  different is 'user-name' 
+                        props: ['name'],
+                        template: '<p>Hi {{ name }}</p>'
+                    })
+
+                    new Vue({
+                        el: '#app'
+                    })
+                </script>
+
+            </xmp>
+      </div>
+      <div class="col-lg-6">
+        <h4>Ways 2</h4>
+        <xmp class="prettyprint">
+                <div id="app">
+                    <user-name name="Flavio"></user-name>
+                </div>
+
+                <script>
+                    Vue.component('UserName', {
+                        // different is userName 
+                        props: ['name'],
+                        template: '<p>Hi {{ name }}</p>'
+                    })
+
+                    new Vue({
+                        el: '#app'
+                    })
+                </script>
+            </xmp>
+      </div>
+    </div>
+
+    <h3>
+      Y<span style="color: #000000;"
+        >ou can use any of this
+        <span style="color: #e03e2d;">UserName<strong>&nbsp;</strong></span
+        >or<span style="color: #e03e2d;"><strong> user-name</strong></span
+        >&nbsp; in component name ie.
+        <span style="color: #2dc26b;"
+          >Vue.component('componentname',{ ... } )</span
+        ></span
+      >
+    </h3>
+    <h3>
+      <span style="color: #000000;"
+        >But prefered ways is
+        <span style="color: #2dc26b;"><strong>UserName </strong></span>in
+        <span style="color: #2dc26b;"><strong>JS</strong> </span>and
+        <span style="color: #2dc26b;"><strong>user-name</strong></span> in a
+        <span style="color: #2dc26b;"><strong>template</strong></span
+        >.</span
+      >
+    </h3>
+    <p>&nbsp;</p>
+    <h3>
+      <span style="color: #000000;"
+        >Any component created using
+        <strong><span style="color: #e03e2d;">Vue.component()</span></strong> is
+        globally registered. You don't need to</span
+      ><br /><span style="color: #000000;"
+        >assign it to a variable like show below.</span
+      >
+    </h3>
+
+    ======================================================
+    <hr />
+    <h2>Defining Globally creating separate file</h2>
+    <div class="row">
+      <div class="col-lg-6">
+        <xmp class="prettyprint">
+                // userComponent.vue
+
+                <template>
+                    <!-- html goes here -->
+                </template>
+
+                <script>
+                    export default {
+                        data() {
+                            return {
+                                // count: 0
+                            };
+                        }
+                    };
+                </script>
+
+                <style scoped>
+                    /* style goes here */
+                </style>
+            </xmp>
+        Data in component is <b style="color:red">function</b> and always
+        <b style="color:red"> return object</b>
+      </div>
+      <div class="col-lg-6">
+        <xmp class="prettyprint">
+
+                <template>
+                    <UserComponent></UserComponent>
+                </template>
+
+                import UserComponent from './userComponent'
+
+                export default {
+                el: '#app',
+                components: {
+                UserComponent
+                }
+                }
+
+                3F405A
+            </xmp>
+      </div>
+    </div>
+    <hr />
+    <xmp class="prettyprint"
+>
+        Your can create :
+        UserComponent.vue file or
+        userComponent.vue file or
+        user-component.vue file
+    </xmp>
+
+    <br />
+    <hr />
+    <hr />
+    <h2>Creating Static Component with no message passing</h2>
+    <div class="row">
+      <div class="col-lg-6">
+        <xmp class="prettyprint">
+                // EmployeeTable.vue
+
+                <template>
+                    <div id="employee-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Employee name</th>
+                                    <th>Employee email</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Richard Hendricks</td>
+                                    <td>richard@piedpiper.com</td>
+                                </tr>
+                                <tr>
+                                    <td>Bertram Gilfoyle</td>
+                                    <td>gilfoyle@piedpiper.com</td>
+                                </tr>
+                                <tr>
+                                    <td>Dinesh Chugtai</td>
+                                    <td>dinesh@piedpiper.com</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </template>
+
+                <script>
+                    export default {
+                        name: 'employee-table',
+                    }
+                </script>
+
+                <style scoped></style>
+            </xmp>
+      </div>
+      <div class="col-lg-6">
+        <xmp class="prettyprint">
+                <!-- Using that component -->
+                <template>
+                    <div id="app" class="small-container">
+                        <h1>Employees</h1>
+
+                        <employee-table />
+                    </div>
+                </template>
+
+                <script>
+                    import EmployeeTable from '@/components/EmployeeTable.vue'
+
+                    export default {
+                        name: 'app',
+                        components: {
+                            EmployeeTable,
+                        },
+                    }
+                </script>
+
+                <style>
+                    button {
+                        background: #009435;
+                        border: 1px solid #009435;
+                    }
+
+                    .small-container {
+                        max-width: 680px;
+                    }
+                </style>
+            </xmp>
+      </div>
+      In Vue, the convention is that the <b style="color:red">filename</b> and
+      <b style="color:red">import</b> will be in <b>PascalCase</b>, such as
+      <b>EmployeeTable</b>, but when used in a template, this will translate to
+      kebab-case, <b style="color:red">&lt;/employee-table></b>. This uses the
+      proper conventions for JavaScript and HTML respectively.
+    </div>
+
+    <br />
+    <hr />
+
+    <h2>Creating Dynamic Component with dynamic message passing</h2>
+    <div class="row">
+      <div class="col-lg-6">
+        <xmp class="prettyprint">
+                // EmployeeTable.vue
+
+                <template>
+                    <div id="employee-table">
+                        <table>
+                            <!-- ...thead... -->
+                            <tbody>
+                                <tr v-for="employee in employees" :key="employee.id">
+                                    <td>{{ employee.name }}</td>
+                                    <td>{{ employee.email }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </template>
+
+                <script>
+                    export default {
+                        name: 'employee-table',
+                        props: {
+                            employees: Array,
+                        }, 
+                        // or props: [ 'employees' ]
+                    }
+                </script>
+
+                <style scoped></style>
+            </xmp>
+      </div>
+      <div class="col-lg-6">
+        <xmp class="prettyprint">
+                <!-- Using that component -->
+
+                <template>
+                    <div id="app" class="small-container">
+                        <h1>Employees</h1>
+
+                        <!-- Passing	props	to	the	component -->
+                        <employee-table :employees="employeesList" />
+                    </div>
+                </template>
+
+                <script>
+
+                import EmployeeTable from '@/components/EmployeeTable.vue'
+
+                export default {
+                    name: 'app',
+                        components: {
+                             EmployeeTable,
+                         },
+                     data() {
+                        return {
+                             employeesList: [
+                                {
+                                    id: 1,
+                                    name: 'Richard Hendricks',
+                                     email: 'richard@piedpiper.com',
+                                },
+                                {
+                                    id: 2,
+                                    name: 'Bertram Gilfoyle',
+                                    email: 'gilfoyle@piedpiper.com',
+                                },
+                                {
+                                    id: 3,
+                                    name: 'Dinesh Chugtai',
+                                     email: 'dinesh@piedpiper.com',
+                                },
+                            ],
+                        }
+                },
+                }
+                </script>
+            </xmp>
+      </div>
+      <b>Prop names</b> should always use <b>camelCase</b> during declaration,
+      but <b>kebab-case</b> in <b>templates</b>
+      Following : Javascript : camelCase Html : kebab-case
+    </div>
+
+    <hr />
+    <h2>Can use ternary operator like this below:</h2>
+    <div class="row">
+      <div class="col-lg-6">
+        <xmp class="prettyprint">
+                <template>	
+                        <ComponentName	:colored="color	==	'white'	?	true	:	false"	/> 
+                    </template>
+                <script> 
+                
+                 export	default
+                 	{		
+                        data:	function()
+                            {				
+                                    return	{						
+                                        color:	'white'				
+                                        }		
+                                    },		
+                            } 
+                </script>
+
+            </xmp>
+      </div>
+    </div>
+
+    <h2>https://reactgo.com/vue-router-nested-routes/</h2>
+  </body>
+</html>

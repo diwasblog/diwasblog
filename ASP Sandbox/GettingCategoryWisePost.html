@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/b">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+
+<pre>
+  <code class="language-csharp">
+      // @nuget: HtmlAgilityPack
+
+using System;
+using System.Xml;
+using HtmlAgilityPack;using System;
+using System.Collections.Generic;
+					
+public class Program
+{
+	public static void Main()
+	{
+		var s=new List<Category>();
+  			s.Add(new Category{Id=1,Name="Cat1"});
+  			s.Add(new Category{Id=2,Name="Cat2"});
+			s.Add(new Category{Id=3,Name="Cat3"});
+		
+		var ss=new List<Post>();
+		 ss.Add(new Post{Id=1,Name="Diwas",CategoryId=1});
+		ss.Add(new Post{Id=2,Name="Hari",CategoryId=2});
+		ss.Add(new Post{Id=3,Name="Ram",CategoryId=3});
+		ss.Add(new Post{Id=4,Name="Shyam",CategoryId=1});
+		
+		foreach(var item in s)
+		{
+			Console.WriteLine("===================================Category:"+item.Name+"=================================");
+			foreach(var items in ss)
+			{
+				if (item.Id==items.CategoryId)
+				{
+					Console.WriteLine(items.Name);	
+				}
+			}
+			
+		}
+	}
+}
+
+public class Category
+{
+	public int Id{get;set;}
+	public string Name{get;set;}
+}
+
+public class Post
+{
+	public int Id{get;set;}
+	public string Name{get;set;}
+	public int CategoryId{get;set;}
+} 
+  </code>
+</pre>
+
+<h2>Output</h2>
+<pre>
+  <code class="language-csharp">
+      ===================================Category:Cat1=================================
+      Diwas
+      Shyam
+      ===================================Category:Cat2=================================
+      Hari
+      ===================================Category:Cat3=================================
+      Ram
+  </code>
+</pre>
+
+
+      <script src="js/prism.js"></script>
+      <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+          {
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true,
+            // 'break-lines': 10,
+            // 'indent': 2,
+            // 'remove-initial-line-feed': false,
+            // 'tabs-to-spaces': 4,
+            // 'spaces-to-tabs': 4
+          });
+      </script>
+      </body>
+      </html>
+      

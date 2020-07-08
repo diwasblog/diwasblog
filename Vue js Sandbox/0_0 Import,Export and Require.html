@@ -1,0 +1,356 @@
+<html>
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+
+<!--Explaination-->
+
+<!--########################Main Code######################################-->
+
+<!--##############################################################-->
+
+<!--|#########################DISPLAY############################################-->
+
+
+<h2>Note :import will automatically converted to require internally</h2>
+
+======================================================================================
+<div class="row">
+
+        <div class=" col-sm-6 ">
+        <xmp class="prettyprint">
+      //lib.js
+      function add(x,y){
+        return x+y;
+      }
+      
+      module.exports={
+        add:add,
+      }
+
+
+      //main.js
+      var add=require('lib').add;
+      console.log(add(1,2));
+        </xmp>
+        </div>
+        
+        
+        <div class="col-sm-6">
+        <xmp class="prettyprint">
+      //lib.js
+      export function add(x,y){
+        return x+y;
+      }
+
+
+      //main.js
+      import {add} from 'lib';
+      console.log(add(1,2));
+        </xmp>
+        </div>
+        </div>
+
+<p><span style="font-size: 18pt;"><strong><span style="color: #ff00ff; font-family: 'comic sans ms', sans-serif;">There are 4 types of exports.</span></strong></span></p>
+<p><span style="font-size: 14pt;"><strong>1)Named exports (several per module)</strong></span></p>
+<p><span style="font-size: 14pt;"><strong>2)Default exports (One per module)</strong></span></p>
+<p><span style="font-size: 14pt;"><strong>3)Mixed named and Default exports</strong></span></p>
+<p><span style="font-size: 14pt;"><strong>4)Cyclical Dependencies</strong></span></p>
+<p>&nbsp;</p>
+
+
+<h2>Named exports</h2>
+You can call just the exports you need from a specific module.
+These exports are distinguished by their names and are called named exports.
+Name Type will be in {}
+  <div class="row">
+
+  <div class=" col-sm-6 ">
+  <xmp class="prettyprint">
+        //------ main.js ------
+      import { square, diag } from 'lib';
+      console.log(square(11)); // 121
+      console.log(diag(4, 3)); // 5
+
+      OR
+      //------ main.js ------
+      import * as lib from 'lib';
+      console.log(lib.square(11)); // 121
+      console.log(lib.diag(4, 3)); // 5
+        </xmp>
+        </div>
+        
+        
+        <div class="col-sm-6">
+        <xmp class="prettyprint">
+      //------ lib.js ------
+      export const sqrt = Math.sqrt;
+      export function square(x) {
+          return x * x;
+      }
+      export function diag(x, y) {
+          return sqrt(square(x) + square(y));
+      }
+        </xmp>
+        </div>
+        </div>
+
+
+<h2>In old Style (ie in CommonJS)</h2>
+Name Type will be in {}
+  <div class="row">
+
+  <div class=" col-sm-6 ">
+  <xmp class="prettyprint">
+      //------ main.js ------
+        var square = require('lib').square;
+        var diag = require('lib').diag;
+        console.log(square(11)); // 121
+        console.log(diag(4, 3)); // 5
+        </xmp>
+        </div>
+        
+        
+        <div class="col-sm-6">
+        <xmp class="prettyprint">
+      //------ lib.js ------
+        var sqrt = Math.sqrt;
+        function square(x) {
+            return x * x;
+        }
+        function diag(x, y) {
+            return sqrt(square(x) + square(y));
+        }
+        module.exports = {
+            sqrt: sqrt,
+            square: square,
+            diag: diag,
+        };
+        </xmp>
+        </div>
+        </div>
+
+=================================================================
+<h2>Default Export(On per Module)</h2>
+The default means will import the default export.
+It often does not have a name. Instead, it is to be identified via its module’s name.
+<br>
+  <div class="row">
+
+  <div class=" col-sm-6 ">
+  <xmp class="prettyprint">
+       //------ main1.js ------
+    import myFunc from 'myFunc';
+    myFunc();
+        </xmp>
+        </div>
+        
+        
+        <div class="col-sm-6">
+        <xmp class="prettyprint">
+      //------ myFunc.js ------
+      export default function () { 
+         
+       };
+       //contain only one function/module in a .js file so we use default
+        </xmp>
+        </div>
+        </div>
+        <br>
+=======================================================================================
+<h2> Default In Class Level</h2>
+
+<br>
+  <div class="row">
+
+  <div class=" col-sm-6 ">
+  <xmp class="prettyprint">
+     //------ main2.js ------
+      import MyClass from 'MyClass';
+      let inst = new MyClass();
+        </xmp>
+        </div>
+        
+        
+        <div class="col-sm-6">
+        <xmp class="prettyprint">
+       //------ MyClass.js ------
+        export default class { ... };
+        </xmp>
+        </div>
+        </div>
+        <br>
+===============================================================================
+<br>
+<h2>Mixed Name and Default Export</h2>
+
+<br>
+  <div class="row">
+
+  <div class=" col-sm-6 ">
+  <xmp class="prettyprint">
+      //------ main.js ------
+    import _, { each } from 'underscore';
+        </xmp>
+        </div>
+        
+        
+        <div class="col-sm-6">
+        <xmp class="prettyprint">
+        //------ underscore.js ------
+      export default function (obj) {
+          ...
+      };
+      export function each(obj, iterator, context) {
+          ...
+      }
+      export { each as forEach };
+        </xmp>
+        </div>
+        </div>
+        <br>
+        ============================================================================
+        <br>
+  <div class="row">
+
+  <div class=" col-sm-6 ">
+  <xmp class="prettyprint">
+    // main.js
+      import { Lib } from 'lib';
+      export default class Main { 
+        // ....
+      }
+        </xmp>
+        </div>
+        
+        
+        <div class="col-sm-6">
+        <xmp class="prettyprint">
+       // lib.js
+      import Main from 'main';
+      var lib = {message: "This Is A Lib"};
+      export { lib as Lib };
+        </xmp>
+        </div>
+        </div>
+        <br>
+==========================================================================================
+        <br>
+  <div class="row">
+
+  <div class=" col-sm-6 ">
+   <h2>More on Importing</h2>
+  <xmp class="prettyprint">
+    // lib.js
+      // Default exports and named exports
+      import theDefault, { named1, named2 } from 'src/mylib';
+      import theDefault from 'src/mylib';
+      import { named1, named2 } from 'src/mylib';
+
+      // Renaming: import named1 as myNamed1
+      import { named1 as myNamed1, named2 } from 'src/mylib';
+
+      // Importing the module as an object
+      // (with one property per named export)
+      import * as mylib from 'src/mylib';
+
+      // Only load the module, don't import anything
+      import 'src/mylib';
+        </xmp>
+        </div>
+        
+        
+        <div class="col-sm-6">
+        <h2>More on Exporting</h2>
+        <xmp class="prettyprint">
+       export var myVar = ...;
+      export let myVar = ...;
+      export const MY_CONST = ...;
+
+      export function myFunc() {
+        ...
+      }
+      export function* myGeneratorFunc() {
+        ...
+      }
+      export class MyClass {
+        ...
+      }
+        </xmp>
+        </div>
+        </div>
+        <br>
+
+==========================================================================================
+        <br>
+        <h2>Tips</h2>
+// The default function should be the first to import (and named whatever)<br>
+  <div class="row">
+  <div class=" col-sm-12 ">
+  <xmp class="prettyprint">
+   import square, {divide} from './module_1.js'; // I named the default "square" first before named type {divide}
+  </xmp>
+  </div>
+  </div>
+  <br>
+  =============================================================
+  <br>
+  The default function must be first to import
+  <div class="row">
+  <div class=" col-sm-12 ">
+  <xmp class="prettyprint">
+   //error
+import {divide}, square from './module_1.js
+  </xmp>
+  </div>
+  </div>
+    <br>
+  =============================================================
+  <br>
+  divide_1 was not exported in module_1.js, thus nothing will be imported
+  <div class="row">
+  <div class=" col-sm-12 ">
+  <xmp class="prettyprint">
+//Error
+import {divide_1} from './module_1.js
+  </xmp>
+  </div>
+  </div>
+              
+       
+        </div>
+        <br>
+
+ ==========================================================================
+ <br>
+square was not exported in module_1.js, because {} tells the engine to explicitly search for named exports only.
+  <div class="row">
+  <div class=" col-sm-12 ">
+  <xmp class="prettyprint">
+//Error
+import {square} from './module_1.js
+  </xmp>
+  </div>
+  </div>
+              
+       
+        </div>
+        <br>       
+    </body>
+
+</html>

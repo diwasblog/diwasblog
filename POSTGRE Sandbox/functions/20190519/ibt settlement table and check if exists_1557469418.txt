@@ -1,0 +1,30 @@
+--DROP TABLE transactions.ibt_record
+CREATE TABLE transactions.ibt_record(id bigserial,
+									office_id int,
+									tran_date timestamp without time zone NOT NULL,
+									audit_user_id integer NOT NULL, 
+									audit_ts timestamp with time zone NOT NULL DEFAULT now(),
+    CONSTRAINT ibt_record_audit_user_id_fkey FOREIGN KEY (audit_user_id)
+        REFERENCES office.users (user_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION);
+									
+									
+
+CREATE OR REPLACE FUNCTION transactions.is_in_ibt_record(
+	office_id_ bigint, tran_date_ date)
+    RETURNS boolean
+    LANGUAGE 'plpgsql'
+	
+	    COST 100
+    STABLE 
+AS $BODY$
+BEGIN
+    IF EXISTS(SELECT office_id FROM transactions.ibt_record t 
+  			   WHERE office_id=office_id_ AND tran_date= tran_date_) THEN
+        RETURN true;
+    END IF;
+
+    RETURN false;
+END
+$BODY$;

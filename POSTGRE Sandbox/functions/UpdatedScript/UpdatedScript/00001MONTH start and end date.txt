@@ -1,0 +1,31 @@
+
+
+
+--DROP FUNCTION core.get_month_start_end(int, int)
+
+
+CREATE OR REPLACE FUNCTION core.get_month_start_end(bs_year_id_ int, bs_month_id_ int)
+    RETURNS TABLE(start_date character varying, end_date character varying)
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+AS $BODY$
+		DECLARE _start	date;
+		DECLARE _end	date;
+BEGIN
+
+	SELECT min(date_in_ad), MAX(date_in_ad) INTO _start, _end   FROM core.date_conversion WHERE bs_month_id = bs_month_id_
+	AND bs_year_id = bs_year_id_;
+
+--SELECT * FROM core.get_month_start_end(2076,4)
+
+
+	RETURN QUERY(SELECT core.date_bs_from_ad(_start),core.date_bs_from_ad(_end));
+	
+	
+	END
+	$BODY$;
+
+ALTER FUNCTION core.get_month_start_end(int, int)
+    OWNER TO postgres;

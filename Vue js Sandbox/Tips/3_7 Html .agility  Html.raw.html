@@ -1,0 +1,71 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+
+<!--Explaination-->
+
+<!--########################Main Code######################################-->
+
+<!--##############################################################-->
+
+
+<!--|#########################DISPLAY############################################-->
+
+<xmp class="prettyprint">
+  using HtmlAgilityPack;
+  </xmp>
+
+
+<xmp class="prettyprint"
+   >
+
+   var doc = new HtmlDocument();
+    //Load the html string here
+    doc.LoadHtml(@"<h2>This is an <emphasis type='bold'>important text</emphais></h2>");
+    //Get the content with out tags
+    var val = doc.DocumentNode.InnerText;
+    //Add the h2 tag back 
+    string finalresult = "<h2>" + val + "</h2>";
+ 
+</xmp>
+
+<xmp class="prettyprint">
+  output : This is an important text
+</xmp>
+================================================================================
+
+<h2>Html Raw</h2>
+Text output will generally be HTML encoded. Using Html.Raw allows you to output text containing html elements to the client, and have them still be rendered as such. Should be used with caution, as it exposes you to cross site scripting vulnerabilities.
+<xmp class="prettyprint">
+    @Html.Raw("<h2>Hello world</h2>");
+</xmp>
+OUtput:
+<h2>Hello world</h2>
+===============================
+<br>
+<strong>Example 2</strong>
+Can convert html encode string (&#33==!) to html
+<xmp class="prettyprint">
+    @Html.Raw("Hello &#33");
+</xmp>
+Output:
+Hello !
+
+</body>
+
+</html>

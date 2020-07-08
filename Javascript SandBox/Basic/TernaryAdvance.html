@@ -1,0 +1,77 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+    font-size:12pt;
+    font-family:monospace;
+
+}
+</style>
+ 
+</head>
+<body>
+
+
+    <div class="row">
+        <div class="col-lg-6">
+          <xmp class="prettyprint">
+              var func1 = function( .. ) {
+                if (condition1) { return value1 }
+                else { return value2 }
+              }
+          </xmp>
+        </div>
+    
+        <div class="col-lg-6">
+            <xmp class="prettyprint">
+                var func2 = function( .. ) {
+                  return condition1 ? value1 : value2
+                }
+            </xmp>
+        </div>
+      </div>
+======================================================================================================================
+
+  <div class="row">
+    <div class="col-lg-6">
+      <xmp class="prettyprint">
+        var func1 = function( .. ) {
+          if (condition1) { return value1 }
+          else if (condition2) { return value2 }
+          else if (condition3) { return value3 }
+          else { return value4 }
+        }
+      </xmp>
+    </div>
+
+    <div class="col-lg-6">
+        <xmp class="prettyprint">
+            var func2 = function( .. ) {
+              return condition1 ? value1
+                   : condition2 ? value2
+                   : condition3 ? value3
+                   :              value4
+            }
+        </xmp>
+    </div>
+  </div>
+
+  ===============================================================================================================
+  <xmp class="prettyprint">
+      function canDrinkAlcohol(age) {
+        return (age > 21) ? "True, over 21" : "False, under 21";
+      }
+      var output = canDrinkAlcohol(26);
+      console.log(output); // "True, over 21"
+  </xmp>
+
+
+</body>
+</html>

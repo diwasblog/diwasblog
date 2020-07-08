@@ -1,0 +1,298 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+    font-size:12pt;
+    font-family:monospace;
+
+}
+</style>
+ 
+</head>
+<body>
+
+<!--########################Main Code######################################-->
+
+
+<!--##############################################################-->
+
+
+<!--|#########################DISPLAY############################################-->
+
+
+<p style="text-align: center;"><span style="text-decoration: underline;"><em><strong><span style="font-size: 14pt; color: #ff0000; text-decoration: underline;">Repository</span></strong></em></span></p>
+
+
+
+
+
+<!--####################################################-->
+
+
+<xmp class="prettyprint">
+  public class LeaveTypeRepository
+  {
+      IAdoNetUnitOfWork _unitOfWork;
+
+      public LeaveTypeRepository(IUnitOfWork uow)
+      {
+          _unitOfWork = (IAdoNetUnitOfWork)uow;
+      }
+      public IEnumerable<LeaveType> GetALLLeaves()
+      {
+          using (var cmd = _unitOfWork.CreateCommand())
+          {
+              cmd.CommandText = "usp_Employee_SelectLeaveType";
+              cmd.CommandType = System.Data.CommandType.StoredProcedure;
+              using (var reader = cmd.ExecuteReader())
+              {
+                  List<LeaveType> list = new List<LeaveType>();
+                  while (reader.Read())
+                  {
+                      var obj = new LeaveType();
+                      obj.Name = reader["Name"].ToString();
+                      obj.Id = Int32.Parse(reader["Id"].ToString());
+                      list.Add(obj);
+                  }
+                  return list;
+              }
+          }
+      }
+      public void Insert(LeaveType obj)
+      {
+          using (var cmd = _unitOfWork.CreateCommand())
+          {
+              cmd.CommandText = "usp_Employee_InsertLeaveType";
+              cmd.CommandType = System.Data.CommandType.StoredProcedure;
+              cmd.AddParameter("Name", obj.Name);
+              cmd.AddParameter("AdminName", obj.AdminName);
+              cmd.ExecuteNonQuery();
+          }
+      }
+      public void Edit(LeaveType obj)
+      {
+          using (var cmd = _unitOfWork.CreateCommand())
+          {
+              cmd.CommandText = "usp_Employee_UpdateLeaveType";
+              cmd.CommandType = System.Data.CommandType.StoredProcedure;
+              cmd.AddParameter("Name", obj.Name);
+              cmd.AddParameter("Id", obj.Id);
+              cmd.AddParameter("AdminName", obj.AdminName);
+              cmd.ExecuteNonQuery();
+          }
+      }
+      public void Delete(int id)
+      {
+          using (var cmd = _unitOfWork.CreateCommand())
+          {
+              cmd.CommandText = "usp_Employee_DeleteLeaveType";
+              cmd.CommandType = System.Data.CommandType.StoredProcedure;
+              cmd.AddParameter("Id", id);
+              cmd.ExecuteNonQuery();
+          }
+      }
+
+      //by id sample
+      public Address GetAddressById(int id)
+      {
+          using (var cmd = _unitOfWork.CreateCommand())
+          {
+              cmd.CommandText = "usp_person_selectaddressbyid";
+              cmd.CommandType = System.Data.CommandType.StoredProcedure;
+              cmd.AddParameter("id", id);
+              using (var reader = cmd.ExecuteReader())
+              {
+                  Address address = new Address();
+                  while (reader.Read())
+                  {
+                      address.Municipality.Id = Convert.ToInt32(reader["MunGauId"].ToString());
+                      address.Id = Convert.ToInt32(reader["Id"].ToString());
+                      address.WardNumber = Convert.ToInt32(reader["WardNo"].ToString());
+                      address.HouseNumber = reader["HouseNo"].ToString();
+                      address.StreetTole = reader["StreetTole"].ToString();
+                      address.LandMark = reader["LandMark"].ToString();
+                      address.AddressType.Id = Convert.ToInt32(reader["AddressTypeId"].ToString());
+                  }
+                  return address;
+              }
+          }
+      }
+  }
+}
+</xmp>
+
+<p style="text-align: center;"><span style="text-decoration: underline;"><em><strong><span style="font-size: 14pt; color: #ff0000; text-decoration: underline;">Leave Type Service Interface</span></strong></em></span></p>
+<xmp class="prettyprint">
+  using HRMS.Models;
+  using System;
+  using System.Collections.Generic;
+  using System.Linq;
+  using System.Text;
+  using System.Threading.Tasks;
+  
+  namespace HRMS.Services.Interfaces
+  {
+      public interface ILeaveTypeService
+      {
+          void Insert(LeaveType obj);
+          IEnumerable<LeaveType> GetAll();
+          void Edit(LeaveType obj);
+          void Delete(int id);
+      }
+  }
+  
+
+
+</xmp>
+
+
+
+<p style="text-align: center;"><span style="text-decoration: underline;"><em><strong><span style="font-size: 14pt; color: #ff0000; text-decoration: underline;">Leave Type Service Implementation</span></strong></em></span></p>
+<xmp class="prettyprint">
+  using HRMS.Infrastructure;
+  using HRMS.Models;
+  using HRMS.Repositories;
+  using HRMS.Services.Interfaces;
+  using System;
+  using System.Collections.Generic;
+  using System.Linq;
+  using System.Web;
+  
+  namespace HRMS.Services.Implementations
+  {
+      public class LeaveTypeService : ILeaveTypeService
+      {
+          public void Delete(int id)
+          {
+              using (var uow = UnitOfWorkFactory.Create())
+              {
+                  var repo = new LeaveTypeRepository(uow);
+                  repo.Delete(id);
+                  uow.SaveChanges();
+              }
+          }
+  
+          public void Edit(LeaveType obj)
+          {
+              using (var uow = UnitOfWorkFactory.Create())
+              {
+                  var repo = new LeaveTypeRepository(uow);
+                  repo.Edit(obj);
+                  uow.SaveChanges();
+              }
+          }
+  
+          public IEnumerable<LeaveType> GetAll()
+          {
+              using (var uow = UnitOfWorkFactory.Create())
+              {
+                  var repo = new LeaveTypeRepository(uow);
+                  IEnumerable<LeaveType> list = repo.GetALLLeaves();
+                  uow.SaveChanges();
+                  return list;
+              }
+          }
+  
+          public void Insert(LeaveType obj)
+          {
+              using (var uow = UnitOfWorkFactory.Create())
+              {
+                  var repo = new LeaveTypeRepository(uow);
+                  repo.Insert(obj);
+                  uow.SaveChanges();
+              }
+          }
+      }
+  }
+
+</xmp>
+
+<p style="text-align: center;"><span style="text-decoration: underline;"><em><strong><span style="font-size: 14pt; color: #ff0000; text-decoration: underline;">settingapicontroller</span></strong></em></span></p>
+  <xmp class="prettyprint"
+     >
+     
+  
+     #region Leave Type Management
+     [Route("setting/api/leavetype/insert")]
+     [HttpPost]
+     public IHttpActionResult InsertLeaveType(LeaveType obj)
+     {
+         try
+         {
+             obj.AdminName = User.Identity.Name;
+             _leaveTypeService.Insert(obj);
+             _apiResponse.Result = "LeaveType has been sucessfully inserted.";
+             _apiResponse.StatusCode = (int)HttpStatusCode.OK;
+             return Ok(_apiResponse);
+         }
+         catch (Exception ex)
+         {
+             return BadRequest(ex.Message);
+         }
+     }
+  
+     [Route("setting/api/leavetype/getAll")]
+     [HttpGet]
+     public IHttpActionResult GetLeaveType()
+     {
+         var list = _leaveTypeService.GetAll();
+         _apiResponse.Result = list;
+         _apiResponse.StatusCode = (int)HttpStatusCode.OK;
+         return Ok(_apiResponse);
+     }
+  
+     [Route("setting/api/leavetype/edit")]
+     [HttpPost]
+     public IHttpActionResult EditLeaveType(LeaveType obj)
+     {
+         try
+         {
+             if (obj.Id != 0)  // obj.Id==null 
+             {
+                 obj.AdminName = User.Identity.Name;
+                 _leaveTypeService.Edit(obj);
+                 _apiResponse.Result = "Caste has been sucessfully updated.";
+                 _apiResponse.StatusCode = (int)HttpStatusCode.OK;
+             }
+             return Ok(_apiResponse);
+         }
+         catch (Exception ex)
+         {
+             return BadRequest(ex.Message);
+         }
+     }
+  
+     [Route("setting/api/leavetype/delete")]
+     [HttpPost]
+     public IHttpActionResult DeleteLeaveType(LeaveType obj)
+     {
+         try
+         {
+             if (obj.Id != 0)
+             {
+                 _leaveTypeService.Delete(obj.Id);
+                 _apiResponse.Result = "LeaveType has been sucessfully deleted.";
+                 _apiResponse.StatusCode = (int)HttpStatusCode.OK;
+             }
+             return Ok(_apiResponse);
+         }
+         catch (Exception ex)
+         {
+             return BadRequest(ex.Message);
+         }
+     }
+  
+     #endregion
+  }
+  </xmp>
+  
+
+
+    </body>
+
+</html>

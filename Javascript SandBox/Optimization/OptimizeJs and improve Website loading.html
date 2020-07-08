@@ -1,0 +1,95 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+    font-size:12pt;
+    font-family:monospace;
+
+}
+</style>
+ 
+</head>
+<body>
+    <h3><span style="color: #ff00ff;"><strong>1. ORDER IN WHICH ELEMENTS ARE LOADED</strong></span></h3>
+    <p>First, it&rsquo;s important that all elements in the&nbsp;<code>&lt;head&gt;</code>&nbsp;section are pre-loaded, before the visitor sees anything in browser, then all subsequent elements are ordered to load in a logical way. Any JavaScript inside the&nbsp;<code>&lt;head&gt;</code>&nbsp;section can slow down a page&rsquo;s rendering.&nbsp;</p>
+    <p><a title="ad" href="https://content-static.upwork.com/blog/uploads/sites/3/2016/12/02131209/Load-order-difference.png">https://content-static.upwork.com/blog/uploads/sites/3/2016/12/02131209/Load-order-difference.png</a></p>
+    <p>During the load of unoptimized page, chances are a user will see a &ldquo;white screen&rdquo; before the full page is then loaded. An optimized page load (render actually) happens in a more step-by-step way, allowing a user to see some content gradually until page the page loads fully.</p>
+    <h3><span style="color: #ff00ff;"><strong>2. MINIFY JAVASCRIPT CODE FOR SMALLER FILE SIZES.</strong></span></h3>
+    <p>Machines are not sensitive to the visual style of code like a human would be. Computers can read and launch minified code, even if all of your Javascript fits in just one string.</p>
+    <h3><span style="color: #ff00ff;">3. ASYNCHRONOUS LOADING OF JAVASCRIPT: DEFER AND ASYNC TAGS</span></h3>
+    <p>When the browser finds the string with&nbsp;<code>&lt;script src="some.js"&gt;&lt;/script&gt;</code>, it will stop creation of&nbsp;<a href="https://www.w3.org/TR/DOM-Level-2-Core/introduction.html">DOM</a>&nbsp;and&nbsp;<a href="https://www.w3.org/TR/cssom-1/">CSSOM</a>&nbsp;models while the JavaScript is executed. This is why most JavaScript code is located after the main HTML code.</p>
+    <p>To understand this point a little better, take a look at this code:</p>
+    <xmp class="prettyprint">
+        <html>
+            <head>
+              <script src="big.js"></script>
+            </head>
+            <body>
+              This text will not be present until big.js is loaded.
+            </body>
+            </html>
+    </xmp>
+    <p>Instead, you can add an&nbsp;<strong>async</strong>&nbsp;tag to the JavaScript so that creation of the DOM model happens in parallel, and won&rsquo;t be interrupted while the JavaScript is loading and executed.</p>
+    
+    <xmp class="prettyprint">
+        <html>
+            <head>
+              <script src="big.js" async></script>
+            </head>
+            <body>
+              This text will be present and it’s not dependent with big.js loading progress.
+            </body>
+        </html>
+    </xmp>
+
+    <p>For example, if you&rsquo;re using the very popular&nbsp;<a href="http://bxslider.com/">bxSlider</a>&nbsp;on your website and like CDN for jQuery, to add bxSlider you could add this code to your HTML:</p>
+    <xmp class="prettyprint">
+      <!-- jQuery library (served from Google) -->
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+      <!-- bxSlider Javascript file -->
+      <script src="/js/jquery.bxslider.min.js"></script>
+      <!-- bxSlider CSS file -->
+      <link href="/lib/jquery.bxslider.css" rel="stylesheet" />
+    </xmp>
+    <p>As you can see, jQuery is loading from the Google CDN but bxSlider is local. If we add async tag to the string, which includes jQuery, it may create errors with the bxSlider if jquery.bxslider.min.js is loaded before jquery.min.js. In this case, order is very important so another tag is needed:&nbsp;<strong>defer</strong>.</p>
+    <p>If the browser sees a defer tag with JavaScript code, it will not stop loading the DOM and CSSOM models. All scripts with a defer tag will be loaded and run immediately&nbsp;<em>after</em>&nbsp;the DOM and CSSOM models are completed. Any scripts will be loaded in the order you code.</p>
+    
+    <xmp class="prettyprint">
+        <script src="1.js" defer></script>
+        <script src="2.js" defer></script>
+    </xmp>
+
+    <p>In this case, 2.js will not be loaded until 1.js is loaded, and so on.</p>
+    <pre><br /><br /><span style="font-size: 14pt;">Important! Defer and Async tags are available only for external scripts (with src=&rdquo;&rdquo; tag).</span><br /><span style="font-size: 14pt;"> If you will try to use them for internal scripts like &lt;script&gt;&hellip;&lt;/script&gt; tags, defer and async will be ignored.</span></pre>
+    <h3><strong><span style="color: #ff00ff;">4 .MOVE SOME THE CSS AND JAVASCRIPT CODE OF YOUR FIRST SCREEN TO THE TOP OF YOUR CODE FOR FASTER LOADING.</span></strong></h3>
+    <p>This technique helps your page load faster, but requires pretty good knowledge of DOM and SCCOM. The idea is to bring a minimum amount of CSS and JavaScript code to the&nbsp;<code>&lt;head&gt;</code>&nbsp;section so loads it immediately, while the more extensive code is stored in separate .css and .js files, like usual.</p>
+  
+  
+    ============================================================================================
+    The || operator first evaluates the expression on the left, if it is truthy, it returns that value. If it is falsy, it evaluates and returns the value of the right operand (the expression on the right).
+    — If theTitle variable is falsy, the expression on the right will be returned and assigned to the variable. On the other hand, if theTitle is truthy, its value will be returned and assigned to the variable
+  <div class="row">
+    <div class="col-lg-6">
+      <xmp class="prettyprint">
+          function documentTitle(theTitle)
+          if (!theTitle) {
+            theTitle  = "Untitled Document";
+            }
+          }
+      </xmp>
+    </div>
+
+    <div class="col-lg-6">
+        <xmp class="prettyprint">
+            function documentTitle(theTitle)
+            theTitle  = theTitle || "Untitled Document";
+          }
+        </xmp>
+      </div>
+  </div>
+</body>

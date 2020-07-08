@@ -1,0 +1,31 @@
+-- Type: tran_type
+
+-- DROP TYPE transactions.tran_type;
+
+CREATE TYPE transactions.tran_type AS
+(
+	office_id integer,
+	tran_date date,
+	value_date date,
+	book_name character varying(30),
+	collector_id integer,
+	total_amount money,
+	teller_id integer,
+	is_auto_payment boolean,
+	is_compounded boolean,
+	instrument_id integer,
+	instrument_number character varying(200),
+	verification_status_id smallint,
+	verified_by_user_id integer,
+	statement_reference character varying(250),
+	collection_sheet_id bigint,
+	loan_receipt_id bigint,
+	loan_reimburse_id bigint,
+	standing_instruction_id bigint,
+	cash_transfer_id bigint,
+	remittance_id bigint,
+	ibt_tran_id bigint
+);
+
+ALTER TYPE transactions.tran_type
+    OWNER TO postgres;

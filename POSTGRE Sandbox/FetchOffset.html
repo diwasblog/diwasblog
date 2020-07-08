@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../Ef/css/bootstrap.css">
+    <link rel="stylesheet" href="../Ef/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../Ef/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../Ef/css/dracula.css">
+    <link rel="stylesheet" href="../Ef/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+    <h2>Limit ANd Offset</h2>
+    <p><span style="font-size: 18pt;"><span style="color: #2dc26b;"><strong>LIMIT </strong></span>and <strong><span
+                    style="color: #2dc26b;">OFFSET </span></strong>allow you to <span
+                style="color: #e03e2d;"><strong>retrieve just a portion of the rows</strong></span> that are generated
+            by the<strong><span style="color: #e03e2d;"> rest of the query</span></strong>.</span></p>
+
+    <p><span style="font-size: 24pt;"><strong><span style="color: #169179;">LIMIT </span></strong>means <span
+                style="color: #000000;">no more than that many rows will be returned.</span></span><br /><span
+            style="font-size: 24pt;"><strong><span style="color: #169179;">OFFSET </span></strong>says <strong><span
+                    style="color: #000000;">to skip that many rows before beginning to return rows.
+                </span></strong></span></p>
+    <pre>
+        <code class="language">
+            SELECT select_list
+            FROM table_expression
+            [LIMIT { number | ALL }] [OFFSET number]
+        </code>
+    </pre>
+
+
+
+    <pre>
+        <code class="language">
+            SELECT columns FROM table
+            LIMIT x;
+        </code>
+    </pre>
+
+    <table style="border-collapse: collapse; width: 100%;" border="1">
+        <tbody>
+            <tr>
+                <td style="width: 50%;"><strong><span style="font-size: 18pt; color: #000000;">Limit 0</span></strong>
+                </td>
+                <td style="width: 50%;"><span style="font-size: 18pt;"><strong><span style="color: #000000;">Then Query
+                                returns an </span></strong><span style="color: #e03e2d;"><strong>empty set.
+                            </strong></span></span></td>
+            </tr>
+            <tr>
+                <td style="width: 50%;"><strong><span style="font-size: 18pt; color: #000000;">LIMIT
+                            NULL</span></strong></td>
+                <td style="width: 50%;"><span style="font-size: 18pt;"><strong><span style="color: #000000;">Then Query
+                                returns</span></strong> <strong><span style="color: #e03e2d;">all rows</span> <span
+                                style="color: #000000;">omitting the LIMIT clause. </span></strong></span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Getting Top 10 Data</h2>
+    <pre>
+        <code class="language-sql">
+            SELECT columns FROM table
+            LIMIT 10;
+        </code>
+    </pre>
+    <h2>Getting Top 0 Data or getting no data</h2>
+    <pre>
+        <code class="language-sql">
+            SELECT columns FROM table
+            LIMIT 0;
+        </code>
+    </pre>
+
+    <h2>Getting all Data</h2>
+    <pre>
+        <code class="language-sql">
+            SELECT columns FROM table
+            LIMIT NULL;
+        </code>
+    </pre>
+
+
+    <p><span style="font-size: 18pt;"><strong><span style="color: #e03e2d;">OFFSET </span></strong>says <strong><span
+                    style="color: #000000;">to<span style="color: #e03e2d;"> skip</span> that many rows before beginning
+                    to return rows. </span></strong></span><br /><br /></p>
+
+    <pre>
+    <code class="language-sql">
+        SELECT columns FROM table
+        LIMIT x OFFSET y;
+    </code>
+</pre>
+
+
+    <p><span style="font-size: 18pt;">The query above<strong><span style="color: #e03e2d;"> skips</span><span
+                    style="font-size: 36pt;"> <span style="color: #169179;">y</span></span></strong><span
+                style="font-size: 36pt;">&nbsp;</span>rows before <strong><span style="color: #e03e2d;">returning<span
+                        style="color: #169179;"> </span></span><span style="font-size: 36pt;"><em><span
+                            style="color: #169179;">x</span></em></span></strong>&nbsp;rows. If y is zero then no rows
+            will be skipped. </span></p <script src="../Ef/js/prism.js">
+    </script>
+
+
+    <hr>
+    <h2>Limit is replaced by Fetch</h2>
+    <pre>
+    <code class="language-sql">
+        OFFSET start_point { ROW or ROWS }
+        FETCH { FIRST or NEXT } [number_of_rows ] { ROW | ROWS } ONLY
+    </code>
+</pre>
+
+    <h2>FETCH FIRST ROW ONLY :</h2>
+    <div class="row">
+        <div class="col-lg-6">
+            <pre>
+                <code class="language-sql">
+                    SELECT customer_id, contact_name
+                    FROM customers
+                    FETCH FIRST ROW ONLY;
+                </code>
+            </pre>
+        </div>
+
+        <div class="col-lg-6">
+            <pre>
+                <code class="language-sql">
+                    SELECT customer_id, contact_name
+                    FROM customers
+                    FETCH FIRST 1 ROW ONLY;
+                </code>
+            </pre>
+        </div>
+    </div>
+
+    <h2>Fetch First 3 ROW</h2>
+    <pre>
+        <code class="language-sql">
+            SELECT customer_id, contact_name
+            FROM customers
+            FETCH FIRST 3 ROW ONLY;
+        </code>
+    </pre>
+
+
+    <h2>FETCH FIRST 3 ROWS ONLY using 'FIRST' but skip the FIRST ROW with OFFSET:</h2>
+
+    <code>
+        <pre class="language-sql">
+            SELECT customer_id, contact_name
+            FROM customers
+            OFFSET 1
+            FETCH FIRST 3 ROW ONLY;
+        </pre>
+    </code>
+
+    <h2>FETCH FIRST 3 ROWS ONLY using 'FIRST' but skip the FIRST ROW with OFFSET:</h2>
+
+    <code>
+        <pre class="language-sql">
+            SELECT customer_id, contact_name
+            FROM customers
+            OFFSET 1
+            FETCH NEXT 3 ROW ONLY;
+        </pre>
+    </code>
+
+
+    <h2>Practical</h2>
+    <pre>
+        <code class="language-sql">
+            page 1 - (records 01-10): offset = 0, limit=10;
+
+            page 2 - (records 11-20) offset = 10, limit =10;
+        </code>
+    </pre>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+    </script>
+</body>
+
+</html>

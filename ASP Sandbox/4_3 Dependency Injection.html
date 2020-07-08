@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/b">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+
+    <p><span style="font-size: 18pt;">Before understanding<strong><span style="color: #ff0000;"> Dependency Injection</span></strong> we need to know <span style="color: #ff0000;">Dependency Inversion Principle</span> and<span style="color: #ff0000;"> Inversion of Control.</span></span></p>
+    <h3><strong><span style="color: #ff00ff;">Dependency Inversion Principle&nbsp;</span></strong></h3>
+    <p><span style="font-size: 12pt;">&nbsp;It is software design principle which provides us the guidelines to write loosely coupled classes</span></p>
+
+    <h3><strong><span style="color: #ff00ff;">Dependency Inversion Principle&nbsp;</span></strong></h3>
+<p><span style="font-size: 14pt;">&nbsp;It is software design principle which provides us the guidelines to write loosely coupled classes.</span></p>
+<p><span style="font-size: 14pt;">According to the definition of Dependency inversion principle:</span></p>
+<ol>
+<li><span style="font-size: 14pt;"><strong>High-level modules</strong> should not depend on <strong>low-level modules</strong>. Both should depend on <strong>abstractions</strong>.</span></li>
+<li><span style="font-size: 14pt;"><strong>Abstractions</strong> should not depend upon <strong>details</strong>. <strong>Details</strong> should depend upon <strong>abstractions</strong>.</span></li>
+</ol>
+
+<p><span style="font-size: 14pt;color:red">Real Case Scenerio</span></p>
+<p><span style="font-size: 14pt;">Suppose I am going to write <strong>Windows Service</strong> which was supposed to run on a<strong> Web server</strong>. <strong>The sole responsibility of this service was to log messages in event logs whenever there is some problem in the IIS application Pool.</strong> So our team create two class as below:</span></p>
+
+<div class="row">
+  <div class="col-lg-5">
+    <pre>
+    <code class="language-csharp">
+        class EventLogWriter
+        {
+            public void Write(string message)
+            {
+                //Write to event log here
+            }
+        }
+      </code>
+      </pre>
+  </div>
+
+  <div class="col-lg-7">
+      <pre>
+          <code class="language-csharp">
+    class AppPoolWatcher
+    {
+        // Handle to EventLog writer to write to the logs
+        EventLogWriter writer = null;
+
+        // This function will be called when the app pool has problem
+        public void Notify(string message)
+        {
+            if (writer == null)
+            {
+                writer = new EventLogWriter();
+            }
+            writer.Write(message);
+        }
+    }
+  </code>
+</pre>
+</div>
+</div>
+
+<p><span style="font-size: 14pt;">These class seems to be perfect and Sufficent to provide <strong>EventLog</strong> information of <strong>IIS Server</strong>.. <span style="color: #ff0000;"><strong>But this design violates the dependency inversion principle.</strong> </span>i.e. the high level module&nbsp;<code><span style="color: #ff0000;"><strong>AppPoolWatcher</strong></span>&nbsp;</code>depends on&nbsp;<code><strong><span style="color: #ff0000;">EventLogWriter</span></strong>&nbsp;</code>which is a<strong> concrete class</strong> and not an <strong>abstraction.</strong></span></p>
+
+<p><span style="font-size: 14pt;">Suppose the next requirement wants to integrate is to <strong><span style="color: #ff0000;">send email</span></strong> to <strong>network administrator's email ID</strong> for some <strong>specific set of error</strong>. Now how to do that ?<span style="color: #ff0000;"><strong>One idea</strong></span> is to create a class for sending emails and keeping its handle in the&nbsp;<strong><code>AppPoolWatcher&nbsp;</code></strong>but at any moment we will be using only one object either&nbsp;<strong><span style="color: #ff0000;"><code>EventLogWriter</code>&nbsp;</span></strong>or&nbsp;<code><strong><span style="color: #ff0000;">EmailSender</span></strong>
+
+</p>
+
+<p><span style="font-size: 14pt;">The problem will get even worse when we have more actions to take selectively, like <strong><span style="color: #ff0000;">sending SMS</span></strong>.</span></p>
+<p><span style="font-size: 14pt;">Then we will have to have one more class whose instance will be kept inside the&nbsp;<strong><code>AppPoolWatcher</code></strong>. The dependency inversion principle says that <strong>we need to decouple this system in such a way that the higher level modules .ie. the&nbsp;<code>AppPoolWatcher&nbsp;</code>in our case will depend on a simple abstraction and will use it,.This abstraction will in turn will be mapped to some concrete class which will perform the actual operation.<span style="color: #ff0000;">But here <code>EventLogWriter&nbsp;</code>is a concrete class and not an abstraction.</span></strong></span></p>
+
+https://www.codeproject.com/Articles/615139/An-Absolute-Beginners-Tutorial-on-Dependency-Inver
+
+https://www.codeproject.com/Articles/29271/Design-pattern-Inversion-of-control-and-Dependency
+  
+<script src="js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,3 @@
+var data = employees.Where(e => e.Gender == "Male").ToList();  // may occur error if Gender = 'male'
+
+var data employees.Where(e => e.Gender.Equals("Male", StringComparison.OrdinalIgnoreCase)).ToList();  // works for whatever the case

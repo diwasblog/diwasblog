@@ -1,0 +1,155 @@
+﻿https://books.google.com.np/books?id=NHg5DwAAQBAJ&printsec=frontcover&source=gbs_ViewAPI&output=embed&redir_esc=y#%257B%257D
+
+
+
+Conflict between package.
+
+Right click on solution 
+Manage NuGet packages for solution 
+Under Consolidate you can see if there are different versions of the same package was installed
+
+
+https://michaelscodingspot.com/find-fix-and-avoid-memory-leaks-in-c-net-8-best-practices/
+
+http://exif.regex.info/exif.cgi
+
+
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<h2>Function vs Storeprocedure</h2>
+<p>&nbsp;</p>
+<ul>
+<li>The procedure allows SELECT as well as DML(INSERT/UPDATE/DELETE) statement in it whereas Function allows only SELECT statement in it.&nbsp;</li>
+<li>Stored Procedures cannot be used in the&nbsp;<a href="https://en.wikipedia.org/wiki/SQL" target="_blank" rel="noopener">SQL</a>&nbsp;statements anywhere in the WHERE/HAVING/SELECT section whereas Function can be.</li>
+<li>We can use Transactions in Procedure whereas we can't use Transactions in Function.</li>
+<li>Exception can be handled by try-catch block&nbsp; &nbsp; &nbsp;in-store procedure but we can&rsquo;t handle the exception, using try-catch block&nbsp; in function</li>
+</ul>
+<p>View vs Storeprocedure&nbsp;</p>
+<p>View</p>
+<ul>
+<li>Donot accept parameter</li>
+<li>&nbsp;a view is used when only a SELECT statement is needed</li>
+</ul>
+<p>Storeprocedures:</p>
+<ul>
+<li>Accept Parameters.</li>
+<li>&nbsp;Stored procedures hold the more complex logic, such as INSERT, DELETE, and UPDATE statements to automate large SQL workflows.</li>
+</ul>
+</body>
+</html>
+
+
+using RER_Project.DataAccess.DbAccess;
+using RER_Project.DataAccess.ViewModels.Account;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace RER_Project.DataAccess.Repository
+{
+    public class RoleModulesRepository:IDisposable
+    {
+        UnitOfWork _unitOfWork;
+        public RoleModulesRepository()
+        {
+            _unitOfWork = new UnitOfWork();
+        }
+
+        public List<ViewScreen> ViewScreenList(int roleId)
+        {
+            try
+            {
+                List<ViewScreen> relation = (from m in _unitOfWork.ModuleRepository.GetAll()
+                                join mc in _unitOfWork.ModuleSubCategoriesRepository.GetAll() on m.Id equals mc.ModuleId
+                                join rm in _unitOfWork.RoleModuleRepository.GetBy(x => x.RoleId == roleId) on mc.Id equals rm.ModuleSubId
+                                select new ViewScreen()
+                                {
+                                    ViewNameCategory = m.ViewName,
+                                    ModuleSubId = mc.Id,
+                                   
+                                    Id = m.Id,
+                                    ViewNameSubCategory = mc.ViewName,
+                                    Icon = mc.Icon
+                                }).ToList();
+
+
+                List<ViewScreen> lst = new List<ViewScreen>();
+                foreach (var item in relation)
+                {
+                   
+                    ViewScreen obj = new ViewScreen();
+                
+                    foreach (var item2 in relation)
+                    {
+                       
+                        if (item.Id == item2.Id)
+                        {
+                            
+                            obj.Icon = item.Icon;
+                            obj.Id = item.Id;
+                            obj.ViewNameCategory = item.ViewNameCategory;
+                            obj.ChildViewScreen.Add(item2);
+                            
+                        }
+
+                       
+
+                    }
+                    lst.Add(obj);
+                    
+                }
+
+
+
+                return lst;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects).
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
+            }
+        }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~RoleModulesRepository()
+        // {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
+
+
+
+    }
+}

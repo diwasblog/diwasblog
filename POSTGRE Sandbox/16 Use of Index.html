@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../Ef/css/bootstrap.css">
+    <link rel="stylesheet" href="../Ef/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../Ef/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../Ef/css/dracula.css">
+    <link rel="stylesheet" href="../Ef/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+    <h2>Testing Performance of indexing</h2>
+    Create performance_test table with 5000000 records
+    <pre>
+        <code class="language-csharp">
+            
+            DROP TABLE IF EXISTS performance_test;
+
+            CREATE TABLE performance_test
+            ( 
+                id SERIAL,
+                location text
+            )
+            
+            
+            INSERT INTO performance_test (location)
+            select 'Kathmandu,Nepal' from generate_series(1,5000000)
+            
+        </code>
+
+    </pre>
+
+    <h2>Then just run the below query</h2>
+    <pre>
+    <code class="language-csharp">
+            select * from performance_test where id = 200000
+            //Will execute within 1 second taking 425 millisecond
+    </code>
+
+   
+</pre>
+
+
+
+    <div class="row">
+        <div class="col-lg-6">
+            <h4>Now, lets look Explain statement to the query</h4>
+            <pre>
+                <code class="language-csharp">
+                    EXPLAIN  select * from performance_test where id = 200000 
+                </code> 
+            </pre>
+        </div>
+
+        <div class="col-lg-6">
+            <h4>Here, we find parallel and sequencely executed one by one from top to bottom</h4>
+            <pre>
+                    <code class="language-csharp">
+                            "Gather  (cost=1000.00..58889.72 rows=1 width=20)"
+                            " Workers Planned: 2"
+                            " Parallel Seq Scan on performance_test  (cost=0.00..57889.63 rows=1 width=20)"
+                            " Filter: (id = 200000)"
+                    </code> 
+                </pre>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h4>Now, lets create Indexing based on Id </h4>
+            <pre>
+                    <code class="language-csharp">
+                            Create index idx_performance_test_id
+                            ON performance_test(id)
+                            
+                    </code> 
+                </pre>
+        </div>
+
+
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-6">
+            <h4>Then run the same query </h4>
+            <pre>
+                        <code class="language-csharp">
+                                select * from performance_test where id = 500000
+                                //search by id
+                                //result will display data very fast
+                        </code> 
+                    </pre>
+        </div>
+
+
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-6">
+            <h4>Then lets use explain </h4>
+            <pre>
+                            <code class="language-csharp">
+                                    EXPLAIN select * from performance_test where id = 500000
+
+                            </code> 
+                        </pre>
+        </div>
+
+        <div class="col-lg-6">
+            <h4>Here we get index scan </h4>
+            <pre>
+                <code class="language-csharp">
+                        "Index Scan using idx_performance_test_id on performance_test  (cost=0.43..8.45 rows=1 width=20)"
+                    "     Index Cond: (id = 500000)"
+                </code> 
+            </pre>
+        </div>
+    </div>
+
+
+    <h4>If we donot do action based on 'Id' then we will get again parallel scan</h4>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <h4>Then lets use explain </h4>
+            <pre>
+                                <code class="language-csharp">
+                                        EXPLAIN select COUNT(*) from performance_test
+    
+                                </code> 
+                            </pre>
+        </div>
+
+        <div class="col-lg-6">
+            <h4>Here we get index scan </h4>
+            <pre>
+                    <code class="language-csharp">
+                            "Finalize Aggregate  (cost=116778.55..116778.56 rows=1 width=8)"
+                            "  ->  Gather  (cost=116778.33..116778.54 rows=2 width=8)"
+                            "        Workers Planned: 2"
+                            "        ->  Partial Aggregate  (cost=115778.33..115778.34 rows=1 width=8)"
+                            "              ->  Parallel Seq Scan on performance_test  (cost=0.00..105361.67 rows=4166667 width=0)"
+                    </code> 
+                </pre>
+        </div>
+    </div>
+    =============================================================================================
+    <h2>Create Index based on two field</h2>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h4>Now, lets create Indexing based on Id </h4>
+            <pre>
+                        <code class="language-csharp">
+                                Create index idx_performance_test_id_location
+                                ON performance_test(id,location)
+                                
+                        </code> 
+                    </pre>
+        </div>
+
+
+    </div>
+    >
+    <script src="../EF/js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+    </script>
+</body>
+
+</html>

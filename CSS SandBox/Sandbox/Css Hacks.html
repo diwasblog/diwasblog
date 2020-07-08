@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+    integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <title>Bootstrap Sandbox</title>
+
+  <script
+    src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+  <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+
+  <style>
+    xmp.prettyprint {
+      font-size: 12pt;
+      font-family: monospace;
+
+    }
+  </style>
+</head>
+
+<body>
+  <h2>Sticky Footer</h2>
+  <div class="row">
+    <div class="col-lg-6">
+
+      <xmp class="prettyprint">
+        <div class="page-wrap">
+
+          Content!
+
+        </div>
+
+        <footer class="site-footer">
+          I'm the Sticky Footer.
+        </footer>
+
+        * {
+        margin: 0;
+        }
+        html, body {
+        height: 100%;
+        }
+        .page-wrap {
+        min-height: 100%;
+        /* equal to footer height */
+        margin-bottom: -142px;
+        }
+        .page-wrap:after {
+        content: "";
+        display: block;
+        }
+        .site-footer, .page-wrap:after {
+        height: 142px;
+        }
+        .site-footer {
+        background: orange;
+        }
+
+      </xmp>
+    </div>
+    <div class="col-lg-6">
+      <p data-height="300"
+        style="height: 300px; display: flex; align-items: center; justify-content: center; border: 2px solid black; margin: 1rem 0; padding: 1rem; overflow: auto;"
+        data-theme-id="1" data-slug-hash="uwJjr" data-default-tab="html,result" data-user="chriscoyier"
+        data-embed-version="2" class="codepen">See the Pen <a href="https://codepen.io/chriscoyier/pen/uwJjr/">Sticky
+          Footer</a> by Chris Coyier (<a href="https://codepen.io/chriscoyier">@chriscoyier</a>) on <a
+          href="https://codepen.io">CodePen</a>.
+      </p>
+
+    </div>
+
+  </div>
+  <br>
+
+  <h2>Wrapping Word</h2>
+  <div class="row">
+    <div class="col-lg-6">
+      <xmp class="prettyprint">
+        .dont-break-out {
+
+        /* These are technically the same, but use both */
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+
+        -ms-word-break: break-all;
+        /* This is the dangerous one in WebKit, as it breaks things wherever */
+        word-break: break-all;
+        /* Instead use this non-standard one: */
+        word-break: break-word;
+
+        /* Adds a hyphen where the word breaks, if supported (No Blink) */
+        -ms-hyphens: auto;
+        -moz-hyphens: auto;
+        -webkit-hyphens: auto;
+        hyphens: auto;
+
+        }
+      </xmp>
+    </div>
+
+    <div class="col-lg-6">
+      <img src="https://i2.wp.com/css-tricks.com/wp-content/uploads/2012/01/commentbreak.png">
+      <br>
+      <img src="https://i0.wp.com/css-tricks.com/wp-content/uploads/2012/01/fixed.png?resize=829%2C205">
+    </div>
+  </div>
+
+  <h2>White Space No Wrap</h2>
+  <div class="row">
+    <div class="col-lg-6">
+      <xmp class="prettyprint">
+        div {
+        white-space: no-wrap;
+        }
+      </xmp>
+
+    </div>
+
+    <div class="col-lg-6">
+      <img src="https://i0.wp.com/css-tricks.com/wp-content/uploads/2011/09/nowrap.png?resize=212%2C63">
+    </div>
+  </div>
+  <h2>Importance!</h2> <br>
+  The !important rule at the end of a value will override any other style declarations of that attribute, including
+  inline styles.
+  <xmp class="prettyprint">
+    p {
+    font-size: 24px !important;
+    }
+  </xmp>
+
+
+  <h2>Centering Website</h2>
+  <xmp class="prettyprint">
+
+    #page-wrap {
+    width: 800px;
+    margin: 0 auto;
+    }
+
+
+    <h2>View Port</h2>
+    <xmp class="prettyprint">
+
+    </xmp>
+
+    <h2>Disable Horizantal Scrolling</h2>
+    <xmp class="prettyprint">
+      html, body {
+      max-width: 100%;
+      <!-- all items created must not exceed 100% of the  users screen size. (no items can be off the page requiring scroll) -->
+      overflow-x: hidden;
+      }
+    </xmp>
+
+    <h2></h2>
+
+    <body>
+      <div id="page-wrap">
+        <!-- all websites HTML here -->
+      </div>
+    </body>
+  </xmp>
+</body>
+
+</html>

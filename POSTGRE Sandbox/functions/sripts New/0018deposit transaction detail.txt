@@ -1,0 +1,80 @@
+
+-- DROP FUNCTION deposit.get_transaction_report_detail(integer, date, date, character varying, bigint, integer, integer, smallint, smallint);
+
+CREATE OR REPLACE FUNCTION deposit.get_transaction_report_detail(
+	office_id_ integer,
+	from_ date,
+	to_ date,
+	trans_type_ character varying,
+	product_id_ bigint,
+	collector_id_ integer,
+	user_id_ integer,
+	ibt_type_ smallint,
+	cash_type_ smallint)
+    RETURNS TABLE(tran_id bigint, cust_name character varying,account_number_id bigint,account_number character varying,tran_date character varying, value_date character varying, product character varying, collector character varying, debit money, credit money, statement_reference text, check_number text, entry_by character varying, office_code character varying, is_cash boolean, tran_office character varying) 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+  
+BEGIN
+	CREATE TEMP TABLE _t(
+	sn serial,tran_id bigint, cust_id bigint,cust_name character varying, account_number_id bigint,account_number character varying, tran_date_ad date, value_date_ad date,
+	tran_date character varying, value_date character varying, deposit_product_id int, product character varying, collector_id bigint, collector character varying,
+	debit money, credit money, reference text, check_number text, user_id int, entry_by character varying, tran_office_id int, tran_office character varying, is_cash boolean,
+	office_code character varying, ibt_tran_id bigint		
+	) ON COMMIT DROP;
+
+INSERT INTO _t(tran_id, cust_id, account_number_id, tran_date_ad, value_date_ad, deposit_product_id, collector_id, 
+			  debit, credit, reference, check_number, user_id , ibt_tran_id)
+SELECT
+t.tran_id, t.customer_id, t.account_number_id, t.tran_date, t.value_date, t.product, t.collector_id, t.debit, t.credit, t.statement_reference, t.check_number, t.user_id , t.ibt_tran_id 
+FROM deposit.get_transaction_report(office_id_ ,from_ ,	to_ ,trans_type_ , product_id_,	collector_id_ ,	user_id_ ,
+	ibt_type_ ,	cash_type_ )t;
+	
+DELETE FROM _t WHERE _t.account_number_id IS NULL;	
+			  
+UPDATE _t SET tran_date=d.date_in_bs, value_date=d.date_in_bs
+FROM core.date_conversion d 
+WHERE _t.tran_date_ad = d.date_in_ad;
+
+UPDATE _t SET cust_name= v.customer_name, product= v.deposit_product_name , account_number= v.account_number
+FROM deposit.account_holders_view_total v
+WHERE _t.account_number_id = v.account_number_id;
+
+UPDATE _t SET collector = c.collector_name
+FROM office.collectors c
+WHERE _t.collector_id = c.collector_id;
+
+UPDATE _t SET collector = 'Auto' WHERE _t.collector is null; 
+UPDATE _t SET tran_office_id = i.local_office_id
+FROM transactions.ibt_transactions i
+WHERE _t.ibt_tran_id = i.ibt_tran_id
+AND  COALESCE(_t.ibt_tran_id,0) >0;
+
+
+	
+UPDATE _t SET tran_office_id = t.office_id
+FROM transactions.transactions t
+WHERE _t.tran_id = t.tran_id
+AND COALESCE(_t.ibt_tran_id,0) = 0;
+
+UPDATE _t SET tran_office = o.nick_name, office_code = o.office_code
+FROM office.offices o
+WHERE _t.tran_office_id = o.office_id;
+
+UPDATE _t SET entry_by = u.user_name
+FROM office.users u
+WHERE _t.user_id = u.user_id;
+
+INSERT INTO _t(cust_name, debit, credit)
+SELECT ' Total', SUM(COALESCE(_t.debit,'0')),SUM(COALESCE(_t.credit,'0')) FROM _t;
+
+RETURN QUERY(SELECT _t.tran_id , _t.cust_name, _t.account_number_id,_t.account_number,_t.tran_date, _t.value_date, _t.product, _t.collector, _t.debit, _t.credit, _t.reference, _t.check_number, _t.entry_by, _t.office_code, _t.is_cash, _t.tran_office FROM _t ORDER BY _t.sn);
+END
+$BODY$;
+
+ALTER FUNCTION deposit.get_transaction_report_detail(integer, date, date, character varying, bigint, integer, integer, smallint, smallint)
+    OWNER TO postgres;

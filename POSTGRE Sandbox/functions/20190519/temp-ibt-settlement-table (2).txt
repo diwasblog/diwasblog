@@ -1,0 +1,43 @@
+
+
+-- DROP TABLE core.temp_ibt_settlement;
+
+CREATE TABLE core.temp_ibt_settlement
+(
+    id bigserial,
+    office_id integer,
+    gl_account_id bigint,
+    debit money,
+    credit money,
+    user_id integer,
+    CONSTRAINT temp_ibt_settlement_pkey PRIMARY KEY (id)
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE core.temp_report
+    OWNER to postgres;
+
+-- Index: core_temp_report_gl_account_id_ix
+
+-- DROP INDEX core.core_temp_report_gl_account_id_ix;
+
+CREATE INDEX core_temp_ibt_settlement_gl_account_id_ix
+    ON core.temp_ibt_settlement USING btree
+    (gl_account_id)
+    TABLESPACE pg_default;
+
+-- Index: core_temp_report_parent_id_ix
+
+
+
+-- Index: core_temp_report_report_id_ix
+
+-- DROP INDEX core.core_temp_report_report_id_ix;
+
+CREATE INDEX core_temp_ibt_settlement_id_ix
+    ON core.temp_ibt_settlement USING btree
+    (office_id)
+    TABLESPACE pg_default;

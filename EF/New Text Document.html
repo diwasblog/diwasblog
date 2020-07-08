@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+    <p><strong><span style="font-size: 24pt; color: #e03e2d;">What does detect changes do?</span></strong></p>
+
+    <h2>Our Entity and DbContext looks like of left or right side:</h2>
+    <div class="row">
+        <div class="col-lg-6">
+            <pre>
+                    <code class="language-sql">
+                            public class Blog
+                            {
+                                public int Id { get; set; }
+                                public string Title { get; set; }
+                            
+                                public virtual ICollection Posts { get; set; }
+                            }
+                            
+                            public class Post
+                            {
+                                public int Id { get; set; }
+                                public string Title { get; set; }
+                                public string Content { get; set; }
+                            
+                                public int BlogId { get; set; }
+                                public virtual Blog Blog { get; set; }
+                            }
+                            
+                            public class AnotherBlogContext : DbContext
+                            {
+                                public DbSet Blogs { get; set; }
+                                public DbSet Posts { get; set; }
+                            }
+                    </code>
+                        </pre>
+
+        </div>
+        <div class="col-lg-6">
+            <pre>
+                        <code class="language-sql">
+                                public class Blog
+                                {
+                                    public int Id { get; set; }
+                                    public string Title { get; set; }
+                                
+                                    
+                                }
+                                
+                                public class Post
+                                {
+                                    public int Id { get; set; }
+                                    public string Title { get; set; }
+                                    public string Content { get; set; }
+                                }
+                                
+                                public class AnotherBlogContext : DbContext
+                                {
+                                    public DbSet Blogs { get; set; }
+                                    public DbSet Posts { get; set; }
+                                }
+                        </code>
+                            </pre>
+
+        </div>
+    </div>
+
+
+    <h3><span style="font-size: 36pt;">The change tracking problem</span></h3>
+    <p><span style="font-size: 18pt;"><span style="color: #000000;">Most EF applications make use of&nbsp;</span><span
+                style="color: #e03e2d;"><a style="color: #e03e2d;"
+                    href="https://blog.oneunicorn.com/2011/12/05/entity-types-supported-by-the-entity-framework/">persistent
+                    ignorant POCO entities</a></span>&nbsp;and <span style="color: #e03e2d;">snapshot change
+                tracking</span>. <span style="color: #000000;">This means that</span> <span
+                style="color: #e03e2d;">there is no code in the entities themselves to keep track of changes (eg. blog
+                class donot keep track of changes)</span><span style="color: #000000;">or notify the context of changes.
+            </span></span></p>
+
+
+    <h2>Now lets look at simple code getting data from database</h2>
+    <pre>
+                <code class="language-csharp">
+                        using (var context = new AnotherBlogContext())
+                        {
+                            var post = context.Posts
+                                           .Single(p => p.Title == "My First Post");
+                        
+                            post.Title = "My Best Post";
+                            context.SaveChanges();
+                        }
+                </code>
+            </pre>
+    <h3><span style="font-family: 'comic sans ms', sans-serif; font-size: 18pt;">In this code, a single post is <span
+                style="color: #2dc26b;">queried from the database</span>, its <span
+                style="color: #2dc26b;"><strong>title is changed</strong></span>, and then <span
+                style="color: #2dc26b;">this change is saved back to the database.</span><span
+                style="font-family: arial, helvetica, sans-serif;"> </span></span></h3>
+    <p><span style="font-family: 'comic sans ms', sans-serif; font-size: 18pt; color: #000000;">But when Title property
+            is changed nothing special happens.&nbsp;There is nothing in the entity that keeps track of the fact that it
+            has changed (such as an&nbsp;<em>isDirty</em> flag) or of the fact that the original value of this property
+            was "My First Post". There is also nothing in the entity (here post entity) that notifies the context that
+            this change has happened.</span></p>
+    <p><strong><span style="font-family: 'comic sans ms', sans-serif; font-size: 18pt; color: #e03e2d;">Then big
+                questions?</span></strong></p>
+    <p><span style="font-family: 'comic sans ms', sans-serif; font-size: 18pt; color: #000000;">So how does the
+            SaveChanges statement know that it must send an update to the database for the changed title?</span></p>
+    <p><span style="font-size: 18pt;"><span style="color: #000000;">➤ The answer is that uses</span> <strong><span
+                    style="color: #e03e2d;">snapshot change tracking</span></strong> and <strong><span
+                    style="color: #e03e2d;">DetectChanges.</span></strong></span></p>
+    <hr />
+    <p><span style="font-size: 18pt;"><strong><span style="color: #e03e2d;">Snapshot change tracking and
+                    DetectChanges</span></strong></span></p>
+    <p><span style="font-size: 18pt;"><strong><span style="color: #e03e2d;"><span style="color: #000000;"><span
+                            style="font-family: 'comic sans ms', sans-serif;">The EF context makes a snapshot of the
+                            properties of each entity when it is queried from the database. So in the example above, the
+                            context recorded in a snapshot that the Post entity had a Title property with the value "My
+                            First Post".</span></span></span></strong></span></p>
+    <p><span style="font-size: 18pt; color: #000000; font-family: 'comic sans ms', sans-serif;">When SaveChanges is
+            called it will in turn automatically call the DetectChanges method.😱 <strong><span
+                    style="color: #2dc26b;">DetectChanges scans all entities in the context and compares the current
+                    value of each property to the original value stored in the snapshot</span></strong>.😱 If the
+            property is found to have changed, then EF knows that it must send an update for that property to the
+            database.😱 In the example above, the current Title value of &ldquo;My Best Post&rdquo; is detected as
+            different from the original Title value of &ldquo;My First Post&rdquo; and an appropriate update is
+            generated.</span></p>
+
+
+
+    <h3><span style="color: #e03e2d; font-size: 36pt;">Isn't all this work very expensive?</span></h3>
+    <p><span style="font-size: 18pt;"><strong><em><span style="color: #2dc26b;">If your context is tracking thousands of
+                        entities and doing a lot of work with them</span></em></strong>, then calling <span
+                style="color: #e03e2d;"><strong>DetectChanges </strong></span><span style="color: #2dc26b;">frequently
+            </span>can be <span style="color: #e03e2d;">expensive</span>. </span></p>
+
+
+    <h2>How Switching off automatic DetectChanges </h2>
+
+    <ul>
+        <li><span style="font-size: 18pt; color: #000000;">If your context is <span style="color: #2dc26b;"><strong>not
+                        tracking a large number of entities </strong></span>you pretty much never need to switch off
+                automatic DetectChanges. </span></li>
+        <li><span style="font-size: 18pt; color: #000000;">If your context is tracking thousands of entities you often
+                still don't need to turn off automatic DetectChanges as long as<strong><span style="color: #2dc26b;">
+                        the app doesn't call methods that use DetectChanges many, many times.</span></strong></span>
+        </li>
+        <li><span style="font-size: 18pt; color: #000000;">The time you might want to switch off automatic DetectChanges
+                is i<span style="color: #2dc26b;"><strong>f your app is tracking many entities and repeatedly calling
+                        one of the methods that call DetectChanges.(ie. repeatedly add or delete or update operation).
+                    </strong></span>For example when adding add or attach operation in a loop.</span></li>
+    </ul>
+
+    <pre>
+        <code class="language-csharp">
+                public void AddPosts(List posts)
+                {
+                    using (var context = new AnotherBlogContext())
+                    {
+                        posts.ForEach(p => context.Posts.Add(p));
+                        context.SaveChanges();
+                    }
+                }
+        </code>
+    </pre>
+
+    <p><span style="font-size: 18pt;">In this example every call to Add results in a call to DetectChanges. This makes
+            the operation <strong><span style="color: #2dc26b;">O(n<sup>2</sup>) </span></strong>where n is the number
+            of posts in the list. If n is large then this operation obviously gets very expensive. To avoid this you can
+            turn off automatic DetectChanges just for the duration of the potentially expensive operation: </span></p>
+
+
+
+    <pre>
+     <code class="language-csharp">
+            public void AddPosts(List posts)
+            {
+                using (var context = new AnotherBlogContext())
+                {
+                    try
+                    {
+                        context.Configuration.AutoDetectChangesEnabled = false;
+                        posts.ForEach(p => context.Posts.Add(p));
+                    }
+                    finally
+                    {
+                        context.Configuration.AutoDetectChangesEnabled = true;
+                    }
+                    context.SaveChanges();
+                }
+            }
+            </code>
+ </pre>
+
+
+    <p><span style="font-size: 18pt;">Using try/finally ensures that automatic DetectChanges is always switched back on
+            even if an exception is thrown when looping through the entities and calling Add.&nbsp; ie. <span
+                style="color: #e03e2d;">finally is always called so always at last DetectChanges is set to
+                false</span></span></p>
+    <script src="js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+    </script>
+</body>
+
+</html>

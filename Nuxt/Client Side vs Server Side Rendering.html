@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+    <h1><span style="color: #e03e2d; font-family: tahoma, arial, helvetica, sans-serif;"><strong><span style="font-size: 18pt;">ServerSide Render: Traditional web application</span></strong></span></h1>
+<p><span style="color: #000000; font-family: 'comic sans ms', sans-serif; font-size: 14pt;">MPA(Multi-Page Apps) -each page is <strong>rendered on the server</strong>, "not" on the client.</span></p>
+<ul>
+<li><span style="font-size: 18pt; color: #000000; font-family: 'comic sans ms', sans-serif;">The code that you have written in MVC in cshtml is a server-side rendering page.</span></li>
+<li><span style="font-size: 18pt; color: #000000; font-family: 'comic sans ms', sans-serif;">It has only one domain.&nbsp;</span></li>
+</ul>
+
+<pre>
+<code class="language-csharp">
+  @model ienumerable<student>
+    &lt;html>
+    &lt;head>
+    &lt;body>
+    &lt;ul>
+    @foreach(var item in model)
+    {
+      &lt;li>item&lt;/>
+    }
+    &lt;/ul>
+    &lt;link src="bootstrap.min.css">
+    &lt;link src="bootstrap.min.js">
+    &lt;/body>
+    &lt;/head>
+    &lt;/html>
+</code>
+</pre>
+
+<p><span style="font-size: 18pt; color: #000000; font-family: 'comic sans ms', sans-serif;">Here, the server will insert <strong>studentList</strong> at server-side and the <span style="color: #e03e2d;">server will construct the content in body tag send back data in the Html form to browser.</span> So, the user will get contain first.</span></p>
+<p><span style="font-size: 18pt; color: #000000; font-family: 'comic sans ms', sans-serif;">If it has <strong><span style="color: #f1c40f;">js, CSS</span></strong> then it is also downloaded and apply CSS to it.</span></p>
+<p><span style="font-size: 18pt; color: #000000; font-family: 'comic sans ms', sans-serif;">the server will return like this to the browser.</span></p>
+
+<pre>
+  <code class="language-csharp">
+    &lt;html>
+    &lt;head>
+    &lt;body>
+    &lt;ul> 
+      &lt;li>diwas&lt;/li>
+      &lt;li>hari &lt;/li>
+      &lt;/li>gopal&lt;/li>
+
+    &lt;/ul>
+    &lt;/body>
+    &lt;/head>
+    &lt;/html>
+  </code>
+</pre>
+
+<hr />
+<p><span style="font-size: 24pt;"><strong>ClientSide Render : Modern Websites and application</strong></span></p>
+<p><span style="font-size: 18pt;"><span style="color: #e03e2d;">SPA(Single Page Apps)</span> -each page is rendered on the client , not on the server.</span></p>
+<p><br /><span style="font-size: 18pt; color: #000000; font-family: 'comic sans ms', sans-serif;">Mostly in vue, react and angular application. Has backend and frontend domain.</span></p>
+
+<pre>
+  <code class="language-csharp">
+  
+
+&lt;html>
+&lt;head>
+&lt;body>
+&lt;div id="app">  &lt;/div>
+  
+&lt;/body>
+&lt;/head>
+&lt;/html>
+  </code>
+</pre>
+
+
+<p><span style="font-size: 18pt; color: #000000; font-family: 'comic sans ms', sans-serif;">When the browser makes the initial request to the  server, the server returns  the index.html HTML file which looks like up.Then it will load required js,css present in this file.</span></p>
+<p><br /><span style="font-size: 18pt; color: #000000; font-family: 'comic sans ms', sans-serif;">After the initial HTML and CSS loads, the browser requests the rest of the application which comes in a JS file. And then <span style="color: #e03e2d;"><strong>we will get JSON</strong></span> that then it is <strong><span style="color: #e03e2d;">loaded in virtual dom</span></strong> then binded to<strong><span style="color: #e03e2d;"> id = "app"</span></strong> then only fully page can be seen.Chunk of js file is loaded on demanded. The content will be viewable and intractable once the JS file has been parsed.</span></p>
+<hr>
+<h3 data-role="key_learning_title"><span style="color: #e03e2d;"><strong>What is pre-rendering?</strong></span></h3>
+<p><span style="font-size: 18pt;">Every pre-rendered page displays a skeleton template while the data waits and does ajax request and added to dom.Once the page is fetched, internal routing is done dynamically to take advantage of a client-side rendered website.</span></p>
+<hr />
+<h2><span style="color: #e03e2d;"><strong>Universal Web App(isomorphic  app)</strong></span></h2>
+<p><span style="font-size: 18pt;">Universal Web Apps <span style="color: #e03e2d;">combine</span> the best of both <span style="color: #e03e2d;">Client Side Rendering and Server Side Rendering</span>. In a Universal Web App, <strong><span style="color: #e03e2d;">the initial render will be done in the server</span></strong>, and<span style="color: #e03e2d;"><strong> once the page loads client-side rendering will take over</strong></span>. This makes sure that we have good SEO, a quick first render and speed when browsing in the app.</span></p>
+<hr />
+<p>&nbsp;</p>
+
+<ul>
+  <li><span style="font-size: 18pt;"><strong><a href="https://nextjs.org/"><span style="color: #e03e2d;">Next.js</span></a></strong>&nbsp;- A framework to build Universal Web Apps with&nbsp;<a href="https://reactjs.org/">React</a></span></li>
+  <li><span style="font-size: 18pt;"><span style="color: #e03e2d;"><strong><a style="color: #e03e2d;" href="https://nuxtjs.org/">Nuxt.js</a></strong></span>&nbsp;- A framework to build Universal Web Apps with&nbsp;<a href="https://vuejs.org/">Vue.js</a></span></li>
+  </ul>
+
+  <br>
+  <hr>
+
+<script src="../ASP Sandbox/js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

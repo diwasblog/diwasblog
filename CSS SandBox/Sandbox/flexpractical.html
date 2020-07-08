@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      html,body,header,div,footer{
+        padding:0;
+        border:0;
+        margin:0;
+        box-sizing:border-box;
+        font:inherit;
+        color:inherit;
+      }
+      
+      header{
+        border:10px solid blue;
+        height:200px;
+      }
+
+      main{
+        border:10px solid green;
+        display:flex;
+        flex-direction:row;
+        flex-wrap:wrap;
+      }
+
+      
+      footer{
+        border:10px solid red;
+        height:200px;
+      }
+      
+      div{
+        height:200px;
+        border:5px solid black;
+      }
+
+      #left{
+        background:#7fd2ff;
+        flex-basis:20%;
+      }
+
+      #right{
+        background:gray;
+        flex-basis:80%;
+      }
+      </style>
+  </head>
+
+  <body>
+    <header></header>
+
+<main>
+    <div id="left"></div>
+    <div id="right"></div>
+</main>
+
+
+    <footer></footer>
+  </body>
+</html>

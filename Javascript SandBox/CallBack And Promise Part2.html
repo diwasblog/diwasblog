@@ -1,0 +1,222 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+        integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <script
+        src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+
+
+    <style>
+        xmp.prettyprint {
+            font-size: 12pt;
+            font-family: monospace;
+
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h2>Simple Function </h2>
+    <xmp class="prettyprint">
+        function calculate(){
+        console.log("calculate");
+        }
+
+        function display(){
+        console.log("display");
+        }
+
+        calculate();
+        display();
+    </xmp>
+
+
+    <h2>Passing general parameter to Function</h2>
+    <xmp class="prettyprint">
+
+        function calculate() {
+        console.log("calculate function");
+        }
+
+        function display(callback) {
+        console.log("Display: " + callback); //callback is defined as variable so calculate() function doesnot get
+        called.
+        }
+
+        display(5);
+
+        //Note that here: callback will be 5
+    </xmp>
+
+
+    <h2>Callback Function</h2>
+    <ul>
+        <li><span style="font-size: 18pt; color: #000000;"><span style="color: #00fe2a;">When a function simply accepts
+                    another function as an argument</span>, <span style="color: #fb0000;"><strong>this contained
+                        function</strong></span> is known as a <strong>callback function</strong>. </span></li>
+        <li><span style="font-size: 18pt; color: #000000;">Using callback functions is a core functional programming
+                concept.</span></li>
+        <li><span style="font-size: 18pt; color: #000000;">A callback may or may not performed asynchronously. <span
+                    style="color: #fb0000;"><strong>Normally</strong> </span>callback runs after the parent function
+                completes its operation.</span></li>
+        <li><span style="font-size: 18pt; color: #000000;">Example Below: Calculate is callback function and Display()
+                is parent function.</span></li>
+    </ul>
+    <xmp class="prettyprint">
+
+        function calculate(value) {
+        console.log("calculate function");
+        }
+
+        function display(callback) {
+        console.log("Displaying:");
+        callback(5); // callback === calculate and callback is defined as function so called above function
+        }
+
+        display(calculate);
+
+        //Note that here: callback will be 5
+    </xmp>
+
+    <hr>
+    <div class="row">
+        <div class="col-lg-6">
+            first(2, function (firstResult, err) { //firstResult = 4 ,err = false
+            if (!err) {
+            console.log(firstResult)
+            }
+            })
+
+            function first(value, callback) {
+            callback(value + 2, false);
+            }
+
+            function second(value, callback) {
+            callback(value + 2, false);
+            }
+
+            function third(value, callback) {
+            callback(value + 2, false);
+            }
+        </div>
+        <div class="col-lg-6">
+            Okay , here first function gets called , 2 is passed to value and callback recieve a function so,
+            callback(value + 2 , false) === > function(4,false) so if(!err) === > true and print console
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-6">
+            <xmp class="prettyprint">
+                first(2, function (firstResult, err) { //firstResult = 4 ,err = false
+                if (!err) {
+                console.log(firstResult)
+                }
+                })
+
+                function first(value, callback) {
+                callback(value + 2, false);
+                }
+
+                function second(value, callback) {
+                callback(value + 2, false);
+                }
+
+                function third(value, callback) {
+                callback(value + 2, false);
+                }
+            </xmp>
+        </div>
+        <div class="col-lg-6">
+            Okay , here first function gets called , 2 is passed to value and callback recieve a function so,
+            callback(value + 2 , false) === > function(4,false) so if(!err) === > true and print console
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-6">
+            <xmp class="prettyprint">
+
+                //Look here second function get executed only when first !err return true otherwise exits
+                first(2, function (firstResult, err) { //firstResult = 4 ,err = false
+                if (!err) {
+                console.log(firstResult);
+                second(firstResult, function (secondResult, err) {
+                if (!err) {
+                console.log(secondResult);
+                third(secondResult, function (thirdResult, err) {
+                if (!err) {
+                console.log(thirdResult)
+                console.log(thirdResult);
+                }
+                })
+                }
+                })
+                }
+                })
+            </xmp>
+        </div>
+
+        <div class="col-lg-6">
+            <xmp class="prettyprint">
+                function first(value, callback) {
+                callback(value + 2, false);
+                }
+
+                function second(value, callback) {
+                callback(value + 2, false);
+                }
+
+                function third(value, callback) {
+                callback(value + 2, false);
+                }
+            </xmp>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <xmp class="prettyprint">
+
+                var promise = new Promise(function (resolve, reject) {
+                a = 1 + 1;
+                if (a == 2) {
+                resolve(2);
+                }
+                if(a > 10)
+                reject("value cannot be greater than 10");
+                }
+                });
+
+                promise.then(first).then(second).then(third).then(function (response) {
+                console.log(response);
+                })
+            </xmp>
+        </div>
+
+        <div class="col-lg-6">
+            <xmp class="prettyprint">
+                function first(value, callback) {
+                callback(value + 2, false);
+                }
+
+                function second(value, callback) {
+                callback(value + 2, false);
+                }
+
+                function third(value, callback) {
+                callback(value + 2, false);
+                }
+            </xmp>
+        </div>
+    </div>
+</body>
+
+</html>

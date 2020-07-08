@@ -1,0 +1,68 @@
+
+-- DROP FUNCTION deposit.get_collector_insentive_report(integer, date, date, int, int);
+
+
+
+CREATE OR REPLACE FUNCTION deposit.get_collector_insentive_report(
+	office_id_ integer,
+	from_ date,
+	to_ date,
+	working_day_ int,
+	avg_coll_	 int)
+    RETURNS TABLE( office_id int, collector_id integer, collector_name character varying,  total_collection int, avg_coll int, commission int ) 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+BEGIN
+
+	--DECLARE _avg_coll int;
+
+	CREATE TEMP TABLE _t(
+	office_id 			int,
+	collector_id 		int,
+	collector_name 		character varying,
+	total_collection 	int,
+	avg_coll			int,
+	commission 			int	
+	) ON COMMIT DROP;
+
+
+	IF office_id_ > 0 THEN
+	INSERT INTO _t(office_id, collector_id, collector_name, total_collection)
+	SELECT t.office_id, t.collector_id, c.collector_name,   COUNT(t.collector_id)  FROM deposit.collection_transaction_view t
+	INNER JOIN office.collectors c ON t.collector_id = c.collector_id
+	WHERE t.tran_date BETWEEN from_ AND to_	
+	AND t.office_id = office_id_																						   
+	GROUP BY t.office_id, t.collector_id, c.collector_name;
+	
+	ELSE
+
+	INSERT INTO _t(office_id, collector_id, collector_name, total_collection)
+	SELECT t.office_id, t.collector_id, c.collector_name,   COUNT(t.collector_id)  FROM deposit.collection_transaction_view t
+	INNER JOIN office.collectors c ON t.collector_id = c.collector_id
+	WHERE t.tran_date BETWEEN from_ AND to_																							   
+	GROUP BY t.office_id, t.collector_id, c.collector_name;
+	
+END IF;
+
+
+--SELECT * FROM deposit.get_collector_insentive_report(0,'2019-01-01','2019-01-29', 30, 60)
+																							   
+	UPDATE _t SET avg_coll = working_day_ * avg_coll_;
+
+
+	UPDATE _t SET commission=1000 WHERE _t.total_collection>=_t.avg_coll;
+	
+	UPDATE _t SET commission=0 WHERE _t.total_collection<_t.avg_coll;
+
+											   
+	RETURN QUERY (
+	SELECT _t.office_id, _t.collector_id, _t.collector_name,  _t.total_collection , _t.avg_coll,_t.commission FROM _t  ORDER BY office_id, collector_name);
+END
+$BODY$;
+
+ALTER FUNCTION deposit.get_collector_insentive_report(integer, date, date, int, int)
+    OWNER TO postgres;

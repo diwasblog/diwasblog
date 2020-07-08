@@ -1,0 +1,65 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+    font-size:12pt;
+    font-family:monospace;
+
+}
+</style>
+ 
+</head>
+<body>
+  <div class='row'>
+    <div class='col-lg-9' style="padding:0">
+      <xmp class='prettyprint'>
+          <div class="container" id="app">
+              <div class="form-group">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="type" :maxlength="max" v-model="text" />
+                  <div class="input-group-addon" v-text="(max - text.length)"></div>
+                </div>
+              </div>
+            </div>
+      </xmp>
+    </div>
+
+    <div class="col-lg-3" style="padding:1px">
+      <xmp class='prettyprint'>
+        new Vue({
+          el: '#app',
+          data: {
+            max: 36,
+            text: ''
+          }
+        });  
+      </xmp>
+    </div>   
+  </div>
+
+  <div class="container" id="app">
+      <div class="form-group">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="type" :maxlength="max" v-model="text" />
+          <div class="input-group-addon" v-text="(max - text.length)"></div>
+          TextField Length :{{text.length}}
+        </div>
+      </div>
+    </div>
+
+    <script>
+      new Vue({
+          el: '#app',
+          data: {
+            max: 36,
+            text: ''
+          }
+        }); 
+    </script>
+</body>

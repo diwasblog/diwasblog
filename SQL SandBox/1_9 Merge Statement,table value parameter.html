@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+
+  <body>
+
+======================================================================================
+<p><strong><span style="font-size: 18pt;">Merge Statement</span></strong></p>
+<p><span style="font-size: 14pt;">Merge Statement introduced in 2008</span></p>
+<p><span style="font-size: 14pt;">Merge Statement allow us to INSERT,UPDATE and DELETE in one Statement.That means we no longer need to use mulitple statement for performing INSERT ,UPDATE and DELETE Statement.</span></p>
+<p><span style="font-size: 14pt;">With MERGE Statement we required 2 tables.</span></p>
+<p><span style="font-size: 14pt;"><strong>1)<span style="color: #ff00ff;">Source Table:</span> Contains the changes that need to be applied to the target table.</strong></span></p>
+<p><span style="font-size: 14pt;"><strong>2)<span style="color: #ff00ff;">Target Table:</span> The table that required changes(Insert,Update,Delete).</strong></span></p>
+<p><span style="font-size: 12pt;">Merge Statement joins the target table to the source table by using a common column in both the tables.Based on how the rows match up,we can perform insert,update and delete on the&nbsp;target table.</span></p>
+<p><span style="font-size: 14pt;"><em><span style="text-decoration: underline;"><strong>WE can now perform the following actions in one MERGE Statement</strong></span></em></span></p>
+<p><span style="font-size: 14pt;"><strong>1)Insert a new row from the source if the row is missing in the target table</strong></span></p>
+<p><span style="font-size: 14pt;"><strong>2)Update a target row if a record already exists in the source table.</strong></span></p>
+<p><span style="font-size: 14pt;"><strong>3)Delete a target row if the row is missing in the source table.</strong></span></p>
+
+
+=================================================================
+Syntax
+
+<pre>
+  <code class="language-sql">
+    merge Target_Table as T
+    using Source_Table as S
+    on [JOIN Condition]
+    when matched then
+    [Update Statement]
+    When not matched by target then
+    [Insert Statment]
+    When not matched by source then
+    [Delete Statement]; //required semicolon at last
+  </code>
+</pre>  
+
+
+==================================================================
+
+<table style="border-collapse: collapse; width: 13.4923%; height: 98px;" border="1">
+<tbody>
+<tr>
+<td style="width: 37.4269%;">Id</td>
+<td style="width: 61.9883%;">int</td>
+</tr>
+<tr>
+<td style="width: 37.4269%;">Name</td>
+<td style="width: 61.9883%;">nvarchar(200)</td>
+</tr>
+<tr>
+<td style="width: 37.4269%;">Gender&nbsp;</td>
+<td style="width: 61.9883%;">Nvarchar(200)</td>
+</tr>
+</tbody>
+</table>
+=================================================================
+<div class="row">
+  <div class="col-lg-6">
+     <p><span style="color: #ff00ff; font-size: 14pt;"><strong>Soure_table</strong></span></p>
+      <table style="height: 100px;" width="466">
+<tbody>
+<tr style="height: 30px; background-color: gray;">
+<td>Id</td>
+<td>Name</td>
+<td>Gender</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Diwas</td>
+<td>Male</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Dikshya</td>
+<td>Female</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Ganga</td>
+<td>Male</td>
+</tr>
+</tbody>
+</table>
+  </div>
+
+
+  <div class="col-lg-6">
+    <p><span style="color: #ff00ff; font-size: 14pt;"><strong>Target_table</strong></span></p>
+    <table >
+<tbody>
+<tr style="height: 30px; background-color: gray;">
+<td>Id</td>
+<td>Name</td>
+<td>Gender</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Ram</td>
+<td>Male</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Sita</td>
+<td>FeMale</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Ganga</td>
+<td>Male</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Rita</td>
+<td>Female</td>
+</tr>
+
+<tr>
+<td>8</td>
+<td>Mohan</td>
+<td>Male</td>
+</tr>
+
+</tbody>
+</table>
+  </div>
+ </div> 
+
+
+<div class="row">
+  <div class="col-lg-6">
+   <pre>
+    <code class="language-sql">
+    Merge Target_Table as T
+    Using Source_Table as S
+    on T.Id = S.Id
+    When matched then
+    update set T.Name = S.Name,T.Gender=S.Gender
+    When not matched by target then 
+    Insert (Name,Gender) values(S.Name,S.Gender)
+    When not matched by source then 
+    Delete;
+    </code>
+   </pre>
+  </div>
+
+  <div class="col-lg-6">
+    <p><span style="color: #ff00ff; font-size: 14pt;"><strong>Target_table now becomes</strong></span></p>
+ <table >
+<tbody>
+<tr style="height: 30px; background-color: gray;">
+<td>Id</td>
+<td>Name</td>
+<td>Gender</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Diwas</td>
+<td>Male  ====>Update</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Ganga</td>
+<td>Male====> Update</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Dikshya</td>
+<td>FeMale ===>Added</td>
+</tr>
+</tbody>
+</table>
+
+
+
+  </div>
+</div>  
+
+Source_table(1) = Target_table(1) found so update in target_table<br>
+Source_table(2) not found in Target_table so Inserted at last index 9<br>
+Source_table( id= 3) found in Target_table(id=3) so id of Target_table updated<br>
+Other data ID(of target_table) not found in source_table Id are deleted from target_table 
+
+
+==============================================================================================
+<h2>Only Update and Insert in Target Table</h2>
+
+<div class="row">
+  <div class="col-lg-6">
+     <p><span style="color: #ff00ff; font-size: 14pt;"><strong>Soure_table</strong></span></p>
+      <table style="height: 100px;" width="466">
+<tbody>
+<tr style="height: 30px; background-color: gray;">
+<td>Id</td>
+<td>Name</td>
+<td>Gender</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Diwas</td>
+<td>Male</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Dikshya</td>
+<td>Female</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Ganga</td>
+<td>Male</td>
+</tr>
+</tbody>
+</table>
+  </div>
+
+
+  <div class="col-lg-6">
+    <p><span style="color: #ff00ff; font-size: 14pt;"><strong>Target_table</strong></span></p>
+    <table >
+<tbody>
+<tr style="height: 30px; background-color: gray;">
+<td>Id</td>
+<td>Name</td>
+<td>Gender</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Ram</td>
+<td>Male</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Sita</td>
+<td>FeMale</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Ganga</td>
+<td>Male</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Rita</td>
+<td>Female</td>
+</tr>
+
+<tr>
+<td>8</td>
+<td>Mohan</td>
+<td>Male</td>
+</tr>
+
+</tbody>
+</table>
+  </div>
+ </div> 
+
+
+
+<div class="row">
+  <div class="col-lg-6">
+   <pre>
+    <code class="language-sql">
+    Merge Target_Table as T
+    Using Source_Table as S
+    on T.Id = S.Id
+    When matched then
+    update set T.Name = S.Name,T.Gender=S.Gender
+    When not matched by target then 
+    Insert (Name,Gender) values(S.Name,S.Gender);
+    </code>
+   </pre>
+  </div>
+
+  <div class="col-lg-6">
+    <p><span style="color: #ff00ff; font-size: 14pt;"><strong>Target_table now becomes</strong></span></p>
+  <table >
+<tbody>
+<tr style="height: 30px; background-color: gray;">
+<td>Id</td>
+<td>Name</td>
+<td>Gender</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Diwas</td>
+<td>Male</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Dikshya</td>
+<td>FeMale</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Ganga</td>
+<td>Male</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Rita</td>
+<td>Female</td>
+</tr>
+
+<tr>
+<td>5</td>
+<td>Mohan</td>
+<td>Male</td>
+</tr>
+
+</tbody>
+</table>
+  </div>
+ </div> 
+
+
+
+  </div>
+</div>  
+=================================================================================================================
+<pre>
+  <code class="language-sql">
+    CREATE OR ALTER PROCEDURE usp_Employee_InsertShift
+(
+	@InstitutionId int,
+	@Name nvarchar(255),
+	@IsActive bit,
+	@EmployeeShiftWeekDay as EmployeeShiftWeekDay readonly,
+	@AdminName nvarchar(255)
+)
+WITH ENCRYPTION
+AS
+BEGIN
+
+	IF EXISTS (SELECT * FROM @EmployeeShiftWeekDay temp WHERE CAST(TIMEFROMPARTS(temp.ShiftStartHour,temp.ShiftStartMinute,0,0,0)as time)>CAST(TIMEFROMPARTS(temp.ShiftEndHour,temp.ShiftEndMinute,0,0,0) as time))
+	THROW 5000001, 'start time must be less than end time', 501;
+
+	IF (ISNULL(@Name, '') = '')
+		THROW 5000001, 'Null or empty Name', 501;
+
+	DECLARE @Date datetime = DATEADD(MINUTE, 345, GETUTCDATE());
+	DECLARE   @LastId TABLE (id int)
+	DECLARE @ShiftId int
+
+	INSERT INTO [Employee.Shift]
+	(
+		[InstitutionId],[Name],[IsActive],[AdminName],[ModifiedDate]
+	)
+	OUTPUT inserted.Id INTO @LastId (id)
+	VALUES
+	(
+		@InstitutionId,
+		ltrim(rtrim(@Name)),
+		@IsActive,
+		@AdminName,
+		@Date
+	)
+
+	SELECT @ShiftId=l.Id FROM @LastId l
+	
+
+	
+	CREATE TABLE #EmployeeTempTempTable
+	(
+		ShiftId int,
+		Id int,
+		ShiftStartHour int,
+		ShiftStartMinute int,
+		ShiftStartTime int,
+		ShiftEndHour int,
+		ShiftEndMinute int,
+		ShiftEndTime int,
+		AllowEarlyTime int,
+		AllowLateTime int
+	)
+
+	INSERT INTO #EmployeeTempTempTable
+	(
+		ShiftId,
+		Id,
+		ShiftStartHour,
+		ShiftStartMinute,
+		ShiftEndHour,
+		ShiftEndMinute,
+		AllowEarlyTime,
+		AllowLateTime
+	)
+	SELECT @ShiftId,d.Id,d.ShiftStartHour,d.ShiftStartMinute,d.ShiftEndHour,d.ShiftEndMinute,d.AllowEarlyTime,d.AllowLateTime FROM @EmployeeShiftWeekDay d;
+
+
+
+	MERGE INTO dbo.[Employee.Shift.Weekday] AS TARGET
+		USING #EmployeeTempTempTable AS SOURCE ON
+		(SOURCE.Id=TARGET.ShiftId)
+		WHEN MATCHED THEN UPDATE SET
+			TARGET.WeekDayId=SOURCE.Id,
+			TARGET.ShiftStartHour=SOURCE.ShiftStartHour,
+			TARGET.ShiftStartMinute=SOURCE.ShiftStartMinute,
+			TARGET.ShiftStartTime=TIMEFROMPARTS(SOURCE.ShiftStartHour,SOURCE.ShiftStartMinute,0,0,0),
+			TARGET.ShiftEndHour=SOURCE.ShiftEndHour,
+			TARGET.ShiftEndMinute=SOURCE.ShiftEndMinute,
+			TARGET.ShiftEndTime=TIMEFROMPARTS(SOURCE.ShiftEndHour,SOURCE.ShiftEndMinute,0,0,0),
+			TARGET.AllowEarlyTime=SOURCE.AllowEarlyTime,
+			TARGET.AllowLateTime=SOURCE.AllowLateTime,
+			TARGET.AdminName=@AdminName,
+			TARGET.ModifiedDate=@Date
+		WHEN NOT MATCHED THEN
+			INSERT(ShiftId,WeekDayId,ShiftStartHour,ShiftStartMinute,ShiftStartTime,ShiftEndHour,ShiftEndMinute,ShiftEndTime,AllowEarlyTime,AllowLateTime,AdminName,ModifiedDate)
+			VALUES(@ShiftId,SOURCE.Id,SOURCE.ShiftStartHour,SOURCE.ShiftStartMinute,TIMEFROMPARTS(SOURCE.ShiftStartHour,SOURCE.ShiftStartMinute,0,0,0),
+				SOURCE.ShiftEndHour,SOURCE.ShiftEndMinute,TIMEFROMPARTS(SOURCE.ShiftEndHour,SOURCE.ShiftEndMinute,0,0,0),
+				SOURCE.AllowEarlyTime,SOURCE.AllowLateTime,@AdminName,@Date)
+		WHEN NOT MATCHED BY SOURCE AND TARGET.ShiftId = @ShiftId
+			THEN DELETE;
+
+	
+END
+go
+--declare @p4 dbo.EmployeeShiftWeekDay
+--insert into @p4 values(N'1',N'0',N'0',N'0',N'0',N'44',N'44')
+--insert into @p4 values(N'2',N'0',N'0',N'3',N'0',N'44',N'44')
+--insert into @p4 values(N'3',N'0',N'0',N'0',N'0',N'44',N'0')
+--insert into @p4 values(N'4',N'0',N'0',N'0',N'0',N'0',N'0')
+--insert into @p4 values(N'5',N'5',N'0',N'0',N'0',N'0',N'44')
+--insert into @p4 values(N'6',N'0',N'9',N'7',N'0',N'0',N'0')
+--insert into @p4 values(N'7',N'0',N'0',N'0',N'12',N'0',N'0')
+
+--exec usp_employee_insertshift @InstitutionId=1,@Name=N'yogesh gautam',@IsActive=1,@EmployeeShiftWeekDay=@p4,@AdminName=N'bkrrishnas@gmail.com'
+  </code>
+</pre>
+
+
+=================================================================================================
+<h1 id="use-table-valued-parameters-database-engine" class=""><strong><span style="color: #ff00ff;">Use Table-Valued Parameters&nbsp;</span></strong></h1>
+<ol>
+<li><span style="font-size: 14pt;"><span style="color: #ff0000;">Table-valued parameters</span> are declared by using <span style="color: #ff0000;">user-defined table types. </span></span></li>
+<li><span style="font-size: 14pt;">You can use table-valued parameters <span style="color: #ff0000;">to send multiple rows of data</span> to a Transact-SQL statement or a routine, such as a stored procedure or function, without creating a temporary table or many parameters.</span></li>
+<li><span style="font-size: 14pt;"><span style="color: #ff0000;">Prior to SQL SERVER 2008</span>, it is not possible to pass a table variable as a parameter to a stored procedure.</span></li>
+</ol>
+<p class=""><span style="font-size: 14pt;">Table-valued parameters offer<span style="color: #ff0000;"> more flexibility</span> and in some cases better performance than temporary tables or other ways to pass a list of parameters. Table-valued parameters offer the following benefits:</span></p>
+<ul>
+<li>
+<p><span style="font-size: 14pt;">Do not acquire locks for the initial population of data from a client.</span></p>
+</li>
+<li>
+<p><span style="font-size: 14pt;">Provide a simple programming model.</span></p>
+</li>
+<li>
+<p><span style="font-size: 14pt;">Enable you to include complex business logic in a single routine.</span></p>
+</li>
+<li>
+<p><span style="font-size: 14pt;">Reduce round trips to the server.</span></p>
+</li>
+<li>
+<p><span style="font-size: 14pt;">Can have a table structure of different cardinality.</span></p>
+</li>
+<li>
+<p><span style="font-size: 14pt;">Are strongly typed.</span></p>
+</li>
+<li>
+<p><span style="font-size: 14pt;">Enable the client to specify sort order and unique keys.</span></p>
+</li>
+<li>
+<p><span style="font-size: 14pt;">Are cached like a temp table when used in a stored procedure. Starting with SQL Server 2012 (11.x), table-valued parameters are also cached for parameterized queries.</span></p>
+</li>
+</ul>
+<p><strong><span style="font-size: 14pt;">Table-valued parameters perform well for inserting less than 1000 rows.</span></strong></p>
+
+=========================================================
+Create Table Employee and later we insert data into this via EmpTable (User-defined Type)
+
+
+<pre>
+<code class="language-sql">
+Create Table Employees
+(
+ Id int primary key,
+ Name nvarchar(50),
+ Gender nvarchar(10)
+)
+Go
+</code>  
+</pre> 
+
+========================================================
+
+
+
+<p><span style="text-decoration: underline;"><span style="font-size: 18pt; color: #ff00ff; text-decoration: underline;">3 Steps to pass mulitple rows to a stored procedure using Table Value Parameter</span></span></p>
+<p>Step 1: Create User-defined Table Type.</p>
+<pre>
+<code class="language-sql">
+CREATE TYPE EmpTableType AS TABLE
+(
+ Id INT PRIMARY KEY,
+ Name NVARCHAR(50),
+ Gender NVARCHAR(10)
+)
+Go
+</code>  
+</pre>  
+
+This table will be created at Programmability>>Types>>User Defined Table Type>> dbo.EmpTableType
+
+<p>Step 2 : Use the User-defined Table Type as a parameter in the stored procedure as READONLY.  This means you cannot perform DML operations like INSERT, UPDATE or DELETE on a table-valued parameter in the body of a function, stored procedure etc.</p>
+
+<pre>
+<code class="language-sql">
+CREATE PROCEDURE spInsertEmployees
+@EmpTableType EmpTableType READONLY
+AS
+BEGIN
+ INSERT INTO Employees //no need to pass parameter
+ SELECT * FROM @EmpTableType
+END
+</code>  
+</pre>  
+
+
+Step 3 : Declare a table variable, insert the data and then pass the table variable as a parameter to the stored procedure.
+
+<pre>
+<code class="language-sql">
+DECLARE @EmployeeTableType EmpTableType 
+
+INSERT INTO @EmployeeTableType VALUES (1, 'Mark', 'Male')
+INSERT INTO @EmployeeTableType VALUES (2, 'Mary', 'Female')
+INSERT INTO @EmployeeTableType VALUES (3, 'John', 'Male')
+INSERT INTO @EmployeeTableType VALUES (4, 'Sara', 'Female')
+INSERT INTO @EmployeeTableType VALUES (5, 'Rob', 'Male')
+
+EXECUTE spInsertEmployees @EmployeeTableType
+
+</code>  
+</pre>  
+
+
+==================================================<br>
+Then we successfully inserted data into Employee Table via UserType Table :EmployeeTableType
+
+<h2>Look table Employees you will see data</h2>
+<table>
+<tbody>
+<tr style="background-color: gray; color: white;">
+<td>Id</td>
+<td>Name</td>
+<td>Gender</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Mark</td>
+<td>Male</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Mary</td>
+<td>Female</td>
+</tr>
+<tr>
+<td>3</td>
+<td>John</td>
+<td>Male</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Sara</td>
+<td>Female</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Rob</td>
+<td>Male</td>
+</tr>
+<tr>
+<td>NULL</td>
+<td>NULL</td>
+<td>NULL</td>
+</tr>
+</tbody>
+</table>
+
+=======================================================================================================================
+<br>
+<div class="row">
+  <div class="col-lg-6">
+    <pre>
+      <code class="langauge-csharp">
+  public void InsertOrderItemsAssociation(InventoryItemOrderInsertModel obj)
+  {
+      using (var conn = _connectionFactory.GetConnection) 
+      {
+          var query = "usp_Inventory_InsertOrderItemsAssociation";
+          var param = new DynamicParameters();
+          param.Add("@InstitutionId", obj.InstitutionId);
+          param.Add("@VendorId", obj.VendorId);
+          param.Add("@BillNo", obj.BillNo);
+          param.Add("@PurchasedDateAD", obj.PurchasedDateAD);
+          param.Add("@OrderItemsAssociation", obj.DtItems.AsTableValuedParameter());
+          param.Add("@AdminName", obj.AdminName);
+          conn.Query(query, param, commandType: CommandType.StoredProcedure);
+      }
+  }
+      </code>
+    </pre>
+  </div>
+
+  <div class="col-lg-6">
+      <pre>
+        <code class="langauge-csharp">
+          //inputs is array of object
+axios.post('/inventory/item/api/order/insert', { "Data": JSON.stringify(vm.inputs), 'BillNo': vm.inventoryItemOrder.billNo })
+.then(function (response) {
+    if (response.data.Result) {
+        alert("successfully inserted");
+    }
+}).catch(function (error) {
+    alert(error.response.data.Message);
+});
+}
+
+}); 
+        </code>
+      </pre>
+    </div>
+</div>
+
+
+<pre>
+  <code class="language-csharp">
+      [Route("item/api/order/insert")]
+      public IHttpActionResult InsertItemOrder(InventoryItemOrder inventoryItem)
+      {
+          InventoryItemOrderInsertModel obj = new InventoryItemOrderInsertModel();
+          try
+          {
+              obj.AdminName = User.Identity.Name;
+              obj.InstitutionId = GetInstitutionId();
+              obj.PurchasedDateAD = inventoryItem.PurchasedDateAD; 
+              obj.BillNo = inventoryItem.BillNo;
+              obj.VendorId = inventoryItem.VendorId;
+              JavaScriptSerializer serializer = new JavaScriptSerializer();
+              List<InventoryItemDataModel> list = serializer.Deserialize<List<InventoryItemDataModel>>(inventoryItem.Data);
+              DataTable inventoryItemOrderData = new DataTable();
+              inventoryItemOrderData.Columns.Add("Id");
+              inventoryItemOrderData.Columns.Add("Quantity");
+              inventoryItemOrderData.Columns.Add("PurchaseUnitPrice");
+              inventoryItemOrderData.Columns.Add("SellingUnitPrice");
+              inventoryItemOrderData.Columns.Add("Location");
+              
+              foreach (var item in list)
+              {
+                  inventoryItemOrderData.Rows.Add(item.ItemId, item.Quantity, item.PurchaseUnitPrice,item.SellingUnitPrice,item.Location);
+              }
+               obj.DtItems = inventoryItemOrderData;
+              _inventoryItemOrderService.Insert(obj);
+              _apiResponse.Result = string.Format("The Inventory Item  has been inserted.");
+              _apiResponse.StatusCode = (int)HttpStatusCode.OK;
+              return Ok(_apiResponse);
+          }
+          catch (Exception ex)
+          {
+              return BadRequest(ex.Message);
+          }
+      }
+  </code>
+</pre>
+
+
+
+
+==========================================================================
+    <script src="js/prism.js"></script>
+    <script type="text/javascript">
+      Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+          'remove-trailing': true,
+          'remove-indent': true,
+          'left-trim': true,
+          'right-trim': true,
+          // 'break-lines': 10,
+          // 'indent': 2,
+          // 'remove-initial-line-feed': false,
+          // 'tabs-to-spaces': 4,
+          // 'spaces-to-tabs': 4
+        });
+    </script>
+  </body>
+</html>

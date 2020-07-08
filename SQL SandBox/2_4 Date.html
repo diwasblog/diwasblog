@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+=================================================================================================
+
+
+<p><span style="font-size: 14pt;"><strong>SQL Server</strong>&nbsp;comes with the following data types for storing a date or a date/time value in the database:</span></p>
+<ul>
+<li><strong><span style="color: #ff00ff;">DATE</span> - format YYYY-MM-DD</strong></li>
+<li><strong><span style="color: #ff00ff;">DATETIME</span> - format: YYYY-MM-DD HH:MI:SS</strong></li>
+<li><strong><span style="color: #ff00ff;">SMALLDATETIME</span> - format: YYYY-MM-DD HH:MI:SS</strong></li>
+<li><strong><span style="color: #ff00ff;">TIMESTAMP</span> - format: a unique number</strong></li>
+</ul>
+<table border="1" cellspacing="0" cellpadding="4" align="center">
+<tbody>
+<tr>
+<td style="background-color: gray; color: white;" colspan="3">DATE ONLY FORMATS</td>
+</tr>
+<tr>
+<th>Format #</th>
+<th>Query</th>
+<th>Sample</th>
+</tr>
+<tr>
+<td>1</td>
+<td>select convert(varchar, getdate(), 1)</td>
+<td>12/30/06</td>
+</tr>
+<tr>
+<td>2</td>
+<td>select convert(varchar, getdate(), 2)</td>
+<td>06.12.30</td>
+</tr>
+<tr>
+<td>3</td>
+<td>select convert(varchar, getdate(), 3)</td>
+<td>30/12/06</td>
+</tr>
+<tr>
+<td>4</td>
+<td>select convert(varchar, getdate(), 4)</td>
+<td>30.12.06</td>
+</tr>
+<tr>
+<td>5</td>
+<td>select convert(varchar, getdate(), 5)</td>
+<td>30-12-06</td>
+</tr>
+<tr>
+<td>6</td>
+<td>select convert(varchar, getdate(), 6)</td>
+<td>30 Dec 06</td>
+</tr>
+<tr>
+<td>7</td>
+<td>select convert(varchar, getdate(), 7)</td>
+<td>Dec 30, 06</td>
+</tr>
+<tr>
+<td>10</td>
+<td>select convert(varchar, getdate(), 10)</td>
+<td>12-30-06</td>
+</tr>
+<tr>
+<td>11</td>
+<td>select convert(varchar, getdate(), 11)</td>
+<td>06/12/30</td>
+</tr>
+<tr>
+<td>12</td>
+<td>select convert(varchar, getdate(), 12)</td>
+<td>061230</td>
+</tr>
+<tr>
+<td>23</td>
+<td>select convert(varchar, getdate(), 23)</td>
+<td>2006-12-30</td>
+</tr>
+<tr>
+<td>101</td>
+<td>select convert(varchar, getdate(), 101)</td>
+<td>12/30/2006</td>
+</tr>
+<tr>
+<td>102</td>
+<td>select convert(varchar, getdate(), 102)</td>
+<td>2006.12.30</td>
+</tr>
+<tr>
+<td>103</td>
+<td>select convert(varchar, getdate(), 103)</td>
+<td>30/12/2006</td>
+</tr>
+<tr>
+<td>104</td>
+<td>select convert(varchar, getdate(), 104)</td>
+<td>30.12.2006</td>
+</tr>
+<tr>
+<td>105</td>
+<td>select convert(varchar, getdate(), 105)</td>
+<td>30-12-2006</td>
+</tr>
+<tr>
+<td>106</td>
+<td>select convert(varchar, getdate(), 106)</td>
+<td>30 Dec 2006</td>
+</tr>
+<tr>
+<td>107</td>
+<td>select convert(varchar, getdate(), 107)</td>
+<td>Dec 30, 2006</td>
+</tr>
+<tr>
+<td>110</td>
+<td>select convert(varchar, getdate(), 110)</td>
+<td>12-30-2006</td>
+</tr>
+<tr>
+<td>111</td>
+<td>select convert(varchar, getdate(), 111)</td>
+<td>2006/12/30</td>
+</tr>
+<tr>
+<td>112</td>
+<td>select convert(varchar, getdate(), 112)</td>
+<td>20061230</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td style="background-color: gray; color: white;" colspan="3">TIME ONLY FORMATS</td>
+</tr>
+<tr>
+<td>8</td>
+<td>select convert(varchar, getdate(), 8)</td>
+<td>00:38:54</td>
+</tr>
+<tr>
+<td>14</td>
+<td>select convert(varchar, getdate(), 14)</td>
+<td>00:38:54:840</td>
+</tr>
+<tr>
+<td>24</td>
+<td>select convert(varchar, getdate(), 24)</td>
+<td>00:38:54</td>
+</tr>
+<tr>
+<td>108</td>
+<td>select convert(varchar, getdate(), 108)</td>
+<td>00:38:54</td>
+</tr>
+<tr>
+<td>114</td>
+<td>select convert(varchar, getdate(), 114)</td>
+<td>00:38:54:840</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td style="background-color: gray; color: white;" colspan="3">DATE &amp; TIME FORMATS</td>
+</tr>
+<tr>
+<td>0</td>
+<td>select convert(varchar, getdate(), 0)</td>
+<td>Dec 12 2006 12:38AM</td>
+</tr>
+<tr>
+<td>9</td>
+<td>select convert(varchar, getdate(), 9)</td>
+<td>Dec 30 2006 12:38:54:840AM</td>
+</tr>
+<tr>
+<td>13</td>
+<td>select convert(varchar, getdate(), 13)</td>
+<td>30 Dec 2006 00:38:54:840AM</td>
+</tr>
+<tr>
+<td>20</td>
+<td>select convert(varchar, getdate(), 20)</td>
+<td>2006-12-30 00:38:54</td>
+</tr>
+<tr>
+<td>21</td>
+<td>select convert(varchar, getdate(), 21)</td>
+<td>2006-12-30 00:38:54.840</td>
+</tr>
+<tr>
+<td>22</td>
+<td>select convert(varchar, getdate(), 22)</td>
+<td>12/30/06 12:38:54 AM</td>
+</tr>
+<tr>
+<td>25</td>
+<td>select convert(varchar, getdate(), 25)</td>
+<td>2006-12-30 00:38:54.840</td>
+</tr>
+<tr>
+<td>100</td>
+<td>select convert(varchar, getdate(), 100)</td>
+<td>Dec 30 2006 12:38AM</td>
+</tr>
+<tr>
+<td>109</td>
+<td>select convert(varchar, getdate(), 109)</td>
+<td>Dec 30 2006 12:38:54:840AM</td>
+</tr>
+<tr>
+<td>113</td>
+<td>select convert(varchar, getdate(), 113)</td>
+<td>30 Dec 2006 00:38:54:840</td>
+</tr>
+<tr>
+<td>120</td>
+<td>select convert(varchar, getdate(), 120)</td>
+<td>2006-12-30 00:38:54</td>
+</tr>
+<tr>
+<td>121</td>
+<td>select convert(varchar, getdate(), 121)</td>
+<td>2006-12-30 00:38:54.840</td>
+</tr>
+<tr>
+<td>126</td>
+<td>select convert(varchar, getdate(), 126)</td>
+<td>2006-12-30T00:38:54.840</td>
+</tr>
+<tr>
+<td>127</td>
+<td>select convert(varchar, getdate(), 127)</td>
+<td>2006-12-30T00:38:54.840</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td style="background-color: gray; color: white;" colspan="3">FORMATS WITH ISSUES</td>
+</tr>
+<tr>
+<td>130</td>
+<td>select convert(varchar, getdate(), 130)</td>
+<td>10 ?? ????? 1427 12:38:54:840A</td>
+</tr>
+<tr>
+<td>131</td>
+<td>select convert(varchar, getdate(), 131)</td>
+<td>10/12/1427 12:38:54:840AM</td>
+</tr>
+</tbody>
+</table>
+<p>You can also format the date or time without dividing characters, as well as concatenate the date and time string:</p>
+<table border="1" cellspacing="0" cellpadding="5" align="center">
+<tbody>
+<tr>
+<th>Sample statement</th>
+<th>Output</th>
+</tr>
+<tr>
+<td>select replace(convert(varchar, getdate(),101),'/','')</td>
+<td>12302006</td>
+</tr>
+<tr>
+<td>select replace(convert(varchar, getdate(),101),'/','') + replace(convert(varchar, getdate(),108),':','')</td>
+<td>12302006004426</td>
+</tr>
+</tbody>
+</table>
+
+
+================================================================================================
+<p><span style="font-size: 18pt; color: #ff00ff;">CONVERT vs CAST</span></p>
+<table style="height: 170px; width: 77.3315%; border-collapse: collapse;" border="1">
+<tbody>
+<tr style="height: 49px;">
+<td style="width: 50%; height: 49px; color: white; background: gray;">CAST</td>
+<td style="width: 45.5483%; height: 49px; color: white; background: gray;">CONVERT</td>
+</tr>
+<tr style="height: 49px;">
+<td style="width: 50%; height: 49px;">Both convert data from one form to another.</td>
+<td style="width: 45.5483%; height: 49px;">&nbsp;</td>
+</tr>
+<tr style="height: 13px;">
+<td style="width: 50%; height: 13px;">
+<p>CAST is <strong>ANSI-standard function</strong></p>
+<p>Means it will work when you port your T-SQL queries to a non-Microsoft database also.</p>
+</td>
+<td style="width: 45.5483%; height: 13px;">CONVERT, however, is a <strong>function specific to T-SQL.</strong></td>
+</tr>
+<tr style="height: 99px;">
+<td style="width: 50%; height: 59px;">
+<p>SELECT CAST(25.65 AS int);</p>
+<p>Output:25</p>
+</td>
+<td style="width: 45.5483%; height: 59px;">
+<p>SELECT CONVERT(int,25.65);</p>
+<p>OUtput:25</p>
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="graf graf--pre graf-after--p">&nbsp;</pre>
+<p>SELECT CAST(25.65 AS int);</p>
+<p>Output: 25</p>
+<pre class="graf graf--pre graf-after--p"><br /><br /><br />Always convert  will transforms into varchar(10).<br /><br />SELECT CONVERT(VARCHAR(10), date_of_birth, 102)<br /><br />Suppose you want to convert that date string into date then use both CAST and CONVERT as below<br /><br /></pre>
+<pre id="4040" class="graf graf--pre graf-after--p">SELECT CAST(CONVERT(VARCHAR(10), date_of_birth, 102) AS DATETIME</pre>
+
+<br>
+
+<div class="row">
+<div class="col-6">
+<pre>
+<code class="language-csharp">
+SELECT CONVERT(nvarchar(20),getdate());
+</code>
+</pre>
+</div>
+
+<div class="col-6">
+  <pre>
+  <code class="language-csharp">
+  SELECT CONVERT(nvarchar(20),getdate()); 
+  </code>
+  </pre>
+  </div>
+</div>
+
+ 
+<center>Output: Feb 7 2019 3:58PM</center>
+======================================================================================================
+
+
+
+<script src="js/prism.js"></script>
+    <script type="text/javascript">
+      Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+          'remove-trailing': true,
+          'remove-indent': true,
+          'left-trim': true,
+          'right-trim': true,
+          // 'break-lines': 10,
+          // 'indent': 2,
+          // 'remove-initial-line-feed': false,
+          // 'tabs-to-spaces': 4,
+          // 'spaces-to-tabs': 4
+        });
+    </script>
+  </body>
+</html>

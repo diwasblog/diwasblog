@@ -1,0 +1,639 @@
+<html>
+
+<head>
+
+    <script
+        src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+    <script src="https://unpkg.com/vue"></script>
+
+    <style>
+        xmp.prettyprint {
+            font-size: 12pt;
+            font-family: monospace;
+
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <xmp class="prettyprint">
+        <span class="input-group-addon" id="sizing-addon2">
+            <i v-if="isSearching" class="fa fa-refresh fa-spin fa-fw"></i>
+            <i v-if="!isSearching" class="fa fa-search"></i>
+        </span>
+        <input type="text" v-model="searchText" class="form-control" v-on:keyup="searchChange"
+            placeholder="Search Name" />
+    </xmp>
+
+
+
+    |<xmp class="prettyprint">
+        <p v-if="props.row.IsPerson" class="text-center text-success"><i class="fa fa-check"></i></p>
+        <p v-if="!props.row.IsPerson" class="text-center text-danger"><i class="fa fa-times"></i></p>
+    </xmp>
+
+    =========================================================================================================================
+    <xmp class="prettyprint">
+        //link writing
+        <a :href="viewProfile(props.row.Id)">{{props.row.Name}}</a>
+
+
+        //method
+        viewProfile: function (id) {
+        return "/finance/vendor/profile/" + id;
+        },
+
+
+        viewProfile(id) {
+        return "/bims/student/profile/" + id + '#/';
+        }
+    </xmp>
+
+
+    =================================================================================================
+    <xmp class="prettyprint">
+        <a :href="'/darta/information?id=' + props.row.dartaNo">
+    </xmp>
+
+    =====================================================================================================================
+    <xmp class="prettyprint">
+        <a @@click="addFineSlab" class="btn btn-warning btn-xs"><i class="fa fa-plus"></i> Add Fine Slab</a>
+    </xmp>
+
+    ======================================================================================================================
+    <xmp class="prettyprint">
+        <a href="@string.Format("/hrms/report/attendance/employee/"+ Model.EmployeeId)">Report</a>
+        OR
+
+        <a href="@string.Format("/hrms/report/attendance/employee/{0}", Model.EmployeeId)">Report</a>
+
+    </xmp>
+
+
+    ==================================================================================
+    <xmp class="prettyprint">
+        <a href='@String.Format("/bims/student/profile/{0}", Model.Student.StudentId)'>@Model.Student.FirstName</a>
+
+
+        <a href="@string.Format("/emis/exam/{0}/results/{1}", Model.Exam.Id, subject.Id)"
+            class="btn btn-outline-primary btn-xs">
+            <i class="fa fa-plus"></i> Manage Result </a>
+    </xmp>
+    =========================================================================================================================
+    <xmp class="prettyprint">
+        //button click with return
+        <button @@click.prevent="associateEmployee(props.row.Id)" class="btn btn-xs btn-outline-primary"><i
+                class="fa fa-link" aria-hidden="true"></i> Association</button>
+    </xmp>
+
+    <xmp class="prettyprint">
+        associateEmployee(id) {
+        alert(id);
+        window.location.href='/hrms/setting/' + id + '/privileges';
+        //or
+        //window.location.href=`/hrms/setting/${id}/privileges`; //using template expression
+        }
+    </xmp>
+
+
+    ====================================================================================================================
+    <xmp class="prettyprint">
+
+        YOu can access model properties directly without plus
+
+        Model Vendor
+        <a href="/finance/transaction/vendor/@Model.Id"></a>
+
+        //invalid => <a href="/finance/transaction/vendor/+ @Model.Id"></a>
+    </xmp>
+    ===================================================================================================================
+    <xmp class="prettyprint">
+        For showing error
+        <span v-show="errors.has('Type.Id')" class="text-danger form-error">{{ errors.first('Type.Id') }}</span>
+    </xmp>
+    =====================================================================================================================
+
+    <xmp class="prettyprint">
+        Creating Custom validator Add in index.js
+
+        //validation Extensions
+        VeeValidate.Validator.extend('otherThanZero', {
+        getMessage: field => 'The ' + field + ' field is not selected.',
+        validate(value, args) {
+        if (value >= 1) {
+        return true;
+        }
+        else {
+        return false;
+        }
+        }
+        });
+
+        VeeValidate.Validator.extend('greaterThanZero', {
+        getMessage: field => 'The ' + field + ' field cannot be zero.',
+        validate(value, args) {
+        if (value >= 1) {
+        return true;
+        }
+        else {
+        return false;
+        }
+        }
+        });
+    </xmp>
+
+    =======================================================================================================================
+
+    <xmp class="prettyprint">
+        Select all checkbox or disselect all
+        <small><a href="#" @@click.prevent="selectAllBatches(true)">All</a> |
+            <a hreflang="#" @@click.prevent="selectAllBatches(false)" href="#">None</a></small>
+
+
+        selectAllBatches: function (flag) {
+        let vm = this;
+        console.log(flag);
+        if (flag) {
+        for (var i = 0; i < vm.batchData.length ; i++) { console.log(vm.batchData[i]); vm.batchData[i].IsActive=true; }
+            } if (!flag) { for (var i=0; i < vm.batchData.length ; i++) { vm.batchData[i].IsActive=false; } } }
+            </xmp>=======================================================================================================================
+            <xmp class="prettyprint">
+            let selectedBatches = vm.batchData.filter(function (item) {
+            return item.IsActive == true;
+            });
+
+
+            do JSON.stringify(selectedBatches) then push this to server
+
+    </xmp>
+
+
+    ===========================================================================================================================
+    <xmp class="prettyprint">
+        gettting two data : one name and another array of data
+        axios.get("/emis/exam/api/examsubjectswithevaluationdata/" + vm.exam.id)
+        .then(function (response) {
+        if(response.data.Result.length > 0){
+        vm.subjectData = [];
+        vm.subjectData = response.data.Result;
+        vm.groupedBySubject = _.chain(vm.subjectData)
+        .groupBy("Name")
+        .toPairs()
+        .map(function (currentItem) {
+        return _.fromPairs(_.zip(["name", "data"], currentItem));
+        })
+        .value();
+        }
+        vm.subjectDataLoading = false;
+        })
+    </xmp>
+
+    =============================================================================================================================
+
+    =======================================================================================================================
+
+    <xmp class="prettyprint">
+        //on key up event handler
+        <input type="number" class="form-control" v-model="particular.amount" @@keyup="amountChanged" name="Amount" />
+
+        methods:{
+        amountChanged()
+        {
+
+        }
+        }
+    </xmp>
+    ==================================================================================================================
+    <xmp class="prettyprint">
+        Indropdown when clicked on first dropdown set second dropdown to select zero index
+
+    </xmp>
+    ==================================================================================================================
+    <xmp class="prettyprint">
+        //what the repository function returns then make model related to that only.
+        Suppose I am dealing with bill of vendor then if repository store procedure returns bills data then make bill
+        model
+    </xmp>
+    ===============================================================================
+
+    <h2>hasownproperty</h2>
+    <xmp class="prettyprint">
+
+        axios.get('/hrms/employee/api/getemployeebydepartment/' + vm.departmentId)
+        .then(function (response) {
+        vm.employeeData = [];
+        if (response.hasOwnProperty('data')) {
+        vm.employeeData = response.data.Result;
+        vm.employeeDataLoading = false;
+        }
+        })
+        .catch(function (error) {
+        vm.employeeDataLoading = false;
+        });
+    </xmp>
+
+
+    <xmp class="prettyprint">
+
+        axios.get("/setting/api/department/getall")
+        .then(function (response) {
+        if (response.data.result) {
+        vm.departmentData = response.data.result;
+        } else {
+        alert(response.data.errorMessage);
+        }
+        })
+        .catch(function (error) {
+        if (error.hasOwnProperty('response'))
+        alert(error.response.data.Message);
+        else
+        alert(error);
+        });
+    </xmp>
+    ===================================================================
+
+
+
+    ===============================================================
+
+    <xmp class="prettyprint">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <h4>Book Search</h4>
+                <hr />
+                <label for="exampleInputName2">Number/Barcode</label>
+                <div class="form-inline">
+                    <div class="form-group">
+                        <input type="text" v-model="bookId" autofocus @@keyup.enter="searchBook" class="form-control"
+                            placeholder="Book Number/Barcode">
+                    </div>
+                    <button @@click.prevent="searchBook" type="submit" class="btn btn-primary">
+                        <i class="fa fa-search"></i> Search
+                    </button>
+                </div>
+            </div>
+
+
+
+            <div class="col-lg-12">
+                searchBook() {
+                let vm = this;
+                vm.dartaDataLoading = true;
+                var abc = `/darta/api/search?departmentId=${vm.departmentId}&artaNo=${vm.dartaNumber}`;
+                console.log(abc);
+                axios.get(abc)
+                .then(function (response) {
+                vm.dartaDataLoading = false;
+                if (response.data.result) {
+                vm.dartaData = [];
+                vm.dartaData = response.data.result;
+                console.log(vm.dartaData);
+                } else {
+                alert(response.data.errorMessage);
+                }
+                })
+                .catch(function (error) {
+
+                });
+                }
+            </div>
+
+            In Controller
+            [Route("search")]
+            public IHttpActionResult GetDarta(int departmentId, int dartaNo)
+            {
+            try
+            {
+            var data = _dartaService.GetDartaForReport(employeeId, departmentId, statusId, officeId, representative,
+            dartaNo);
+            return Ok(data);
+            }
+            catch (Exception ex)
+            {
+            return BadRequest(ex.Message);
+            }
+            }
+    </xmp>
+
+    ===========================================================================
+    <h2>Use of e.PreventDefault</h2>
+
+    <a href="https://codepen.io/DiwasPoudel/pen/QZoWBN">Try it</a>
+    <br> Visit this as well
+
+    https://stackoverflow.com/questions/30473581/when-to-use-preventdefault-vs-return-false
+    ==============================================================================
+    <p><span style="font-size: 14pt; color: #ff0000;">There are a lot of different types of events that can occur, for
+            example:</span></p>
+    <ul>
+        <li><strong>The user clicking the mouse over a certain element or hovering the cursor over a certain
+                element.</strong></li>
+        <li><strong>The user pressing a key on the keyboard.</strong></li>
+        <li><strong>The user resizing or closing the browser window.</strong></li>
+        <li><strong>A web page finishing loading.</strong></li>
+        <li><strong>A form being submitted.</strong></li>
+        <li><strong>A video being played, or paused, or finishing play.</strong></li>
+        <li><strong>An error occurring.</strong></li>
+    </ul>
+    <p><span style="font-size: 24pt; color: #ff0000;">What is e in e.preventDefault() ?</span></p>
+    <p><span style="font-size: 12pt; color: #000000;">When the JavaScript engine calls the callback you provided, it
+            passes an&nbsp;<code>Event</code>&nbsp;object. You gain access to that passed object by giving the function
+            a parameter. You don't have to call it&nbsp;<code>e</code>; you can use any valid variable name you
+            want.</span></p>
+    <p><span style="font-size: 18pt; color: #000000;">preventDefault()</span></p>
+    <p><span style="font-size: 12pt; color: #000000;"><code>It</code>&nbsp;does one thing: It stops the browsers default
+            behaviour.</span></p>
+
+
+    <h2>Without e.preventDefault()</h2>
+    <div class="row">
+        <div class="col-lg-6">
+            <xmp class="prettyprint">
+                <div onclick='executeParent()'>
+                    <a href='http://stackoverflow.com' onclick='executeChild()'>Click here to visit
+                        stackoverflow.com</a>
+                </div>
+                <script>
+                    function executeChild() {
+                        alert('Link Clicked');
+                    }
+
+                    function executeParent() {
+                        alert('div Clicked');
+                    }
+                </script>
+            </xmp>
+        </div>
+
+
+        <div class="col-lg-6">
+            <p data-height="213" data-theme-id="0" data-slug-hash="ZqPbWO" data-default-tab="html,result"
+                data-user="DiwasPoudel" data-pen-title="ZqPbWO" class="codepen">See the Pen <a
+                    href="https://codepen.io/DiwasPoudel/pen/ZqPbWO/">ZqPbWO</a> by Suspense (<a
+                    href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a href="https://codepen.io">CodePen</a>.
+            </p>
+            <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+        </div>
+    </div>
+
+    <p><span style="font-size: 12pt; font-family: 'comic sans ms', sans-serif;">Run the above code you will see the
+            hyperlink&nbsp;<strong>&lsquo;Click here to visit stackoverflow.com&lsquo;</strong>&nbsp;now if you click on
+            that link first you will get the javascript alert&nbsp;<strong>Link Clicked</strong>&nbsp;Next you will get
+            the javascript alert&nbsp;<strong>div Clicked</strong>&nbsp;and immediately you will be redirected to
+            stackoverflow.com.<span style="color: #ff0000;">(But you are inside codepen you will not see redirected to
+                stackoverflow. But you can test by creating new html file and will see redirection effect)</span></span>
+    </p>
+    <br>
+    <h2>With preventDefault()</h2>
+    <hr>
+    <div class="row">
+        <div class="col-lg-6">
+            <xmp class="prettyprint">
+                <div onclick='executeParent()'>
+                    <a href='http://stackoverflow.com' onclick='executeChild()'>Click here to visit
+                        stackoverflow.com</a>
+                </div>
+                <script>
+                    function executeChild() {
+                        event.preventDefault();
+                        event.currentTarget.innerHTML = 'Click event prevented'
+                        alert('Link Clicked');
+                    }
+
+                    function executeParent() {
+                        alert('div Clicked');
+                    }
+                </script>
+            </xmp>
+        </div>
+
+
+        <div class="col-lg-6">
+            <p data-height="265" data-theme-id="0" data-slug-hash="NOJGRQ" data-default-tab="html,result"
+                data-user="DiwasPoudel" data-pen-title="NOJGRQ" class="codepen">See the Pen <a
+                    href="https://codepen.io/DiwasPoudel/pen/NOJGRQ/">NOJGRQ</a> by Suspense (<a
+                    href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a href="https://codepen.io">CodePen</a>.
+            </p>
+            <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+        </div>
+    </div>
+
+    <p><span style="font-family: 'comic sans ms', sans-serif; font-size: 12pt;">Run the above code you will see the
+            hyperlink &lsquo;<span style="color: #ff0000;">Click here to visit stackoverflow.com</span>&lsquo; now if
+            you click on that link first you will get the javascript alert<span
+                style="color: #ff0000;">&nbsp;<strong>Link Clicked</strong></span>&nbsp;Next you will get the javascript
+            alert&nbsp;<span style="color: #ff0000;"><strong>div Clicked</strong></span>&nbsp;Next you will see the
+            hyperlink &lsquo;<span style="color: #ff0000;">Click here to visit stackoverflow.com</span>&lsquo; replaced
+            by the text &lsquo;<span style="color: #ff0000;">Click event prevented&lsquo; and you
+                will&nbsp;<strong>not</strong>&nbsp;be redirected to stackoverflow.com</span>. This is due &gt; to <span
+                style="color: #ff0000;">event.preventDefault()</span> method we used to prevent the default click action
+            (ie. redirecting on click)to be triggered.</span></p>
+    look here we "Link Clicked" is also alerted though it is prevent after e.preventDefault()
+    <br>
+
+    <h2>Stop Propagation</h2>
+    <div class="row">
+        <div class="col-lg-6">
+            <xmp class="prettyprint">
+                <div onclick='executeParent()'>
+                    <a href='http://stackoverflow.com' onclick='executeChild()'>Click here to visit
+                        stackoverflow.com</a>
+                </div>
+                <script>
+                    function executeChild() {
+                        event.stopPropagation();
+                        event.currentTarget.innerHTML = 'Click event prevented'
+                        alert('Link Clicked');
+                    }
+
+                    function executeParent() {
+                        alert('div Clicked');
+                    }
+                </script>
+            </xmp>
+        </div>
+
+
+        <div class="col-lg-6">
+            <p data-height="265" data-theme-id="0" data-slug-hash="yRwYMO" data-default-tab="html,result"
+                data-user="DiwasPoudel" data-pen-title="yRwYMO" class="codepen">See the Pen <a
+                    href="https://codepen.io/DiwasPoudel/pen/yRwYMO/">yRwYMO</a> by Suspense (<a
+                    href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a href="https://codepen.io">CodePen</a>.
+            </p>
+            <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+        </div>
+    </div>
+
+    <br>
+    <p><span style="font-family: 'comic sans ms', sans-serif; font-size: 14pt; color: #000000;">This time if you click
+            on Link the function <span style="color: #ff00ff;">executeParent()</span> will not be called and you will
+            not get the javascript alert&nbsp;<strong>div Clicked</strong>&nbsp;this time. This is due to us having
+            prevented the propagation to the parent div using <span
+                style="color: #ff00ff;">event.stopPropagation()</span> method. Next you will see the hyperlink
+            &lsquo;<span style="color: #ff00ff;">Click here to visit stackoverflow.com</span>&lsquo; replaced by the
+            text &lsquo;<span style="color: #ff00ff;">Click event is going to be executed</span>&lsquo; and immediately
+            you will be redirected to stackoverflow.com<span style="color: #ff0000;">.(We are inside codepen frame so we
+                are not able to see redirected to stackoverflow.com but when you run code outside you will see the
+                effect)</span> This is because we haven&rsquo;t prevented the default click action from triggering this
+            time using <span style="color: #ff00ff;">event.preventDefault()</span> method.</span></p>
+    <br>
+
+    <h2>Both Propagation and PreventDefault</h2>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <xmp class="prettyprint">
+                <div onclick='executeParent()'>
+                    <a href='http://stackoverflow.com' onclick='executeChild()'>Click here to visit
+                        stackoverflow.com</a>
+                </div>
+                <script>
+                    function executeChild() {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        event.currentTarget.innerHTML = 'Click event prevented'
+                        alert('Link Clicked');
+                    }
+
+                    function executeParent() {
+                        alert('Div Clicked');
+                    }
+                </script>
+            </xmp>
+        </div>
+
+
+        <div class="col-lg-6">
+            <p data-height="265" data-theme-id="0" data-slug-hash="JmzYJM" data-default-tab="html,result"
+                data-user="DiwasPoudel" data-pen-title="JmzYJM" class="codepen">See the Pen <a
+                    href="https://codepen.io/DiwasPoudel/pen/JmzYJM/">JmzYJM</a> by Suspense (<a
+                    href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a href="https://codepen.io">CodePen</a>.
+            </p>
+            <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+        </div>
+    </div>
+
+    <p><span style="font-size: 14pt; font-family: 'comic sans ms', sans-serif; color: #000000;">If you click on the
+            Link, the function <span style="color: #ff00ff;">executeParent()</span> will not be called and you will not
+            get the javascript alert. This is due to us having prevented the propagation to the parent div using <span
+                style="color: #ff00ff;">event.stopPropagation()</span> method. Next you will see the hyperlink
+            &lsquo;<span style="color: #ff00ff;">Click here to visit stackoverflow.com</span>&lsquo; replaced by the
+            text &lsquo;<span style="color: #ff00ff;">Click event prevented</span>&lsquo; and you will not be redirected
+            to stackoverflow.com. This is because we have prevented the default click action from triggering this time
+            using <span style="color: #ff00ff;">event.preventDefault()</span> method.</span>
+
+
+        <br>
+
+
+        <h1>Most practical example of e.preventDefault()</h1>
+        <h3>Mostly seen in form validation</h3>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <xmp class="prettyprint">
+                    <form>
+                        <div>
+                            <label for="fname">First name: </label>
+                            <input id="fname" type="text">
+                        </div>
+                        <div>
+                            <label for="lname">Last name: </label>
+                            <input id="lname" type="text">
+                        </div>
+                        <div>
+                            <input id="submit" type="submit">
+                        </div>
+                    </form>
+                    <p></p>
+                    <script>
+                        var form = document.querySelector('form');
+                        var fname = document.getElementById('fname');
+                        var lname = document.getElementById('lname');
+                        var para = document.querySelector('p');
+                        form.onsubmit = function (e) {
+                            if (fname.value === '' || lname.value === '') {
+                                e.preventDefault();
+                                para.textContent = 'You need to fill in both names!'
+                            }
+                        }
+                    </script>
+                </xmp>
+            </div>
+
+            <div class="col-lg-6">
+                <p data-height="265" data-theme-id="0" data-slug-hash="zmbvgW" data-default-tab="html,result"
+                    data-user="DiwasPoudel" data-pen-title="e.preventDefault by mozilla" class="codepen">See the Pen <a
+                        href="https://codepen.io/DiwasPoudel/pen/zmbvgW/">e.preventDefault by mozilla</a> by Suspense
+                    (<a href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a
+                        href="https://codepen.io">CodePen</a>.</p>
+                <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+            </div>
+        </div>
+
+        <h2>Detail here...</h2>
+        https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events
+
+
+        <h2>Other use case</h2>
+        <xmp class="prettyprint">
+            <div class="social-link">
+                <a target="_blank" class="fa fa-facebook socialpro" href="https://www.facebook.com/ourtechroom"></a>
+                <a target="_blank" class="fa fa-twitter socialpro" href="#" onclick="event.preventDefault()"></a>
+                <a target="_blank" class="fa fa-instagram socialpro" href="#" onclick="event.preventDefault()"></a>
+                <a target="_blank" class="fa fa-google-plus socialpro" href="#" onclick="event.preventDefault()"></a>
+                <a target="_blank" class="fa fa-youtube-play socialpro" href="#" onclick="event.preventDefault()"></a>
+                <a target="_blank" class="fa fa-linkedin socialpro" href="#" onclick="event.preventDefault()"></a>
+                <a target="_blank" class="fa fa-rss socialpro" href="#" onclick="event.preventDefault()"></a>
+            </div>
+        </xmp>
+        =======================================================
+        <xmp class="prettyprint">
+            let conf = confirm(`Are you sure to delete ' ${row.ItemName} ' Item ?`);
+            if (!conf) {
+            return;
+            } else {
+            axios.post('/inventory/item/api/manage/delete', {
+            "Id": obj.Id
+            })
+            .then(response => {
+            if (response.data.Result) {
+            vm.loadInventoryItemData();
+            }
+            })
+            .catch((errors) => {
+            console.log(errors);
+            })
+            }
+        </xmp>
+
+        ============================================================================================
+        <h2>Accept 2 digits only, tofixed, roundoff</h2>
+        <xmp class="prettyprint">
+            var num = 5.678;
+            var result = Number(parseFloat(num).toFixed(2)); // 5.68
+        </xmp>
+
+        ===============================================================================================
+        ============================================================================================
+        <h2>comma </h2>
+        <xmp class="prettyprint">
+
+            var num = 455654555.678
+            var result = Number(parseFloat(num).toFixed(2)).toLocaleString("en-IN", { minimumFractionDigits: 2 }) //
+            45,56,54,555.68
+
+
+            //Alternatively
+            @String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("hi-IN"), "{0:#,0.00}",
+            Convert.ToDouble(item.PlannedBudget))
+        </xmp>
+
+        ===============================================================================================
+</body>
+
+</html>

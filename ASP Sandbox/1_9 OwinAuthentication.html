@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+
+    Projects created with no authentication:
+
+    Don't contain web pages and UI to sign in and sign out.
+    Don't contain authentication code.
+======================================================================
+
+OWIN(Open Web Interface for .Net) 
+<br>
+<img src="img/owin/1.png">
+
+<br>
+Then look Startup.cs file
+<pre>
+     <code class="language-csharp">
+       using Microsoft.Owin;
+        using Owin;
+
+      [assembly: OwinStartupAttribute(typeof(AuthenticationInASPMVC.Startup))]
+      namespace AuthenticationInASPMVC
+      {
+          public partial class Startup
+          {
+              public void Configuration(IAppBuilder app)
+              {
+                  ConfigureAuth(app);
+              }
+          }
+      }
+
+     </code>
+   </pre>
+
+we can see the starting page where OWIN assembly starts.
+Right click on “ConfigureAuth(app)” and go to definition page where we can see an auto-generated code.
+This File is App_Start==>Startup.Auth.cs
+
+<pre>
+     <code class="language-csharp">
+      using Owin;
+      using AuthenticationInASPMVC.Models;
+
+      namespace AuthenticationInASPMVC
+      {
+          public partial class Startup
+          {
+              // For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864
+              public void ConfigureAuth(IAppBuilder app)
+              {
+                  // Configure the db context, user manager and signin manager to use a single instance per request
+                  app.CreatePerOwinContext(ApplicationDbContext.Create);
+                  app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
+                  app.CreatePerOwinContext<ApplicationSignInManager>(ApplicationSignInManager.Create);
+                  //focusing on These three app function 
+                  //ApplictionDbContext
+                  //ApplicationUserSignInManager
+                  //ApplicationUserManager
+                  ....
+
+
+              }
+          }
+      }
+
+
+     </code>
+   </pre>
+
+
+More on Startup.Auth.cs
+<pre>
+  <code class="language-csharp">
+    // Enable the application to use a cookie to store information for the signed in user
+            // and to use a cookie to temporarily store information about a user logging in with a third party login provider
+            // Configure the sign in cookie
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+                LoginPath = new PathString("/Account/Login"),  //auto redirect to login page 
+                Provider = new CookieAuthenticationProvider
+                {
+                    // Enables the application to validate the security stamp when the user logs in.
+                    // This is a security feature which is used when you change a password or add an external login to your account.  
+                    OnValidateIdentity = SecurityStampValidator.OnValidateIdentity<ApplicationUserManager, ApplicationUser>(
+                        validateInterval: TimeSpan.FromMinutes(30),
+                        regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
+                }
+            });            
+
+  </code>
+</pre>
+
+
+We also have CookieAuthentication here to store information for the signed in user and to use a cookie to temporaritly store information about a user logging in third party login provider.
+Here we have set cookies for 30 minutes and we can change it.
+
+
+More ...
+For authentication usign google , facebook and gmail
+<pre>
+  <code class="language-csharp">
+    // Uncomment the following lines to enable logging in with third party login providers
+            //app.UseMicrosoftAccountAuthentication(
+            //    clientId: "",
+            //    clientSecret: "");
+
+            //app.UseTwitterAuthentication(
+            //   consumerKey: "",
+            //   consumerSecret: "");
+
+            //app.UseFacebookAuthentication(
+            //   appId: "",
+            //   appSecret: "");
+
+            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            //{
+            //    ClientId = "",
+            //    ClientSecret = ""
+            //});
+
+  </code>
+</pre>
+
+====================================================
+Now just run that fresh  application 
+<br>
+<img src="img/owin/2.png">
+
+<br>
+=============================================
+Then  click on register then this will appear as below<br>
+<img src="img/owin/3.png">
+<br>
+
+===========================================
+As soon as clicked on ok button, we get this table automatically generated by code first approach<br>
+<img src="img/owin/4.png">
+<br>
+
+=============================================
+Then look user table here.<br>
+<img src="img/owin/5.png">
+<br>
+=================================================
+
+<h2>Note </h2>
+On clicking register button this Register action method of acccountcontroller is called 
+Here It will take user name and email and create user using CreateAsync method with user and password as
+parameter(10-11) .If user is successfully created then user will be login using SignInAsync method(14)and 
+redirected to Index/Home page.
+
+
+<pre class="line-numbers">
+  <code class="language-clike">
+     // POST: /Account/Register
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Register(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+             
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var result = await UserManager.CreateAsync(user, model.Password);</span></p>
+                if (result.Succeeded)
+                {
+                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    
+                    return RedirectToAction("Index", "Home");
+                }
+                AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+  </code>
+</pre>
+
+
+<pre class="line-numbers">
+  <code class=" highlight  language-markup">
+      
+  </code>
+</pre>
+
+
+<h2>Well login</h2>
+<pre class="line-numbers">
+  <code class=" highlight  language-clike">
+    // POST: /Account/Login
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+           
+            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    return RedirectToLocal(returnUrl);
+                case SignInStatus.LockedOut:
+                    return View("Lockout");
+                case SignInStatus.RequiresVerification:
+                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                case SignInStatus.Failure:
+
+
+  </code>
+</pre>
+===================================================
+
+<h2>Loggedout</h2>
+<pre class="line-numbers">
+  <code class="language-clike">
+  // POST: /Account/LogOff
+[HttpPost]
+[ValidateAntiForgeryToken]
+public ActionResult LogOff()
+{
+    AuthenticationManager.SignOut();
+    return RedirectToAction("Index", "Home");
+}
+  </code>
+</pre>
+
+
+================================================================================================================
+<h2>From Scratch<h2>
+  <br>
+  <img src="img/owin/1fromscratch.png">
+
+<br>
+Then setting empty project as we are doing the same from scratch
+<img src="img/owin/2fromscratch.png"><br>
+<img src="img/owin/3fromscratch.png">
+<br>
+Then goto RefrenceAdd Nuget Package and install Micorsoft.Owin.Host.SystemWeb
+<img src="img/owin/4fromscratch.png">
+
+Then install Microsoft.Owin.Security,Microsoft.Owin.Security.Oauth,Microsoft.Owin.Security.Cookies<br>
+<img src="img/owin/5fromscratch.png"><br>
+Then install Identity<br>
+<img src="img/owin/6fromscratch.png">
+
+<br>
+After that build the application and run the application … You will get this error<br>
+<img src="img/owin/7fromscratch.png"><br>
+If we get this error then its ok.. 
+If we get error like this :
+Your assembly doesnot match certain version number .. then you have to again install all the freash references.
+
+ Then lets create startup.cs file as below <br>
+<img src="img/owin/8fromscratch.png"><br>
+
+Then this code :
+Startup.cs<br>
+<img src="img/owin/9fromscratch.png"><br>
+Here we have create method :Configuration which accept IappBuilder parameter.
+Then lets run it<br>
+<img src="img/owin/10fromscratch.png"><br>
+
+If we get this error then its ok.<br>
+<img src="img/owin/11fromscratch.png"><br>
+Then as soon as we create this and run we will get this in browser <br>
+<img src="img/owin/12fromscratch.png"><br>
+If you didn’t get this then you have error.
+Now If we got this “Hello world” successfully,then database is created on SQLExpress as DefaultConnection
+<br>
+<img src="img/owin/13fromscratch.png"><br>
+
+
+================================================================================================================
+
+<h2>Method 2</h2>
+<br>
+Now ,lets create own DBContext class
+So create as below : Model IdentityModels.cs
+<br>
+<img src="img/owin/14fromscratch.png"><br>
+<br>
+IdentityModels.cs
+<pre>
+  <code class="language-clike">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace IdentityFromScratch.Models
+{
+    public class ApplicationDbContext
+    {
+    }
+}
+
+  </code>
+  </pre>
+Modify it as:
+<pre>
+  <code class="language-clike">
+using Microsoft.AspNet.Identity.EntityFramework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace IdentityFromScratch.Models
+{
+    public class ApplicationDbContext:IdentityDbContext<IdentityUser>
+    {
+        public ApplicationDbContext():base()
+        {
+
+        }
+    }
+}
+
+  </code>
+  </pre>
+
+Then in HomeController.cs
+Change context as ApplicationDbContext()<br>
+<img src="img/owin/15fromscratch.png"><br>
+Then lets delete previously created Defaultconnection Database as below
+<br>
+<img src="img/owin/16fromscratch.png"><br>
+Then run the project again and we will get DefaultConnection again in SQL Server management Studio 
+<br>
+<img src="img/owin/17fromscratch.png"><br>
+Then look at SSMS  we get defaultconnection again as below
+<br>
+<img src="img/owin/18fromscratch.png"><br>
+Open Project Manager Console to enable migration as below
+ToolsNuget Package ManagerPackage Manager Console
+<br><img src="img/owin/19fromscratch.png"><br>
+Then we get migrations as below 
+<br><img src="img/owin/20fromscratch.png"><br>
+Look inside 201806.._InitialCreate.cs we get all table like
+Asp
+ Are created
+
+Then goto IdentityModels.cs
+There create CustomUser class which inherit from IdentityUser
+<br><img src="img/owin/21fromscratch.png"><br>
+Then goto HomeController and change IdentityUser to CustomUser and add FirstName and LastName and if user is not null then update user object with firstname=”super” and lastname=”admin”
+
+<br><img src="img/owin/22fromscratch.png"><br>
+Then seed database as below 
+<br><img src="img/owin/23fromscratch.png"><br>
+<br><img src="img/owin/24fromscratch.png"><br>
+
+Look at 201806230746136_InitialCustomUser.cs we will find LastName and FirstName is added .Look below
+
+201806230746136_InitialCustomUser.cs
+<br><img src="img/owin/25fromscratch.png"><br>
+======================================================================
+Now lets update database as below 
+<br><img src="img/owin/26fromscratch.png"><br>
+
+======================================================================
+
+<p>Then goto SSMS you will get FirstName and LastName with null value.</p>
+<p><u>To add data as &ldquo;<span style="color: #ff0000;">Super&rdquo; and &ldquo;Admin&rdquo;</span> we do this</u></p>
+<p>&nbsp;Run the project and you will see user with firstname and lastname column added with data as &ldquo;Super &ldquo; and &ldquo;Admin&rdquo;&nbsp; in same table as shown here.</p>
+<br><img src="img/owin/27fromscratch.png"><br>
+===================================================================================
+Use of SignInmanager
+Then lets create Sign
+<br><img src="img/owin/28fromscratch.png"><br>
+<br><img src="img/owin/29fromscratch.png"><br>
+Then on running we get 
+<br><img src="img/owin/29fromscratch.png"><br>
+
+
+
+    <script src="js/prism.js"></script>
+
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

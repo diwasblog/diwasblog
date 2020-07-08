@@ -1,0 +1,56 @@
+-- FUNCTION: sms.get_setup_report(integer, date, date, character varying, character varying)
+
+-- DROP FUNCTION sms.get_setup_report(integer, date, date, character varying, character varying);
+--SELECT * FROM sms.get_setup_report(1, '2019-07-01', '2019-07-25', 'Deposit', 'Active')
+
+
+CREATE OR REPLACE FUNCTION sms.get_setup_report(
+	office_id_ integer,
+	from_ date,
+	to_ date,
+	type_ character varying,
+	status_ character varying)
+    RETURNS TABLE(office_id integer, office character varying, customer_id bigint, customer_name text, contact_number text, account_type character varying, account_number text, start_date character varying, renewed_date character varying, expires_in character varying, sms_status boolean, ac_status text) 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+
+DECLARE _status	character varying(50);
+DECLARE _type	character varying(50);
+DECLARE _office character varying(50);
+DECLARE _return_query text;
+
+BEGIN
+IF office_id_ > 0 THEN
+ _office:= ' AND office_id= '||office_id_||'';
+ELSE 
+  _office:='';
+END IF;
+
+IF type_ = 'Loan' THEN
+ _type:=' AND account_type=''Loan''';
+ELSEIF type_ = 'Deposit' THEN
+ _type:= ' AND account_type=''Deposit''';
+ELSE 
+ _type:=' ';
+END IF;
+
+IF status_='Active' THEN
+ _status:=' AND t.status=true';
+ ELSE 
+ 	_status:=' ';
+END IF;
+
+--SELECT * FROM sms.setup_view
+	_return_query:='SELECT t.office_id, t.office, t.customer_id, t.customer_name, t.contact_number, t.account_type, t.account_number, core.date_bs_from_ad(t.start_date::date), core.date_bs_from_ad(t.renewed_date::date), core.date_bs_from_ad(t.expires_in::date), t.status, t.ac_status
+					FROM sms.setup_view t WHERE t.renewed_date BETWEEN ''' || from_ ||''' AND ''' || to_  ||''''|| _type || _office || _status;
+
+	RETURN QUERY EXECUTE _return_query;
+END
+$BODY$;
+
+ALTER FUNCTION sms.get_setup_report(integer, date, date, character varying, character varying)
+    OWNER TO postgres;

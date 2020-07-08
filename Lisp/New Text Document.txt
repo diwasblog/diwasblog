@@ -1,0 +1,19 @@
+
+
+(print "what's your name")
+
+
+(defvar *name* (read))              // user input
+
+
+(defun helloyou(*name*)                //Function accepting name as parameter
+     (format t "Hello ~a! ~%" *name*)
+) 
+
+(helloyou *name*)
+
+
+
+(setq  *printcase*:capitalize) :upcase :downcase
+
+

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+attributes are used to define routes. Attribute routing provides you more control over the URIs by defining routes directly on actions and controllers in your ASP.NET MVC application and WEB API.
+
+<h2>Controller level attribute routing</h2>
+
+<pre>
+ <code class="language-csharp">
+[RoutePrefix("MyHome")]
+[Route("{action=index}")] //default action 
+public class HomeController : Controller
+{
+ //new route: /MyHome/Index 
+ public ActionResult Index()
+ {
+ return View();
+ }
+ 
+ //new route: /MyHome/About 
+ public ActionResult About()
+ {
+ ViewBag.Message = "Your application description page.";
+ return View();
+ }
+ 
+ //new route: /MyHome/Contact 
+ public ActionResult Contact()
+ {
+ ViewBag.Message = "Your contact page."; return View();
+ }
+}
+ </code> 
+</pre>
+
+
+<h2>Action level attribute routing</h2>
+You can define routes at action level which apply to a specific action with in the controller.
+
+<pre>
+ <code class="language-csharp">
+public class HomeController : Controller
+{
+ [Route("users/{id:int:min(100)}")] //route: /users/100
+ public ActionResult Index(int id)
+ {
+ //TO DO:
+ return View();
+ }
+ 
+ [Route("users/about")] //route" /users/about
+ public ActionResult About()
+ {
+ ViewBag.Message = "Your application description page.";
+ return View();
+ }
+ 
+ //route: /Home/Contact
+ public ActionResult Contact()
+ {
+ ViewBag.Message = "Your contact page.";
+ return View();
+ }
+}
+ </code> 
+</pre>
+
+<h2>Note</h2>
+<ol class="notelist">
+<li>
+<p><span style="font-size: 14pt; color: #ff00ff;">Attribute routing should configure before the convention-based routing.</span></p>
+</li>
+<li>
+<p><span style="font-size: 14pt; color: #ff00ff;">When you combine attribute routing with convention-based routing, actions which do not have Route attribute for defining attribute-based routing will work according to convention-based routing. In above example Contact action will work according to convention-based routing.</span></p>
+</li>
+</ol>
+
+==================================================================
+
+
+<div class="row">
+
+<div class="col-lg-6" style="margin:0px">
+    <h2>Enable attribute routing</h2>
+  <pre>
+  <code class="language-csharp">
+    public class RouteConfig
+{
+ public static void RegisterRoutes(RouteCollection routes)
+ {
+ routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+ 
+ //enabling attribute routing
+ routes.MapMvcAttributeRoutes();
+ }
+}
+  </code>
+ </pre>
+
+ </div> 
+
+  
+<div class="col-lg-6" style="margin:0px">
+  <h2>Enable attribute routing along with conventional routing</h2>
+  Always attribute routing must be top of conventional routing
+  <pre>
+  <code class="language-csharp">
+   public class RouteConfig
+{
+ public static void RegisterRoutes(RouteCollection routes)
+ {
+ routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+ 
+ //enabling attribute routing
+ routes.MapMvcAttributeRoutes();
+ 
+ //convention-based routing
+ /routes.MapRoute(
+ name: "Default",
+ url: "{controller}/{action}/{id}",
+ defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional });
+ }
+}
+  </code>
+ </pre>
+
+ </div>
+</div> 
+==========================================
+
+<h2>Attribute routing in Area</h2>
+
+ <pre>
+  <code class="language-csharp">
+  [RouteArea("Admin")]
+[RoutePrefix("menu")]
+[Route("{action}")]
+public class MenuController : Controller
+{
+ // route: /admin/menu/login
+ public ActionResult Login()
+ {
+ return View();
+ }
+ 
+ // route: /admin/menu/products
+ [Route("products")]
+ public ActionResult GetProducts()
+ {
+ return View();
+ }
+ 
+ // route: /categories
+ [Route("~/categories")]
+ public ActionResult Categories()
+ {
+ return View();
+ }
+ 
+ [Route("customers/{customerId}/orders")]
+ public IEnumerable GetOrdersByCustomer(int customerId)
+ {
+ //TO DO
+ }
+}
+  </code>
+ </pre>
+ =====================================
+ <p><em><span style="color: #ff00ff;"><strong><span style="font-size: 14pt;">Optional Parameter in Attribute Routing</span></strong></span></em></p>
+
+ <div class="row">
+   These both are equivalent
+   <div class="col-lg-6">
+    <pre>
+      <code class="language-csharp">
+          [Route("Everything/MovieCustomer/")]
+          [Route("Everything/MovieCustomer/{movieId}")]
+          [Route("Everything/MovieCustomer/{movieId}/{customerId}")]
+          public ActionResult MovieCustomer(int? movieId, int? customerId)
+          {
+              // the rest of the code
+          }
+        </code>
+    </pre>
+   </div>
+
+   <div class="col-lg-6">
+     <pre>
+      <code class="language-csharp">
+          [Route("Everything/MovieCustomer/{movieId?}/{customerId?}")]
+          public ActionResult MovieCustomer(int? movieId, int? customerId)//get MVC to bind null when no parameter is provided
+          {
+              // the rest of the code
+          }
+        </code>
+      </pre>
+  </div>
+ </div>
+==================================================================================================================================
+<br>
+<h2>When Optional parameter</h2>
+ <p><span style="font-size: 14pt;">You only need to specify the optional parameter value if it is going to be anything else other than&nbsp;<code>null</code>.</span></p>
+<p><span style="font-size: 14pt;">MVC3 will automatically set&nbsp;<code>null</code>&nbsp;as the value of your parameter if nothing is specified in the overload, or in the call to the Action.</span></p>
+<p><span style="font-size: 14pt;">However, its worth noting that if there are any non-optional parameters after this parameter in the signature, then&nbsp;<code>null</code>&nbsp;would have to be specified in the call.</span></p>
+<p><span style="font-size: 14pt;">Therefore its best to put all optional params at the end of the signature.</span></p>
+
+============================================================================================================
+<br>
+<h1 id="1usingdefaultvalues"><span style="color: #ff00ff;"><strong>Using default values</strong></span></h1>
+<pre>
+    <code class="language-csharp">
+        [HttpGet]
+        public IHttpActionResult GetStudents(string firstName = "jonh", string lastName = "smith")  
+        {
+            var students = studentService.GetStudent(firstName, lastName);
+            return Ok(students);
+        }
+      </code>
+    </pre>
+    <h1 id="1usingdefaultvalues"><strong><span style="font-size: 18pt;">This API endpoint can be called like this:</span></strong></h1>
+
+<pre>
+  <code class="language-csharp">
+      http://yourwebsite/api/getstudents  
+      http://yourwebsite/api/getstudents?firstname=mary  
+      http://yourwebsite/api/getstudents?firstname=mary&lastname=jones 
+  </code>
+</pre>
+<p><span style="font-size: 14pt;">The&nbsp;<span style="color: #ff00ff;"><strong>first call</strong></span>&nbsp;will return all students that have a first name of&nbsp;<span style="color: #ff00ff;"><strong>John</strong>&nbsp;</span>and last name of&nbsp;<span style="color: #ff00ff;"><strong>Smith</strong>&nbsp;</span>using the default values.</span></p>
+<p><span style="font-size: 14pt;">The&nbsp;<span style="color: #ff00ff;"><strong>second call</strong>&nbsp;</span>will return all students with first name equal to&nbsp;<span style="color: #ff00ff;"><strong>Mary</strong>&nbsp;</span>and last name&nbsp;<span style="color: #ff00ff;"><strong>Smith</strong></span>, i.e the default surname.</span></p>
+<p><span style="font-size: 14pt;">The&nbsp;<span style="color: #ff00ff;"><strong>final call</strong>&nbsp;</span>will use the url parameters to return all students that match the values passed.</span></p>
+
+==============================================================================================================================
+<h2>Nullable Parameter</h2>
+
+<pre>
+    <code class="language-csharp">
+        [HttpGet]
+        public IHttpActionResult GetStudents(string? firstName = null, string? lastName = null, int? age = null)  
+        {  //public IHttpActionResult GetStudents(string? firstName, string? lastName , int? age )  
+            //GetStudent() method checks for nulls and returns the appropriate result    
+            var students = studentService.GetStudent(firstName, lastName, age);
+            return Ok(students);
+        }
+      </code>
+    </pre>
+
+    Will does same as previous one
+    <pre>
+        <code class="language-csharp">
+            http://yourwebsite/api/getstudents  
+            http://yourwebsite/api/getstudents?firstname=mary  
+            http://yourwebsite/api/getstudents?firstname=mary&lastname=jones 
+        </code>
+      </pre>
+      Work for all these.
+<h3>      Note : Donot use nullable parameter if you donot accept null value</h3>
+    ==========================================================================================
+<h2> Can you overload controller methods in ASP.NET MVC?</h2>
+As far as I know you can only have the same method when using different http methods.
+
+
+<pre>
+  <code class="language-csharp">
+      [AcceptVerbs("GET")]
+      public ActionResult MyAction()
+      {
+      
+      }
+      
+      [AcceptVerbs("POST")]
+      public ActionResult MyAction(FormResult fm)
+      {
+      
+      }
+  </code>
+</pre>
+<script src="js/prism.js"></script>
+
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

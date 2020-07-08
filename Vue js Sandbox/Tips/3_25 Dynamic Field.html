@@ -1,0 +1,77 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ </head>
+ <body>
+<xmp class="prettyprint">
+  
+<div class="row" >
+  <div class="col-lg-6">
+      <div class="form-group">
+          <label for="item">Item</label>
+          <input type="text" name="Quantity" v-model="item.Name" class="form-control" id="quantity" />
+      </div>
+  </div>
+
+  <div class="col-lg-4">
+      <div class="form-group">
+          <label for="quantity">Quantity</label>
+          <input type="number" name="Quantity" v-model="item.Quantity" class="form-control" id="quantity" />
+      </div>
+  </div>
+  <div class="col-lg-2">
+      <div class="form-group">
+          <div style="height:25px;"> &nbsp; </div>
+          <button @@click="addItem" class="btn btn-primary"><i class="fa fa-plus"></i> Add</button>
+      </div>
+  </div>
+</div>
+
+<v-client-table :data="lstItem"  :columns="columns" :options="options">
+  <template slot="Action" slot-scope="props">
+      <div>
+          <button class="btn btn-xs btn-danger" @@click="deleteRow(props.row.Id).prevent"><i class="fa fa-times"></i> Delete</button>
+      </div>
+  </template>
+</v-client-table>
+
+data: {
+  generatedId: 0
+  item:{
+    Name:'',
+    Quantity:''
+  },
+  lstItem:[]
+}
+addItem() {
+  let vm = this;
+  var itemLst = {};
+  itemLst.ItemName = vm.item.Name;
+  itemLst.Quantity = vm.item.Quantity;
+
+  vm.lstItem.push(itemLst);
+
+  vm.selectedItem.Name = 0;
+  vm.item.Quantity = 0;
+  vm.generatedId++;
+},
+deleteRow(index) {
+  let vm = this;
+  vm.lstItem.splice(index, 1);
+  console.log(vm.lstItem);
+}
+</xmp>
+ </body>
+</html>

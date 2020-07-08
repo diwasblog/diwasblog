@@ -1,0 +1,37 @@
+<p><span style="font-size: 14pt;">Type (Mode) of Authentication</span></p>
+<ul>
+<li><span style="font-size: 12pt;"><strong><span style="color: #000000;"><span style="color: #ff00ff;">Forms</span> (Via username and password provided by developer if correct then authenticated)</span></strong></span></li>
+<li><span style="font-size: 12pt;"><strong><span style="color: #000000;"><span style="color: #ff00ff;">Windows</span> (authenticate via windows OS username and password)</span></strong></span></li>
+<li><span style="font-size: 12pt;"><strong><span style="color: #000000;"><span style="color: #ff00ff;">Passport</span> (authenticate via microsoft passport )</span></strong></span></li>
+<li><span style="color: #ff00ff; font-size: 12pt;"><strong>Federated</strong></span></li>
+<li><span style="color: #ff00ff; font-size: 12pt;"><strong>None</strong></span></li>
+</ul>
+<p><span style="font-size: 18pt;"><strong><span style="color: #ff0000;">Ways to implement Authentication</span></strong></span></p>
+<ol>
+<li><span style="font-size: 12pt;"><strong><span style="color: #000000;">Form Authentication</span></strong></span></li>
+<li><span style="font-size: 12pt;"><strong><span style="color: #000000;">Asp.Net Identity</span></strong></span></li>
+</ol>
+<p><span style="font-size: 12pt;"><strong><span style="color: #000000;">Form Authentication is common in 2005 and after that Asp.Net Identity is started to use because at that time social media is raising its level. So that asp.net identity provide facility to login not only via form but also via social media login. Asp.Net Identity is just advance form of Form Authentication.</span></strong></span></p>
+<p><span style="color: #000000; font-size: 14pt;"><strong>Asp.Net Identity</strong></span></p>
+<ul>
+<li><span style="font-size: 12pt;">Identity is a .Net Web based framework</span></li>
+<li><span style="font-size: 12pt;">Identity provides security to website.</span></li>
+<li><span style="font-size: 12pt;">Can used in web form ,mvc,web api ,signalR</span></li>
+<li><span style="font-size: 12pt;">It has own database ,own code</span></li>
+<li><span style="font-size: 12pt;">Security such as : Login ,Signup,Forget Password, Change Password,Login with social Media(thirdparty),Send Token,Encrypt Password</span></li>
+</ul>
+
+============================================================================================================
+<p><span style="color: #ff00ff;"><strong><span style="font-size: 14pt;">Advantage/Goal of Asp.Net Identity</span></strong></span></p>
+<ul>
+<li><span style="font-size: 12pt;"><span style="color: #000000;"><strong>One Asp.Net Identity Syste</strong>m</span>( One Identity System but can be used in all like webform,mvc,signalR,web api)</span></li>
+<li><span style="color: #000000; font-size: 12pt;"><strong>Ease of plugging in profile data about the user.</strong></span></li>
+<li><span style="font-size: 12pt;"><span style="color: #000000;"><strong>Persistence Control :</strong> </span>Asp.net Identity has its own database for keeping all user information at persistance level(for long term). It uses EF code first approach to implement all of its persistence mechanism.It can be used with NoSQL,Azure Storage Table Service,Sharepoint and many more.</span></li>
+<li><span style="font-size: 12pt;"><span style="color: #000000;"><strong>Role Provider:</strong></span> You can restrict access to parts of your application by roles. We can easily create roles such as "Admin" and add users to roles.</span></li>
+<li><span style="font-size: 12pt;"><span style="color: #000000;"><strong>Claims Based:</strong></span>Asp.net Identity supports claims-based authentication</span></li>
+<li><span style="font-size: 12pt;"><span style="color: #000000;"><strong>Social Login Provider:</strong></span>Can easily add social log-in .</span></li>
+<li><span style="font-size: 12pt;"><strong><span style="color: #000000;">OWIN Integration:</span></strong>ASP.NET Identity <span style="color: #000000;"><strong>uses OWIN Authentication for log-in/log-out of users in the web site</strong></span>. This means that instead of using FormsAuthentication to generate the cookie, the application uses OWIN CookieAuthentication to do that.<em><strong>Owin is now part of our application, and Identity 2.0 relies upon it to deliver the goods. So, owin acts as middleware.</strong>
+
+
+  <p><span style="font-size: 12pt;">Previously , for cookie based authentication we used Form Authentication and for external identity providers we used DotNetOpenAuth but this is replaced by OWIN authentication middleware.Good this of using OWIN is that we should not relay on IIS as web host.It provides its own cookie authentication (same as Form Authentication) where user is validate on the basis of cookie on each and every request send to web server. One things OWIN cookie have that Form based cookie doesnot have is Claims.</span></p>
+<p><span style="font-size: 12pt;">Also OWIN Authentication has external authentication that Form authentication doesnot have.</span></p>

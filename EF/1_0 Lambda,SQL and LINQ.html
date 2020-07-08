@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/bootstrap-grid.css">
+  <link rel="stylesheet" href="css/bootstrap-reboot.css">
+  <link rel="stylesheet" href="css/dracula.css">
+  <link rel="stylesheet" href="css/dracula-prism.css">
+  <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+  <img src="img/sql,lambda,linq.jpg">
+
+  <pre class="notranslate"
+    lang="sql"><span style="font-size: 18pt; color: #ff0000;">MyOrgEntites dev=new MyOrgEntities();</span><br /><br /></pre>
+
+  <h4><strong><span style="color: #ff00ff;">Get all the records from tbl_Dept</span></strong></h4>
+
+  <pre class="limit-15">
+      <code class='language-csharp'>
+        Select * from dbo.tbl_Dept // T-Sql
+
+        var res= dev.tbl_Dept.ToList();   //lambda
+
+        var res=from res in dev.tbl_Dept select res;   //query
+      </code>
+      </pre>
+  <br>
+  ===========================================================================================================
+  <br>
+  <h4><strong><span style="color: #ff00ff;">Get all the records from tbl_Dept with column aliasing</span></strong></h4>
+
+  <pre class="limit-15">
+        <code class='language-csharp'>
+          Select Did as ‘Department Id’,DName as ‘Department Name’ from dbo.tbl_Dept // T-Sql
+
+          var res = dev.tbl_Dept.Select(x => new { DepartmentId = x.Did, DepartmentName = x.DName });      //lambda
+
+          var res=from re in dev.tbl_Dept  select new{Department_Id=re.Did,Department_Name=re.DName};    //query
+
+        </code>
+        </pre>
+  <br>
+
+  ==========================================================================================================================
+  <br>
+  <br>
+  <h4><span style="color: #ff00ff;"><strong>Get top two records from tbl_Dept</strong></span></h4>
+
+  <pre class="limit-15">
+  <code class='language-csharp'>
+    Select top(2) * from tbl_Dept   	// T-Sql
+
+    var res = dev.tbl_Dept.Take(2).ToList();       		//lambda
+    
+    var res = from re in dev.tbl_Dept.Take(2) select re;  // query
+
+  </code>
+  </pre>
+  <br>
+
+  ==========================================================================================================================
+  <br>
+  <h4><span style="color: #ff00ff;"><strong>Get all the records from tbl_Dept which are sorted by Did
+        ascending</strong></span></h4>
+
+  <pre class="limit-15">
+  <code class='language-csharp'>
+    select * from tbl_Dept order by Did
+
+    var res = dev.tbl_Dept.OrderBy(x => x.Did).ToList();//lambda  //incorrect
+    var res = dev.tbl_Dept.OrderBy((X =&gt; X.Did)).ToList();//lambda  //correct
+    var res = from re in dev.tbl_Dept orderby (re.Did) select re;//query 
+
+  </code>
+  </pre>
+  <br>
+
+  ==========================================================================================================================
+  <br>
+
+  <br>
+  <pre class="notranslate"
+    lang="sql"><span style="color: #ff00ff; font-size: 18pt;"><strong>Get all the records from tbl_Dept which are sorted by Did descending</strong></span></pre>
+
+  <pre class="limit-15">
+  <code class='language-csharp'>
+    Select * from tbl_Dept order by Did desc
+
+    var res = from re in dev.tbl_Dept orderby (re.Did) descendingselect re;   //query
+
+    var res = dev.tbl_Dept.OrderByDescending(x => x.Did).ToList();     //lambda
+
+  </code>
+  </pre>
+  <br>
+
+  ==========================================================================================================================
+  <br>
+  <br>
+  <h4><span style="color: #ff00ff;"><strong>Get the record from tbl_Dept with highest Did</strong></span></h4>
+
+  <pre class="limit-15">
+  <code class='language-csharp'>
+    Select top(1) * from tbl_Dept order by Did desc  //T-Sql
+
+    var res = dev.tbl_Dept.OrderByDescending(x => x.Did).Take(1);      //lambda
+
+    var res = (from re in dev.tbl_Dept orderby (re.Did) descending select re).Take(1).ToList();        //query
+
+  </code>
+  </pre>
+  <br>
+
+  ==========================================================================================================================
+  <br>
+
+  <h4><strong><span style="color: #ff00ff;">Get all the records from tbl_Dept which are sorted by DName and then by Did
+        ascending</span></strong></h4>
+
+  <pre class="limit-15">
+  <code class='language-csharp'>
+    Select * from tbl_Dept order by DName, Did   //T-Sql
+
+    var res =dev.tbl_Dept.OrderBy(X => X.DName).ThenBy(X => X.Did);    //lambda
+    
+    var res = from re in dev.tbl_Dept orderby (re.DName) orderby (re.Did) select re;     //query
+
+  </code>
+  </pre>
+  <br>
+
+  ==========================================================================================================================
+  <br>
+
+  <h1 class="grid--cell fs-headline1 fl1"><span style="color: #ff00ff;"><strong><span style="font-size: 18pt;">Multiple
+          Where clauses in Lambda expressions</span></strong></span></h1>
+
+  <pre class="limit-15">
+  <code class='language-csharp'>
+    x => x.Lists.Include(l => l.Title)  //using include and &&
+     .Where(l => l.Title != String.Empty && l.InternalName != String.Empty)
+  </code>
+  </pre>
+  <h4>OR</h4>
+  <pre class="limit-15">
+    <code class='language-csharp'>
+      x => x.Lists.Include(l => l.Title)    //using where and where clause twice
+      .Where(l => l.Title != String.Empty)
+      .Where(l => l.InternalName != String.Empty)
+    </code>
+    </pre>
+
+
+  <pre class="limit-15">
+  <code class='language-csharp'>
+    var query = query.Where(x => x.Value ==  1 &&
+		 x.Name == name);
+		 
+		// equivelent to
+		var query = query.Where(x => x.Value ==  1)
+		                              .Where(x => x.Name == name);
+  </code>
+  </pre>
+  <p><span style="font-size: 12pt;">When you are looking at&nbsp;<code>Where</code>&nbsp;implementation, you can see it
+      accepts a&nbsp;<code>Func(T, bool)</code>; that means:</span></p>
+  <ul>
+    <li><span style="font-size: 12pt;"><code>T</code>&nbsp;is your IEnumerable type</span></li>
+    <li><span style="font-size: 12pt;"><code>bool</code>&nbsp;means it needs to return a boolean value</span></li>
+  </ul>
+  <p><span style="font-size: 12pt;">So, when you do</span></p>
+  <br>
+  <pre class="limit-15">
+  <code class='language-csharp'>
+    .Where(l => l.InternalName != String.Empty)
+    //     ^                   ^---------- boolean part
+    //     |------------------------------ "T" part
+  </code>
+  </pre>
+  ==========================================================================================================================
+  <br>
+  ==========================================================================================================================
+  <br>
+
+  <h4><strong><span style="color: #ff00ff;">Get the record from tbl_Dept with highest Did</span></strong></h4>
+
+  <pre class="limit-15">
+  <code class='language-csharp'>
+    Select top(1) * from tbl_Dept order by Did desc  //T-Sql
+
+    var res = dev.tbl_Dept.OrderByDescending(x => x.Did).Take(1);      //lambda
+
+    var res = (from re in dev.tbl_Dept orderby  (re.Did) descending select re).Take(1).ToList();        //query
+  </code>
+  </pre>
+  <br>
+
+  ==========================================================================================================================
+  <br>
+
+  ==========================================================================================================================
+  <br>
+
+  <h4><strong><span style="color: #ff00ff;">Get all the records from tbl_Dept which are sorted by DName and then by Did
+        ascending</span></strong></h4>
+
+  <pre class="limit-15">
+  <code class='language-csharp'>
+    Select * from tbl_Dept order by DName, Did   //T-Sql
+
+    var res =dev.tbl_Dept.OrderBy(X => X.DName).ThenBy(X => X.Did);    //lambda
+
+    var res = from re in dev.tbl_Dept orderby (re.DName) orderby (re.Did) select re;     //query
+  </code>
+  </pre>
+  <br>
+
+  ==========================================================================================================================
+  <br>
+  ==========================================================================================================================
+  <br>
+
+  <h4><span style="color: #ff00ff;"><strong>Get all the records from tbl_Dept whose Did is less than or equal to
+        4</strong></span></h4>
+  <pre class="limit-15">
+  <code class='language-csharp'>
+    Select * from tbl_Dept Where Did <= 4
+
+    var res = dev.tbl_Dept.Where(x => x.Did <= 4);      //lambda
+    
+    var res = from re in dev.tbl_Dept where (re.Did <= 4) select re;     //query
+  </code>
+  </pre>
+  <br>
+
+  ==========================================================================================================================
+  <br>
+
+  ==========================================================================================================================
+  <br>
+
+  <h4><span style="color: #ff00ff;"><strong>Get all the records from tbl_Dept whose Did is either 4 or 7</strong></span>
+  </h4>
+  <pre class="limit-15">
+  <code class='language-csharp'>
+      Select * from tbl_Dept Where Did = 4 OR Did = 7
+
+      var res = dev.tbl_Dept.Where(x => x.Did == 4 || x.Did == 7).ToList();  //lambda
+
+      var res = from re in dev.tbl_Dept where (re.Did == 4 || re.Did == 7) select re;      //query
+  </code>
+  </pre>
+  <br>
+
+  ==========================================================================================================================
+  ==========================================================================================================================
+  <br>
+
+  <h4><span style="color: #ff00ff;"><strong>Get all the records from tbl_Dept whose Did is among 1, 5 and
+        6</strong></span></h4>
+  <pre class="limit-15">
+  <code class='language-csharp'>
+      select * from tbl_Dept Where Did IN (1, 5, 6) //T-Sql
+
+      var res = from re in dev.tbl_Dept where (re.Did == 1 || re.Did == 5||re.Did==6) select re;     //query
+
+      var res = dev.tbl_Dept.Where(x => x.Did == 1 || x.Did == 5||x.Did==6).ToList();      //lambda
+  </code>
+  </pre>
+  <br>
+
+  ==========================================================================================================================
+  <br>
+  <h4><span style="color: #ff00ff;"><strong>Get all the records from tbl_Dept whose Did is not among 1, 5 and
+        6</strong></span></h4>
+  <pre class="limit-15">
+  <code class='language-csharp'>
+      select * from tbl_Dept Where Did NOT IN (1, 5, 6)  /sql
+
+      var res = from re in dev.tbl_Dept  where (re.Did != 1 && re.Did != 5&& re.Did!=6) select re;     //query
+
+      var res = dev.tbl_Dept.Where_(x => x.Did != 1 && x.Did != 5 && x.Did!=6).ToList();             //lambda
+  </code>
+  </pre>
+  <br>
+
+  ==========================================================================================================================
+  <br>
+
+  ==========================================================================================================================
+  <br>
+  <h4><span style="color: #ff00ff;"><strong>Get all the records from tbl_Dept whose Did is greater than or equal to 2
+        and less than or equal to 4</strong></span></h4>
+  <pre class="limit-15">
+  <code class='language-csharp'>
+      select * from tbl_Dept Where Did >= 2 and Did <= 4
+
+      var res = dev.tbl_Dept.Where(x => x.Did>=2 && x.Did<=4).ToList();    //lambda
+
+      var res = from re in dev.tbl_Dept where (re.Did >= 2 && re.Did <=4) select re;      //query
+  </code>
+  </pre>
+  <br>
+  ==========================================================================================================================
+  <br>
+  <h4><span style="color: #ff00ff;"><strong>Get all the records from tbl_Dept whose Did is between 2 and
+        4</strong></span></h4>
+  <pre class="limit-15">
+  <code class='language-csharp'>
+      select * from tbl_Dept Where Did between 2 and 4
+
+      var res = from re in dev.tbl_Dept where (re.Did > 2 && re.Did <4) select re;//query
+
+      var res = dev.tbl_Dept.Where(x => x.Did>2 && x.Did<4).ToList();
+  </code>
+  </pre>
+  <br>
+
+  ==========================================================================================================================
+  <br>
+  <h4><span style="color: #ff00ff;"><strong>Get all the records from tbl_Dept whose Did is not between 2 and
+        4</strong></span></h4>
+  <pre class="limit-15">
+  <code class='language-csharp'>
+      select * from tbl_Dept Where Did < 2 and Did > 4
+
+      var res = dev.tbl_Dept.Where(x => x.Did<2 || x.Did>4).ToList();    //lambda
+
+      var res = from re in dev.tbl_Dept where (re.Did < 2 || re.Did >4) select re;     //query
+  </code>
+  </pre>
+  <br>
+
+  ==========================================================================================================================
+  <br>
+  <h4><span style="color: #ff00ff;"><strong>Get all the records from tbl_Dept whose Description is null</strong></span>
+  </h4>
+  <pre class="limit-15">
+  <code class='language-csharp'>
+      select * from tbl_Dept Where [Description] IS NULL
+
+      var res = from re in dev.tbl_Dept where (re.Description =="") select re; //query
+
+      var res = dev.tbl_Dept.Where(x => x.Description == "");          //lambda
+  </code>
+  </pre>
+  <br>
+
+  ==========================================================================================================================
+  <br>
+  <h4><span style="color: #ff00ff;"><strong>Get all the records from tbl_Dept whose Description is not
+        null</strong></span></h4>
+  <pre class="limit-15">
+  <code class='language-csharp'>
+      select * from tbl_Dept Where [Description] IS NOT NULL
+
+      var res = dev.tbl_Dept.Where(x => x.Description != "");          //lambda 
+      var res = from re in dev.tbl_Dept where (re.Description !="") select re; //query
+  </code>
+  </pre>
+  <br>
+  ==========================================================================================================================
+  <br>
+  <h4><span style="color: #ff00ff;"><strong>Get all the records from tbl_Emp</strong></span></h4>
+  <pre class="limit-15">
+  <code class='language-csharp'>
+      select * from tbl_Emp
+
+      var res = from re in dev.tbl_Emp select re;           //query
+
+      var res = dev.tbl_Emp;                                 //lambda
+  </code>
+  </pre>
+  <br>
+  ==========================================================================================================================
+  <br>
+  <h4><span style="color: #ff00ff;"><strong>Get sum of salaries of all the employees from tbl_Emp</strong></span></h4>
+  <pre class="limit-15">
+  <code class='language-csharp'>
+      select SUM(ESalary) AS SumOfTheSalaries from tbl_Emp
+
+      var res = dev.tbl_Emp.Sum(x => x.ESalary);//lambda
+
+      var res = (from re in dev.tbl_Emp select re.ESalary).Sum(); //query
+  </code>
+  </pre>
+  <br>
+  ==========================================================================================================================
+  <br>
+  <h4><span style="color: #ff00ff;"><strong>Get Avg of salaries of all the employees from tbl_Emp</strong></span></h4>
+  <pre class="limit-15">
+  <code class='language-csharp'>
+      select AVG(ESalary) AS SumOfTheSalaries from tbl_Emp
+
+      var res = dev.tbl_Emp.Average(x => x.ESalary);//lambda
+
+      var res = (from re in dev.tbl_Emp select re.ESalary).Average();//query
+  </code>
+  </pre>
+  <br>
+
+  ==========================================================================================================================
+  <br>
+  <h4><span style="color: #ff00ff;"><strong>Get the max salary from tbl_Emp</strong></span></h4>
+  <pre class="limit-15">
+  <code class='language-csharp'>
+      select MAX(ESalary) AS SumOfTheSalaries from tbl_Emp
+
+      var res = dev.tbl_Emp.Max(x => x.ESalary);//lambda
+
+      var res = (from re in dev.tbl_Emp select re.ESalary).Max();//query
+  </code>
+  </pre>
+  <br>
+  ==========================================================================================================================
+  <br>
+  <h4><span style="color: #ff00ff;"><strong>Get the min salary from tbl_Emp</strong></span></h4>
+  <pre class="limit-15">
+  <code class='language-csharp'>
+      select MIN(ESalary) AS SumOfTheSalaries from tbl_Emp
+
+      var res = dev.tbl_Emp.Min(x => x.ESalary); //lambda
+
+      var res = (from re in dev.tbl_Emp select re.ESalary).Min();  //query
+  </code>
+  </pre>
+  <br>
+
+  ==========================================================================================================================
+  <br>
+  <h4><span style="color: #ff00ff;"><strong>Get Eid, EName and Esalary from tbl_Emp</strong></span></h4>
+  <pre class="limit-15">
+  <code class='language-csharp'>
+      select Eid, EName, ESalary from tbl_Emp
+
+      var res= dev.tbl_Emp.Select(x=>new{x.Eid,x.EName,x.ESalary}); //lambda
+
+      var res = from re in dev.tbl_Emp select new { re.Eid, re.EName, re.ESalary };   //query
+  </code>
+  </pre>
+  <br>
+  ==========================================================================================================================
+  <br>
+  <h4><span style="color: #ff00ff;"><strong>Get All Eid, EName and 38% of Esalary as HRA from tbl_Emp</strong></span>
+  </h4>
+  <pre class="limit-15">
+  <code class='language-csharp'>
+      select Eid, EName, ESalary * 0.38 AS HRA from tbl_Emp
+
+      var res = dev.tbl_Emp.Select(x => new _
+      { x.Eid, x.EName, HRA = x.ESalary * 0.38 }).ToList(); //lambda
+
+      var res=(from re in dev.tbl_Emp select new_
+      {re.Eid,re.EName,HRA=re.ESalary*0.38}).ToList();  //query
+  </code>
+  </pre>
+  <br>
+
+  ==========================================================================================================================
+  <br>
+  <h4><span style="color: #ff00ff;"><strong>Get all records from tbl_Emp where ENames ends with “l”</strong></span></h4>
+  <pre class="limit-15">
+  <code class='language-csharp'>
+      select * from tbl_Emp where EName like ‘%l’
+
+      var res = from re in dev.tbl_Emp where (re.EName.EndsWith("l")) select re; //query
+
+      var res = dev.tbl_Emp.Where(x => x.EName.EndsWith("l"));  //lambda
+  </code>
+  </pre>
+  <br>
+
+  ==========================================================================================================================
+  <br>
+  <h4><span style="color: #ff00ff;"><strong>Get all records from tbl_Emp where ENames starts with “rah”</strong></span>
+  </h4>
+  <pre class="limit-15">
+  <code class='language-csharp'>
+      select * from tbl_Emp where EName like ‘rah%’
+
+      var res = dev.tbl_Emp.Where(x => x.EName.StartsWith("rah")); //lambda
+
+      var res = from re in dev.tbl_Emp where (re.EName.StartsWith("rah")) select re;  //lambda
+  </code>
+  </pre>
+  <br>
+  ==========================================================================================================================
+  <br>
+  <h4><span style="color: #ff00ff;"><strong>Get number of female employees from tbl_Emp
+      </strong></span></h4>
+  <pre class="limit-15">
+  <code class='language-csharp'>
+      select COUNT(*) from tbl_Emp where EGender = ‘F’
+
+      var res = dev.tbl_Emp.Where(x => x.EGender == "F").Count();//lambda
+
+      var res=(from re in dev.tbl_Emp where(re.EGender=="F") select re).Count();  //query  
+  </code>
+  </pre>
+  <br>
+  ==========================================================================================================================
+  <br>
+  <h4><span style="color: #ff00ff;"><strong>Get number of male and female employees from tbl_Emp along with gender as
+        one column</strong></span></h4>
+  <pre class="limit-15">
+  <code class='language-csharp'>
+      select COUNT(*) NoOfEmp, EGender from tbl_Emp Group By EGender
+
+      var res = dev.tbl_Emp.GroupBy(x => x.EGender).Select (y => new { EGender = y.Key, count = y.Count() });  //lambda
+
+      var res = from c in dev.tbl_Emp group c by c.EGender into g   select new { EGender = g.Key, count = g.Count() }; //query
+  </code>
+  </pre>
+  <br>
+
+  ==========================================================================================================================
+  <br>
+  <h4><span style="color: #ff00ff;"><strong>Get number of employees in each department from tbl_Emp</strong></span></h4>
+  <pre class="limit-15">
+  <code class='language-csharp'>
+      select COUNT(*) NoOfEmp, Did from tbl_Emp Group By Did
+
+      var res=dev.tbl_Emp.GroupBy(x=>x.Did).Select(y=> new{Did=y.Key,numberofemp=y.Count()});  //lambda
+
+      var res = from re in dev.tbl_Emp group re by re.Did into k  select new { Did = k.Key, numberofemp = k.Count() };  //query
+  </code>
+  </pre>
+  <br>
+
+  ==========================================================================================================================
+  <br>
+  <h4><span style="color: #ff00ff;"><strong>Get sum of salaries for the employees as per department from
+        tbl_Emp</strong></span></h4>
+  <pre class="limit-15">
+  <code class='language-csharp'>
+      select SUM(ESalary) SumOfSal, Did from tbl_Emp Group By Did
+
+      var res = dev.tbl_Emp.GroupBy(x => x.Did).Select(y =>new { Did = y.Key, sumofsalary = y.Sum(z => z.ESalary) });  //lambda
+
+      var res = from re in dev.tbl_Emp  group re by re.Did into k select new { Did = k.Key, sumofsalary = k.Sum(g =>       g.ESalary) };   //query
+  </code>
+  </pre>
+  <br>
+  ==========================================================================================================================
+  <br>
+  <h4><span style="color: #ff00ff;"><strong>Get all Eid, EName, DName from tbl_Emp and tbl_Dept (using
+        joins)</strong></span></h4>
+  <pre class="limit-15">
+  <code class='language-csharp'>
+      select E.Eid,E.EName,D.DName from tbl_Emp E join tbl_Dept D on E.Did=D.Did
+      
+      var res = from dep in dev.tbl_Dept 
+                join emp in dev.tbl_Emp 
+                on dep.Did equals emp.Eid 
+                selectnew { emp.Eid, emp.EName, dep.DName };    //query
+
+
+      var res=dev.tbl_Dept.Join(dev.tbl_Emp,x=>x.Did,y=>y.Eid,(x,y)=>  _
+              new{y.Eid,y.EName,x.DName}).ToList();  //lambda
+
+             
+  </code>
+  </pre>
+  <br>
+
+  <br>
+  <h4><span style="color: #ff00ff;"><strong>Get Only Partioning Data</strong></span></h4>
+  <pre class="limit-15">
+  <code class='language-csharp'>
+    context.Courses.Skip(10).Take(10);
+
+  </code>
+  </pre>
+  <br>
+  <h2>Element Operator</h2>
+  <pre>
+  <code class="language-csharp">
+    //throws an exception if no elements found
+    context.Courses.First();
+    context.Courses.First(c=>c.Level ==1);
+
+
+    //return null if no elements found
+    context.Courses.FirstOrDefault();
+  </code>
+</pre>
+
+  <h2>Anonymous Type With Name </h2>
+  <pre class="limit-15">
+    <code class='language-csharp'>
+      public static dynamic GetTwoStates() // return type should be dynamic
+      {
+          using (var provinceRepository = new ProvinceRepository())
+          {
+            // // In the following statement employees is an Anonymous type of IEnumerable
+              var province = from p in provinceRepository.GetTwoStates()
+                             select new
+                             {
+                                 ProvinceId = p.ProvinceId,
+                                 States = p.States
+                             };
+              return province.ToList();
+              //Because Anonymous types can only be accessed from the method they were created in so we do as below
+          }
+      }
+    </code>
+    </pre>
+  <br>
+  <h2>Return Model instead of anonymous</h2>
+  <pre class="limit-15">
+    <code class='language-csharp'>
+      public static List<StateModel> GetTwoStates() // return type should be dynamic
+      {
+          using (var provinceRepository = new ProvinceRepository())
+          {
+            // // In the following statement employees is an Anonymous type of IEnumerable
+              var province = from p in provinceRepository.GetTwoStates()
+                             select new StatesModel
+                             {
+                                 ProvinceId = p.ProvinceId,
+                                 States = p.States
+                             };
+              return province.ToList();
+              //Because Anonymous types can only be accessed from the method they were created in so we do as below
+          }
+      }
+
+      public class StatesModel
+        {
+            public int ProvinceId { get; set; }
+            public String States { get; set; }
+        }
+    </code>
+    </pre>
+  <br>
+  <h2>Bad vs Good</h2>
+  <h4>count how many counties are there in Texas:</h4>
+  <div class="row">
+    <div class="col-lg-6">
+      <h4>Bad</h4>
+      <pre class="limit-15">
+      <code class='language-csharp'>
+        var counties = dbContext.States.Single(s => s.Code == "tx").Counties.Count();
+      </code>
+      </pre>
+      The query is correct, but inefficient. States.Single(…) loads a state from the database. Next, Counties loads all
+      254 counties with all of their fields in a second query. .Count() is then performed in memory on the loaded
+      Counties collection
+    </div>
+
+    <div class="col-lg-6">
+      <h4>Good</h4>
+      <pre class="limit-15">
+      <code class='language-csharp'>
+          var counties = dbContext.Counties.Count(c => c.State.Code == "tx");
+      </code>
+      </pre>
+      we only do one query, which in SQL translates to a count and a join. We return only the count from the
+      database
+    </div>
+  </div>
+
+  <h2>Loading only required data</h2>
+  Get only location name
+  <div class="row">
+    <div class="col-lg-6">
+      <h4>Bad</h4>
+      <pre class="limit-15">
+        <code class='language-csharp'>
+            var location = dbContext.Location.AsNoTracking()
+            .Where(l => l.Location.ID == location_ID)
+            .SingleOrDefault();
+        </code>
+        </pre>
+
+    </div>
+
+    <div class="col-lg-6">
+      <h4>Good</h4>
+      <pre class="limit-15">
+        <code class='language-csharp'>
+            var location = dbContext.Location
+            .Where(l => l.Location.ID == location_ID)
+            .Select(l => l.LocationName);
+            .SingleOrDefault();
+           
+
+            //fetching more field
+            var location = dbContext.Location
+            .Where(l => l.Location.ID == location_ID)
+            .Select(l => new { Name = l.LocationName, Area = l.LocationArea })
+            .SingleOrDefault();
+        </code>
+        </pre>
+
+    </div>
+  </div>
+  <br>
+
+  <pre>
+  <code class="language-csharp">
+    [HttpGet]
+    public JsonResult GetData(DateTime dateStart, DateTime dateEnd, string category, string product)
+    {
+        var getData = from s in db.Sample
+                      where s.Category == category &&
+                      s.Product_Name == product &&
+                      s.Date >= dateStart && s.Date <= dateEnd
+                      select new 
+                      {
+                          cat = s.Category,
+                          proname = s.Product_Name,
+                          misc = s.Misc,
+                          moistMin = s.Moisture.Min_Spec,
+                          moistMax = s.Moisture.Max_Spec,
+                          moisture = s.Moisture_Percentage,
+                          date = s.Date,
+                          time = s.Time,
+                          fatMin = s.Fat.Min_Spec,
+                          fatMax = s.Fat.Max_Spec,
+                          fat = s.Fat_Percentage,
+                          dryFat = s.Dry_Fat_Percentage
+                      };
+       
+
+
+        return Json(getData, JsonRequestBehavior.AllowGet);
+    }
+  </code>
+</pre>
+
+  <h2>Fastest way of getting first row exists</h2>
+  <pre class="limit-15">
+  <code class='language-csharp'>
+    if (dc.Users.Where(u => u.Name == name).Any())
+    {
+      
+    }
+  </code>
+  </pre>
+
+
+  <h2>Alternative Inner Join Ways</h2>
+
+  <div class="row">
+    <div class="col-lg-6">
+      <pre>
+        <code class="language-csharp">
+          var authors =  from a in context.Authors 
+                         join c in context.Courses 
+                         on a.Id equals c.AuthorId
+                         new {
+                          AuthorName = author.Name,
+                          CourseName = course.Name
+                       });
+        </code>
+      </pre>
+    </div>
+    <div class="col-lg-6">
+      <pre>
+      <code class="language-csharp">
+        var authors = context.Authors.Join(context.Courses,
+                a => a.Id,   //key on the left side
+                c=>c.AuthorId,  // key on the right side 
+                (author,course) =>   //what to do on match
+                new {
+                   AuthorName = author.Name,
+                   CourseName = course.Name
+                });
+      </code>
+    </pre>
+    </div>
+  </div>
+  <br>
+  <h2>Left Join</h2>
+  <pre>
+  <code class="language-csharp">
+   
+    var query =   from p in db.Patients
+                  join s in db.Studies on p.Id equals s.PatientId into studies
+                  from s in studies.DefaultIfEmpty()
+                  select new { Patient = p, Study = s };
+  </code>
+</pre>
+  <script src="js/prism.js"></script>
+  <script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+      {
+        'remove-trailing': true,
+        'remove-indent': true,
+        'left-trim': true,
+        'right-trim': true,
+        // 'break-lines': 10,
+        // 'indent': 2,
+        // 'remove-initial-line-feed': false,
+        // 'tabs-to-spaces': 4,
+        // 'spaces-to-tabs': 4
+      });
+  </script>
+</body>
+
+</html>

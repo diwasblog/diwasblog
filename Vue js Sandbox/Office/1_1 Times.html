@@ -1,0 +1,43 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+    font-size:12pt;
+    font-family:monospace;
+
+}
+</style>
+ 
+</head>
+<body>
+
+<xmp class="prettyprint">
+    @using System.Security.Claims;
+
+    @{
+        ViewBag.Title = "Create Notice";
+        ClaimsIdentity claimsIdentity = (ClaimsIdentity)User.Identity;
+        string todayDateAD = "";
+        if (claimsIdentity.Claims.Count() > 0)
+        {
+            todayDateAD = claimsIdentity.FindFirst(x => x.Type == "TodayDateAD").Value;
+        }
+    }
+</xmp>
+
+
+<xmp class="prettyprint">
+    notice: {
+      title: '@Model.Title',
+      dateAD: '@todayDateAD',
+      fullContent: '',
+  },
+</xmp>
+  </body>
+
+  </html>

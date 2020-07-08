@@ -1,0 +1,239 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+    font-size:12pt;
+    font-family:monospace;
+
+}
+</style>
+ 
+</head>
+<body>
+
+
+  <br>
+  <h1><span style="color:#990000">Routing</span></h1>
+
+  <p><span style="font-size:20px">Imagine clicking a link and having the URL go from&nbsp;<code>https://website.com</code>&nbsp;to&nbsp;<code>https://website.com/article/</code>. That&rsquo;s routing.</span></p>
+  
+  <p><span style="font-size:20px">Routing is often categorized in two main buckets:</span></p>
+  
+  <ul>
+    <li><span style="font-size:24px"><span style="color:#27ae60"><strong>Server-side routing:</strong></span>&nbsp;the client (i.e. the browser) makes a request to the server on&nbsp;<em>every URL change</em>.</span></li>
+    <li><span style="font-size:24px"><span style="color:#16a085"><strong>Client-side routing:</strong></span>&nbsp;the client&nbsp;<em>only</em>&nbsp;makes a request to the server upon initial-page load. Any changes to the application&nbsp;UI&nbsp;based on URL routes are then handled on the client.</span></li>
+  </ul>
+  
+  <p><span style="font-size:18px">Client-side routing is where the term&nbsp;<strong>single-page application</strong>&nbsp;(or&nbsp;SPA&nbsp;for short) comes in.</span></p>
+  
+  <p><span style="font-size:18px">SPAs are web apps that load&nbsp;<em>only once</em>&nbsp;and are&nbsp;<em>dynamically</em>&nbsp;updated with user interaction without the need to make subsequent requests to the server. </span></p>
+  
+  <p><span style="font-size:18px">With routing in&nbsp;SPAs,&nbsp;<em>JavaScript is the driving force</em>&nbsp;that dynamically renders different&nbsp;UI.</span></p>
+  
+
+  <br>
+
+    =============================================================================================================================
+<xmp class="prettyprint">
+    npm install vue-router --save    ----------------------------------------------------------------------1
+</xmp>
+
+=============================================================================================================================
+<h2>index.js</h2>
+<xmp class="prettyprint">
+    import Vue from 'vue/dist/vue';   --------------------------------------------------------2
+    import VueRouter from 'vue-router' ----------------------------------------------------3
+    
+    
+    window.Vue = Vue;                  ----------------------------------------------------------4
+    window.VueRouter = VueRouter;       --------------------------------------------------------5
+</xmp>
+================================================================================================================================
+<br>
+Constantly run webpack in watch mode
+<xmp class="prettyprint">
+  webpack --watch
+</xmp>
+
+================================================================================================================<br>
+<h2> In View</h2>
+<xmp class="prettyprint">
+    <div class="btn-group pull-right" role="group" aria-label="...">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Expense
+                <span class="caret"></span>
+            </button>
+    
+            <ul class="dropdown-menu">
+                <li><a :href="expenseBillEntry(@Model.Id)">Bill Entry</a></li>
+                <li><router-link to="/billList">Bill List</router-link></li>  -----------------------------------------------6
+            </ul>
+        </div>
+        //view of router here     ------------------------------------------------------------------------7
+        <router-view></router-view>
+    </div>
+
+    <script type="text/javascript">
+      Vue.use(VueRouter);                                 -------------------------------------------------------------8
+      Vue.component('BillList', BillList);                -----------------------------------------------------9//adding component
+      const routes =[                                     ----------------------------------------------------------10
+          { path: '/billlist', component: BillList,props: {vendorId: @Model.Id} }  //with props 
+      ]
+      const router = new VueRouter({                      ------------------------------------11
+          routes
+      })
+    
+     new Vue({
+       ...
+       expenseBillEntry()
+       {
+    
+       }
+     })
+    
+    
+      </script>
+    
+</xmp>
+
+<br>
+================================================================================================================================
+<br>
+Vue Component==> billList.vue
+<xmp class="prettyprint">
+    <template>
+        <div>
+          //must have only one direct child
+        </div>
+      </template>
+    
+    
+      <script type="text/javascript">
+        export default {
+            name: 'billList',
+            data() {
+                return {
+                    id: 0,
+                    billData: []
+                }
+            },
+            props: ['vendorId'],
+            methods: {
+                getBillDetails() {
+                    let vm = this;
+                    axios.get('/finance/vendor/api/expensebill/list/' + vm.vendorId)
+                        .then(function (response) {
+                            vm.billData = response.data.Result;
+    
+                        }).catch(function (error) {
+                        });
+                },
+            },
+            mounted() {
+                let vm = this;
+                vm.getBillDetails();
+            }
+        }
+    </script>
+      
+</xmp>
+
+
+  </body>
+
+  </html>
+
+
+===========================================================================================================
+<br>
+<h2>Using inline component</h2>
+<xmp class="prettyprint">
+    <html>
+        <head>
+           <title>VueJs Instance</title>
+           <script type = "text/javascript" src = "js/vue.js"></script>
+           <script type = "text/javascript" src = "js/vue-router.js"></script>
+        </head>
+        <body>
+           <div id = "app">
+              <h1>Routing Example</h1>
+              <p>
+                 <router-link to = "/route1">Router Link 1</router-link>
+                 <router-link to = "/route2">Router Link 2</router-link>
+              </p>
+              <!-- route outlet -->
+              <!-- component matched by the route will render here -->
+              <router-view></router-view>
+           </div>
+           <script type = "text/javascript">
+              const Route1 = { template: '<div style = "border-radius:20px;background-color:cyan;width:200px;height:50px;margin:10px;font-size:25px;padding:10px;">This is router 1</div>' }
+              const Route2 = { template: '<div style = "border-radius:20px;background-color:green;width:200px;height:50px;margin:10px;font-size:25px;padding:10px;">This is router 2</div>' }
+              const routes = [
+                 { path: '/route1', component: Route1 },
+                 { path: '/route2', component: Route2 }
+              ];
+              const router = new VueRouter({
+                 routes // short for `routes: routes`
+              });
+              var vm = new Vue({
+                 el: '#app',
+                 router
+              });
+           </script>
+        </body>
+     </html>
+</xmp>
+
+
+
+=========
+
+
+
+
+
+
+
+  <template>
+    <div>
+      //must have only one direct child
+    </div>
+  </template>
+
+
+  <script type="text/javascript">
+    export default {
+        name: 'billList',
+        data() {
+            return {
+                id: 0,
+                billData: []
+            }
+        },
+        props: ['vendorId'],
+        methods: {
+            getBillDetails() {
+                let vm = this;
+                axios.get('/finance/vendor/api/expensebill/list/' + vm.vendorId)
+                    .then(function (response) {
+                        vm.billData = response.data.Result;
+
+                    }).catch(function (error) {
+                    });
+            },
+        },
+        mounted() {
+            let vm = this;
+            vm.getBillDetails();
+        }
+    }
+</script>
+
+

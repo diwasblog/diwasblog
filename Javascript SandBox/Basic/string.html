@@ -1,0 +1,231 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+
+
+<style>
+xmp.prettyprint{
+    font-size:12pt;
+    font-family:monospace;
+
+}
+</style>
+ 
+</head>
+<body>
+
+<!--######################## Main Code ######################################-->
+
+<script>
+  document.write("hello".length);
+</script>
+
+<xmp class="prettyprint">
+    <script>
+        document.write("hello".length);
+      </script>
+</xmp>
+
+<p style="text-align: center;"><span style="font-family: 'comic sans ms', sans-serif; color: #ff00ff; font-size: 14pt;"><strong>String</strong></span></p>
+
+<p ><span style="font-family: 'comic sans ms', sans-serif; color: #ff00ff; font-size: 14pt;"><strong>Method 1</strong></span></p>
+<script>
+  var str="This is string";
+  document.write(str);   
+</script>
+  
+  <xmp class="prettyprint">
+      <script>
+       var str="This is string";
+       document.write(str);   
+      </script>
+  </xmp>
+
+
+  <p ><span style="font-family: 'comic sans ms', sans-serif; color: #ff00ff; font-size: 14pt;"><strong>Method 2</strong></span></p>
+
+      
+      <xmp class="prettyprint">
+          <script>
+            var str=new String("This is string");  
+          </script>
+      </xmp>
+
+
+      <p style="text-align: center;"><span style="font-family: 'comic sans ms', sans-serif; color: #ff00ff; font-size: 14pt;"><strong>JS String Method</strong></span></p>
+
+
+      <script>
+       var str="diwas";
+       document.write(str.charAt(2));
+      </script>
+
+      <xmp class="prettyprint">
+          <script>
+              var str="diwas";
+              document.write(str.charAt(2));
+          </script>
+      </xmp>
+
+      <!--########################################################-->
+      <script>
+          var s1="diwas";
+          var s2="poudel";
+          var s3=s1.concat(s2);
+          document.write(s3);
+          
+         </script>
+   
+         <xmp class="prettyprint">
+             <script>
+                var s1="diwas";
+                var s2="poudel";
+                var s3=s1.concat(s2);
+                document.write(s3);
+             </script>
+         </xmp>
+
+       <!--#############################################-->
+       
+       <script>
+          var s1="diwas";
+          var s2="poudel";
+         var s3=s1.concat(" ",s2);
+         document.write(s3);
+       </script>
+
+       <xmp class="prettyprint">
+          <script>
+              var s1="diwas";
+              var s2="poudel";
+              var s3=s1.concat(" ",s2);
+              document.write(s3);
+          </script>
+       </xmp>
+
+       <!--############################################################-->
+       <script>
+         var s1="diwas";
+         var s2="poudel";
+          var s3=s1.concat(s2,"diwas","I","liked"," ","it");
+          document.write(s3);
+        </script>
+ 
+        <xmp class="prettyprint">
+           <script>
+             var s1="diwas";
+              var s2="poudel";
+               var s3=s1.concat(s2,"diwas","I","liked"," ","it");
+              document.write(s3);
+           </script>
+        </xmp>
+
+
+        <!--####################################################################-->
+        <script>
+           var s1="javascript from diwas.com.np";
+           var n=s1.indexOf("from");
+           document.write(n+'<br>');
+           var m=s1.search("hello");
+           document.write(m);
+           </script>
+    
+           <xmp class="prettyprint">
+              <script>
+                var s1="javascript from diwas.com.np";
+                var n=s1.indexOf("from");
+                document.write(n);
+                var m=s1.search("hello");
+                document.write(m);
+              </script>
+           </xmp>
+
+
+           <!--########################################################################-->
+           <script>
+              var s1="diwas";
+              var s2=s1.toLowerCase();
+              document.write(n);
+              </script>
+       
+              <xmp class="prettyprint">
+                 <script>
+                   var s1="diwas";
+                   var s2=s1.toLowerCase();
+                   document.write(n);
+                 </script>
+              </xmp>
+
+
+              <!--########################################################################-->
+  <script>
+    var s1="Diwas";
+    var s2=s1.toLowerCase();
+    document.write(s2);
+    </script>
+           
+    <xmp class="prettyprint">
+      <script>
+        var s1="Diwas";
+        var s2=s1.toLowerCase();
+        document.write(s2);
+        </script>
+    </xmp>
+
+
+                <!--#####################################################################################-->
+  <script>
+     var s1="abcdefghi";
+        var s2=s1.slice(2,5);   //or s1.subString(2,5)
+        document.write(s2+'<br>');  
+        var s3=s1.slice(2,5);
+        document.write(s3+'<br>');
+        var s4=s1.substr(2,5);
+        document.write(s4+'<br>');   
+  </script>
+             
+  <xmp class="prettyprint">
+    <script>
+        var s1="abcdefghi";
+        var s2=s1.slice(2,5);   //or s1.subString(2,5)
+        document.write(s2);  
+        var s3=s1.slice(2,5);
+        document.write(s3);
+        var s4=s1.substr(2,5);
+        document.write(s4); 
+    </script>
+  </xmp>  
+
+  <script>
+      var s1="Javasript trim";
+      var s2=s1.trim();
+      document.write(s2);   
+    </script>
+               
+    <xmp class="prettyprint">
+        <script>
+            var s1="   Javasript trim   "; //trim write space
+            var s2=s1.trim();
+            document.write(s2);   
+          </script>
+    </xmp>  
+
+    <script>
+        var s1="apple";
+        var s2=s1.replace("app","ral");
+        document.write(s2);   
+    </script>
+                 
+      <xmp class="prettyprint">
+          <script>
+              var s1="apple";
+              var s2=s1.replace("app","ral");
+              document.write(s2);   
+          </script>
+      </xmp>  
+
+    </body>
+
+</html>

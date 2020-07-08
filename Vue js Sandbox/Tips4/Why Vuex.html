@@ -1,0 +1,303 @@
+<html>
+  <head>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+      crossorigin="anonymous"
+    />
+
+    <style>
+      xmp.prettyprint {
+        font-size: 12pt;
+        font-family: "Consolas, 'Courier New', monospace";
+      }
+    </style>
+  </head>
+  <body>
+
+<h3 id="3735" class="graf graf--h3 graf-after--p"><span style="color: #ff00ff;"><strong>State Management</strong></span></h3>
+<p id="9e47" class="graf graf--p graf-after--h3" style="text-align: justify;"><span style="font-size: 14pt;"><strong class="markup--strong markup--p-strong">Vue components are <span style="color: #ff0000;">the building blocks of Vue apps</span>&nbsp;</strong>by allowing us to couple markup (HTML), logic (JS), and styles (CSS) within them.</span></p>
+<p id="3de2" class="graf graf--p graf-after--figure" style="text-align: justify;"><span style="font-size: 14pt;">Each Vue component contains a<span style="color: #ff0000;"><strong>&nbsp;<code class="markup--code markup--p-code">data()</code>&nbsp;function</strong></span> that prepares the component to be&nbsp;<em class="markup--em markup--p-em">reactive</em>. If a&nbsp;<code class="markup--code markup--p-code">data()</code>&nbsp;property value that&rsquo;s being used in the template changes, the component view will re-render to show the change.</span></p>
+<xmp class="prettyprint">
+    <template>
+        <div>
+          <h2>The numbers are {{ numbers }}!</h2>
+        </div>
+      </template>
+      
+      <script>
+      export default {
+        name: 'NumberComponent',
+        data () {
+          return {
+            numbers: [1, 2, 3]
+          }
+        },
+      }
+      </script>
+</xmp>
+<p id="e9e8" class="graf graf--p graf-after--p" style="text-align: justify;"><span style="font-size: 14pt;">In the example above,&nbsp;<code class="markup--code markup--p-code">numbers</code>&nbsp;is the array stored within the&nbsp;<code class="markup--code markup--p-code">data()</code>function. What if&nbsp;<strong><code class="markup--code markup--p-code">numbers</code>&nbsp;</strong>was a data value that needed to be accessed from <strong><span style="color: #ff0000;">another component</span></strong>? For example, we may need a component to be responsible in displaying&nbsp;<code class="markup--code markup--p-code">numbers</code>&nbsp;(like above) and another to manipulate the value of&nbsp;<code class="markup--code markup--p-code">numbers</code>.</span></p>
+<p id="6b33" class="graf graf--p graf-after--p" style="text-align: justify;"><span style="font-size: 14pt;">I<strong><span style="color: #ff0000;">f we want to share&nbsp;<code class="markup--code markup--p-code">numbers</code>&nbsp;between multiple components</span></strong>,&nbsp;<strong><code class="markup--code markup--p-code">numbers</code>&nbsp;doesn&rsquo;t only become component level data&nbsp;<em class="markup--em markup--p-em">but also</em>&nbsp;<span style="color: #ff0000;">application level data</span>.</strong> This brings us to the topic of&nbsp;<strong class="markup--strong markup--p-strong">State Management&nbsp;</strong>- the management of application level data.</span></p>
+<p class="graf graf--p graf-after--p" style="text-align: justify;"><span style="font-size: 14pt;">Ways for state management&nbsp;</span></p>
+<ul>
+<li class="graf graf--p graf-after--p" style="text-align: justify;"><span style="font-size: 14pt;">Props ways (Diffult and confusing)</span></li>
+<li class="graf graf--p graf-after--p" style="text-align: justify;"><span style="font-size: 14pt;">Vuex ways for state management</span></li>
+</ul>
+<h1>Ways</h1>
+<h2>Proops</h2>
+<h2>Event Bus</h2>
+<h2>Simple Store</h2>
+<h2>Vuex(Advance Store)</h2>
+
+
+<br>
+<h2>Props ways (Passing data from parent to child to grandchild)</h2>
+<div class="row">
+    <div class="col-lg-6">
+            <h4>ParentComponent</h4>
+        <xmp class="prettyprint">
+              
+                <template>
+                    <div>
+                      <ChildComponent :numbers="numbers" />
+                    </div>
+                  </template>
+                  
+                  <script>
+                  import ChildComponent from "./ChildComponent";
+                  export default {
+                    name: "ParentComponent",
+                    data() {
+                      return {
+                        numbers: [1, 2, 3]
+                      };
+                    },
+                    components: {
+                      ChildComponent
+                    }
+                  };
+                  </script>
+        </xmp>
+    </div>
+
+    <div class="col-lg-6">
+        <h4>Child Component</h4>
+        <xmp class="prettyprint">
+        <template>
+                <div>
+                    <h2>{{ numbers }}</h2>
+                </div>
+                </template>
+                
+                <script>
+                export default {
+                name: "ChildComponent",
+                props: {
+                    numbers: Array
+                }
+                };
+                </script>
+        </xmp>
+    </div>
+</div>
+<br>
+
+<img src="../img/parent to child.PNG">
+<br>
+===================================================================================================
+<br>
+<h2>From Child to Parent Back</h2>
+
+<div class="row">
+  <div class="col-lg-6">
+    <h4>Child Component</h4>
+    <xmp class="prettyprint">
+        <template>
+            <div>
+              <h2>{{ numbers }}</h2>
+              <input v-model="number" type="number" />
+              <button @click="$emit('number-added', Number(number))">
+               Add new number
+              </button>
+            </div>
+          </template>
+          
+          <script>
+          export default {
+            name: "ChildComponent",
+            props: {
+              numbers: Array
+            },
+            data() {
+              return {
+                number: 0
+              };
+            }
+          };
+          </script>
+    </xmp>
+  </div>
+
+  <div class="col-lg-6">
+    
+    <h4>Parent Component</h4>
+    <xmp class="prettyprint">
+        <template>
+            <div>
+              <ChildComponent
+                :numbers="numbers"
+                @number-added="numbers.push($event)"
+              />
+            </div>
+          </template>
+          
+          <script>
+          import ChildComponent from "./ChildComponent";
+          export default {
+            name: "ParentComponent",
+            data() {
+              return {
+                numbers: [1, 2, 3]
+              };
+            },
+            components: {
+              ChildComponent
+            }
+          };
+          </script>
+    </xmp>
+  </div>
+</div>
+
+<img src="../img/child to parent.PNG">
+=======================================================================================================================
+<br>
+<h2>Using Event Bus (To pass data from child to child component)</h2>
+<p><span style="font-size: 14pt; font-family: verdana, geneva, sans-serif;">An EventBus is a&nbsp;<strong class="markup--strong markup--p-strong"><span style="color: #ff0000;">Vue instance</span>&nbsp;</strong>that is used to enable&nbsp;<span style="color: #ff0000;"><strong class="markup--strong markup--p-strong">isolated components</strong></span>&nbsp;to subscribe and publish custom events between one another.</span></p>
+
+<img src="https://cdn-images-1.medium.com/max/1200/1*WWekdHKKggw3LoKDjmQg5w.png">
+
+
+
+
+<img src="https://cdn-images-1.medium.com/max/1200/1*AFvKqBuzpY6q2EezHoJ0Dw.png">
+<p><span style="font-size: 14pt; font-family: verdana, geneva, sans-serif;">Assume all the white lines are props that&rsquo;s being passed from the parent down to all the children, and the yellow dashed lines are events being emitted and listened from and to a component. Each of these events aren&rsquo;t being tracked and can be fired from anywhere in our application. This makes things hard to maintain really quickly which can make code frustrating to work with and can become a source of bugs.</span></p>
+
+
+
+<h2>Simple Store</h2>
+<p><span style="font-size: 14pt; font-family: verdana, geneva, sans-serif;">State Management maintain <strong><span style="color: #ff0000;">a<strong>p</strong>plication level data so that we can share data in multiple part ,multiple component easily</span></strong></span></p>
+This is created separately so that everyone can call the store and get the value.
+
+<img src="../img/use of store.PNG">
+
+<br>
+<img src="../img/use of store simple.PNG">
+<div style="text-align: justify;"><span style="font-size: 18pt; font-family: verdana, geneva, sans-serif;">Look here , two component are using the store. <strong><span style="color: #ff0000;">One Component B</span></strong> Action Method update/mutate the method of </span><span style="font-size: 18pt; font-family: verdana, geneva, sans-serif;">store and set speaker from " <span style="color: #ff0000;"><strong>Hassen Djirdeh</strong></span>" to "<span style="color: #ff0000;">A<strong>lex Blo</strong>m</span>" . Then when Component A , gets&nbsp; speaker property then </span><span style="font-size: 18pt; font-family: verdana, geneva, sans-serif;">it will get updated property ie."<strong><span style="color: #ff0000;">Alex Blom</span></strong>". So , state  is maintained here
+ because we are getting current value</span></div>
+</div>
+<img src="../img/store sets.PNG">
+<br>
+Looke we have to create separate file for store then use it in Vue Instance
+===============================================================================================
+
+
+<div class="row">
+  <h3>Store.ts looks like this</h3>
+    <xmp class="prettyprint">
+    
+        store = {
+          state: {
+              talk: 'The Importance of State Management in Vue',
+              speaker: 'Hassan Djirdeh',
+              event: ' spotlight:Vue.js'
+      
+      
+              const mutations = {
+                  UPDATE_SPEAKER (state, payload){
+                      state.speaker = payload;
+                  }
+              }
+      
+              const actions = {
+                  updateSpeaker(context){
+                      axios.get('/api/speakers').then((response)=>{
+                          context.commit('UPDATE_SPEAKER', response.speaker[0]);
+      
+                          //we also have context.getter and context.state
+                      })
+                  }
+              }
+      
+              const getters = {
+                  getSpeaker (state) {
+                      return state.speaker;
+                  }
+              }
+          }
+      }
+    </xmp>
+    ====</br>
+    <img src="../img/store and view.PNG">
+    ====</br>
+  Initially speaker is "Hassan Djridesh" and when that template loads then  say update method of stores 
+  get called and from say api response.speaker[0] == "Diwas Poudel" then finally at last "Hassan Djridesh" will be
+  replaced by "Diwas Poudel" and will show like this.
+
+  The speaker is Diwas Poudel
+=============================================================================================
+
+
+  <h2>Vuex Ways (Application Level State Management)</h2>
+Vuex uses Flux-Like Design Pattern Created by Faceboook.
+Here we have to explictly defined getters, mutations and actions.
+====</br>
+<img src="../img/vuex explicity.PNG">
+
+
+<h4>General Structure</h4>
+<img src="../img/general structure of store.PNG">
+=======================================================================
+<h2>Default index.js</h2>
+====</br>
+<img src="../img/default store.PNG">
+
+<br>
+
+In Vuex we have module as well.
+In Vuex we can create separate store property for each module
+====</br>
+<img src="../img/separate store for module.PNG">
+
+======
+<br>
+<img src="../img/separate index.PNG"><br>
+Here we have separate index for each module and later we set the all index to main  index.ts 
+<br>
+====</br>
+<img src="../img/store interfaction.PNG">
+<br>
+======================<br>
+
+Now say boss came and ask me to add another module .... then It will be easy to add new module/ function as well.
+<h4>Adding User module / functionality</h4>
+<img src="../img/say user funcitonality.PNG">
+
+<br>
+
+=====================================
+<br>
+We can also create shared module as well to shared the certained features as below
+<br>
+<img src="../img/shared.PNG">
+<br>
+
+</div>
+
+==========================================================
+<h3>Do I need this piece of data in more than 2 non child-parent components ? Yes -> store in vuex. No -> Use local component data.</h3>
+</body>
+</html>

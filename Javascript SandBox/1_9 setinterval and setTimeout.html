@@ -1,0 +1,94 @@
+<html>
+<head>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+  <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+
+
+<style>
+xmp.prettyprint{
+  font-size:12pt;
+  font-family:monospace;
+
+}
+</style>
+</head>
+<body>
+  <ul>
+    <li><span style="font-size: 14pt;"><strong><span style="color: #ff0000;"><em>setTimeout</em></span></strong>: Calls a function once after a specified delay.</span></li>
+    <li><span style="font-size: 14pt;"><strong><span style="color: #ff0000;"><em>setInterval</em></span></strong>: Calls a function continuously at a specified delay between each call.</span></li>
+    </ul>
+
+    <p><span style="font-size: 14pt;"><strong><code class="highlighter-rouge">setTimeout</code>&nbsp;method expects <span style="color: #ff00ff;">2 arguments</span></strong>: <span style="color: #008000;">a reference to a callback function and a delay in milliseconds.</span></span></p>
+
+    <p><strong><span style="font-size: 14pt; color: #ff00ff;">Using Inline Function</span></strong></p>
+<script>
+  setTimeout(() => {
+  console.log("loaded after 5 second");
+}, 5000);
+</script>
+
+<xmp class="prettyprint">
+  <script>
+    setTimeout(() => {
+    console.log("loaded after 5 second");
+  }, 5000);
+  </script>
+</xmp>
+
+
+<p><strong><span style="font-size: 14pt; color: #ff00ff;">Using  Function</span></strong></p>
+<script>
+function gator() {
+  console.log('Also load after 10second!!!!');
+}
+
+setTimeout(gator, 10000);
+</script>
+
+<xmp class="prettyprint">
+  <script>
+    function gator() {
+      console.log('Also load after 10second!!!!');
+    }
+    
+    setTimeout(gator, 10000);
+    </script>
+</xmp>
+<p><span style="font-family: 'comic sans ms', sans-serif;"><strong><span style="color: #ff0000; font-size: 14pt;">WARNING!!!!Note that the function shouldn't be invoked, but instead a reference to the function should be used.</span></strong></span></p>
+
+
+
+<p><span style="font-size: 14pt;"><code class="highlighter-rouge">setInterval</code>&nbsp;calls the callback function repeatedly with the specified delay in-between the calls.</span></p>
+<p><span style="font-size: 14pt;"><code class="highlighter-rouge">It expects 2 arguments: a callback function and a delay in milliseconds</code></span></p>
+
+<script>
+      let i = 0;
+
+    function increment() {
+      i++;
+      console.log(i);
+    }
+
+    setInterval(increment, 1000);
+</script>
+
+<xmp class="prettyprint">
+  let i = 0;
+
+function increment() {
+  i++;
+  console.log(i);
+}
+
+setInterval(increment, 1000);
+//output:
+//1
+//2
+//3
+//4..
+
+</xmp>
+
+  </body>
+</html>

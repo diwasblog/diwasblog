@@ -1,0 +1,74 @@
+<html>
+  <head></head>
+  <body>
+    <a href="https://www.restapitutorial.com/httpstatuscodes.html"
+      >https://www.restapitutorial.com/httpstatuscodes.html</a
+    >
+
+    <h2>2xx success status&nbsp;</h2>
+    <h2>200&nbsp; Ok</h2>
+    <h3>General success status</h3>
+    <hr />
+    <h2>201 Content</h2>
+    <h3>
+      Created some content and sent back that code to the browser. 201 states
+      that content is created.
+    </h3>
+    <h3>
+      You can return 200 OK but browser or person consuming API might get
+      confused because it says nothing.
+    </h3>
+    <hr />
+    <h2>204 No Content</h2>
+    <h3>
+      When making API call for delete then if content deleted then send 204
+      success. No content to return when delete. You can return 200 but browser
+      or person consuming API might get confused because it says nothing.
+    </h3>
+    <hr />
+    <h2>3xx Redirect</h2>
+    <h2>301 Move Permanently</h2>
+    <hr />
+    <h2>304 Not Modified&nbsp;</h2>
+    <h3>
+      Get cache api. If server response with 304 not modified then client
+      /browser will have to load from its cache because nothing is changed.
+    </h3>
+    <hr />
+    <h2>4xx Client Side Error</h2>
+    <p>&nbsp;</p>
+    <h2>400 Bad Request</h2>
+    <h3>
+      General bad request. We do not know what is bad but bad actually happens.
+    </h3>
+    <h3>
+      Suppose API needs username and email as a parameter but the client sends
+      the only username then it says 400 Bad requests.
+    </h3>
+    <hr />
+    <h2>401 unauthorized   ===> Authentication Error</h2>
+    <h3>You must be logged in or API key but you have not sent.</h3>
+    <h3>I means I donot know who you are.</h3>
+Trying to Accessing resource where you donot have any right. Deleting file where you donot have right 
+    <hr />
+    <h2>403 forfidden</h2>
+    <h3>
+      They gets logged or api key but say this user is general user and if
+      trying to access admin panel then it says forbidden.
+    </h3>
+    <h3>I know who you are but you donot have right to access this url/api.</h3>
+    <hr />
+    <h2>404 not found</h2>
+    <h3>Not found api or pages which is being requested.</h3>
+    <hr />
+    <h2>5xx error</h2>
+    <h2>500 Error</h2>
+    <h3>
+      This is server error. Suppose you are requesting for api then if your
+      donot response, or has server error or error in code or server down then
+      it return 500 to client.
+    </h3>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+  </body>
+</html>

@@ -1,0 +1,236 @@
+<h2>Create .sql file in postgresql</h2>
+https://www.dbrnd.com/2016/09/postgresql-generate-full-database-script-using-pgadmin-tool-schema-data-script-plain-text-backup-option/
+
+<h2>To Import .sql file</h2>
+First you must goto bin path of postgre and then open command prompt there. then
+types below command psql -U username -h host -f location-of-sql-file psql -U
+postgres -h localhost -f J:\firstsave.sql test2 postgres ==>Username localhost
+===> Host
+
+
+========================================================
+Always keep default value for bool in database.
+======================================================
+Use NOCOUNT for Large Batch Queries
+
+When you perform insert and update to the database then it will always return total no. of row affected.
+
+But In a production if you perform insert and update regularly then it is not necessary to send back no.
+of row affected so use NO COUNT for large Queries
+
+===========================
+Always Consider Performance, Even If the Query Seems Simple because application can grow any time.
+
+==============================================
+
+Always think about relationship in database eg. Student and School
+
+================================================
+USE TABLE ALIASES FOR EASIER READING
+===========================================
+
+Be Specific in Your SELECT Clauses
+
+select * from table (Bad Way)
+select a ,b from table ( Good Way)
+================================================
+Know how SQL Actually Works:
+
+Order of Keyword:
+
+SELECT
+FROM
+WHERE
+GROUP BY
+ORDER BY
+LIMIT
+
+Order of Execution:
+
+FROM
+WHERE
+GROUP BY
+SELECT
+ORDER BY
+LIMIT
+
+SQL first checks which data table we will work with. Then it checks the filters. After that it groups the data.
+Finally it gets the data – and if necessary, sorts it and prints only the first X lines.
+
+====================================================================================
+
+Prettify Your Code (https://codebeautify.org/sqlformatters)
+
+
+=========================================================================
+
+All reserve keyword : UpperCase
+All field values, column names and table names: Lowercase.
+
+=================================================================
+Comment if necessary
+========================================================
+Always use the actual name of the columns in ORDER BY , GROUP BY and never use number
+======================================================================
+
+Use the more readable ANSI-Standard Join clauses instead of the old style joins.
+
+Old Style: (This creates cartesian join)
+=========
+SELECT a.Au_id,
+
+t.Title
+
+FROM TITLES t,
+
+AUTHORS a,
+
+TITLEAUTHOR ta
+
+WHERE a.Au_id = ta.Au_id
+
+AND ta.Title_id = t.Title_id
+
+AND t.Title LIKE ‘%Computer%’
+
+ANSI Standard
+============
+
+SELECT a.Au_id,
+
+t.Title
+
+FROM AUTHORS a
+
+INNER JOIN TITLEAUTHOR ta
+
+ON a.Au_id = ta.Au_id
+
+INNER JOIN TITLES t
+
+ON ta.Title_id = t.Title_id
+
+WHERE t.Title LIKE ‘%Computer%’
+
+===================================================
+Always use a column list in your INSERT statements This helps in avoiding problems when the table structure changes
+(like adding or dropping a column).
+
+Don't Use:
+INSERT INTO EuropeanCountries VALUES (1, ‘Ireland’)
+
+Better Use:
+INSERT INTO EuropeanCountries (CountryID, CountryName) VALUES (1, ‘England’)
+
+=================================================================
+
+Do not prefix your stored procedure names with “sp_”
+
+The prefix sp_ is reserved for system stored procedure that ship with SQL Server.Whenever SQL Server encounters a
+procedure name starting with sp_, it first tries to locate the procedure in the master database, then it looks for any
+qualifiers (database, owner) provided, then it tries dbo as the owner.
+
+======================================================================
+Names must begin with a letter and may not end with an underscore.
+=====================================================
+Avoid the use of multiple consecutive underscores—these can be hard to read.
+=================================================================
+Donot prefix table name with tbl.
+===============================================
+Never give a table the same name as one of its columns and vice versa.
+
+================================================
+Stored procedures
+=== The name must contain a verb
+=== Do not prefix with sp_
+
+
+================================================================
+Make use of BETWEEN where possible instead of combining multiple statements with AND
+
+
+SELECT COUNT(productid) FROM public.order_details where productid between 1 AND 40
+
+SELECT COUNT(productid) FROM public.order_details where
+
+====================================================================================
+
+For Date Related Better use Between Instead of writing multiple column name
+
+SELECT * FROM public.employees where birthdate between '1937-09-19' AND '1966-01-27'
+
+SELECT * FROM public.employees where birthdate >= '1937-09-19' AND birthdate
+
+
+
+=================================================================
+
+
+use IN() instead of multiple OR
+clauses
+
+Bad
+===
+SELECT * FROM `members` WHERE `membership_number` = 1 || `membership_number`= 2 || `membership_number` = 3);
+
+
+Good
+===
+
+SELECT * FROM `members` WHERE `membership_number` IN (1,2,3);
+
+
+=======================================
+
+Instead use NOT EXISTS â€¢Use MINUS instead of EXISTS
+
+Use MINUS Instead of EXISTS SubQueries Using MINUS is faster than NOT
+EXISTS and EXISTS Sub Queries
+============================================
+
+Avoid LIKE predicate
+
+Always replace 'like' with equility when appropriate
+
+===========================================
+
+Always generate an execution plan for all production SQL
+
+
+===========================================================================
+Use Like Query like this :
+
+Charleston, Charlotte, and Charlton,Cape Charles, Crab Orchard, and Richardson
+
+We want name start with char:
+
+SELECT City FROM Customers WHERE City LIKE ‘%Char%’
+
+Output : Charleston, Charlotte, and Charlton,Cape Charles, Crab Orchard, and Richardson
+
+==
+But want only Charleston, Charlotte, Charlton, Cape Charles so query is
+
+SELECT City FROM Customers WHERE City LIKE ‘Char%’
+
+
+=========================================================
+Try to avoid “TABLE OR INDEX SCAN” in queries
+======================================================
+Use TRY-CATCH block for error handling
+
+=======================================================
+Avoid SubQueries
+Badly written queries always damage SQL Server performance.
+
+Bad
+===
+SELECT p.Name,(SELECT pm.Name FROM Production.ProductCategory pm WHERE pm.ProductCategoryID=p.ProductSubcategoryID)
+AS modelname FROM production.Product p
+
+Good
+===
+SELECT
+P.NAME ,PM.NAME FROM
+production.Product p LEFT JOIN
+Production.ProductCategory pm ON pm.ProductCategoryID=p.ProductSubcategoryID

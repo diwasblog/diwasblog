@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/bootstrap-grid.css">
+  <link rel="stylesheet" href="css/bootstrap-reboot.css">
+  <link rel="stylesheet" href="css/dracula.css">
+  <link rel="stylesheet" href="css/dracula-prism.css">
+  <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+  <h2>Without flex box ( vertically placed div)</h2>
+  <div class="row">
+    <div class="col-lg-6">
+      <!--net ninja -->
+      <pre>
+  <code class="language-html">
+      &lt;div class="wrapper">
+      &lt;div class="flex-container">
+      &lt;div class="box one">&lt;/div>
+      &lt;div class="box two">&lt;/div>
+      &lt;div class="box three">&lt;/div>
+            
+      &lt;/div>
+      &lt;/div> 
+  </code>
+</pre>
+      <div>
+        <p data-height="265" data-theme-id="0" data-slug-hash="wYyMzJ" data-default-tab="css,result"
+          data-user="DiwasPoudel" data-pen-title="wYyMzJ" class="codepen">See the Pen <a
+            href="https://codepen.io/DiwasPoudel/pen/wYyMzJ/">wYyMzJ</a> by Diwas Poudel (<a
+            href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+        <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <pre>
+        <code class="language-css">
+            .wrapper{
+              width:100%;
+              max-width:960px;
+              margin:0 auto;
+            }
+            
+            .flex-container{
+              
+            }
+            
+            .box{
+              height:100px;
+              min-width:100px;
+            }
+            
+            .one{
+              background:red;
+            }
+            
+            .two{
+              background:blue;
+            }
+            
+            .three{
+              background:green;
+            }
+        </code>
+      </pre>
+    </div>
+  </div>
+
+  ==========================================================================================================
+  <h2>With Flex (div element are placed horizontally)</h2>
+  If we try to do same things with float then we have to use clearfix which is irrigating so we use flex
+  <div class="row">
+    <div class="col-lg-6">
+      <!--net ninja -->
+      <pre>
+    <code class="language-html">
+        &lt;div class="wrapper">
+        &lt;div class="flex-container">
+        &lt;div class="box one">&lt;/div>
+        &lt;div class="box two">&lt;/div>
+        &lt;div class="box three">&lt;/div>
+              
+        &lt;/div>
+        &lt;/div> 
+    </code>
+  </pre>
+      <div>
+        <p data-height="265" data-theme-id="0" data-slug-hash="vVdLzX" data-default-tab="css,result"
+          data-user="DiwasPoudel" data-pen-title="with flex(element arrange horizontally)" class="codepen">See the Pen
+          <a href="https://codepen.io/DiwasPoudel/pen/vVdLzX/">with flex(element arrange horizontally)</a> by Diwas
+          Poudel (<a href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a
+            href="https://codepen.io">CodePen</a>.</p>
+        <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <pre>
+          <code class="language-css">
+              .wrapper{
+                width:100%;
+                max-width:960px;
+                margin:0 auto;
+              }
+              
+              .flex-container{
+                display:flex; //added
+              }
+              
+              .box{
+                height:100px;
+                min-width:100px;
+              }
+              
+              .one{
+                background:red;
+              }
+              
+              .two{
+                background:blue;
+              }
+              
+              .three{
+                background:green;
+              }
+          </code>
+        </pre>
+    </div>
+  </div>
+
+  ==========================================================================================================
+  <h2>With Flex Grow property</h2>
+  <h3>div three is 3 times as div one and div two is twice size of div one</h3>
+
+  <div class="row">
+    <div class="col-lg-6">
+      <!--net ninja -->
+      <pre>
+    <code class="language-html">
+        &lt;div class="wrapper">
+        &lt;div class="flex-container">
+        &lt;div class="box one">&lt;/div>
+        &lt;div class="box two">&lt;/div>
+        &lt;div class="box three">&lt;/div>
+              
+        &lt;/div>
+        &lt;/div> 
+    </code>
+  </pre>
+
+      <p data-height="230" data-theme-id="0" data-slug-hash="rqJePM" data-default-tab="result" data-user="DiwasPoudel"
+        data-pen-title="flex grow" class="codepen">See the Pen <a href="https://codepen.io/DiwasPoudel/pen/rqJePM/">flex
+          grow</a> by Diwas Poudel (<a href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a
+          href="https://codepen.io">CodePen</a>.</p>
+      <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+    </div>
+
+    <div class="col-lg-6">
+      <pre>
+          <code class="language-css">
+              .wrapper{
+                width:100%;
+                max-width:960px;
+                margin:0 auto;
+              }
+              
+              .flex-container{
+                display:flex; //added
+              }
+              
+              .box{
+                height:100px;
+                min-width:100px;
+              }
+              
+              .one{
+                background:red;
+                flex-grow:1;
+              }
+              
+              .two{
+                background:blue;
+                flex-grow:2;
+              }
+              
+              .three{
+                background:green;
+                flex-grow:3;
+              }
+          </code>
+        </pre>
+    </div>
+  </div>
+
+  ==================================================================================================
+
+  <script src="js/prism.js"></script>
+  <script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+      {
+        'remove-trailing': true,
+        'remove-indent': true,
+        'left-trim': true,
+        'right-trim': true,
+      });
+  </script>
+</body>
+
+</html>
+
+
+</html>

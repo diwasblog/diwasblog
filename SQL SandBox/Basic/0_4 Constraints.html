@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../css/dracula.css">
+    <link rel="stylesheet" href="../css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+    =====================================================================================
+
+<p><span style="color: #ff00ff; font-size: 18pt; font-family: 'comic sans ms', sans-serif;">Constraints</span></p>
+<p><span style="font-size: 14pt;">Constraints are the rules that we can apply on the type of data in a table.</span></p>
+<p><span style="font-size: 14pt;">&nbsp;Available constraints in SQL are:</span></p>
+<p><span style="font-size: 18pt; color: #ff00ff;"><strong>NOT NULL</strong>: </span></p>
+<p><span style="font-size: 14pt;">This constraint tells that we cannot store a null value in a column.&nbsp;</span></p>
+
+ <pre>
+      <code class="language-sql">
+       CREATE TABLE Student
+(
+ID int(6) NOT NULL,
+NAME varchar(10) NOT NULL,
+ADDRESS varchar(20)
+);
+      </code>
+    </pre>
+
+
+<pre><span style="font-size: 14pt;">his Query creates a table Student with the fields ID and NAME as NOT NULL.</span><br /><br 
+
+  ================================================================================================
+  <pre><br /><br /><span style="font-size: 14pt; color: #ff00ff;"><strong>UNIQUE</strong></span><br /><span style="font-size: 14pt;">This constraint helps to uniquely identify each row in the table. i.e. for a particular column, all the rows should have unique values.</span></pre>
+
+ 
+
+<pre>
+      <code class="language-sql">
+       CREATE TABLE Student
+(
+ID int(6) NOT NULL UNIQUE,
+NAME varchar(10),
+ADDRESS varchar(20)
+);
+      </code>
+    </pre>
+
+    <p><br /><br /><span style="font-size: 14pt;">So , Id column of Student table must be unique.(means no two Id are same)</span><br /><br 
+    ==========================================================================================
+
+<p><br /><span style="font-size: 14pt; color: #ff00ff;"><strong>PRIMARY KEY</strong></span><br /><span style="font-size: 14pt;">Primary Key is a field which uniquely identifies each row in the table.</span><br /><span style="font-size: 14pt;"><span style="color: #ff0000;">Primary Key</span>=<span style="color: #ff0000;">Not Null</span> +<span style="color: #ff0000;">Unique</span></span><br /><span style="font-size: 14pt;">A table can have only one field as primary key</span></p>
+
+
+
+<pre>
+      <code class="language-sql">
+       
+CREATE TABLE Student
+(
+ID int(6) NOT NULL UNIQUE,
+NAME varchar(10),
+ADDRESS varchar(20),
+PRIMARY KEY(ID)
+);
+      </code>
+    </pre>
+    =============================================================================<br>
+<span style="font-size: 14pt; color: #ff00ff;"><strong>FOREIGN KEY</strong></span><br><span style="font-size: 14pt;">
+<br>Foreign Key is a field in a table which uniquely identifies each row of a another table. That is, this field points to primary key of another table. This usually creates a kind of link between the tables.</span>
+
+<div class="row">
+  <div class="col-lg-6">
+    <p align="center"><strong>Order</strong></p>
+
+    <table border="1">
+<tbody>
+<tr style="background-color: gray;color:white">
+<th>O_ID</th>
+<th>ORDER_NO</th>
+<th>C_ID</th>
+</tr>
+<tr>
+<td>1</td>
+<td>2253</td>
+<td>3</td>
+</tr>
+<tr>
+<td>2</td>
+<td>3325</td>
+<td>3</td>
+</tr>
+<tr>
+<td>3</td>
+<td>4521</td>
+<td>2</td>
+</tr>
+<tr>
+<td>4</td>
+<td>8532</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+  </div>
+
+  <div class="col-lg-6">
+<p align="center"><strong>Customers</strong></p>
+<table border="1">
+<tbody>
+<tr style="background-color: gray;color:white">
+<th>C_ID</th>
+<th>NAME</th>
+<th>ADDRESS</th>
+</tr>
+<tr>
+<td>1</td>
+<td>RAMESH</td>
+<td>DELHI</td>
+</tr>
+<tr>
+<td>2</td>
+<td>SURESH</td>
+<td>NOIDA</td>
+</tr>
+<tr>
+<td>3</td>
+<td>DHARMESH</td>
+<td>GURGAON</td>
+</tr>
+</tbody>
+</table>
+  </div>
+</div>  
+
+<br>
+<p><span style="font-size: 14pt;">C_Id is primary key of Customer Table and it is Foreign Key of Order Table</span></p>
+
+<pre>
+  <code class="language-sql">
+CREATE TABLE Orders
+  (
+  O_ID int NOT NULL,
+  ORDER_NO int NOT NULL,
+  C_ID int,
+  PRIMARY KEY (O_ID),
+  FOREIGN KEY (C_ID) REFERENCES Customers(C_ID)
+  )
+   </code> 
+</pre>  
+
+    ========================================================================================
+<p><span style="color: #ff00ff; font-size: 14pt;"><strong>CHECK</strong></span></p>
+<p><span style="font-size: 14pt;">Below query creates a table Student and specifies the condition for the field AGE as (AGE &gt;= 18 ). That is, the user will not be allowed to enter any record in the table with AGE &lt; 18.</span></p>
+
+
+<pre>
+  <code class="language-sql">
+CREATE OR ALTER TABLE Student
+(
+ID int(6) NOT NULL,
+NAME varchar(10) NOT NULL,
+AGE int NOT NULL CHECK (AGE >= 18)
+);
+   </code> 
+</pre>
+
+<br>
+======
+<br>
+<h2>More Example</h2>
+<pre>
+  <code class="language-sql">
+CREATE  TABLE student(
+        StudentID INT NOT NULL,
+        Name VARCHAR(30) NOT NULL,
+        Age INT NOT NULL,
+        GENDER VARCHAR(9),
+        PRIMARY KEY(ID),
+        check(Age >= 17)
+        );
+   </code> 
+</pre>
+<br>
+
+So when user entered age >=17 then that data willnot be updated /inserted in student Table
+===================================================================================
+
+<p><span style="font-size: 14pt;"><span style="color: #ff00ff;"><strong>DEFAULT</strong></span><br />This constraint is used to provide a default value for the fields.</span></p>
+<p><span style="font-size: 14pt;">Below query will create a table named Student and specify the default value for the field AGE as 18.</span></p>
+
+<pre>
+  <code class="language-sql">
+CREATE OR ALTER TABLE Student
+(
+ID int(6) NOT NULL,
+NAME varchar(10) NOT NULL,
+AGE int DEFAULT 18
+);
+   </code> 
+</pre>
+=================================================================================================
+<script src="../js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

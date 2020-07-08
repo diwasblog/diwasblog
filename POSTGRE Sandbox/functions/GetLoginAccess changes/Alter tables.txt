@@ -1,0 +1,8 @@
+ALTER TABLE office.users
+ADD COLUMN is_terminated boolean DEFAULT false;
+update office.users set is_terminated=true where is_active=false;
+
+UPDATE sms.sms_log
+	SET cell_number=c.contact_number::character varying
+	FROM sms.customers_view c 
+	WHERE sms_log.customer_id::bigint = c.customer_id

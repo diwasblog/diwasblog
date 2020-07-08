@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+   
+
+<div><span style="font-size: 18pt; color: #ff00ff;">How token based authentication actually works?</span></div>
+<div><span style="font-size: 14pt;">In the Token based approach, the client application <strong><span style="color: #000000;">first sends a request</span></strong> to<span style="color: #000000;"><strong> Authentication server</strong></span> endpoint with an appropriate credential. Now If the username and password are found correct then the Authentication server send a token to the client as a response. This token contains enough data to identify a particular user and an expiry time.</span></div>
+<div><span style="font-size: 14pt;">The client application then uses the token to access the restricted resources in next requests till the token is valid.</span></div>
+<div>&nbsp;</div>
+
+<img src="https://1.bp.blogspot.com/-KqCpVhxopAE/V-tgHl8ZXUI/AAAAAAAACT8/fxkz9ayHLpwNPyM_dzjLWcEVRlw7CLbcgCLcB/s1600/web%2Bapi%2Btoken.png">
+<div><br />
+<div><span style="font-size: 14pt; color: #ff0000;">step 1 )Create Empty project selecting web api and mvc</span></div>
+<div><span style="font-size: 12pt;">&nbsp;</span></div>
+<div><span style="font-size: 14pt; color: #ff0000;">Step 2) Install this via nuget packet</span></div>
+<div>&nbsp;</div>
+<div>
+<div><strong><span style="color: #000000;">Microsoft.Owin.Host.SystemWeb</span></strong></div>
+<div><strong><span style="color: #000000;">Microsoft.Owin.Security.OAuth</span></strong></div>
+<div><strong><span style="color: #000000;">Microsoft.Owin.Cors</span></strong></div>
+<div><strong><span style="color: #ff0000;">&nbsp;</span></strong></div>
+<div><strong><span style="font-size: 14pt; color: #ff0000;">Step 3: <span style="font-family: aileron;">Add a class for validating user credentials asking for tokens.</span></span></strong></div>
+<div>&nbsp;</div>
+<div>
+<div>
+<div>Then create Owin Startup file (Right click on Project (not solution) &gt;&gt; click on Add New Item &gt;&gt; Then Owin Startup Class)&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+<div>&nbsp;</div>
+</div>
+</div>
+</div>
+</div>
+<p></p>
+
+<div>
+    <div><br />
+    <div style="text-align: justify;"><span style="font-size: 14pt; font-family: verdana, geneva, sans-serif;">Startup.cs file is more about registering services and injection of modules in HTTP pipeline.Startup.cs file contains Startup class which triggers at first when application launches and even in each HTTP request/response.Actually, the inception of Startup class is in OWIN application which is a specification to reduce dependency of application on server (mainly IIS).</span></div>
+    </div>
+    </div>
+=====================================================================================
+    <h2>Step 4 Next Create Class : MyAuthorizationServerProvider.cs and implement OAuthAuthorizationServerProvider and  we’ve overridden two methods</h2>
+
+    <p>&nbsp;</p>
+<div style="text-align: justify;">
+<p><span style="font-size: 14pt;">In practice, you would want to use <strong><span style="color: #ff0000;">GrantResourceOwnerCredentials</span> </strong>when you expect to accept an actual username and password and issue an access token.</span></p>
+<p><span style="font-size: 14pt;"><span style="color: #ff0000;"><strong>ValidateClientAuthentication</strong> </span>should be used to make sure that the client is what it says it is. You would do this perhaps if have registered the client to an authorization server and need to verify that it is still valid.</span></p>
+</div>
+<pre>
+  
+        <code class="language-csharp">
+using Microsoft.Owin.Security.OAuth;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using System.Web;
+
+namespace WebApiToken
+{
+	public class MyAuthorizationServerProvider: OAuthAuthorizationServerProvider
+	{
+		public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
+		{
+			context.Validated(); // 
+		}
+
+		public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
+        {
+            var identity = new ClaimsIdentity(context.Options.AuthenticationType);
+            if (context.UserName == "admin" && context.Password == "admin")
+            {
+				identity.AddClaim(new Claim(ClaimTypes.Role, "admin"));
+				identity.AddClaim(new Claim("username", "admin"));
+				identity.AddClaim(new Claim(ClaimTypes.Name, "Diwas Poudel"));
+				context.Validated(identity);
+			}
+            else if (context.UserName == "user" && context.Password == "user")
+            {
+				identity.AddClaim(new Claim(ClaimTypes.Role, "user"));
+				identity.AddClaim(new Claim("username", "user"));
+				identity.AddClaim(new Claim(ClaimTypes.Name, "Hari"));
+				context.Validated(identity);  // issue or get access token here
+			}
+            else
+            {
+                context.SetError("invalid_grant", "Provided username and password is incorrect");
+                return;
+            }
+        }
+	}
+}
+        </code>
+    </pre>
+
+    <h2>Step 5 : Create Owin StartUp class</h2>
+
+<pre>
+    <code class="language-csharp">
+        using System;
+using System.Threading.Tasks;
+using Microsoft.Owin;
+using Owin;
+using Microsoft.Owin.Security.OAuth;
+using System.Web.Http;
+
+[assembly: OwinStartup(typeof(WebApiToken.Startup))]
+
+namespace WebApiToken
+{
+	public class Startup
+	{
+		public void Configuration(IAppBuilder app)
+		{
+			app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
+
+			var myProvider = new MyAuthorizationServerProvider();
+			OAuthAuthorizationServerOptions options = new OAuthAuthorizationServerOptions
+			{
+				AllowInsecureHttp = true,
+				TokenEndpointPath = new PathString("/token"),
+				AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
+				Provider = myProvider
+			};
+
+			app.UseOAuthAuthorizationServer(options);
+			app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
+
+			HttpConfiguration config = new HttpConfiguration();
+			WebApiConfig.Register(config);
+
+			// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=316888
+		}
+	}
+}
+
+    </code>
+</pre>
+
+
+<img src="Img/folder structure token base API.PNG">
+
+<h2>Step 6 : Create Api Controller like DataController </h2>
+
+<pre>
+    <code class="language-csharp">
+        using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Security.Claims;
+using System.Web.Http;
+
+namespace WebApiToken.Controllers
+{
+    public class DataController : ApiController
+    {
+		[AllowAnonymous]
+		[HttpGet]
+		[Route("api/data/forall")]
+		public IHttpActionResult Get()
+		{
+			return Ok("Now server time is: " + DateTime.Now.ToString());
+		}
+
+		[Authorize]
+		[HttpGet]
+		[Route("api/data/authenticate")]
+		public IHttpActionResult GetForAuthenticate()
+		{
+			var identity = (ClaimsIdentity)User.Identity;
+			return Ok("Hello " + identity.Name);
+		}
+
+
+		[Authorize(Roles = "admin")]
+		[HttpGet]
+		[Route("api/data/authorize")]
+		public IHttpActionResult GetForAdmin()
+		{
+			var identity = (ClaimsIdentity)User.Identity;
+			var roles = identity.Claims
+						.Where(c => c.Type == ClaimTypes.Role)
+						.Select(c => c.Value);
+			return Ok("Hello " + identity.Name + " Role: " + string.Join(",", roles.ToList()));
+		}
+	}
+}
+
+    </code>
+</pre>
+
+
+Then for calling  api/data/forall we donot need any token
+For calling api/data/authentication we need token access
+<script src="js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+    </body>
+    </html>

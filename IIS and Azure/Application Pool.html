@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<h2><strong>All About Application Pool</strong></h2>
+<h3>Application pools allow you to <span style="color: #e03e2d;"><strong>isolate your applications from one another</strong>, even if they are running on the same server.</span></h3>
+<h3>Application Pools use the Server&nbsp;Process called <strong><span style="color: #e03e2d;">w3wp.exe.</span></strong></h3>
+<hr />
+<h2>Shared Application Pool</h2>
+<h3>Shared Application Pool means y<span style="color: #e03e2d;"><strong>ou have hosted many web applications in the same application pool</strong></span>. Say&nbsp; 5 websites hosted on IIS, then all share the same Application Pool.</h3>
+<h3><span style="color: #e03e2d;"><strong>Benefits:</strong></span></h3>
+<ul>
+<li>
+<h3>It saves <strong><span style="color: #000000;">server memory(RAM)</span> </strong>and other resources</h3>
+</li>
+</ul>
+<h3><span style="color: #e03e2d;">Disadvantages:</span></h3>
+<ul>
+<li>
+<h3>If there is an error in one app and<strong><span style="color: #000000;"> takes more ram</span></strong>, it will obviously down other applications. So, if there is no significant reason of splitting the application then its better to keep in same application pool.</h3>
+</li>
+</ul>
+<hr />
+<h2>Dedicated Application Pool</h2>
+<h3>This means that each web application has its own application pool so separate instances of W3wp.exe process.</h3>
+<h3><span style="color: #e03e2d;">Advantages:</span></h3>
+<ul>
+<li>
+<h3>Crashing one application will not&nbsp;affect other application performance because each will be running in its own application pool. So, <span style="color: #000000;"><strong>better performance.</strong></span></h3>
+</li>
+<li>
+<h3>By isolating applications, you reduce the chance that one application will access the resources of another application.</h3>
+</li>
+<li>
+<h3>You can <span style="color: #000000;"><strong>run</strong> untrusted and third-party applications</span> in a very restrictive environment so they do not get unauthorized&nbsp;access to other applications.</h3>
+</li>
+</ul>
+<h3><strong><span style="color: #e03e2d;">Disadvantages&nbsp;</span></strong></h3>
+<ul>
+<li>
+<h3>Consumes <span style="color: #000000;"><strong>more ram and resources.</strong></span></h3>
+</li>
+</ul>
+<p><span style="color: #000000;"><strong><img style="display: block; margin-left: auto; margin-right: auto;" src="https://manage.accuwebhosting.com/kb-images/iis-application-pools/03-dedicated-application-pool.png" /></strong></span></p>
+<p><span style="color: #000000;"><strong>Look multiple application has separate Application Pool.</strong></span></p>
+<hr />
+<p>&nbsp;</p>
+</body>
+</html>

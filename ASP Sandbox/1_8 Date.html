@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+<pre>
+<code class="language-csharp">
+    @using System.Globalization;
+    Convert.ToDateTime(item.Date, CultureInfo.CurrentCulture).ToString("yyyy MMMM dd")
+
+</code>
+</pre>
+
+
+<div class="row">
+  <div class="col-lg-6">
+      <pre>
+          <code class="language-csharp">
+              DateTime time = DateTime.Now;             // Use current time.
+              string format = "MMM ddd d HH:mm yyyy";   // Use this format.
+              Console.WriteLine(time.ToString(format));
+          </code>
+      </pre>
+  </div>
+
+
+  <div class="col-lg-6">
+      <pre>
+          <code class="language-csharp">
+             Output: Feb Tue 21 13:15 2017
+
+              MMM     display three-letter month
+              ddd     display three-letter day of the WEEK
+              d       display day of the MONTH
+              HH      display two-digit hours on 24-hour scale
+              mm      display two-digit minutes
+              yyyy    display four-digit year
+          </code>
+      </pre>
+  </div>
+</div>
+    
+<table style="height: 586px; border-style: double;" border="2">
+    <tbody>
+    <tr style="height: 50px;">
+    <td style="height: 50px; width: 68px;">d</td>
+    <td style="height: 50px; width: 867px;">The day of the month. Single-digit days have no leading zero.(1,2,3 to 7)</td>
+    </tr>
+    <tr style="height: 50px;">
+    <td style="height: 50px; width: 68px;">dd</td>
+    <td style="height: 50px; width: 867px;">The day of the month. Single-digit days have a leading zero.(01,02,03, to 07)</td>
+    </tr>
+    <tr style="height: 50px;">
+    <td style="height: 50px; width: 68px;">ddd</td>
+    <td style="height: 50px; width: 867px;">The abbreviated name of the day of the week.(Sun,Mon.Tue to Sat)</td>
+    </tr>
+    <tr style="height: 50px;">
+    <td style="height: 50px; width: 68px;">dddd</td>
+    <td style="height: 50px; width: 867px;">The full name of the day of the week.(Sunday,Monday,Tuesday to Saturday)</td>
+    </tr>
+    <tr style="height: 68px;">
+    <td style="height: 68px; width: 68px;">M</td>
+    <td style="height: 68px; width: 867px;">The numeric month. Single-digit months have no leading zero. (Only if used in the context of a longer pattern. A single "M" on its own represents the Month day pattern.)</td>
+    </tr>
+    <tr style="height: 50px;">
+    <td style="height: 50px; width: 68px;">MM</td>
+    <td style="height: 50px; width: 867px;">The numeric month. Single-digit months have a leading zero.</td>
+    </tr>
+    <tr style="height: 50px;">
+    <td style="height: 50px; width: 68px;">MMM</td>
+    <td style="height: 50px; width: 867px;">The abbreviated name of the month.</td>
+    </tr>
+    <tr style="height: 50px;">
+    <td style="height: 50px; width: 68px;">MMMM</td>
+    <td style="height: 50px; width: 867px;">The full name of the month.</td>
+    </tr>
+    <tr style="height: 68px;">
+    <td style="height: 68px; width: 68px;">y</td>
+    <td style="height: 68px; width: 867px;">The year without the century. If the year without the century is less than 10, with no leading zero. (Only if used in the context of a longer pattern. A single "y" on its own represents the Month year pattern.)</td>
+    </tr>
+    <tr style="height: 50px;">
+    <td style="height: 50px; width: 68px;">yy</td>
+    <td style="height: 50px; width: 867px;">the year without the century. If the year without the century is less than 10, with a leading zero.</td>
+    </tr>
+    <tr style="height: 50px;">
+    <td style="height: 50px; width: 68px;">yyyy</td>
+    <td style="height: 50px; width: 867px;">The year in four digits, including the century.</td>
+    </tr>
+    </tbody>
+    </table>
+
+
+    <<table style="border-color: #1c1a1a;" border="2">
+        <tbody>
+        <tr>
+        <td>h</td>
+        <td>The hour in a 12-hour clock. Single-digit hours have no leading zero.</td>
+        </tr>
+        <tr>
+        <td>hh</td>
+        <td>The hour in a 12-hour clock. Single-digit hours have a leading zero.</td>
+        </tr>
+        <tr>
+        <td>H</td>
+        <td>The hour in a 24-hour clock. Single-digit hours have no leading zero.</td>
+        </tr>
+        <tr>
+        <td>HH</td>
+        <td>The hour in a 24-hour clock. Single-digit hours have a leading zero.</td>
+        </tr>
+        <tr>
+        <td>m</td>
+        <td>The minute. Single-digit minutes have no leading zero. (Only if used in the context of a longer pattern. A single "m" on its own represents the Month day pattern)</td>
+        </tr>
+        <tr>
+        <td>mm</td>
+        <td>The minute. Single-digit minutes have a leading zero.</td>
+        </tr>
+        <tr>
+        <td>s</td>
+        <td>The second. Single-digit seconds have no leading zero. (Only if used in the context of a longer pattern. A single "s" on its own represents the sortable time pattern.)</td>
+        </tr>
+        <tr>
+        <td>ss</td>
+        <td>The second. Single-digit seconds have a leading zero.</td>
+        </tr>
+        <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        </tr>
+        <tr>
+        <td>tt</td>
+        <td>The AM/PM designator.</td>
+        </tr>
+        </tbody>
+        </table>
+        
+
+
+
+            <pre>
+              <code class="language-html">
+                  DateTime dt = DateTime.Now;
+                  String strDate="";
+                  strDate = dt.ToString("MM/dd/yyyy");   // 07/21/2007 
+                  strDate = dt.ToString("dddd, dd MMMM yyyy");   //Saturday, 21 July 2007
+                  strDate = dt.ToString("dddd, dd MMMM yyyy HH:mm"); // Saturday, 21 July 2007 14:58
+                  strDate = dt.ToString("dddd, dd MMMM yyyy hh:mm tt"); // Saturday, 21 July 2007 03:00 PM
+                  strDate = dt.ToString("dddd, dd MMMM yyyy H:mm"); // Saturday, 21 July 2007 5:01 
+                  strDate = dt.ToString("dddd, dd MMMM yyyy h:mm tt"); // Saturday, 21 July 2007 3:03 PM
+                  strDate = dt.ToString("dddd, dd MMMM yyyy HH:mm:ss"); // Saturday, 21 July 2007 15:04:10
+                  strDate = dt.ToString("MM/dd/yyyy HH:mm"); // 07/21/2007 15:05
+                  strDate = dt.ToString("MM/dd/yyyy hh:mm tt"); // 07/21/2007 03:06 PM
+                  strDate = dt.ToString("MM/dd/yyyy H:mm"); // 07/21/2007 15:07
+                  strDate = dt.ToString("MM/dd/yyyy h:mm tt"); // 07/21/2007 3:07 PM
+                  strDate = dt.ToString("MM/dd/yyyy HH:mm:ss"); // 07/21/2007 15:09:29
+                  strDate = dt.ToString("MMMM dd"); // July 21
+                  strDate = dt.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffffK"); // 2007-07-21T15:11:19.1250000+05:30    
+                  strDate = dt.ToString("ddd, dd MMM yyyy HH':'mm':'ss 'GMT'"); // Sat, 21 Jul 2007 15:12:16 GMT
+                  strDate = dt.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss"); // 2007-07-21T15:12:57
+                  strDate = dt.ToString("HH:mm"); // 15:14
+                  strDate = dt.ToString("hh:mm tt"); // 03:14 PM
+                  strDate = dt.ToString("H:mm"); // 5:15
+                  strDate = dt.ToString("h:mm tt"); // 3:16 PM
+                  strDate = dt.ToString("HH:mm:ss"); // 15:16:29
+                  strDate = dt.ToString("yyyy'-'MM'-'dd HH':'mm':'ss'Z'"); // 2007-07-21 15:17:20Z
+                  strDate = dt.ToString("dddd, dd MMMM yyyy HH:mm:ss"); // Saturday, 21 July 2007 15:17:58
+                  strDate = dt.ToString("yyyy MMMM"); // 2007 July
+                  
+              </code>
+            </pre>
+
+<script src="js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

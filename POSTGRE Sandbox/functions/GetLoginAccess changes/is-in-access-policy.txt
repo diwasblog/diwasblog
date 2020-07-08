@@ -1,0 +1,24 @@
+-- FUNCTION: deposit.is_in_access_policy(bigint)
+
+-- DROP FUNCTION deposit.is_in_access_policy(bigint);
+
+--SELECT * FROM policies.access_policy
+
+--SELECT * FROM deposit.is_in_access_policy(1::int,1134::bigint)
+
+CREATE OR REPLACE FUNCTION deposit.is_in_access_policy(
+	user_id_ int,
+	account_number_id_ bigint)
+    RETURNS boolean
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+AS $BODY$
+BEGIN
+    RETURN(SELECT COUNT(*) > 0 FROM policies.access_policy  WHERE account_number_id = $2 AND ac_type='Deposit' AND user_id = user_id_);
+END
+$BODY$;
+
+ALTER FUNCTION deposit.is_in_access_policy(int,bigint)
+    OWNER TO postgres;

@@ -1,0 +1,23 @@
+DROP TABLE deposit.source_details
+CREATE TABLE deposit.source_details(source_detail_id serial, detail text,     
+CONSTRAINT detail_key UNIQUE (detail),
+CONSTRAINT source_detail_id_key UNIQUE (source_detail_id)									
+)
+
+INSERT INTO deposit.source_details(source_detail_id, detail)
+SELECT 1,'Salary' union all
+SELECT 2,'Business' union all
+SELECT 3,'Sales Of Assets' Union all
+SELECT 4, 'Borrowing' union all
+SELECT 5, 'Others'
+
+
+--ALTER TABLE transactions.transaction_details DROP COLUMN source_detail_id
+ALTER TABLE transactions.transaction_details ADD COLUMN source_detail_id int NULL;
+ALTER TABLE transactions.transaction_details  ADD CONSTRAINT transactions_detail_source_detail_id FOREIGN KEY (source_detail_id)
+REFERENCES deposit.source_details (source_detail_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION;
+
+
+ALTER TABLE transactions.transaction_details ADD COLUMN source_other character varying(50) NULL;

@@ -1,0 +1,12 @@
+
+alter table office.collectors add column password character varying(350) ;
+alter table office.collectors add column collector_app_id character varying(50);
+
+
+alter table sms.sms_setup  add column enable_join_sms_alert bool default false;
+
+alter table transactions.transaction_details add column pv_id bigint;
+alter table transactions.transactions add column pv_id bigint;
+
+update core.menus set url = '~/Report/Core/NRBReport.aspx', parent_menu_id = (select menu_id from core.menus 
+where menu_text = 'Corporate Reports') where menu_text = 'NRB Report' ;

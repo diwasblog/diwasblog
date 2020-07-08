@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+
+  <body>
+========================================
+<p><span style="font-size: 14pt;">The&nbsp;<span style="color: #ff0000;"><code>OFFSET</code>&nbsp;</span>and&nbsp;<span style="color: #ff0000;"><code>FETCH</code>&nbsp;</span>clauses are the options of the&nbsp;<span style="color: #ff0000;"><code><a style="color: #ff0000;" href="http://www.sqlservertutorial.net/sql-server-basics/sql-server-order-by/">ORDER BY</a></code></span>&nbsp;clause.</span></p>
+
+
+<h2>Syntax</h2>
+<pre>
+  <code class="language-sql">
+  SELECT * FROM Table_Name
+  ORDER BY Column_List
+  OFFSET Rows_To_Skip ROWS
+  FETCH NEXT Rows_To_Fetch ROWS ONLY
+   </code> 
+</pre>
+
+<h2>Demonstration</h2>
+
+<div class="row">
+ <div class="col-lg-6">
+  <pre>
+     <code class="language-sql">
+    SELECT * FROM tblProducts
+    ORDER BY Id
+    OFFSET 5 ROWS
+    FETCH NEXT 10 ROWS ONLY
+  </code>
+</pre>
+ </div>
+
+ <div class="col-lg-6">
+Sorts the table data by Id column<br>
+Skips the first 5 rows and <br>
+Fetches the next 10 rows
+ </div>
+</div>  
+
+
+=============================================================
+<p><span style="color: #ff00ff; font-size: 18pt;">Practical</span></p>
+<p><span style="font-size: 14pt;">From the front-end application, we would typically send the<span style="color: #ff0000;"> PAGE NUMBER</span> and the <span style="color: #ff0000;">PAGE SIZE</span> to get a page of rows. </span></p>
+<p><span style="font-size: 14pt;">The following stored procedure accepts PAGE NUMBER and the PAGE SIZE as parameters and returns the correct set of rows.</span></p>
+
+
+<pre>
+<code class="language-sql">
+CREATE PROCEDURE spGetRowsByPageNumberAndSize
+@PageNumber INT,
+@PageSize INT
+AS
+BEGIN
+ SELECT * FROM tblProducts
+ ORDER BY Id
+ OFFSET (@PageNumber - 1) * @PageSize ROWS
+ FETCH NEXT @PageSize ROWS ONLY
+END
+</code>  
+</pre> 
+
+==========================================================================
+
+<p><span style="font-size: 18pt; color: #ff0000;">Test</span></p>
+<p><span style="font-size: 14pt;">With <strong>PageNumber = 3</strong> and <strong>PageSize = 10,</strong> the stored procedure returns the correct set of rows</span></p>
+<p><span style="font-size: 14pt; color: #ff0000;"> EXECUTE spGetRowsByPageNumberAndSize 3, 10</span></p>
+<p><span style="font-size: 14pt; color: #000000;">When PageNumber =1, Page Size=10 ,Offset will be&nbsp; 0 and&nbsp; so get data ===&gt;(0-10)</span></p>
+<p><span style="font-size: 14pt; color: #000000;">When PageNumber =2, Page Size=10 ,Offset will be&nbsp; 0 and&nbsp; so get data ===&gt;(11-21)</span></p>
+<p><span style="font-size: 14pt; color: #000000;">When PageNumber =3, Page Size=10 ,Offset will be&nbsp; 0 and&nbsp; so get data ===&gt;(21-31)</span></p>
+
+
+==========================================================================
+//Get Number of Page Number
+<pre>
+  <code class="language-sql">
+  
+      int NumberOfRecords = 234;
+      // Page size is number of records per page
+      int PageSize = 10;
+      // Number of pages
+      int NumberOfPages = NumberOfRecords / PageSize + (NumberOfRecords % PageSize > 0 ? 1 : 0);
+  </code>
+</pre>
+
+
+=============================================================================
+    <script src="js/prism.js"></script>
+    <script type="text/javascript">
+      Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+          'remove-trailing': true,
+          'remove-indent': true,
+          'left-trim': true,
+          'right-trim': true,
+          // 'break-lines': 10,
+          // 'indent': 2,
+          // 'remove-initial-line-feed': false,
+          // 'tabs-to-spaces': 4,
+          // 'spaces-to-tabs': 4
+        });
+    </script>
+  </body>
+</html>

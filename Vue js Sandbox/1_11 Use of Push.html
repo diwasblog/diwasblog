@@ -1,0 +1,90 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+
+<!--Explaination-->
+
+<!--########################Main Code######################################-->
+<div id="app">
+ 
+  <ul>
+    <li v-for="name in names" v-text="name"></li>
+  </ul>
+ 
+ <input type="text" v-model="newName" id="input">
+ <button @click="addName">Add Name</button>
+ 
+ </div>
+
+ <script>
+
+  const vm=new Vue({
+    el:'#app',
+    data:{
+      newName:'',
+      names:["amar","badal","cital","diwas"]
+    },
+    methods:{
+      addName(){
+        this.names.push(this.newName);
+      }
+    }
+  })
+  
+    </script>
+<!--##############################################################-->
+
+
+<!--|#########################DISPLAY############################################-->
+<h3>Push new element to array</h3>
+<xmp class="prettyprint"
+   >
+        <div id="app">
+ 
+          <ul>
+            <li v-for="name in names" v-text="name"></li>
+          </ul>
+         
+         <input type="text" v-model="newName" id="input">
+         <button @click="addName">Add Name</button>
+         
+         </div>
+
+
+         <script>
+          const vm=new Vue({
+            el:'#app',
+            data:{
+              newName:'',
+              names:["amar","badal","cital","diwas"]
+            },
+            methods:{
+              addName(){
+                this.names.push(this.newName);
+              }
+            }
+          })
+            </script>
+
+</xmp>
+<!--####################################################-->
+
+
+    </body>
+
+</html>

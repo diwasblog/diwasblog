@@ -1,0 +1,42 @@
+INSERT INTO core.menus (menu_text,url,parent_menu_id)
+VALUES('Teller Entry','~/Transactions/Teller/TellerDeposit.aspx',(SELECT menu_id FROM core.menus where menu_text='Deposit'));
+
+
+INSERT INTO core.menus (menu_text,url,parent_menu_id)
+VALUES('Teller Deposit Report','~/Report/Deposit/PrintDepositReport.aspx',(SELECT menu_id FROM core.menus where menu_text='Deposit Report'));
+
+INSERT INTO core.menus (menu_text,url,parent_menu_id)
+VALUES('IBT Settlement','~/Transactions/Backoffice/IBTsettlement.aspx',(SELECT menu_id FROM core.menus where menu_text='Account & Back Office'));
+ALTER TABLE core.non_corporate_customers ADD COLUMN date_of_birth_bs character varying(10);
+ALTER TABLE core.non_corporate_customers ADD COLUMN issued_date character varying(10);
+ALTER TABLE sms.customer_sms ADD COLUMN ref_dep_ac character varying;
+alter table sms.sms_setup add column auto_renew_deposit_sms_alert bool default false
+alter table sms.sms_setup add column auto_renew_loan_sms_alert bool default false
+alter table sms.sms_setup add column automate_birthday_message bool default false
+alter table sms.sms_setup add column loan_sms_date bool default false
+alter table sms.sms_setup add column Send_Actual_Balance_Alert bool default true// for nmc default false
+
+
+
+
+
+ALTER TABLE loan.collaterals ADD COLUMN Vehicle_Registration_No character varying;
+ALTER TABLE loan.collaterals ADD COLUMN Vehicle_Engine_No character varying;
+ALTER TABLE loan.collaterals ADD COLUMN Vehicle_Chassis_No character varying;
+ALTER TABLE loan.collaterals ADD COLUMN Vehicle_Company_Name character varying;
+ALTER TABLE loan.collaterals ADD COLUMN Vehicle_Model_No character varying;
+ALTER TABLE loan.collaterals ADD COLUMN Vehicle_Made_Year character varying;
+ALTER TABLE loan.collaterals ADD COLUMN Vehicle_Evaluator_Name character varying;
+ALTER TABLE loan.collaterals ADD COLUMN Vehicle_Depriciation_After_Evalution character varying;
+ALTER TABLE loan.collaterals ADD COLUMN Vehicle_Showroom_Evaluation character varying;
+ALTER TABLE loan.collaterals ADD COLUMN Vehicle_Local_Evaluation character varying;
+ALTER TABLE loan.collaterals ADD COLUMN Vehicle_Other_Information character varying;
+ALTER TABLE loan.collaterals ADD COLUMN Share_Fixed_Account_No character varying;
+ALTER TABLE loan.collaterals ADD COLUMN Share_Fixed_Account_Holder_Name character varying;
+ALTER TABLE loan.collaterals ADD COLUMN Share_Amount character varying;
+ALTER TABLE loan.collaterals ADD COLUMN Share_Maturity_Date character varying;
+ALTER TABLE loan.collaterals ADD COLUMN Share_Interest_Rate character varying;
+ALTER TABLE loan.collaterals ADD COLUMN Share_Loan_Disbursed_Amount character varying;
+ALTER TABLE loan.collaterals ADD COLUMN Share_Other_Information character varying;
+																  
+																 

@@ -1,0 +1,170 @@
+-- FUNCTION: loan.get_outstanding_report(integer, date, character varying, character varying, boolean, boolean)
+
+-- DROP FUNCTION loan.get_outstanding_report(integer, date, character varying, character varying, boolean, boolean);
+
+--SELECT * FROM loan.get_outstanding_report(1, '2019-04-22', '', '', false, false)
+
+CREATE OR REPLACE FUNCTION loan.get_outstanding_report(
+	office_id_ integer,
+	till_ date,
+	product_ character varying,
+	unit_ character varying,
+	matured_ boolean,
+	deliquent_ boolean)
+    RETURNS TABLE(cust_id bigint, account_number character varying, customer text, address text, contact text, collector_name character varying,unit character varying, gender character varying, product character varying, sanctioned_amount money, issue_date character varying, interest_rate money, fine_rate money, penalty_rate money, total_investment money, duration integer, maturity_date character varying, last_payment_date character varying, total_days integer, remaining_principal money, current_duration integer, last_interest money, current_interest money, current_fine money, current_penalty money, total_interest money, total_due money) 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+
+
+--SELECT * FROM loan.get_outstanding_report(1, '2019-04-22', '', '', false, false)
+
+BEGIN
+
+	DROP TABLE IF EXISTS _lt;
+	CREATE TEMP TABLE _lt(cust_id bigint,loan_id bigint, account_number character varying, customer text, address text, contact text, collector_name character varying,unit character varying, gender character varying(50), product character varying, sanctioned_amount money, issue_date date, interest_rate money, fine_rate money, penalty_rate money, total_investment money, 
+	duration integer, maturity_date date, last_payment_date date, total_days integer, remaining_principal money, current_duration integer, last_interest money,current_interest money, current_fine money, current_penalty money, total_interest money, total_due money) ON COMMIT DROP;
+
+	IF office_id_ > 0 THEN
+	INSERT INTO _lt(cust_id,loan_id, account_number, customer, address, contact, collector_name,unit, gender, product, sanctioned_amount, issue_date, interest_rate, fine_rate, penalty_rate)
+	SELECT 
+		c.customer_id, ac.loan_id, ac.loan_account_number, c.customer_name, c.permanent_address, c.contact_number, cl.collector_name,
+		c.unit_name, c.gender_name, p.loan_product_name, ac.sanctioned_amount, ac.issue_date::date, ac.annual_interest_rate, ac.interest_fine, ac.penalty_rate::numeric::money
+	FROM loan.loan_grant ac
+	INNER JOIN core.customers_view c ON ac.customer_id = c.customer_id
+	INNER JOIN loan.loan_products p ON ac.loan_product_id = p.loan_product_id
+	INNER JOIN office.collectors cl ON ac.collector_id = cl.collector_id
+	WHERE ac.office_id = office_id_ AND ac.verification_status_id>0;
+	ELSE
+	INSERT INTO _lt(cust_id,loan_id, account_number, customer, address, contact, collector_name,unit, gender, product, sanctioned_amount, issue_date, interest_rate, fine_rate, penalty_rate)
+	SELECT 
+		c.customer_id, ac.loan_id, ac.loan_account_number, c.customer_name, c.permanent_address, c.contact_number,cl.collector_name, 
+		c.unit_name, c.gender_name, p.loan_product_name, ac.sanctioned_amount, ac.issue_date::date, ac.annual_interest_rate, ac.interest_fine, ac.penalty_rate::numeric::money
+	FROM loan.loan_grant ac 
+	INNER JOIN core.customers_view c ON ac.customer_id = c.customer_id
+	INNER JOIN loan.loan_products p ON ac.loan_product_id = p.loan_product_id
+	INNER JOIN office.collectors cl ON ac.collector_id = cl.collector_id
+	WHERE ac.verification_status_id>0;
+	
+	END IF;
+
+	IF unit_ <> '' THEN
+		DELETE FROM _lt WHERE _lt.unit <> unit_;
+	END IF;
+	
+	IF product_ <> '' THEN
+		DELETE FROM _lt WHERE _lt.product <> product_;
+	END IF;
+
+	UPDATE _lt SET total_investment = COALESCE(t.dr, 0::money), remaining_principal = COALESCE(t.dr, 0::money) - COALESCE(t.cr, 0::money)
+	FROM ( SELECT v.loan_id, SUM(COALESCE(v.debit, 0::money)) dr, SUM(COALESCE(v.credit, 0::money)) cr
+		FROM loan.principal_transaction_view v 
+		WHERE tran_date <= till_ 
+		GROUP BY v.loan_id
+	) t WHERE _lt.loan_id = t.loan_id;
+
+	DELETE FROM _lt WHERE COALESCE(_lt.remaining_principal, 0::money) = 0::money;
+
+    UPDATE _lt SET last_payment_date = COALESCE(a.last_payment_date, a.calculation_start_date::date)
+    FROM loan.loan_grant a WHERE _lt.loan_id = a.loan_id;
+
+	UPDATE _lt SET last_payment_date = lr.tran_date
+	FROM (SELECT loan.loan_receipts_view_for_report.loan_id, MAX(loan.loan_receipts_view_for_report.interest_date) tran_date
+	FROM loan.loan_receipts_view_for_report  WHERE tran_date <= till_ 
+		GROUP BY loan.loan_receipts_view_for_report.loan_id) lr
+	WHERE _lt.loan_id = lr.loan_id;
+
+	UPDATE _lt SET last_interest = COALESCE(r.remaining_interest,'0')
+	FROM loan.loan_receipts_view_for_report r
+	WHERE _lt.loan_id = r.loan_id
+	AND r.tran_date=_lt.last_payment_date;
+
+	UPDATE _lt SET last_interest='0'
+	WHERE _lt.last_interest IS NULL;
+
+	
+--	UPDATE _lt SET last_interest=loan.get_remaining_interest(_lt.loan_id,_lt.loan_id);
+
+	
+--  	UPDATE _lt SET maturity_date = loan.get_maturity_date(_lt.loan_id);
+
+	UPDATE _lt SET maturity_date=a.issue_date::date + a.loan_duration
+	FROM loan.loan_grant a
+	WHERE a.loan_id=_lt.loan_id
+	AND NOT (_lt.loan_id IN ( SELECT loan_reimburse.loan_id
+           FROM loan.loan_reimburse));
+		
+	
+	UPDATE _lt SET maturity_date=r.value_date + r.days_to_add
+	FROM loan.loan_reimburse r
+	WHERE r.loan_id=_lt.loan_id
+	AND _lt.maturity_date IS NULL
+	AND r.status=true;
+	
+	
+	
+	UPDATE _lt SET duration = (_lt.maturity_date - _lt.issue_date)::int, total_days = (till_ - _lt.issue_date)::int,
+		current_duration = (till_ - _lt.last_payment_date)::int;
+
+  	--UPDATE _lt SET current_interest = ((_lt.remaining_principal::numeric * _lt.current_duration * _lt.interest_rate::numeric) / 36500) + loan.get_remaining_interest(_lt.loan_id, $2)::decimal;
+  	 UPDATE _lt SET current_interest = ROUND((COALESCE(t.matured, 0) - COALESCE(t.paid, 0)), 0)::money
+  	FROM (
+        SELECT v.loan_id, SUM(COALESCE(matured, 0)) matured, SUM(COALESCE(paid, 0)) paid
+        FROM loan.interest_transaction_view v
+        WHERE v.value_date <= $2
+        GROUP BY v.loan_id
+  	) t
+  	WHERE _lt.loan_id = t.loan_id;
+-- 
+ 	--UPDATE _lt SET current_fine = loan.get_current_fine(_lt.loan_id, $2);
+ 	--UPDATE _lt SET current_penalty = loan.get_current_penalty(_lt.loan_id, $2);
+
+	UPDATE _lt SET total_days = 0 WHERE _lt.total_days < 0;
+	UPDATE _lt SET current_duration = 0 WHERE _lt.current_duration < 0;
+	UPDATE _lt SET current_interest = '0' WHERE _lt.current_interest < '0';
+
+	UPDATE _lt SET current_penalty = ROUND(((_lt.penalty_rate::numeric * _lt.remaining_principal::numeric * _lt.current_duration::numeric)/ 36500),0)::money
+	WHERE _lt.maturity_date < till_;
+
+-- 	UPDATE _lt SET current_fine = ROUND(((_lt.fine_rate::numeric * _lt.remaining_principal::numeric * _lt.current_duration::numeric)/ 36500),0)::money
+-- 	WHERE _lt.current_duration > 30;	
+
+	UPDATE _lt SET total_interest = COALESCE(_lt.current_interest, '0') + COALESCE(_lt.current_fine, '0') + COALESCE(_lt.current_penalty, '0');
+	UPDATE _lt SET total_due = COALESCE(_lt.remaining_principal, '0') + COALESCE(_lt.total_interest, '0');
+
+	IF matured_ = true THEN
+		DELETE FROM _lt WHERE _lt.maturity_date > till_;
+	END IF;
+
+	IF deliquent_ = true THEN
+		DELETE FROM _lt WHERE _lt.current_duration <= 30;
+	END IF;
+
+	
+	
+
+	UPDATE _lt SET current_fine = '0' WHERE _lt.current_fine < '0';
+	UPDATE _lt SET current_penalty = '0' WHERE _lt.current_penalty < '0' OR _lt.current_penalty IS NULL;
+
+	INSERT INTO _lt(customer, total_investment, remaining_principal, current_interest, current_fine, current_penalty, total_interest, total_due)
+	SELECT '           Total', SUM(COALESCE(_lt.total_investment, '0')), SUM(COALESCE(_lt.remaining_principal, '0')), SUM(COALESCE(_lt.current_interest, '0')), 
+	SUM(COALESCE(_lt.current_fine, '0')), SUM(COALESCE(_lt.current_penalty, '0')), SUM(COALESCE(_lt.total_interest, '0')), SUM(COALESCE(_lt.total_due, '0'))
+	FROM _lt;
+
+	RETURN QUERY(
+	SELECT 
+		t.cust_id, t.account_number, t.customer, t.address, t.contact, t.collector_name,t.unit, t.gender, t.product, t.sanctioned_amount, core.date_bs_from_ad(t.issue_date),
+		t.interest_rate, t.fine_rate, t.penalty_rate, t.total_investment, t.duration, core.date_bs_from_ad(t.maturity_date), core.date_bs_from_ad(t.last_payment_date), t.total_days,
+		t.remaining_principal,t.current_duration, t.last_interest,t.current_interest, t.current_fine, t.current_penalty, t.total_interest, t.total_due
+	FROM _lt t
+	);
+
+END
+
+$BODY$;
+
+ALTER FUNCTION loan.get_outstanding_report(integer, date, character varying, character varying, boolean, boolean)
+    OWNER TO postgres;

@@ -1,0 +1,199 @@
+<html>
+  <head>
+      <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+  </head>
+  <body>
+    <xmp class="prettyprint">
+        /*
+      * To change this license header, choose License Headers in Project Properties.
+      * To change this template file, choose Tools | Templates
+      * and open the template in the editor.
+      */
+     package demo;
+     
+     import java.awt.Insets;
+     import java.time.LocalDate;
+     import javafx.application.Application;
+     import javafx.collections.FXCollections;
+     import javafx.collections.ObservableList;
+     import javafx.event.ActionEvent;
+     import javafx.event.EventHandler;
+     import javafx.geometry.Pos;
+     import javafx.scene.Scene;
+     import javafx.scene.control.Alert;
+     import javafx.scene.control.Alert.AlertType;
+     import javafx.scene.control.Button;
+     import javafx.scene.control.DatePicker;
+     import javafx.scene.control.PasswordField;
+     import javafx.scene.control.TableColumn;
+     import javafx.scene.control.TableView;
+     import javafx.scene.control.TextField;
+     import javafx.scene.control.cell.PropertyValueFactory;
+     import javafx.scene.layout.GridPane;
+     import javafx.scene.layout.StackPane;
+     import javafx.scene.text.Text;
+     import javafx.stage.Stage;
+     
+     /**
+      *
+      * @author DIWAS
+      */
+     public class Demo extends Application {
+         
+         @Override
+         public void start(Stage primaryStage) {
+     
+           Text text1 = new Text("Email");       
+           
+           //creating label password 
+           Text text2 = new Text("Password"); 
+           Text date=new Text("Date");
+            
+           //Creating Text Filed for email        
+           TextField textField1 = new TextField();       
+           
+           
+           
+           //Creating Text Filed for password        
+           PasswordField textField2 = new PasswordField();  
+            
+           //Creating Buttons 
+           Button button1 = new Button("Submit"); 
+           Button button2 = new Button("Clear");  
+            
+     
+            button1.setOnAction(new EventHandler<ActionEvent>(){
+                 @Override
+                 public void handle(ActionEvent event) {
+                   Alert alert = new Alert(AlertType.INFORMATION);
+                     alert.setTitle("Test Connection");
+      
+                     // alert.setHeaderText("Results:");
+                     alert.setContentText("Successfull!");
+      
+                     alert.showAndWait();
+                 }       
+             });
+            
+             button2.setOnAction(new EventHandler<ActionEvent>(){
+                 @Override
+                 public void handle(ActionEvent event) {
+                  textField1.clear();
+                  textField2.clear();
+                 }       
+             });
+             
+             DatePicker datePicker = new DatePicker();
+             datePicker.setValue(LocalDate.of(2016, 7, 25));
+             datePicker.setShowWeekNumbers(true);
+           
+             TableView<Customer> table = new TableView<Customer>();
+      
+           // Create column UserName (Data type of String).
+           TableColumn<Customer, String> userNameCol //
+                   = new TableColumn<Customer, String>("User Name");
+      
+           // Create column Email (Data type of String).
+           TableColumn<Customer, String> emailCol//
+                   = new TableColumn<Customer, String>("Email");
+      
+           // Create column FullName (Data type of String).
+           TableColumn<Customer, String> fullNameCol//
+                   = new TableColumn<Customer, String>("Full Name");
+      
+           // Create 2 sub column for FullName.
+           TableColumn<Customer, String> firstNameCol //
+                   = new TableColumn<Customer, String>("First Name");
+      
+           TableColumn<Customer, String> lastNameCol //
+                   = new TableColumn<Customer, String>("Last Name");
+      
+           // Add sub columns to the FullName
+           fullNameCol.getColumns().addAll(firstNameCol, lastNameCol);
+      
+           // Active Column
+           TableColumn<Customer, Boolean> activeCol//
+                   = new TableColumn<Customer, Boolean>("Active");
+      
+           table.getColumns().addAll(userNameCol, emailCol, fullNameCol, activeCol);
+      
+      
+                // Defines how to fill data for each cell.
+           // Get value from property of UserAccount. .
+           userNameCol.setCellValueFactory(new PropertyValueFactory<>("userName"));
+           emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
+           firstNameCol.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+           lastNameCol.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+           activeCol.setCellValueFactory(new PropertyValueFactory<>("active"));
+         
+           // Set Sort type for userName column
+           userNameCol.setSortType(TableColumn.SortType.DESCENDING);
+           lastNameCol.setSortable(false);
+      
+           // Display row data
+           ObservableList<Customer> list = getUserList();
+           table.setItems(list);
+      
+           table.getColumns().addAll(userNameCol, emailCol, fullNameCol, activeCol);
+           
+             
+             //Creating a Grid Pane 
+           GridPane gridPane = new GridPane();    
+           
+           //Setting size for the pane 
+           gridPane.setMinSize(400, 200);
+     
+           //Setting the vertical and horizontal gaps between the columns 
+           gridPane.setVgap(5); 
+           gridPane.setHgap(5);       
+           
+           //Setting the Grid alignment 
+           gridPane.setAlignment(Pos.CENTER); 
+            
+           //Arranging all the nodes in the grid 
+           gridPane.add(text1, 0, 0); 
+           gridPane.add(textField1, 1, 0); 
+           gridPane.add(text2, 0, 1);       
+           gridPane.add(textField2, 1, 1); 
+           gridPane.add(button1, 0, 3);
+           
+           gridPane.add(button2, 1, 3); 
+           
+           gridPane.setHgap(25);
+            gridPane.setVgap(15);
+            
+              gridPane.add(date,0,2);
+             gridPane.add(datePicker, 1, 2);
+     
+            gridPane.add(table,0,5);
+             Scene scene = new Scene(gridPane, 800, 850);
+             
+             primaryStage.setTitle("Booking");
+             primaryStage.setScene(scene);
+             primaryStage.show();
+         }
+     
+      private ObservableList<Customer> getUserList() {
+      
+           Customer user1 = new Customer(1L, "smith", "smith@gmail.com", //
+                   "Susan", "Smith", true);
+           Customer user2 = new Customer(2L, "mcneil", "mcneil@gmail.com", //
+                   "Anne", "McNeil", true);
+           Customer user3 = new Customer(3L, "white", "white@gmail.com", //
+                   "Kenvin", "White", false);
+      
+           ObservableList<Customer> list = FXCollections.observableArrayList(user1, user2, user3);
+           return list;
+       }
+      
+         
+         
+         public static void main(String[] args) {
+             launch(args);
+         }
+         
+     }
+    </xmp>
+     
+  </body>
+</html>

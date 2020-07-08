@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css" />
+    <link rel="stylesheet" href="css/bootstrap-grid.css" />
+    <link rel="stylesheet" href="css/bootstrap-reboot.css" />
+    <link rel="stylesheet" href="css/dracula.css" />
+    <link rel="stylesheet" href="css/dracula-prism.css" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="https://draculatheme.com/assets/img/favicon.ico"
+    />
+  </head>
+
+  <body>
+    ================================================================================================================
+    HTML element are rectangular boxes. Display property describe how the box is
+    going to behave. display:block display:inline display:block-line
+    display:none display:initial Some Block level element are:
+    <div class="mylist">&nbsp;</div>
+    <div class="mylist">&nbsp;</div>
+    <div class="mylist"><span style="font-size: 18pt;">&lt;div&gt; </span></div>
+    <div class="mylist"><span style="font-size: 18pt;">&lt;p&gt;</span></div>
+    <div class="mylist">
+      <span style="font-size: 18pt;">&lt;h1&gt; to &lt;h6&gt;</span>
+    </div>
+    <div class="mylist">
+      <span style="font-size: 18pt;"> &lt;nav&gt; </span>
+    </div>
+    <div class="mylist">
+      <span style="font-size: 18pt;">&lt;table&gt; </span>
+    </div>
+    <div class="mylist"><span style="font-size: 18pt;">&lt;pre&gt; </span></div>
+    <div class="mylist"><span style="font-size: 18pt;">&lt;hr&gt; </span></div>
+    <div class="mylist"><span style="font-size: 18pt;">&lt;ol&gt; </span></div>
+    <div class="mylist"><span style="font-size: 18pt;">&lt;ul&gt;</span></div>
+    ==================================================================================================================
+
+    <h2>
+      Inline Element (cannot add padding and margin , set height ,set width)
+    </h2>
+    Some inline Element:
+
+    <h3>
+      &lt;b&gt; &lt;a&gt; &lt;button&gt; &lt;label&gt; &lt;i&gt; &lt;small&gt;
+      &lt;img&gt; &lt;input&gt; &lt;i&gt; &lt; iframe &gt; &lt;img&gt;
+      &lt;small&gt; &lt;em&gt; &lt;code&gt;
+    </h3>
+    <hr />
+    <h2>Block Element</h2>
+    Some Block Element:
+
+    <h3>
+      &lt;address&gt; &lt;fieldset&gt; &lt;li&gt; &lt;article&gt; &lt;main&gt;
+      &lt;aside&gt; &lt;nav&gt; &lt;form&gt; &lt;footer&gt; &lt;p&gt;
+      &lt;header&gt; &lt;section&gt; &lt;table&gt;
+      &lt;div&gt;&lt;hr&gt;&lt;ul&gt;
+    </h3>
+    <hr />
+    <h2>Inline Block Element( cannot set margin, padding,height and width )</h2>
+    Some inlineblock element <br />
+    &lt;nav&gt; &lt;li&gt;
+    ==============================================================================================
+
+    <div class="row">
+      <div class="col-lg-4">
+        <h2>Display block</h2>
+        Width of element cover entire width of parent and height of element
+        cover height of its content
+        <script
+          async
+          src="http://jsfiddle.net/Diwas_Poudel/bu016tqz/10/embed/"
+        ></script>
+      </div>
+
+      <div class="col-lg-4">
+        <h2>Display Inline BLock</h2>
+        Take height and width as size of content
+        <script
+          async
+          src="http://jsfiddle.net/Diwas_Poudel/p9f51eua/embed/html,css,result/"
+        ></script>
+      </div>
+
+      <div class="col-lg-4">
+        <h2>Display :Inline</h2>
+        Looks same as Display:Inline block
+        <script
+          async
+          src="http://jsfiddle.net/Diwas_Poudel/mkuxb3h5/embed/html,css,result/"
+        ></script>
+      </div>
+    </div>
+    ================================================================================================================
+    <p>
+      <span style="font-size: 18pt; font-family: 'comic sans ms', sans-serif;"
+        >Different betwenn
+        <span style="color: #ff0000;">display:inline</span>&nbsp; and<span
+          style="color: #ff0000;"
+        >
+          display:inline-block</span
+        ></span
+      >
+    </p>
+    <div class="row">
+      <div class="col-lg-6">
+        No affect of height and width in display:inline
+        <script
+          async
+          src="http://jsfiddle.net/Diwas_Poudel/s5Lr62nz/embed/html,css,result/"
+        ></script>
+      </div>
+
+      <div class="col-lg-6">
+        Affect of height and width in display:inline-block
+        <script
+          async
+          src="http://jsfiddle.net/Diwas_Poudel/3ez5f0ts/5/embed/html,css,result/"
+        ></script>
+      </div>
+    </div>
+
+    <img src="img/display.jpg" />
+    <script src="js/prism.js"></script>
+    <script type="text/javascript">
+      Prism.plugins.NormalizeWhitespace.setDefaults({
+        "remove-trailing": true,
+        "remove-indent": true,
+        "left-trim": true,
+        "right-trim": true
+      });
+    </script>
+  </body>
+</html>

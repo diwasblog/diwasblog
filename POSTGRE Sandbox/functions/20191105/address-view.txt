@@ -1,0 +1,18 @@
+--DROP TABLE core.address
+CREATE TABLE core.address
+(	id serial,
+    muncipality character varying(150),
+    street_name character varying(150),
+    ward_no int,
+    audit_user_id integer REFERENCES office.users (user_id),
+    audit_ts timestamp with time zone NOT NULL DEFAULT now());
+	
+	
+
+CREATE OR REPLACE VIEW core.address_view
+AS
+SELECT id, muncipality, street_name, ward_no, muncipality||' '|| street_name || ' '||ward_no AS full_address FROM
+core.address;
+
+INSERT INTO core.menus (menu_text,url,parent_menu_id)
+VALUES('Address Entry','~/Setup/Other/AddressEntry.aspx',(SELECT menu_id FROM core.menus where menu_text='Setup'))

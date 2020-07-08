@@ -1,0 +1,72 @@
+-- DROP FUNCTION sms.dep_mini_statement(character varying)
+
+CREATE OR REPLACE FUNCTION sms.dep_mini_statement(IN deposit_account_number_ character varying)
+  RETURNS TABLE(tran_date character varying, trans text, amount money, detail text) AS
+$BODY$
+
+BEGIN
+
+	RETURN QUERY (SELECT core.date_bs_from_ad(t.tran_date::date),
+CASE WHEN t.debit > '0' THEN 'Dr' ELSE 'Cr' END AS trans,
+CASE WHEN t.debit > '0' THEN debit ELSE credit END AS amount,
+narration
+FROM  sms.dep_account_statement(deposit_account_number_) t
+ order by t.tran_date);
+
+END
+
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100
+  ROWS 1000;
+ALTER FUNCTION sms.dep_mini_statement(character varying)
+  OWNER TO postgres;
+
+
+-- Function: sms.dep_account_statement(character varying)
+
+-- DROP FUNCTION sms.dep_account_statement(character varying);
+
+CREATE OR REPLACE FUNCTION sms.dep_account_statement(IN deposit_account_number_ character varying)
+  RETURNS TABLE(tran_id bigint, tran_date date, value_date date, debit money, credit money, narration text) AS
+$BODY$
+
+DECLARE _account_number_id bigint;
+BEGIN
+
+	SELECT account_number_id INTO _account_number_id FROM deposit.account_holders WHERE account_number = $1;
+	 DROP TABLE IF EXISTS _t;
+	CREATE TEMP TABLE _t(
+		id SERIAL,
+		tran_id	bigint,
+		tran_date date, 
+		value_date date, 
+		debit money, 
+		credit money,
+		narration text
+		--balance money
+
+	) ON COMMIT DROP;
+
+	INSERT INTO _t(tran_id, tran_date, value_date, debit, credit, narration)
+	SELECT 
+		t.tran_id, t.tran_date, t.value_date, t.debit, t.credit, t.statement_reference
+	FROM deposit.transaction_view t
+	WHERE t.account_number_id = _account_number_id
+	ORDER BY t.tran_date DESC  LIMIT 10;
+	
+	--, t.credit
+
+	--UPDATE _t SET 
+		--balance = '0';
+
+	RETURN QUERY(SELECT _t.tran_id, _t.tran_date, _t.value_date,  _t.debit, _t.credit, _t.narration  FROM _t ORDER BY _t.tran_id);
+
+END
+
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100
+  ROWS 1000;
+ALTER FUNCTION sms.dep_account_statement(character varying)
+  OWNER TO postgres;

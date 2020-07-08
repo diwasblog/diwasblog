@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+
+  <body>
+
+
+
+
+        <table style="border-collapse: collapse; width: 100%;" border="1">
+            <tbody>
+            <tr>
+            <td style="width: 25%;">Name</td>
+            <td style="width: 25%;">Gender</td>
+            <td style="width: 25%;">DepartmentId</td>
+            </tr>
+            <tr>
+            <td style="width: 25%;">Diwas</td>
+            <td style="width: 25%;">Male</td>
+            <td style="width: 25%;">1</td>
+            </tr>
+            <tr>
+            <td style="width: 25%;">Yogesh</td>
+            <td style="width: 25%;">Female</td>
+            <td style="width: 25%;">2</td>
+            </tr>
+            <tr>
+            <td style="width: 25%;">Dipesh</td>
+            <td style="width: 25%;">Male</td>
+            <td style="width: 25%;">3</td>
+            </tr>
+            <tr>
+            <td style="width: 25%;">Saroj</td>
+            <td style="width: 25%;">Female</td>
+            <td style="width: 25%;">2</td>
+            </tr>
+            <tr>
+            <td style="width: 25%;">Hari</td>
+            <td style="width: 25%;">Male</td>
+            <td style="width: 25%;">1</td>
+            </tr>
+            </tbody>
+            </table>
+        ==
+        <p><strong><span style="color: #339966;">===================================================================================================</span></strong></p>
+
+<pre class="limit-5">
+    <code class="language-sql">
+      -- test if a condition is true
+
+      IF (condition is true)
+      BEGIN
+        DO ONE THING
+        DO ANOTHER THING
+      END
+    </code>
+  </pre> 
+
+
+=======================================================================================================
+
+
+<pre class="limit-5">
+  <code class="language-sql">
+    -- test if a condition is true
+
+      IF (condition is true)
+      BEGIN
+        DO THING A
+        DO THING B
+      END
+      ELSE
+      BEGIN
+        DO THING C
+        DO THING D
+        DO THING E
+      END
+  </code>
+</pre> 
+==================================================================================================
+<pre class="limit-5">
+  <code class="language-sql">
+    -- test if any one of 3 conditions is true
+
+    IF (condition is true)
+      BEGIN
+        DO THING A
+      END
+    ELSE
+      IF (condition 2 is true)
+        BEGIN
+        DO THING B
+        END
+    ELSE
+      BEGIN
+      DO THING C
+      END
+  </code>
+</pre> 
+
+=======================================================================================================
+<pre class="limit-15">
+  <code class='language-sql'>
+  Declare @NumFilms int
+
+  set @NumFilms=(select count(*) from Film where GenreID=3) /*we have 110 */
+
+  if @NumFilms > 5
+    Begin
+    print 'Warning'
+    print 'There are too many romantic films in the database'
+    end
+  else
+    Begin
+    print 'Information'
+    print 'There are few in number'
+    End
+  </code>
+  </pre>
+
+<h2>Example</h2>
+<pre class="limit-15">
+ <code class='language-sql'>
+  create proc usp_CheckInfoType
+  (
+    @InfoType varchar(9)  
+  )
+  As 
+  Begin 
+   
+    If @InfoType='ALL'
+      Begin
+      (select * from film)
+      return 
+    End
+
+    If @InfoType='AWARD'
+      Begin
+      (select Title,OscarNominations,OscarWins from film)
+    return 
+    End
+
+    If @InfoType='FINANCIAL'
+      Begin
+      (select Title,BoxOfficeDollars,OscarNominations from film)
+      return 
+      End
+
+  End
+ </code>
+</pre>
+
+<pre class="limit-15">
+ <code class='language-sql'>
+    Execute usp_CheckInfoType @InfoType='AWARD'
+ </code>
+ </pre>
+ <img src="img/award.png"><br>
+======================================
+ <pre class="limit-15">
+ <code class='language-sql'>
+    Execute usp_CheckInfoType @InfoType='ALL'
+ </code>
+ </pre>
+
+ <img src="img/all.png">
+======================================================================================================
+
+    <script src="js/prism.js"></script>
+    <script type="text/javascript">
+      Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+          'remove-trailing': true,
+          'remove-indent': true,
+          'left-trim': true,
+          'right-trim': true,
+          // 'break-lines': 10,
+          // 'indent': 2,
+          // 'remove-initial-line-feed': false,
+          // 'tabs-to-spaces': 4,
+          // 'spaces-to-tabs': 4
+        });
+    </script>
+  </body>
+</html>

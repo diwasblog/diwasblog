@@ -1,0 +1,25 @@
+A        ====> screen size to select
+
+
+For mobile we use : 8 grid
+For desktop we use : 10 grid
+
+
+ctrl + (click on element) for selecting particular element 
+
+
+t   ==== > for text
+
+alt + hover over element do see distance
+
+
+alt + drag ====> to copy
+
+
+Ctrl + G to group element
+
+Vertical centering and horizontal centering tricks
+
+Setting fonts
+
+Applying gradients 

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+<h1><span style="font-size: 18pt;"><strong>Wrapping ASP.NET Web API Responses for consistency and to provide additional information</strong></span></h1>
+<p><strong><em>Most well known public facing API's return a consistent response with a similar structure returned for all requests regardless of success or failure.</em></strong></p>
+<p><strong><em> This makes consumption of the API far easier and more intuitive.</em></strong></p>
+<p><strong><em> It also allows custom meta data to be added to every response.</em></strong></p>
+<p><strong><em>Out of the box, ASP.NET Web API does not use a common structure but it is very easy to change. </em></strong></p>
+<p><strong><em>This post explains how you can shape your responses by utilising a simple DelegatingHandler.</em></strong></p>
+<h2><span style="color: #ff00ff; font-family: 'comic sans ms', sans-serif;"><strong>The problem</strong></span></h2>
+<p><span style="font-size: 14pt;">The standard ASP.NET Web API responses are rather inconsistent.</span></p>
+<p><span style="font-size: 14pt;">If you are taking a RESTful approach to your API then you will be utilising HTTP verbs such as GET, PUT and POST.</span></p>
+<p><span style="font-size: 14pt;"> When retrieving data with a GET, your response body will contain data. This may be an array for multiple records (e.g. GET /products) or a single object (e.g. GET /products/42).</span></p>
+<p><span style="font-size: 14pt;"> A POST may not return a response body at all and instead use an HTTP Header to point the user to the newly created resource. If your service needs to return an error then the in-built error handling will return an object with a message property exposing the error message. </span></p>
+<p><span style="font-size: 14pt;">In each of these cases, we are returning very different data to the client. Depending on your client, this can make it very difficult to consume your service. You need to check each call and see what format to expect. If you are expecting a JSON array and get a JSON object error or an empty body plus a 404 status code then your client code can quickly become messy.</span></p>
+<p><span style="font-size: 14pt;">In addition, returning common meta data with every response is difficult.</span></p>
+<p><span style="font-size: 14pt;">It is often useful to return certain data with every request. </span></p>
+<h2><span style="color: #ff00ff; font-family: 'comic sans ms', sans-serif;"><strong>The solution</strong></span></h2>
+<ul>
+<li><span style="font-size: 14pt;">Delegating handlers are extremely useful for cross cutting concerns. </span></li>
+<li><span style="font-size: 14pt;">They hook into the very early and very late stages of the request-response pipeline making them ideal for manipulating the response right before it is sent back to the client. </span></li>
+</ul>
+<p>The code below shows one example of a simple DelegatingHandler:</p>
+</body>
+
+
+<pre>
+  <code class="language-csharp" style="font-size: 80%;margin:0px">
+public class WrappingHandler : DelegatingHandler
+    {
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            var response = await base.SendAsync(request, cancellationToken);
+
+            return BuildApiResponse(request, response);
+        }
+
+        private static HttpResponseMessage BuildApiResponse(HttpRequestMessage request, HttpResponseMessage response)
+        {
+            object content;
+            string errorMessage = null;
+
+            if (response.TryGetContentValue(out content) && !response.IsSuccessStatusCode)
+            {
+                HttpError error = content as HttpError;
+
+                if (error != null)
+                {
+                    content = null;
+                    errorMessage = error.Message;
+
+#if DEBUG
+                    errorMessage = string.Concat(errorMessage, error.ExceptionMessage, error.StackTrace);
+#endif
+                }
+            }
+
+            var newResponse = request.CreateResponse(response.StatusCode, new ApiResponse(response.StatusCode, content, errorMessage));
+
+            foreach (var header in response.Headers)
+            {
+                newResponse.Headers.Add(header.Key, header.Value);
+            }
+
+            return newResponse;
+        }
+    }
+
+<p><span style="font-size: 14pt">
+  If There is an error, then we extract the message (and the stacktrace in debug mode). You will probably want to add some logic to sanitise the error messages to ensure that you do not expose more than you intended.
+</span></p>
+<p><span style="font-size: 14pt;">We use request.CreateResponse which creates a new response with the appropriate formatter. This means that we need to copy over any headers from the old unwrapped response. As an alternative, we could keep the existing response and just update the content. As far as I can tell, this requires that you hard code the formatter but this is not necessarily such a bad thing if like many people, you solely use JSON.</span></p>
+
+<h2>Handler uses this custom wrapper class</h2>
+</code>
+  </pre>
+
+
+<pre>
+  <code class="language-csharp">
+    [DataContract]
+public class ApiResponse
+{
+    [DataMember]
+    public string Version { get { return "1.2.3"; } }
+
+    [DataMember]
+    public int StatusCode { get; set; }
+
+    [DataMember(EmitDefaultValue = false)]
+    public string ErrorMessage { get; set; }
+
+    [DataMember(EmitDefaultValue = false)]
+    public object Result { get; set; }
+
+    public ApiResponse(HttpStatusCode statusCode, object result = null, string errorMessage = null)
+    {
+        StatusCode = (int)statusCode;
+        Result = result;
+        ErrorMessage = errorMessage;
+    }
+}
+</code>
+  </pre>
+
+<p><span style="font-size: 14pt;">Obviously, you can adapt the code for your own purposes and add your own meta data as required.</span></p>
+<p><span style="font-size: 14pt;">We are using <span style="color: #ff00ff;">data contract</span> attributes to allow us to not return certain properties such as ErrorMessage if they are null.</span></p>
+<p><span style="font-size: 14pt;"> Elsewhere, we have also removed the XmlFormatter which means that we do not need to worry about<span style="color: #ff00ff;"><strong>&nbsp;<em>KnownTypes</em></strong></span>&nbsp;configuration.</span></p>
+
+<p><span style="font-size: 14pt; color: #ff0000;">Hook up your new handler by adding the following line to your start up code (typically WebApiConfig.cs in App_Start):</span></p>
+<pre>
+  <code class="language-csharp">
+    config.MessageHandlers.Add(new WrappingHandler());
+</code>
+  </pre>
+
+<div class="row">
+  <div class="col-lg-6" style="margin:0px">
+    Your responses are all wrapped nicely:
+    <pre>
+  <code class="language-csharp">
+    {
+  "Version":"1.2.3",
+  "StatusCode":200,
+  "Result":
+  {
+    "Id":42,
+    "QuestionText":"This is a test question",
+    "QuestionImageUrl": "http://www.blah.com/test.png"
+  }
+}
+</code>
+  </pre>
+  </div>
+
+  <div class="col-lg-6" style="margin:0px">
+    Even your error responses:
+    <pre>
+  <code class="language-csharp">
+    {
+  "Version":"1.2.3",
+  "StatusCode":400,
+  "ErrorMessage":"Invalid question Id"
+}
+</code>
+  </pre>
+  </div>
+</div>
+
+
+<h2>Important things is we have made our response consistent</h2>
+
+<h2>
+  5 days trying to figure out why my ios app cannot process the JSON return by asp.net web Api. Thank you for this great post.
+</h2>
+
+
+
+<script src="js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

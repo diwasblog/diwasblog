@@ -1,0 +1,119 @@
+<html>
+  <head>
+      <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+      <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+    <style>
+      xmp.prettyprint{
+    font-size:12pt;
+    font-family:monospace;
+
+}
+      .clearfix:after { 
+   content: "."; 
+   visibility: hidden; 
+   display: block; 
+   height: 0; 
+   clear: both;
+}
+    </style>
+  </head>
+
+  <body>
+=====================================
+<h2>Problem : Want Footer at bottom but not on right</h2>
+<xmp class="prettyprint">
+    <div style="float:left;width:50%;background-color:gray">
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+
+    </div>
+    <div style="float:right;width:50%;background-color:linen">
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+    </div>
+    <div>
+      <h3>Footer</h3>
+    </div>
+</xmp>
+
+  <div style="float:left;width:50%;background-color:gray;">
+      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+
+  </div>
+  <div style="float:right;width:50%;background-color:linen">
+      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+  </div>
+  <div>
+      <h3>Footer</h3>
+  </div>
+<br>
+
+    ================================
+    <br>
+    <h2>Solution(Doesnot works in IE)</h2>
+    <xmp class="prettyprint">
+        <div style="float:left;width:50%;background-color:gray">
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+    
+        </div>
+        <div style="float:right;width:50%;background-color:linen">
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+        </div>
+        <div style="clear: both;"></div>
+        <div>
+            <h3>Footer</h3>
+        </div>
+    </xmp>
+
+      <div style="float:left;width:50%;background-color:gray">
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+  
+      </div>
+      <div style="float:right;width:50%;background-color:linen">
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+      </div>
+      <div style="clear: both;"></div>
+      <div>
+          <h3>Footer</h3>
+      </div>
+      <br>
+=======================================================================================================
+    ======================
+
+    Imagine that we use :after to insert a simple character like a 'period', and then give that generated element  {clear: both;} . That's all you really need to do the job, but no one wants a line space messing up the end of their clean container box, so we also use  {height: 0;}  and  {visibility: hidden;}  to keep our period from showing.
+    
+    <xmp class="prettyprint">
+
+        <style>
+            .clearfix:after { 
+         content: "."; 
+         visibility: hidden; 
+         display: block; 
+         height: 0; 
+         clear: both;
+      }
+          </style>
+
+        <div style="float:left;width:50%;background-color:gray" class="clearfix">
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+    
+        </div>
+        <div style="float:right;width:50%;background-color:linen" class="clearfix">
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+        </div>
+        <div>
+            <h3>Footer</h3>
+        </div>
+    </xmp>   
+    
+
+    <div style="float:left;width:50%;background-color:gray" class="clearfix">
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+
+    </div>
+    <div style="float:right;width:50%;background-color:linen" class="clearfix">
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+    </div>
+    <div>
+        <h3>Footer</h3>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,134 @@
+-- FUNCTION: deposit.get_closing_balance(integer, date, date, character varying, character varying)
+
+-- DROP FUNCTION deposit.get_closing_balance(integer, date, date, character varying, character varying);
+
+CREATE OR REPLACE FUNCTION deposit.get_closing_balance(
+	office_id_ integer,
+	from_ date,
+	to_ date,
+	product_ character varying,
+	unit_ character varying)
+    RETURNS TABLE(open_date date, customer_id bigint, account_number character varying, customer_name text, address text, contact text, gender text, dob character varying, age integer, unit character varying, product character varying, collector character varying, opening_balance money, debit money, credit money, balance money, interest_nominee_account_number_id bigint, nominee_account character varying) 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+BEGIN
+	CREATE TEMP TABLE _t(
+	open_date	date,
+	customer_id	bigint,
+	account_number_id bigint,
+	account_number	character varying(50),
+	customer_name	text,
+	address		text,
+	contact		text,
+	gender		text,
+    dob         character varying(20),
+	age         int,
+	unit		character varying(50),
+	product		character varying(150),
+	collector	character varying(150),
+	opening_balance	money,
+	debit		money,
+	credit		money,
+	balance		money,
+	interest_nominee_account_number_id	bigint,
+	nominee_account	character varying(50)
+
+	) ON COMMIT DROP;
+
+	IF office_id_ > 0 THEN
+	INSERT INTO _t(open_date,customer_id, account_number_id, account_number, customer_name, address, contact, gender, unit, product, collector, interest_nominee_account_number_id, dob)
+	SELECT 
+		ac.account_open_date,
+		ac.customer_id,
+		ac.account_number_id,
+		ac.account_number,
+		c.customer_name,
+		c.permanent_address,
+		c.contact_number,
+		c.gender_name,
+		c.unit_name,
+		p.deposit_product_name,
+		cl.collector_name,
+		ac.interest_nominee_account_number_id,
+		CASE WHEN date_of_birth ='' THEN NULL ELSE core.date_bs_from_ad(left(date_of_birth, 19)::date) END
+	FROM deposit.account_holders ac
+	INNER JOIN core.customers_view c
+		ON ac.customer_id = c.customer_id
+	INNER JOIN core.deposit_products p
+		ON ac.deposit_product_id = p.deposit_product_id
+	INNER JOIN office.collectors cl
+		ON ac.collector_id = cl.collector_id
+	WHERE ac.office_id = office_id_;
+	ELSE
+	INSERT INTO _t(open_date,customer_id, account_number_id, account_number, customer_name, address, contact, gender, unit, product, collector, interest_nominee_account_number_id, dob)
+	SELECT 
+		ac.open_date,
+		ac.customer_id,
+		ac.account_number_id,
+		ac.account_number,
+		c.customer_name,
+		c.permanent_address,
+		c.contact_number,
+		c.gender_name,
+		c.unit_name,
+		p.deposit_product_name,
+		cl.collector_name,		
+		ac.interest_nominee_account_number_id,
+		CASE WHEN date_of_birth ='' THEN NULL ELSE core.date_bs_from_ad(left(date_of_birth, 19)::date) END
+	FROM deposit.account_holders ac
+	INNER JOIN core.customers_view c
+		ON ac.customer_id = c.customer_id
+	INNER JOIN core.deposit_products p
+		ON ac.deposit_product_id = p.deposit_product_id
+	INNER JOIN office.collectors cl
+		ON ac.collector_id = cl.collector_id
+		;
+	END IF;
+
+	IF unit_ <> '' THEN
+		DELETE FROM _t WHERE _t.unit <> unit_;
+	END IF;
+	
+	IF product_ <> '' THEN
+		DELETE FROM _t WHERE _t.product <> product_;
+	END IF;
+	
+	UPDATE _t SET nominee_account = ac.account_number
+	from deposit.account_holders ac
+	where _t.interest_nominee_account_number_id = ac.account_number_id;
+	
+	UPDATE _t SET opening_balance = op.bal
+	FROM(
+	SELECT a.account_number_id ac, SUM(COALESCE(a.credit,'0')) - SUM(COALESCE(a.debit,'0')) bal
+	FROM deposit.transaction_view a
+	WHERE a.tran_date < from_
+	GROUP BY a.account_number_id
+	)op WHERE _t.account_number_id = op.ac;
+
+	UPDATE _t SET debit = bal.dr, credit = bal.cr
+	FROM (
+		SELECT b.account_number_id ac, SUM(COALESCE(b.debit,'0')) dr, SUM(COALESCE(b.credit,'0')) cr
+		FROM deposit.transaction_view b
+		WHERE tran_date BETWEEN from_ AND to_
+		GROUP BY b.account_number_id
+	) bal WHERE _t.account_number_id = bal.ac;
+
+	UPDATE _t SET balance = COALESCE(_t.opening_balance,'0') + COALESCE(_t.credit,'0') - COALESCE(_t.debit,'0');
+
+	INSERT INTO _t(customer_name, opening_balance, debit, credit, balance) 
+	SELECT '		Total', SUM(COALESCE(_t.opening_balance, '0')), SUM(COALESCE(_t.debit, '0')), SUM(COALESCE(_t.credit, '0')), SUM(COALESCE(_t.balance, '0')) FROM _t;
+	DELETE FROM _t WHERE COALESCE(_t.balance,'0') = '0';
+
+	UPDATE _t SET age = core.get_age(_t.customer_id);
+
+	RETURN QUERY(SELECT _t.open_date, _t.customer_id, _t.account_number, _t.customer_name, _t.address, _t.contact, _t.gender, _t.dob, _t.age, _t.unit,
+			_t.product, _t.collector, _t.opening_balance, _t.debit, _t.credit, _t.balance, _t.interest_nominee_account_number_id, _t.nominee_account FROM _t ORDER BY _t.account_number);
+END
+$BODY$;
+
+ALTER FUNCTION deposit.get_closing_balance(integer, date, date, character varying, character varying)
+    OWNER TO postgres;

@@ -1,0 +1,989 @@
+<html>
+
+<head>
+  <script
+    src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+  <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <script src="https://unpkg.com/vue"></script>
+
+  <style>
+    xmp.prettyprint {
+
+      font-size: 12pt;
+      font-family: "Consolas, 'Courier New', monospace";
+
+    }
+  </style>
+
+</head>
+
+<body>
+  Use of :
+  forloop
+  foreach
+  filter()
+  map()
+  sort()
+  reduce()
+
+  <script>
+    var forcast = [{ day: 'Monday', sun: true, humid: 10 },
+    { day: 'Tuesday', sun: true, humid: 10 },
+    { day: 'Wednesday', sun: false, humid: 20 },
+    { day: 'Thrusday', sun: false, humid: 1 },
+    { day: 'Friday', sun: true, humid: 60 }
+    ];
+
+    for (let i = 0; i < forcast.length; i++) {
+      console.log(forcast[i]);
+    }
+
+
+    forcast.forEach(function (x) {
+      console.log(x);
+    })
+
+    const sunny = forcast.filter(function (x) {
+      if (x.sun === true) {
+        return true;
+      }
+    })
+    console.log(sunny);
+
+    const humidadd = forcast.map(function (x) {
+      return x.humid + 10;
+    })
+    console.log(humidadd);
+
+    const humidadd = forcast.map(x => x.humid + 10);
+
+  </script>
+
+  <xmp class="prettyprint">
+    var forcast=[{day:'Monday',sun:true,humid:10},
+    {day:'Tuesday',sun:true,humid:10},
+    {day:'Wednesday',sun:false,humid:20},
+    {day:'Thrusday',sun:false,humid:1},
+    {day:'Friday',sun:true,humid:60}
+    ];
+  </xmp>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        for(let i=0;i<forcast.length;i++){ console.log(forcast[i]); } </xmp>
+    </div>
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        //will return each row
+        {day: "Monday", sun: true, humid: 10}
+        {day: "Tuesday", sun: true, humid: 10}
+        {day: "Wednesday", sun: false, humid: 20}
+        {day: "Thrusday", sun: false, humid: 1}
+        {day:'Friday',sun:true,humid:60}
+      </xmp>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        forcast.forEach(function(x){
+        console.log(x);
+        })
+      </xmp>
+    </div>
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        {day: "Monday", sun: true, humid: 10}
+        {day: "Tuesday", sun: true, humid: 10}
+        {day: "Wednesday", sun: false, humid: 20}
+        {day: "Thrusday", sun: false, humid: 1}
+        {day:'Friday',sun:true,humid:60}
+      </xmp>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        const sunny=forcast.filter(function(x){
+        if (x.sun===true){
+        return true;
+        }
+        })
+        console.log(sunny);
+      </xmp>
+    </div>
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        (3) [{…}, {…}, {…}]
+        0 : {day: "Monday", sun: true, humid: 10}
+        1 : {day: "Tuesday", sun: true, humid: 10}
+        2 : {day: "Friday", sun: true, humid: 60}
+        length : 3
+      </xmp>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        const humidadd=forcast.map(function(x){
+        return x.humid+10;
+        })
+        console.log(humidadd);
+
+
+      </xmp>
+
+      <xmp class="prettyprint">
+        const humidadd =forcast.map(x=>x.humid+10);
+      </xmp>
+    </div>
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        [20, 20, 30, 11, 70]
+      </xmp>
+    </div>
+  </div>
+
+  <xmp class="prettyprint">
+    const texasss = [
+    {name: 'Mike',age: 23,gender: 'm', us: false,},
+    {name: 'Liz',age: 20,gender: 'f',us: true, },
+    {name: 'Chris',age: 102,gender: 'm',us: true,},
+    {name: 'Chuloo',age: 27,gender: 'm',us: false,},
+    {name: 'Annie',age: 30,gender: 'f',us: true,},
+    ]
+    // Part 1 - Find all users older than 24
+    // Part 2 - Find the total age of all users
+    // Part 3 - List all female coders
+  </xmp>
+
+  <p><span
+      style="color: #008000;">===========================================================================================================================================================</span>
+  </p>
+  <br>
+  <div><span style="color: #ff00ff; font-family: 'comic sans ms', sans-serif; font-size: 14pt;"><strong>Find all users
+        older than 24</strong></span></div>
+
+
+
+  <div class="row">
+    <div class="col-xs-6">
+      <xmp class="prettyprint">
+        <script>
+          const users24 = texasss.filter(val => {
+            return val.age > 24
+          });
+
+          console.log(users24)
+        </script>
+      </xmp>
+    </div>
+    <div class="col-xs-6">
+      <xmp class="prettyprint">
+        Array(3)
+        0:{name: "Chris", age: 102, gender: "m", us: true}
+        1:{name: "Chuloo", age: 27, gender: "m", us: false}
+        2:{name: "Annie", age: 30, gender: "f", us: true}
+        length:3
+      </xmp>
+    </div>
+  </div>
+  <br>
+
+  <p><span
+      style="color: #008000;">===========================================================================================================================================================</span>
+  </p>
+  <br>
+  <div><span style="color: #ff00ff; font-family: 'comic sans ms', sans-serif; font-size: 14pt;"><strong>Find the total
+        age of all users</strong></span></div>
+  <p><strong><span style="font-family: 'comic sans ms', sans-serif;">To solve this, <span
+          style="color: #ff00ff;">first</span>, we utilized the&nbsp;<span
+          style="color: #ff00ff;"><code>map()</code></span>&nbsp;method to iterate through each object in the array,
+        fetch the age of each user then use the&nbsp;<span
+          style="color: #ff00ff;"><code>reduce()</code>&nbsp;</span>method to sum up all the age values into a single
+        value.</span></strong></p>
+
+
+
+  <div class="row">
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        const totalAge = texasss.map((user)=> user.age).reduce((prev, next)=> prev + next)
+        console.log(totalAge)
+      </xmp>
+    </div>
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        202
+      </xmp>
+    </div>
+  </div>
+
+  <p><span
+      style="color: #008000;">===========================================================================================================================================================</span>
+  </p>
+  <br>
+
+  <div><span style="color: #ff00ff; font-family: 'comic sans ms', sans-serif; font-size: 14pt;"><strong> List all users
+        in the US</strong></span></div>
+  <p><strong><span style="font-family: 'comic sans ms', sans-serif;">To solve this, use the filter() option we traverse
+        the array and fetch all users whose boolean value of the us property resolves to true..</span></strong></p>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        const usersUS = texasss.filter(user => {
+        return user.us == true;
+        })
+        console.log(usersUS)
+      </xmp>
+    </div>
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        Array(3)
+        0:{name: "Liz", age: 20, gender: "f", us: true}
+        1 : {name: "Chris", age: 102, gender: "m", us: true}
+        2:{name: "Annie", age: 30, gender: "f", us: true}
+        length:3
+      </xmp>
+    </div>
+  </div>
+
+  <xmp class="prettyprint">
+    // ARRAY 2
+    const newieyork = [
+    {name: 'Michelle',age: 19,coder:true,gender: 'f',us: true,},
+    { name: 'Sam',age: 25,coder:false,gender: 'm',us: false,},
+    {name: 'Ivy',age: 26,coder:true,gender: 'f',us: false,},
+    { name: 'Nick',age: 32,coder:true, gender: 'm',us: true, },
+    { name: 'Jim Beglin',age: 65,coder:false,gender: 'm',us: true,},
+    ]
+    // Part 1 - List all users in US in ascending order
+    // Part 2 - Sort all users by age
+    // Part 3 - List all female coders
+  </xmp>
+
+  <p><span
+      style="color: #008000;">===========================================================================================================================================================</span>
+  </p>
+  <br>
+  <p><span style="font-size: 14pt; color: #ff00ff; font-family: 'comic sans ms', sans-serif;">List all users in US in
+      ascending order </span></p>
+  <p><strong><span style="font-size: 12pt; font-family: 'comic sans ms', sans-serif;">To achieve this we'll use the
+        sort() function. </span></strong></p>
+  <p><span style="font-family: arial, helvetica, sans-serif;"><span style="font-size: 12pt;">Sorting an array of objects
+        using particular properties such as name or age can be tricky as compared to sorting array items with
+        strings.</span></span></p>
+  <p><span style="font-family: arial, helvetica, sans-serif;"><span style="font-size: 12pt;"> For us to sort the array,
+        <span style="color: #000000; font-family: impact, sans-serif;">we will be creating a comparison function first
+          converts the name values to be enumerated to lowercase.</span></span></span></p>
+  <p><span style="font-family: impact, sans-serif; color: #000000;"><span style="font-size: 12pt;"> A ternary operator
+        is used to conditionally return a value depending on which enumerable property is higher when
+        compared.</span></span></p>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        const sortedUS = newieyork
+
+        sortedUS.sort((a, b) => {
+        const x = a.name.toLowerCase()
+        const y = b.name.toLowerCase()
+        return x < y ? -1 : 1 }) console.log(sortedUS) </xmp>
+    </div>
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        Array(5)
+        0:{name: "Ivy", age: 26, coder: true, gender: "f", us: false}
+        1: {name: "Jim Beglin", age: 65, coder: false, gender: "m", us: true}
+        2:{name: "Michelle", age: 19, coder: true, gender: "f", us: true}
+        3:{name: "Nick", age: 32, coder: true, gender: "m", us: true}
+        4: {name: "Sam", age: 25, coder: false, gender: "m", us: false}
+      </xmp>
+    </div>
+  </div>
+
+
+  <h3><span style="color: #ff00ff;"><strong>Sort all users by age</strong></span></h3>
+  <p>Sorting all users by age is more straightforward as enumerating numerical values are quite simpler.</p>
+  <p>The&nbsp;<code>sort()</code>&nbsp;method is used to arrange the users according to their age.</p>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        const sortedAge = newieyork
+
+        sortedAge.sort((a, b) => {
+        return a.age - b.age
+        })
+
+        console.log(sortedAge)
+      </xmp>
+    </div>
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        0:{name: "Michelle", age: 19, coder: true, gender: "f", us: true}
+        1:{name: "Sam", age: 25, coder: false, gender: "m", us: false}
+        2:{name: "Ivy", age: 26, coder: true, gender: "f", us: false}
+        3:{name: "Nick", age: 32, coder: true, gender: "m", us: true}
+        4:{name: "Jim Beglin", age: 65, coder: false, gender: "m", us: true}
+      </xmp>
+    </div>
+  </div>
+
+  <p><span
+      style="color: #008000;">===========================================================================================================================================================</span>
+  </p>
+
+  <h3><span style="color: #ff00ff; font-family: 'comic sans ms', sans-serif;"><strong>List all female
+        coders</strong></span></h3>
+  <p>In order to solve this, we employ the&nbsp;<code>filter()</code>&nbsp;function to pick out all users with the
+    gender of&nbsp;<code>f</code>.</p>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        const femaleCoders = newieyork.filter(val=>{
+        return val.gender == 'f'
+        })
+
+        console.log(femaleCoders)
+      </xmp>
+    </div>
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        Array(2)
+        0:{name: "Michelle", age: 19, coder: true, gender: "f", us: true}
+        1 :{name: "Ivy", age: 26, coder: true, gender: "f", us: false}
+        length : 2
+      </xmp>
+    </div>
+  </div>
+
+
+
+  <xmp class="prettyprint">
+    const vegzas = [{name: 'Charly',age: 32,coder:true,gender: 'm',},
+    {name: 'Law',age: 21, coder:true,gender: 'm',},
+    { name: 'Rosey',age: 42,coder:false,gender: 'f',},
+    { name: 'Steph',age: 18,coder:true, gender:'f'},
+    { name: 'Jon',age: 47,coder:false,gender: 'm',},
+    ]
+  </xmp>
+
+  <p><span
+      style="color: #008000;">===========================================================================================================================================================</span>
+  </p>
+  <h3><span style="color: #ff00ff;"><strong>Find the total age of male coders under 25</strong></span></h3>
+  <p>To achieve this we employ three levels of function application, the steps are:</p>
+  <ul>
+    <li>Filter the array to match gender and age requirements
+      of&nbsp;<code>m</code>&nbsp;and&nbsp;<code>25</code>respectively.</li>
+    <li>Traverse the array and return the age of each user.</li>
+    <li>Find the sum of all the age fetched.</li>
+  </ul>
+  <div class="row">
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        const maleCodersAge = vegzas
+        .filter(val => val.gender == 'm' && val.age < 25) .map(male=> male.age)
+          .reduce((prev, next)=> prev + next)
+
+          console.log(maleCodersAge)
+      </xmp>
+    </div>
+    <div class="col-sm-6">
+      <xmp class="prettyprint">21</xmp>
+    </div>
+  </div>
+
+  <p><span
+      style="color: #008000;">===========================================================================================================================================================</span>
+  </p>
+  <h3><span style="color: #ff00ff;"><strong>List all male coders over 30</strong></span></h3>
+  <p>Here we filter the array and return users with a gender of&nbsp;<code>m</code>&nbsp;and over the age of 30.</p>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        const maleCodersOver30 = vegzas.filter(val => {
+        return val.age > 30 && val.gender == 'm'
+        })
+        console.log(maleCodersOver30)
+      </xmp>
+    </div>
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        0 :{name: "Charly", age: 32, coder: true, gender: "m"}
+        1 :{name: "Jon", age: 47, coder: false, gender: "m"}
+      </xmp>
+    </div>
+  </div>
+
+  <p><span
+      style="color: #008000;">===========================================================================================================================================================</span>
+  </p>
+  <h3><span style="color: #ff00ff;"><strong>Find the total age of everyone in texasss, newieyork and vegzas
+        combined.</strong></span></h3>
+  <p>Down to the last challenge, we are required to find the total age of all the users in all the arrays. We achieved
+    this by:</p>
+  <ul>
+    <li>Creating an empty array to hold all the age of all users from all the arrays.</li>
+    <li>Traverse each array using the&nbsp;<code>map()</code>&nbsp;method and return the age of each user.</li>
+    <li>Add each age fetched into the empty array created using the&nbsp;<code>push()</code>&nbsp;method.</li>
+    <li>Use the&nbsp;<code>reduce()</code>&nbsp;method to sum all the ages pushed into the now populated array.</li>
+  </ul>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        const totalAges = []
+        texasss.map(val => totalAges.push(val.age))
+        newieyork.map(val => totalAges.push(val.age))
+        vegzas.map(val => totalAges.push(val.age))
+
+        const ageSum = totalAges.reduce((prev, next)=> prev + next)
+        console.log(ageSum)
+      </xmp>
+    </div>
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        529
+      </xmp>
+    </div>
+  </div>
+
+
+  <xmp class="prettyprint">
+    const people = [
+    {name: 'Sara',age: 25,gender: 'f',us: true},
+    { name: 'Mike', age: 18, gender: 'm', us: false,},
+    {name: 'Peter',age: 17,gender: 'm',us: false,},
+    {name: 'Ricky',age: 27,gender: 'm',us: false,},
+    { name: 'Martha', age: 20, gender: 'f', us: true}
+    ];
+  </xmp>
+
+  <p><span
+      style="color: #008000;">===========================================================================================================================================================</span>
+  </p>
+  Get All Women
+  <div class="row">
+    <div class="col-sm-6">
+
+      <xmp class="prettyprint">
+        // Filter every element of this array
+        let women = people.filter(function(person) {
+        // only return the objects that have the key gender equal to f
+        return person.gender === 'f';
+        });
+      </xmp>
+      Alt : Remove function and add arrow instead of {}
+      <xmp class="prettyprint">
+        let women = people.filter((person) => person.gender === 'f');
+      </xmp>
+    </div>
+
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        [[object Object] { age: 25,gender: "f",name: "Sara",us: true},
+        [object Object] { age: 20,gender: "f",name: "Martha",us: true}]
+      </xmp>
+    </div>
+  </div>
+
+
+  <script>
+
+    const people = [
+      {
+        name: 'Sara',
+        age: 25,
+        gender: 'f',
+        us: true
+      },
+      {
+        name: 'Mike',
+        age: 18,
+        gender: 'm',
+        us: false,
+      },
+      {
+        name: 'Peter',
+        age: 17,
+        gender: 'm',
+        us: false,
+      },
+      {
+        name: 'Ricky',
+        age: 27,
+        gender: 'm',
+        us: false,
+      },
+      {
+        name: 'Martha',
+        age: 20,
+        gender: 'f',
+        us: true
+      }
+    ];
+
+    let increaseAge = people.map((person) => {
+      // set the age key equal it plus 10
+      person.age = person.age + 10;
+      return person;
+    });
+    console.log(increaseAge);
+  </script>
+  <p><span
+      style="color: #008000;">===========================================================================================================================================================</span>
+  </p>
+  Getting People Old Enough to Drink in USA (Age > 21 is enough to drink)
+  <div class="row">
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        let legal = people.filter((person) => {
+        // If the person in the US only return it if they are older or 21
+        // If not return the person if the are 18 or above
+        return person.us ? person.age >= 21 : person.age >= 18;
+        });
+      </xmp>
+    </div>
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        0:{name: "Liz", age: 20, gender: "f", us: true}
+        1:{name: "Chris", age: 102, gender: "m", us: true}
+        2:{name: "Annie", age: 30, gender: "f", us: true}
+      </xmp>
+    </div>
+  </div>
+
+  <p><span style="font-size: 18pt; font-family: impact, sans-serif; color: #ff00ff;">Use of Map</span></p>
+  <p>We already created an array that only has the people who have the legal age to drink but wouldn't it be better to
+    add legal as a key of every object and set it to true or false?</p>
+  <p>This type of transformation is what the map function does,&nbsp;<strong>it runs a function for every element in the
+      array we give it and it returns our new array.</strong></p>
+  <p>In this case, half our work is already done, all this function needs to do is the same conditional statement we
+    just ran in the filter function, the only change it needs to have is get a parameter that will be the object, so we
+    need a function like this:</p>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        let legalFunction = (person) => person.us ? person.age >= 21 : person.age >= 18;
+
+        let legalIncluded = people.map((person) => {
+        // set the new legal key equal to the return of the function we just set
+        person.legal = legalfunction(person);
+
+        // return this person but with the legal key added
+        return person;
+        });
+      </xmp>
+    </div>
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        (5) [{…}, {…}, {…}, {…}, {…}]
+        0:{name: "Sara", age: 25, gender: "f", us: true, legal: true}
+        1: {name: "Mike", age: 18, gender: "m", us: false, legal: true}
+        2:{name: "Peter", age: 17, gender: "m", us: false, legal: false}
+        3:{name: "Ricky", age: 27, gender: "m", us: false, legal: true}
+        4:{name: "Martha", age: 20, gender: "f", us: true, legal: false}
+      </xmp>
+    </div>
+  </div>
+
+
+  Map can do anything we can use existing array element can increase its value
+  <div class="row">
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        let increaseAge = people.map((person) => {
+        // set the age key equal it plus 10
+        person.age = person.age + 10;
+        return person;
+        });
+      </xmp>
+    </div>
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        Array(5)
+        0:{name: "Sara", age: 35, gender: "f", us: true}
+        1 : {name: "Mike", age: 28, gender: "m", us: false}
+        2 :{name: "Peter", age: 27, gender: "m", us: false}
+        3: {name: "Ricky", age: 37, gender: "m", us: false}
+        4 : {name: "Martha", age: 30, gender: "f", us: true}
+        length: 5
+      </xmp>
+    </div>
+  </div>
+
+  <h2>Reduce</h2>
+  The function inside the reduce also takes two parameters, the starter (in this case the number 0) and the current
+  element we are looping through. If you see a reduce function it should look something like this:
+  Having these in mind what we really want to do is add the age of the current person the starter of 0 everytime we loop
+  through the array, so what we need is this.:
+
+  <div class="row">
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        let age = people.reduce((starter, person) => {
+        // add the person age to the starter
+        // As it loops t
+        return starter + person.age;
+        }, 0);
+
+        // This will return 107
+      </xmp>
+    </div>
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        107
+      </xmp>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        let obj = people.reduce((starter, person) => {
+        // check if the person is male, if it is increment the value in the starter object with the men key
+        // if not do that for the woman key
+        person.gender === 'm' ? starter.men++ : starter.woman++;
+
+        // return the modified starter
+        return starter;
+        }, {men: 0, woman: 0}); // our starter structure and values
+      </xmp>
+    </div>
+    <div class="col-sm-6">
+      <xmp class="prettyprint">
+        {men: 3, woman: 2}
+      </xmp>
+    </div>
+  </div>
+
+  ==================================================================================================================
+  <h2> scores of the last 3 play dates.</h2>
+
+  <div class="row">
+    <div class="col-lg-6">
+      <xmp class="prettyprint">
+        var championship = [
+        {
+        date: '2016-01-01T13:00:00Z',
+        awayTeamName: 'Team 1',
+        homeTeamName: 'Team 2',
+        result: {
+        awayScore: 0,
+        homeScore: 1
+        }
+        },
+        {
+        date: '2016-01-03T11:00:00Z',
+        awayTeamName: 'Team 7',
+        homeTeamName: 'Team 8',
+        result: {
+        awayScore: 0,
+        homeScore: 0
+        }
+        },
+        {
+        date: '2016-01-02T16:00:00Z',
+        awayTeamName: 'Team 1',
+        homeTeamName: 'Team 6',
+        result: {
+        awayScore: 1,
+        homeScore: 1
+        }
+        },
+        {
+        date: '2016-01-03T12:30:00Z',
+        awayTeamName: 'Team 9',
+        homeTeamName: 'Team 10',
+        result: {
+        awayScore: 0,
+        homeScore: 1
+        }
+        },
+        {
+        date: '2016-01-01T13:00:00Z',
+        awayTeamName: 'Team 3',
+        homeTeamName: 'Team 4',
+        result: {
+        awayScore: 2,
+        homeScore: 1
+        }
+        },
+        {
+        date: '2016-01-01T14:00:00Z',
+        awayTeamName: 'Team 5',
+        homeTeamName: 'Team 6',
+        result: {
+        awayScore: 0,
+        homeScore: 2
+        }
+        }
+        ];
+
+        function lastPlayedDates(fixtures, days) {
+        return fixtures.reduce(function (uniq, match) {
+        if (uniq.indexOf(match.date) < 0 ) uniq.push(match.date); return uniq; }, []).sort().slice(0 - days); } function
+          displayMatches(date) { var matches=championship.filter(function (match) { return match.date===date; });
+          console.log(date); matches.forEach(displayResults); }; function displayResults(match) {
+          console.log(match.homeTeamName + ' (' + match.result.homeScore + ')-(' + match.result.awayScore + ') ' +
+          match.awayTeamName); } lastPlayedDates(championship, 3).forEach(displayMatches); </xmp>
+    </div>
+    <div class="col-lg-6">
+      <xmp class="prettyprint">
+        2016-01-02T16:00:00Z
+        Team 6 (1)-(1) Team 1
+        2016-01-03T11:00:00Z
+        Team 8 (0)-(0) Team 7
+        2016-01-03T12:30:00Z
+        Team 10 (1)-(0) Team 9
+      </xmp>
+    </div>
+  </div>
+
+  ====================================================================================
+
+  <div class="row">
+    <div class="col-lg-6">
+      <xmp class="prettyprint">
+        var arr = ['1', '2', '3',"2017/12/5","2018/11/12" ,"Diwas Poudel"];
+        new_array = arr.reverse();
+        console.log(new_array.splice(1,2));
+
+        console.log(new_array);
+      </xmp>
+    </div>
+
+    <div class="col-lg-6">
+      <xmp class="prettyprint">
+        ["Diwas Poudel", "3", "2", "1"]
+      </xmp>
+    </div>
+  </div>
+
+
+  ======================================================================================
+
+  <div class="row">
+    <div class="col-lg-6">
+      <xmp class="prettyprint">
+        var forcast=[{day:'Monday',sun:true,humid:10},
+        {day:'Tuesday',sun:true,humid:10},
+        {day:'Wednesday',sun:false,humid:20},
+        {day:'Thrusday',sun:false,humid:1},
+        {day:'Friday',sun:true,humid:60}
+        ];
+
+        forcast.forEach(function(item){
+        delete item.sun;
+        })
+
+        forcast.forEach(function(item){
+        console.log(item);
+        })
+      </xmp>
+    </div>
+
+    <div class="col-lg-6">
+      <xmp class="prettyprint">
+        {day: "Monday", humid: 10}
+        {day: "Tuesday", humid: 10}
+        {day: "Wednesday", humid: 20}
+        {day: "Thrusday", humid: 1}
+        {day: "Friday", humid: 60}
+      </xmp>
+    </div>
+  </div>
+  ==================================================================================================
+  <h2>Reversing an Object</h2>
+  <div class="row">
+    <div class="col-lg-8">
+      <xmp class="prettyprint">
+        object ={1: 'banana', 2: 'apple',3:'orange' }
+
+        var newObject = {};
+        var keys = [];
+        for (var key in object) {
+        keys.push(key);
+        }
+        console.log(keys);
+        var j=0;
+        for (var i = keys.length - 1; i >= 0; i--) {
+
+        var value = object[keys[i]];
+        console.log(value);
+        newObject[keys[j]]= value;
+        j++;
+        }
+        console.log(newObject);
+      </xmp>
+    </div>
+
+    <div class="col-lg-4">
+      <xmp class="prettyprint">
+        {1: "orange", 2: "apple", 3: "banana"}
+      </xmp>
+    </div>
+  </div>
+
+  <h2>Field as a Key (Important for showing in html table)</h2>
+  <div class="row">
+    <div class="col-lg-6">
+      <xmp class="prettyprint">
+        const cars = [{
+        make: "audi",
+        model: "r8",
+        year: "2012"
+        },
+        {
+        make: "audi",
+        model: "rs5",
+        year: "2013"
+        },
+        {
+        make: "ford",
+        model: "mustang",
+        year: "2012"
+        },
+        {
+        make: "ford",
+        model: "fusion",
+        year: "2015"
+        },
+        {
+        make: "kia",
+        model: "optima",
+        year: "2012"
+        }];
+
+
+
+        let group = cars.reduce((r, a) => {
+
+        r[a.make] = [...r[a.make] || [], a];
+        return r;
+        }, {});
+
+
+        for (var key in group) {
+        var obj = group[key];
+        console.log(key);
+        obj.forEach(function(x){
+        console.log(x);
+        })
+        }
+      </xmp>
+
+
+
+    </div>
+  </div>
+
+
+  <h2>Merge Object</h2>
+  <div class="row">
+
+    <div class="col-lg-6">
+      <xmp class="prettyprint">
+        const person = { name: 'David Walsh', gender: 'Male' };
+        const tools = { computer: 'Mac', editor: 'Atom' };
+        const attributes = { handsomeness: 'Extreme', hair: 'Brown', eyes: 'Blue' };
+
+        const summary = {...person, ...tools, ...attributes};
+        /*
+        Object {
+        "computer": "Mac",
+        "editor": "Atom",
+        "eyes": "Blue",
+        "gender": "Male",
+        "hair": "Brown",
+        "handsomeness": "Extreme",
+        "name": "David Walsh",
+        }
+        */
+      </xmp>
+    </div>
+  </div>
+
+
+
+
+  <br>
+  <h2>Grouping Data by one property</h2>
+  <div class="row">
+    <div class="col-lg-6">
+      <xmp class="prettyprint">
+        response = [
+        {id:1,name:"diwas",class="one"},
+        {id:2,name:"yogesh",class="two"},
+        {id:3,name:"dipesh",class="one"},
+        {id:4,name:"aman",class="three"},
+        {id:5,name:"saroj",class="two"},
+        {id:6,name:"rakesh",class="one"},
+        {id:7,name:"dipa",class="three"}
+
+        ]
+
+        let group = response.reduce((r, a) => {
+
+        r[a.category] = [...r[a.category] || [], a];
+        return r;
+        }, {});
+      </xmp>
+    </div>
+    <div class="col-lg-6">
+      <xmp class="prettyprint">
+
+        let group = response.reduce((r, a) => {
+
+        r[a.category] = [...r[a.category] || [], a];
+        return r;
+        }, {});
+
+        //Output
+        one:[ {id:1,name:"diwas",class="one"},{id:3,name:"dipesh",class="one"},{id:6,name:"rakesh",class="one"}]
+        two:[{id:2,name:"yogesh",class="two"}, {id:5,name:"saroj",class="two"}],
+        three:[{id:4,name:"aman",class="three"}, {id:7,name:"dipa",class="three"}]
+
+        //You may need to display data by grouping .Here grouping by class.
+
+
+        //How to access in for looping
+        for (var key in group) {
+
+        var obj = group[key];
+
+        obj.forEach(function (x) {
+        // x.name
+        // x.class
+        // x.id
+        });
+      </xmp>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>

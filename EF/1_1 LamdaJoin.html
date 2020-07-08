@@ -1,0 +1,321 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+
+  <body>
+
+
+==================================================================================================
+
+<div class="row">
+  <div class="col">
+      <table style="border-collapse: collapse; width: 9.12907%; height: 105px;" border="1">
+          <tbody>
+          <tr style="color: white; background: black;">
+          <td style="width: 100%;">tblCompany</td>
+          </tr>
+          <tr>
+          <td style="width: 100%;">Id</td>
+          </tr>
+          <tr>
+          <td style="width: 100%;">CName</td>
+          </tr>
+          </tbody>
+          </table>
+    </div>
+
+    <div class="col">
+        <table style="border-collapse: collapse; width: 1.92308%; height: 109px;" border="1">
+            <tbody>
+            <tr style="color: white; background: black;">
+            <td style="width: 100%;">tblDepartment</td>
+            </tr>
+            <tr>
+            <td style="width: 100%;">ID</td>
+            </tr>
+            <tr>
+            <td style="width: 100%;">DName</td>
+            </tr>
+            <tr>
+            <td style="width: 100%;">CompanyId</td>
+            </tr>
+            </tbody>
+            </table>
+    </div>
+</div>
+===============================================================================================================
+<div class="row">
+    <div class="col">
+        <table style="border-collapse: collapse; width: 10.9015%;" border="1">
+            <tbody>
+            <tr style="background: black; color: white;">
+            <td style="width: 3.77358%;">Id</td>
+            <td style="width: 7.12787%;">CName</td>
+            </tr>
+            <tr>
+            <td style="width: 3.77358%;">1</td>
+            <td style="width: 7.12787%;">CodeIT</td>
+            </tr>
+            <tr>
+            <td style="width: 3.77358%;">2</td>
+            <td style="width: 7.12787%;">SoftTech</td>
+            </tr>
+            </tbody>
+            </table>
+      </div>
+  
+      <div class="col">
+          <table style="border-collapse: collapse; width: 25.2935%;" border="1">
+              <tbody>
+              <tr style="background: black; color: white;">
+              <td style="width: 5.58517%;">Id</td>
+              <td style="width: 10.6011%;">DName</td>
+              <td style="width: 9.10709%;">CompanyId</td>
+              </tr>
+              <tr>
+              <td style="width: 5.58517%;">1</td>
+              <td style="width: 10.6011%;">HR</td>
+              <td style="width: 9.10709%;">1</td>
+              </tr>
+              <tr>
+              <td style="width: 5.58517%;">2</td>
+              <td style="width: 10.6011%;">Development</td>
+              <td style="width: 9.10709%;">2</td>
+              </tr>
+              <tr>
+              <td style="width: 5.58517%;">3</td>
+              <td style="width: 10.6011%;">Research</td>
+              <td style="width: 9.10709%;">2</td>
+              </tr>
+              <tr>
+              <td style="width: 5.58517%;">4</td>
+              <td style="width: 10.6011%;">Publication</td>
+              <td style="width: 9.10709%;">1</td>
+              </tr>
+              <tr>
+              <td style="width: 5.58517%;">5</td>
+              <td style="width: 10.6011%;">HR</td>
+              <td style="width: 9.10709%;">3</td>
+              </tr>
+              <tr>
+              <td style="width: 5.58517%;">6</td>
+              <td style="width: 10.6011%;">Research</td>
+              <td style="width: 9.10709%;">1</td>
+              </tr>
+              </tbody>
+              </table>
+      </div>
+  </div>
+      <br>
+      <h4><strong><span style="color: #ff00ff;">Join Without Foreign Key Constraints</span></strong></h4>
+
+      <pre class="limit-15">
+        <code class='language-csharp'>
+          var data=_db.tblDepartment.Where(u=>u.CompanyId==u.tblCompany.Id);
+        </code>
+        </pre>
+<br>
+<h2>Output</h2>
+<table style="border-collapse: collapse; width: 26.254%;" border="1">
+    <tbody>
+    <tr style="background: black; color: white;">
+    <td style="width: 5.15827%;">Id</td>
+    <td style="width: 11.7751%;">DName</td>
+    <td style="width: 9.3205%;">CompanyId</td>
+    </tr>
+    <tr>
+    <td style="width: 5.15827%;">1</td>
+    <td style="width: 11.7751%;">HR</td>
+    <td style="width: 9.3205%;">1</td>
+    </tr>
+    <tr>
+    <td style="width: 5.15827%;">2</td>
+    <td style="width: 11.7751%;">Development</td>
+    <td style="width: 9.3205%;">2</td>
+    </tr>
+    <tr>
+    <td style="width: 5.15827%;">3</td>
+    <td style="width: 11.7751%;">Research</td>
+    <td style="width: 9.3205%;">2</td>
+    </tr>
+    <tr>
+    <td style="width: 5.15827%;">4</td>
+    <td style="width: 11.7751%;">Publication</td>
+    <td style="width: 9.3205%;">1</td>
+    </tr>
+    <tr>
+    <td style="width: 5.15827%;">6</td>
+    <td style="width: 11.7751%;">Research</td>
+    <td style="width: 9.3205%;">1</td>
+    </tr>
+    </tbody>
+    </table>
+======================================================================================
+<h2>Condition No Navigation Property</h2>
+
+<div class="row">
+  <div class="col">
+      <table style="border-collapse: collapse; width: 6.9255%; height: 112px;" border="1">
+          <tbody>
+          <tr style="background: black; color: white;">
+          <td style="width: 100%;">OT</td>
+          </tr>
+          <tr>
+          <td style="width: 100%;">ID</td>
+          </tr>
+          <tr>
+          <td style="width: 100%;">Vehicle_Id</td>
+          </tr>
+          </tbody>
+          </table>
+  </div>
+  <div class="col">
+      <table style="border-collapse: collapse; width: 8.97436%; height: 79px;" border="1">
+          <tbody>
+          <tr>
+          <td style="width: 100%;">Vehicles</td>
+          </tr>
+          <tr style="background: black; color: white;">
+          <td style="width: 100%;">Id</td>
+          </tr>
+          <tr>
+          <td style="width: 100%;">Client_Id</td>
+          </tr>
+          </tbody>
+          </table>a
+    </div>
+    <div class="col">
+        <table style="border-collapse: collapse; width: 8.97436%; height: 107px;" border="1">
+            <tbody>
+            <tr style="background: black; color: white;">
+            <td style="width: 100%;">Client</td>
+            </tr>
+            <tr>
+            <td style="width: 100%;">Id</td>
+            </tr>
+            <tr>
+            <td style="width: 100%;">Name</td>
+            </tr>
+            </tbody>
+            </table>
+      </div>
+</div>
+
+<pre class="limit-15">
+    <code class='language-csharp'>
+      var data=from ot in _db.OT
+               JOIN v in _db.Vehicle on ot.Vehicle_Id equals v.Id
+               JOIN c in _db.Clients on v.client_Id equals c.Id
+               Where c.Name=clientName
+               select new {oc,c}
+
+               foreach(var q in data)
+               {
+                 c.w("OT ID={0} Customer Name={1}",q.ot_id,q.C.Name)
+               }
+    </code>
+    </pre>
+    =========================================================================================================================
+    <p><span style="font-size: 14pt; color: #ff00ff;"><strong>Deferred Query Execution</strong></span></p>
+    <p><span style="font-size: 12pt;">The query is actually executed when the query variable is iterated over ,not when the query variable is created.This is called Deferred Query Execution.</span></p>
+
+
+    <pre class="limit-15">
+        <code class='language-csharp'>
+            EmployeeDBEntities _db=new EmployeeDBEntities();
+
+            var query=from E in _db.tblEmployee
+                      Where E.Gender =='M'
+                      Select E;   //query not executed here
+
+            foreach(var Emp in query){   //query Executed Here..
+              c.w(Emp.EName);
+            }          
+        </code>
+        </pre>
+
+
+    <p><span style="font-size: 12pt;">So,the deferred provides the facilities of query reusability.So, query can be reuse because it provide different data on looping.</span></p>
+
+    ==================================================================================================================================
+
+    <p><span style="font-size: 14pt; color: #ff00ff;"><strong>Immediate Query Execution</strong></span></p>
+<p>Here, a query is executed at time of declaration.</p>
+<p>Here, query returns SingleTon Values( like Avg,Sum,Count) caused immediate execution</p>
+
+<pre class="limit-15">
+    <code class='language-csharp'>
+       var query=(From E in _db.tblEmployee
+                  Where E.Gender=='M'
+                  Select E).Count();   //query Executed here.
+    </code>
+    </pre>
+
+<p>Immediate Execution doesnot provide facility of query reusability because it always provide same data which is fetched at time of query execution.</p>
+
+<p><span style="color: #ff0000;"><strong><span style="font-size: 12pt;">Forcing immediate execution of query</span></strong></span></p>
+
+<pre class="limit-15">
+    <code class='language-csharp'>
+       var query=(From E in _db.tblEmployee
+                  Where E.Gender=='M'
+                  Select E).ToList();   //now query executed here.
+    </code>
+    </pre>
+
+    ======================================================================================================
+    <pre>
+	<code class="language-csharp">
+	(from d in data
+					   join dis in db.Districts on d.DistrictId equals dis.DistrictId
+					   join vdc in db.VDCs on d.VDCId equals vdc.VdcId
+					   join infrastructureType in db.Infrastructure_Type on d.InfrastructureTypeId equals infrastructureType.InfrastructureTypeId
+					   join structureType in db.Infrastructure_LifeSpan on d.StructureTypeId equals structureType.InfrastructureLifeId
+					   
+					   // can apply where clause here
+					   select new InfrastructureListModel
+					   {
+						   InfrastructureId = d.InfrastructureId,
+						   InfrastructureName = d.InfrastructureName,
+						   DistrictName = dis.DistrictName,
+						   VdcName = vdc.VdcName,
+						   InfrastructureTypeName = infrastructureType.InfrastructureTypeName,
+						   StructureTypeName = structureType.InfrastructureLifeName,
+						   UpdatedBy = d.UpdatedBy
+					   }
+	).OrderByDescending(x=>x.InfrastructureId).ToList();
+	</code>
+	
+	</pre>
+
+    EF core only support eager loading only
+    <script src="js/prism.js"></script>
+    <script type="text/javascript">
+      Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+          'remove-trailing': true,
+          'remove-indent': true,
+          'left-trim': true,
+          'right-trim': true,
+          // 'break-lines': 10,
+          // 'indent': 2,
+          // 'remove-initial-line-feed': false,
+          // 'tabs-to-spaces': 4,
+          // 'spaces-to-tabs': 4
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+      integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
+      crossorigin="anonymous"
+    />
+    <title>Bootstrap Sandbox</title>
+
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+    <style>
+      xmp.prettyprint {
+        font-size: 12pt;
+        font-family: monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>
+      In both synchronous and asynchronous, pattern of execution is always from
+      top to bottom.
+    </h2>
+
+    <h1>Synchronous</h1>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <xmp class="prettyprint"
+>
+                let a = 1;
+                let b = 2;
+
+                console.log("Synchronous");
+                console.log(a);
+                console.log(b);
+            </xmp
+        >
+      </div>
+      <div class="col-lg-6">
+        <img src="https://i.ibb.co/6ZrD31Y/sync.jpg" />
+      </div>
+    </div>
+
+    <h1>ASynchronous</h1>
+
+    <div class="row">
+      <div class="col-lg-6">
+        as setTimeout is async so, code below setTimeout will not wait for 1 sec
+        and will execute and then after 1sec "Async" is displayed
+        <xmp class="prettyprint"
+>
+                let a = 1;
+                let b = 2;
+
+                setTimeout(function(){
+                    console.log("Async");
+                },1000)
+
+                console.log("Synchronous");
+                console.log(a);
+                console.log(b);
+            </xmp
+        >
+      </div>
+      <div class="col-lg-6">
+        <img src="https://i.ibb.co/0Fb2fQ0/async.jpg" />
+      </div>
+    </div>
+
+    <br />
+    <h2>In C#</h2>
+  </body>
+</html>

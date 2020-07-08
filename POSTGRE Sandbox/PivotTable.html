@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../Ef/css/bootstrap.css">
+    <link rel="stylesheet" href="../Ef/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../Ef/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../Ef/css/dracula.css">
+    <link rel="stylesheet" href="../Ef/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+    <h2>UNNEST(Some array) </h2>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <pre>
+            <code class="language-csharp">
+                Select UnNest(Array['a','b','c','d']) 
+            </code>
+        </pre>
+        </div>
+
+        <div class="col-lg-6">
+            //Output
+            <pre>
+            <code class="language-csharp">
+                "a"
+                "b"
+                "c"
+                "d"
+            </code>
+        </pre>
+        </div>
+    </div>
+
+    <h2>Example</h2>
+    <table style="border-collapse: collapse; width: 100%;" border="1">
+        <tbody>
+            <tr style="background-color: black; color: white;">
+                <td style="width: 16.6667%;">ItemNo</td>
+                <td style="width: 16.6667%;">TotalAmount</td>
+                <td style="width: 16.6667%;">Item1</td>
+                <td style="width: 16.6667%;">Item2</td>
+                <td style="width: 16.6667%;">Item3</td>
+                <td style="width: 16.6667%;">Item4</td>
+            </tr>
+            <tr>
+                <td style="width: 16.6667%;">101</td>
+                <td style="width: 16.6667%;">100</td>
+                <td style="width: 16.6667%;">10</td>
+                <td style="width: 16.6667%;">11</td>
+                <td style="width: 16.6667%;">12</td>
+                <td style="width: 16.6667%;">14</td>
+            </tr>
+            <tr>
+                <td style="width: 16.6667%;">202</td>
+                <td style="width: 16.6667%;">200</td>
+                <td style="width: 16.6667%;">20</td>
+                <td style="width: 16.6667%;">21</td>
+                <td style="width: 16.6667%;">22</td>
+                <td style="width: 16.6667%;">24</td>
+            </tr>
+            <tr>
+                <td style="width: 16.6667%;">303</td>
+                <td style="width: 16.6667%;">300</td>
+                <td style="width: 16.6667%;">30</td>
+                <td style="width: 16.6667%;">31</td>
+                <td style="width: 16.6667%;">32</td>
+                <td style="width: 16.6667%;">34</td>
+            </tr>
+            <tr>
+                <td style="width: 16.6667%;">
+                    <pre>404			</pre>
+                </td>
+                <td style="width: 16.6667%;">400</td>
+                <td style="width: 16.6667%;">40</td>
+                <td style="width: 16.6667%;">41</td>
+                <td style="width: 16.6667%;">42</td>
+                <td style="width: 16.6667%;">44</td>
+            </tr>
+            <tr>
+                <td style="width: 16.6667%;">505</td>
+                <td style="width: 16.6667%;">500</td>
+                <td style="width: 16.6667%;">50</td>
+                <td style="width: 16.6667%;">51</td>
+                <td style="width: 16.6667%;">52</td>
+                <td style="width: 16.6667%;">54</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <pre>
+        <code class="language-csharp">
+                SELECT 
+                ItemNo,
+                UNNEST(ARRAY['Item1','Item2','Item3','Item4']) AS ItemName, 
+                UNNEST(ARRAY[Item1,Item2,Item3,Item4]) AS Amount 
+            FROM tblUnPivotExample
+            ORDER BY ItemNo; 
+        </code>
+    </pre>
+
+    <table style="border-collapse: collapse; width: 100%; height: 440px;" border="1">
+        <tbody>
+            <tr style="height: 22px; background: black; color: white;">
+                <td style="width: 33.3333%; height: 22px;">ItemNo</td>
+                <td style="width: 33.3333%; height: 22px;">ItemName</td>
+                <td style="width: 33.3333%; height: 22px;">Amount</td>
+            </tr>
+            <tr style="height: 22px;">
+                <td style="width: 33.3333%; height: 22px;">101</td>
+                <td style="width: 33.3333%; height: 22px;">Item1</td>
+                <td style="width: 33.3333%; height: 22px;">10</td>
+            </tr>
+            <tr style="height: 22px;">
+                <td style="width: 33.3333%; height: 22px;">101</td>
+                <td style="width: 33.3333%; height: 22px;">Item2</td>
+                <td style="width: 33.3333%; height: 22px;">11</td>
+            </tr>
+            <tr style="height: 22px;">
+                <td style="width: 33.3333%; height: 22px;">101</td>
+                <td style="width: 33.3333%; height: 22px;">Item3</td>
+                <td style="width: 33.3333%; height: 22px;">12</td>
+            </tr>
+            <tr style="height: 22px;">
+                <td style="width: 33.3333%; height: 22px;">101</td>
+                <td style="width: 33.3333%; height: 22px;">Item4</td>
+                <td style="width: 33.3333%; height: 22px;">14</td>
+            </tr>
+            <tr style="height: 22px;">
+                <td style="width: 33.3333%; height: 22px;">202</td>
+                <td style="width: 33.3333%; height: 22px;">Item1</td>
+                <td style="width: 33.3333%; height: 22px;">20</td>
+            </tr>
+            <tr style="height: 22px;">
+                <td style="width: 33.3333%; height: 22px;">202</td>
+                <td style="width: 33.3333%; height: 22px;">Item2</td>
+                <td style="width: 33.3333%; height: 22px;">21</td>
+            </tr>
+            <tr style="height: 22px;">
+                <td style="width: 33.3333%; height: 22px;">202</td>
+                <td style="width: 33.3333%; height: 22px;">Item3</td>
+                <td style="width: 33.3333%; height: 22px;">22</td>
+            </tr>
+            <tr style="height: 22px;">
+                <td style="width: 33.3333%; height: 22px;">202</td>
+                <td style="width: 33.3333%; height: 22px;">Item4</td>
+                <td style="width: 33.3333%; height: 22px;">24</td>
+            </tr>
+            <tr style="height: 22px;">
+                <td style="width: 33.3333%; height: 22px;">303</td>
+                <td style="width: 33.3333%; height: 22px;">Item1</td>
+                <td style="width: 33.3333%; height: 22px;">30</td>
+            </tr>
+            <tr style="height: 22px;">
+                <td style="width: 33.3333%; height: 22px;">303</td>
+                <td style="width: 33.3333%; height: 22px;">Item2</td>
+                <td style="width: 33.3333%; height: 22px;">31</td>
+            </tr>
+            <tr style="height: 22px;">
+                <td style="width: 33.3333%; height: 22px;">303</td>
+                <td style="width: 33.3333%; height: 22px;">Item3</td>
+                <td style="width: 33.3333%; height: 22px;">32</td>
+            </tr>
+            <tr style="height: 22px;">
+                <td style="width: 33.3333%; height: 22px;">303</td>
+                <td style="width: 33.3333%; height: 22px;">Item4</td>
+                <td style="width: 33.3333%; height: 22px;">34</td>
+            </tr>
+            <tr style="height: 22px;">
+                <td style="width: 33.3333%; height: 22px;">404</td>
+                <td style="width: 33.3333%; height: 22px;">Item1</td>
+                <td style="width: 33.3333%; height: 22px;">40</td>
+            </tr>
+            <tr style="height: 22px;">
+                <td style="width: 33.3333%; height: 22px;">404</td>
+                <td style="width: 33.3333%; height: 22px;">Item2</td>
+                <td style="width: 33.3333%; height: 22px;">41</td>
+            </tr>
+            <tr style="height: 22px;">
+                <td style="width: 33.3333%; height: 22px;">404</td>
+                <td style="width: 33.3333%; height: 22px;">Item3</td>
+                <td style="width: 33.3333%; height: 22px;">42</td>
+            </tr>
+            <tr style="height: 22px;">
+                <td style="width: 33.3333%; height: 22px;">404</td>
+                <td style="width: 33.3333%; height: 22px;">Item4</td>
+                <td style="width: 33.3333%; height: 22px;">44</td>
+            </tr>
+            <tr style="height: 22px;">
+                <td style="width: 33.3333%; height: 22px;">505</td>
+                <td style="width: 33.3333%; height: 22px;">Item1</td>
+                <td style="width: 33.3333%; height: 22px;">50</td>
+            </tr>
+            <tr style="height: 22px;">
+                <td style="width: 33.3333%; height: 22px;">505</td>
+                <td style="width: 33.3333%; height: 22px;">Item2</td>
+                <td style="width: 33.3333%; height: 22px;">51</td>
+            </tr>
+            <tr style="height: 22px;">
+                <td style="width: 33.3333%; height: 22px;">505</td>
+                <td style="width: 33.3333%; height: 22px;">Item3</td>
+                <td style="width: 33.3333%; height: 22px;">52</td>
+            </tr>
+            <tr>
+                <td style="width: 33.3333%;">505</td>
+                <td style="width: 33.3333%;">Item4</td>
+                <td style="width: 33.3333%;">54</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><span style="font-size: 18pt;"><span
+                style="color: #000000;"><strong>ARRAY[Item1,Item2,Item3,Item4]</strong></span> =&gt; Returns an array
+            object with the values of the elements Item1,Item2,Item3 and Item4</span></p>
+    <p><span style="font-size: 18pt;"><strong><span
+                    style="color: #000000;">UNNEST(ARRAY[Item1,Item2,Item3,Item4])</span></strong> =&gt; Breaks the
+            array to a set of rows</span></p>
+
+    To keep it simple, if we perform
+
+    <pre>
+        <code class="language-csharp">
+                Select UnNest(Array['a','b','c','d'])
+        </code>
+    </pre>
+    Will give:
+
+    <pre>
+        <code class="language-csharp">
+                "a"
+                "b"
+                "c"
+                "d"
+        </code>
+    </pre>
+
+    <script src="../EF/js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+    </script>
+</body>
+
+</html>
+
+</html>

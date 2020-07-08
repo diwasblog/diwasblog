@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+
+  <body>
+
+
+<p><span style="font-size: 18pt; color: #ff00ff;">Trigger</span></p>
+<ol>
+<li><span style="font-size: 12pt;">A <span style="color: #ff0000;"><strong>database trigger</strong></span> is <strong>a stored procedure that is invoked automatically when a predefined event occurs.</strong></span></li>
+<li><span style="font-size: 12pt;">Triggers can be assigned to tables or views. </span></li>
+<li><span style="font-size: 12pt;">There are two types of triggers, <span style="color: #ff0000;"><code>I<strong>NSTEAD OF</strong></code></span>&nbsp;and<span style="color: #ff0000;">&nbsp;<strong><code>AFTER</code></strong></span>, only one type of trigger can be assigned to views. </span></li>
+<li><span style="font-size: 12pt;">An&nbsp;<code><strong>INSTEAD OF</strong>&nbsp;</code>trigger is <strong>the one that is usually associated with a view, and runs on an&nbsp;<code>UPDATE&nbsp;</code>action placed on that view.</strong></span></li>
+<li><span style="font-size: 12pt;"> An&nbsp;<strong><code>AFTER&nbsp;</code></strong>trigger <strong>fires after a modification action has occurred</strong>.</span></li>
+</ol>
+
+<pre>
+<code language="csharp">
+  //create new query and execute then trgActorsChanged will be saved into Trigger Folder
+ALTER TRIGGER trgActorsChanged
+ON tblActor
+AFTER INSERT,UPDATE,DELETE
+AS
+BEGIN
+	PRINT "Data was changed in the Actor table'
+END
+GO
+</code>
+</pre>
+
+Then when you execute below insert code then above print will execute
+
+
+<pre>
+  <code language="csharp">
+    //Query
+    INSERT INTO tblActor(ActorId,ActorName)
+    VALUES(999,'Test Actor')
+  </code>
+  </pre>
+
+
+
+  <h2><span style="color: #ff00ff;"><strong>Good Practice</strong></span></h2>
+<p><span style="font-size: 12pt;">The most important point is to <strong>keep the trigger as <span style="color: #ff00ff;">short </span>as possible</strong> to execute quickly, just like stored procedures.</span></p>
+<p><span style="font-size: 12pt;"> T<strong>he <span style="color: #ff00ff;">longer</span> a trigger takes to fire,</strong> the longer the locks will be held on the underlying tables.</span></p>
+========================================================================================================
+<table style="border-collapse: collapse; width: 100%;" border="1">
+    <tbody>
+    <tr>
+    <td style="width: 50%; background: black; color: white;">Store Procedure&nbsp;</td>
+    <td style="width: 50%; background: black; color: white;">Trigger</td>
+    </tr>
+    <tr>
+    <td style="width: 50%;">We can execute a store procedure whenever we want with the help of the exec command.</td>
+    <td style="width: 50%;">A trigger can only be executed whenever an event(insert, delete, and update ) is fired on the table on which the trigger is defined.</td>
+    </tr>
+    <tr>
+    <td style="width: 50%;">We can call a stored procedure from inside another stored procedure.</td>
+    <td style="width: 50%;">We can't directly call another trigger within a trigger.</td>
+    </tr>
+    <tr>
+    <td style="width: 50%;">Stored procedure can be scheduled through a job to execute on a predefined time.</td>
+    <td style="width: 50%;">We cannot schedule trigger.</td>
+    </tr>
+    <tr>
+    <td style="width: 50%;">Stored procedures can take the input parameters.</td>
+    <td style="width: 50%;">We can't pass the parameter as an input in trigger.</td>
+    </tr>
+    <tr>
+    <td style="width: 50%;">Stored procedure can return values</td>
+    <td style="width: 50%;">Trigger cannot return a value.</td>
+    </tr>
+    <tr>
+    <td style="width: 50%;">We can call a stored procedure from front end (.asp files , aspx.files )</td>
+    <td style="width: 50%;">We cannot call a trigger from these files.</td>
+    </tr>
+    </tbody>
+    </table>
+
+    Trigger are nothing but logic which actually fires on insert ,update and delete which happens on the table
+
+ALTER TRIGGER [dbo].[TriggerUpdate]
+	ON [dbo].[tblCustomer]
+	AFTER INSERT,DELETE,UPDATE
+AS
+BEGIN
+	INSERT INTO tblAudit(LastUpdatedTime)
+	VALUES(GETDATE())
+END
+
+
+Here when I make insert ,update and delete in tblCustomer table then
+we add getDate() on tblAudit
+    <script src="js/prism.js"></script>
+    <script type="text/javascript">
+      Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+          'remove-trailing': true,
+          'remove-indent': true,
+          'left-trim': true,
+          'right-trim': true,
+          // 'break-lines': 10,
+          // 'indent': 2,
+          // 'remove-initial-line-feed': false,
+          // 'tabs-to-spaces': 4,
+          // 'spaces-to-tabs': 4
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+<style>
+    kbd {
+        background: black
+    }
+</style>
+
+<body>
+    </style>
+    <p><span style="text-decoration: underline; color: #e03e2d;"><span style="font-size: 24pt;"><strong>Project
+                    Setup</strong></span></span></p>
+    <p><span style="font-size: 18pt;">1) <span style="color: #000000;"><strong>new project</strong></span> &gt;&gt;
+            <strong><span style="color: #000000;">Asp.net core web application</span> </strong>&gt;&gt;
+            <strong><span style="color: #000000;">Web Application</span> </strong>(Model- View - Controller
+            ))&nbsp;</span></p>
+    <p><span style="font-size: 18pt;">&nbsp; &nbsp;I am going to create a web API, but creating an MVC web
+            application because I need a <span style="color: #e03e2d;"><strong>Data folder</strong></span> of MVC
+            web application(which is not available in web API project)&nbsp; so that we can create<strong><span
+                    style="color: #000000;"> aspnet</span></strong> table.</span></p>
+    <p><br /><span style="font-size: 18pt;">2 ) set <span style="color: #000000;"><strong>Authentication
+                    Mode</strong></span> to <span style="color: #000000;"><strong>Individual
+                    Mode</strong></span></span></p>
+    <p><br /><span style="font-size: 18pt;">3) <span style="color: #000000;"><strong>Configure
+                    Https</strong></span>: <span style="color: #000000;"><strong>yes</strong></span></span></p>
+    <p><span style="color: #000000; font-size: 18pt;"><strong>then the project is successfully
+                created.</strong></span></p>
+
+
+
+    <div class="row">
+        <div class="col-lg-6">
+            <h2>Initial Folder Structure looks like this</h2>
+            <pre data-keep-tags="kbd, em">
+                <code class="language-csharp">
+                    TweetBookV2
+                      Connection Services
+                      Dependencies
+                        ....
+                      Properties
+                        ....
+                      wwwroot
+                      <kbd>Areas</kbd>
+                      Controllers
+                        HomeController
+                      Data  
+                        Migration Folder
+                        
+                      <kbd>Models </kbd>
+                         ...
+                      <kbd> Views</kbd>
+                         ----
+                        
+                      appSettings.json
+                      Program.cs
+                      Startup.cs     
+                </code>
+            </pre>
+        </div>
+
+        <div class="col-lg-6">
+            <h2>Now Change it like this: Remove Area, Views, Model</h2>
+            <pre>
+<code class="language-csharp">
+                    TweetBookV2
+                      Connection Services
+                      Dependencies
+                        ....
+                      Properties
+                        ....
+                      wwwroot
+                      Controllers
+                        HomeController
+                      Data  
+                        Migration Folder
+                      appSettings.json
+                      Program.cs
+                      Startup.cs    
+</code>
+ </pre>
+
+        </div>
+    </div>
+
+    <h2>Startup File</h2>
+    <pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+        public class Startup
+        {
+            public Startup(IConfiguration configuration)
+            {
+                Configuration = configuration;
+            }
+    
+            public IConfiguration Configuration { get; }
+    
+            // This method gets called by the runtime. Use this method to add services to the container.
+            public void ConfigureServices(IServiceCollection services)
+            {
+                <kbd>services.Configure<CookiePolicyOptions>(options =>
+                {
+                    // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                    options.CheckConsentNeeded = context => true;
+                    options.MinimumSameSitePolicy = SameSiteMode.None;
+                });
+            </kbd>
+                services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseSqlServer(
+                        Configuration.GetConnectionString("DefaultConnection")));
+                services.AddDefaultIdentity<IdentityUser>()
+                    <kbd>.AddDefaultUI(UIFramework.Bootstrap4)</kbd>
+                    .AddEntityFrameworkStores<ApplicationDbContext>();
+    
+                services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            }
+    
+            // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+            {
+                if (env.IsDevelopment())
+                {
+                    app.UseDeveloperExceptionPage();
+                    app.UseDatabaseErrorPage();
+                }
+                else
+                {
+                    app.UseExceptionHandler("/Home/Error");
+                    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                    app.UseHsts();
+                }
+    
+                app.UseHttpsRedirection();
+                app.UseStaticFiles();
+                <kbd>app.UseCookiePolicy();</kbd>
+    
+                <kbd>app.UseAuthentication();</kbd>
+    
+                app.UseMvc(<kbd>routes =>
+                    {
+                        routes.MapRoute(
+                            name: "default",
+                            template: "{controller=Home}/{action=Index}/{id?}");
+                    }</kbd>);
+            }
+        }
+    </code>
+</pre>
+
+    <h2>Remove Hightlighted things from Startup File</h2>
+    <pre>
+    <code class="language-csharp">
+        using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using TweetBookV2.Data;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace TweetBookV2
+{
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDefaultIdentity<IdentityUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+
+
+
+            app.UseMvc();
+        }
+    }
+}
+
+    </code>
+</pre>
+
+
+    <h2>Now Check Whether Working everything for API</h2>
+
+    1)Create Test Controller
+    2)Paste This
+    <pre>
+        <code class="language-csharp">
+            
+        namespace TweetBookV2.Controllers
+        {
+            public class TestController:Controller
+            {
+                [HttpGet("api/user")]
+                public IActionResult Get()
+                {
+                    return Ok(new { name = "diwas" });
+                }
+            }
+        }
+
+        </code>
+    </pre>
+
+    3)Goto Url : localhost:5000/api/user === > If get output as : {"name":"diwas"} then api is working
+
+
+
+    <h2>Using Swagger </h2>
+    1) Install Swashbuckle Asp.net core <br>
+    2) Create below folder
+    <pre data-keep-tags="kbd, em">
+<code class="language-csharp">
+                    TweetBookV2
+                      Connection Services
+                      Dependencies
+                        ....
+                      Properties
+                        ....
+                      wwwroot
+                      Controllers
+                        HomeController
+                      Data  
+                        Migration Folder
+                      <kbd>Options
+                         SwaggerOptions.cs</kbd>
+                      appSettings.json
+                      Program.cs
+                      Startup.cs    
+</code>
+    </pre>
+
+    <div class="row">
+        <div class="col-lg-6">
+            //SwaggerOptions.cs
+            <pre>
+         <code class="language-csharp">
+
+                public class SwaggerOptions
+                {
+                    public string JsonRoute { get; set; }
+                    public string Description { get; set; }
+                    public string UIEndpoint { get; set; }
+                }
+
+         </code>
+     </pre>
+        </div>
+        <div class="col-lg-6">
+            <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+                {
+
+                    "ConnectionStrings": {
+                      "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=aspnet-TweetBookV2-3746E01A-2705-4E14-A1FE-2DD865264171;Trusted_Connection=True;MultipleActiveResultSets=true"
+                    },
+                    <kbd>
+                    "SwaggerOptions": {
+                      "JsonRoute": "swagger/{documentation}/swagger.json",
+                      "Description": "Our API",
+                      "UIEndpoint": "../swagger/v1/swagger.json"
+                    }</kbd>,
+                    "Logging": {
+                      "LogLevel": {
+                        "Default": "Warning"
+                      }
+                    },
+                    "AllowedHosts": "*"
+                  }
+                  
+            </code>
+             </pre>
+        </div>
+    </div>
+
+
+
+    <h2>Then Add Swagger in startup</h2>
+
+    <pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+
+namespace TweetBookV2
+{
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            ...
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            <kbd>
+            services.AddSwaggerGen(x =>
+            {
+                x.SwaggerDoc("V1", new OpenApiInfo { Title = "TweetBook API", Version = "v1" });
+            });
+        </kbd>
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+               
+            }
+            else
+            {
+                app.UseHsts();
+            }
+            <kbd>
+            var swaggerOptions = new SwaggerOptions();
+            Configuration.GetSection(nameof(SwaggerOptions)).Bind(swaggerOptions);
+
+            app.UseSwagger(option => { option.RouteTemplate = swaggerOptions.JsonRoute; });
+
+            app.UseSwaggerUI(option =>
+            {
+                option.SwaggerEndpoint(swaggerOptions.UIEndpoint, swaggerOptions.Description);
+            });
+            </kbd>
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+
+            app.UseMvc();
+        }
+    }
+}
+
+    </code>
+</pre>
+
+    <h2>Run the code and look at : localhost:8000/swagger</h2>
+
+    <h2>Then lets run migration for getting 7 default table in db server</h2>
+    <xmp class="prettyprint">
+        a. open package manager console <br>
+        b. navigate to the project containing .csproj <br>
+        c. <br>
+    </xmp>
+    <h2>6 .Create Contract Folder</h2>
+    <h2>7 .Create Installer Folder</h2>
+    <h2>8. Create domain folder</h2>
+    <h2>9. Create Service folder</h2>
+    <h2>10. Create Version1 controller </h2>
+    <h2>11. Create Response and Request folder with createPostRequest.cs and updatePostRequest.cs and
+        PostResponse.cs</h2>
+    <hr>
+    <h2>
+        <center>Current Folder Structure</center>
+    </h2>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <img src="https://i.ibb.co/ZGxY6Dp/asp-net-core-folder-structure.jpg">
+    <br>
+
+    <h2>Startup.cs</h2>
+
+
+    <script src="js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+
+
+        (function () {
+            if (!self.Prism) {
+                return;
+            }
+
+            var div = document.createElement('div');
+
+            Prism.hooks.add('before-highlight', function (env) {
+                var elt = env.element;
+                if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                    elt = elt.parentNode;
+                }
+                var tags = elt.getAttribute('data-keep-tags');
+                if (!tags) {
+                    return;
+                }
+                var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+                env.keepTags = true;
+                env.keepTagsPlaceholder = placeholder;
+
+                tags = tags.split(/\s*,\s*/).join('|');
+                var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+                env.keepTagsRegex = tags_regex;
+
+                env.tokenStack = [];
+                env.backupCode = env.code;
+
+                var code = env.element.innerHTML;
+                code = code.replace(tags_regex, function (match) {
+                    env.tokenStack.push(match);
+                    return placeholder.replace('{n}', env.tokenStack.length);
+                });
+                env.element.innerHTML = code;
+                code = env.element.textContent;
+                code = code.replace(/^(?:\r?\n|\r)/, '');
+
+                env.code = code;
+            });
+
+            Prism.hooks.add('after-highlight', function (env) {
+                if (!env.keepTags) {
+                    return;
+                }
+                for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                    t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                        div.innerHTML = inside;
+                        inside = div.textContent;
+                        return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                    });
+
+                    env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                    env.element.innerHTML = env.highlightedCode;
+                }
+            });
+
+        }());
+
+        Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+            v.classList.add("language-sql");
+        });
+        Prism.highlightAll();
+
+    </script>
+</body>
+
+</html>

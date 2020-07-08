@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+==========================================================================================================
+<p><span style="font-size: 14pt;">The first connection string is named&nbsp;<span style="color: #ff00ff;"><code><strong>DefaultConnection</strong>&nbsp;</code></span>and is <span style="color: #000000;"><strong>used for the membership database to control who can access the application. </strong></span></span></p>
+<p><span style="font-size: 14pt;">The connection string you've added specifies a LocalDB database named&nbsp;<strong><em>Movie.mdf</em>&nbsp;</strong>located in the<strong>&nbsp;<em>App_Data</em>&nbsp;folder.&nbsp;</strong></span></p>
+
+
+
+      Inside web.config 
+      <pre>
+      <code class="language-html">
+          &lt;configuration>  
+          &lt;connectionStrings>
+          &lt;add name="Conn" connectionString="Data Source=localhost;Initial Catalog=YourDataBaseName;Integrated Security=True;" providerName="System.Data.SqlClient" />
+                    &lt;/connectionStrings>
+                    &lt;/configuration>      
+      </code>
+      </pre>
+
+      Initial Catelog ==>Database Name
+
+      <h2>For movie.mdf with default connection</h2>
+      <pre>
+        <code class='language-html'>
+            &lt;connectionStrings>
+            &lt;add name="DefaultConnection" connectionString="Data Source=(LocalDb)\MSSQLLocalDB;Initial Catalog=aspnet-MvcMovie-fefdc1f0-bd81-4ce9-b712-93a062e01031;Integrated Security=SSPI;AttachDBFilename=|DataDirectory|\aspnet-MvcMovie-fefdc1f0-bd81-4ce9-b712-93a062e01031.mdf" providerName="System.Data.SqlClient" />
+            &lt;add name="MovieDBContext" connectionString="Data Source=(LocalDb)\MSSQLLocalDB;Initial Catalog=aspnet-MvcMovie;Integrated Security=SSPI;AttachDBFilename=|DataDirectory|\Movies.mdf" providerName="System.Data.SqlClient" />
+            &lt;/connectionStrings>
+        </code>
+      </pre>
+
+
+=================================================================================================================
+<pre>
+  <code class='language-html'>
+     ConfigurationManager.ConnectionStrings["Conn"].ConnectionString;
+  </code>
+</pre>
+==========================================================================================================
+<h2>Use of AppSetting</h2>
+<p><span style="font-size: 14pt;">AppSettings element is a direct child of the <strong>&lt;configuration&gt;</strong> element and a peer of the<strong> system.web</strong> element.</span></p>
+
+
+<pre>
+<code class="language-html">
+
+&lt;connectionStrings>
+    &lt;add name="Conn" connectionString="Data Source=localhost\SQLEXPRESS;Initial Catalog=NewsPortal;Integrated Security=True" providerName="System.Data.SqlClient" />
+    <!--<add name="DefaultConnection" connectionString="Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\aspnet-NewsCMS-20180827102828.mdf;Initial Catalog=aspnet-NewsCMS-20180827102828;Integrated Security=True" providerName="System.Data.SqlClient" />-->
+  &lt;/connectionStrings>
+
+
+  &lt;appSettings>
+  &lt;add key="facebook" value="https://www.facebook.com"/>
+  &lt;add key="twitter" value="https://www.twitter.com"/>
+  &lt;add key="youtube" value="https://www.youtube.com"/>   
+  &lt;/appSettings>
+
+
+  &lt;system.web>
+    &lt;authentication mode="None" />
+    &lt;compilation debug="true" targetFramework="4.6.1" />
+    &lt;httpRuntime targetFramework="4.6.1" />
+    &lt;httpModules>
+      &lt;add name="ApplicationInsightsWebTracking" type="Microsoft.ApplicationInsights.Web.ApplicationInsightsHttpModule, Microsoft.AI.Web" />
+    &lt;/httpModules>
+  &lt;/system.web>
+ </code> 
+ </pre> 
+
+<p><span style="font-size: 18.6667px;">To Access it via code</span></p>
+
+
+<pre>
+  <code class="language-html">
+ConfigurationSettings.AppSettings["youtube"]; 
+  </code>
+</pre>
+============
+<p><span style="font-size: 18.6667px;">To Access it in View</span></p>
+<pre>
+  <code class="language-html">
+@System.Configuration.ConfigurationManager.AppSettings["youtube"]  
+
+Example:<a href="@System.Configuration.ConfigurationManager.AppSettings["twitter"]">
+  </code>
+</pre>
+============================================================================================
+
+<p><span style="color: #ff00ff;"><strong><span style="font-size: 18pt;">dbConnection vs SqlConnection</span></strong></span></p>
+<p><code><span style="font-size: 14pt;">DbConnection</span></code><span style="font-size: 14pt;">&nbsp;is a base class for any other database connection.Database connection may be SqlConnection(For SQL Server) , OracleConnection,MySqlConnection.All these database connection uses base class DbConnection as all thess Connection are derived from DbConnection</span>.</p>
+<p><strong><span style="font-size: 18pt; color: #ff0000;">Is it good to cast IdbConnection to SQLConnection ?</span></strong></p>
+<p><span style="font-size: 12pt;">If you prefered to use <strong><span style="color: #ff0000;">SqlConnection</span> </strong>only then you can cast <strong><span style="color: #ff0000;">DbConnection</span> </strong>to SQLConnection</span></p>
+<p><span style="font-size: 12pt;">It should be safe as long as you never change the connection string to connect to anything other than a SQL Server Database.</span></p>
+<pre class="lang-cs prettyprint prettyprinted"><code><span class="typ">Database</span><span class="pln"> database </span><span class="pun">=</span> <span class="typ">DatabaseFactory</span><span class="pun">.</span><span class="typ">CreateDatabase</span><span class="pun">(</span><span class="str">"conn string"</span><span class="pun">);</span><span class="pln">
+
+using</span><span class="pun">(</span><span class="typ">DbConnection</span><span class="pln"> conn </span><span class="pun">=</span><span class="pln"> database</span><span class="pun">.</span><span class="typ">CreateConnection</span><span class="pun">())</span>
+<span class="pun">{</span>    
+    <span class="kwd">if</span><span class="pun">(</span><span class="pln">conn </span><span class="kwd">is</span> <span class="typ">SqlConnection</span><span class="pun">)</span>
+    <span class="pun">{</span>
+        <span class="kwd">var</span><span class="pln"> sqlConn </span><span class="pun">=</span><span class="pln"> conn </span><span class="kwd">as</span> <span class="typ">SqlConnection</span><span class="pun">;</span>
+    <span class="pun">}</span>
+<span class="pun">}</span></code></pre>
+
+==========================================================================================================
+<script src="js/prism.js"></script>
+
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

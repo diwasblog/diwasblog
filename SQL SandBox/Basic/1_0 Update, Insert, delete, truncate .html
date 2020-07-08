@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+  <link rel="stylesheet" href="../css/bootstrap.css">
+  <link rel="stylesheet" href="../css/bootstrap-grid.css">
+  <link rel="stylesheet" href="../css/bootstrap-reboot.css">
+  <link rel="stylesheet" href="../css/dracula.css">
+  <link rel="stylesheet" href="../css/dracula-prism.css">
+  <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+  ==========================================================================================================
+
+  ========================================================================================================================
+  <h2>Update in entire table</h2>
+  <pre class="limit-15">
+  <code class='language-sql'>
+    Update tblStudent set schoolName = 'Emerald' 
+  </code>
+</pre>
+  <br>
+  <h2>Update with where table</h2>
+  <pre class="limit-15">
+<code class='language-sql'>
+  Update tblStudent set schoolName = 'Emerald'  where Id = 5
+</code>
+</pre>
+
+  <h2>Delete == > delete has from clause</h2>
+  <pre class="limit-15">
+<code class='language-sql'>
+Delete from tblStudent where Id =5
+</code>
+</pre>
+
+
+  <h2>Insert</h2>
+  <pre class="limit-15">
+<code class='language-sql'>
+Insert into tblStudent(Gender,SchoolName) Values('Male','Emerald Academy')
+</code>
+</pre>
+
+  <h2>Delete vs Truncate</h2>
+
+
+  <table style="border-collapse: collapse;" border="1">
+    <tbody>
+      <tr>
+        <td style="width: 25%; background-color: black; color: white;"><span style="font-size: 14pt;">Delete</span></td>
+        <td style="width: 25%; background-color: black; color: white;"><span style="font-size: 14pt;">Truncate</span>
+        </td>
+      </tr>
+      <tr>
+        <td style="width: 25%;">We can delete all data or condition data with Delete Statement</td>
+        <td style="width: 25%;">Truncate removes all data from table&nbsp;</td>
+
+      </tr>
+      <tr>
+        <td style="width: 25%;">Deleted data can be roll back</td>
+        <td style="width: 25%;">Truncated data cannot be roll back</td>
+
+      </tr>
+      <tr>
+        <td>
+
+          <pre class="limit-15">
+                <code class='language-sql'>
+                    Select * from student;
+                    Delete from student s where id =5;
+                    rollback;
+                    Select * from Student; // You will see deleted data to be there
+                </code>
+                </pre>
+
+        </td>
+        <td>
+
+          <pre class="limit-15">
+                <code class='language-sql'>
+                    Select * from student;
+                    truncate table student ;
+                    rollback;
+                    Select * from Student; // You willnot get old data
+          
+                </code>
+                </pre>
+
+        </td>
+
+      </tr>
+      <tr>
+        <td>
+
+
+          DELETE TABLE statements delete rows one at a time, logging each row in the transaction log, as well as
+          maintaining log sequence number (LSN) information.
+        </td>
+        <td>
+          TRUNCATE TABLE is a statement that quickly deletes all records in a table by deallocating the data pages used
+          by the table. This reduces the resource overhead of logging the deletions, as well as the number of locks
+          acquired; however, it bypasses the transaction log, and the only record of the truncation in the transaction
+          logs is the page deallocation.
+
+        </td>
+
+      </tr>
+
+      <tr>
+        <td>
+
+
+          Has restore features and log maintain so slower
+        </td>
+        <td>
+          Donot maintain log and has no restore features so is faster than delete
+
+        </td>
+
+      </tr>
+    </tbody>
+  </table>
+
+  ==========================================================================================
+
+  <script src="../js/prism.js"></script>
+  <script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+      {
+        'remove-trailing': true,
+        'remove-indent': true,
+        'left-trim': true,
+        'right-trim': true,
+        // 'break-lines': 10,
+        // 'indent': 2,
+        // 'remove-initial-line-feed': false,
+        // 'tabs-to-spaces': 4,
+        // 'spaces-to-tabs': 4
+      });
+  </script>
+</body>
+
+</html>

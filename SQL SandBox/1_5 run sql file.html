@@ -1,0 +1,142 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+      <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+  
+  <script src="https://unpkg.com/vue"></script>
+  
+  <style>
+  xmp.prettyprint{
+  
+      font-size:12pt;
+      font-family:"Consolas, 'Courier New', monospace";
+  
+  }
+  </style>
+   
+  </head>
+  <body>
+
+
+    <p><span style="color: #ff00ff;"><strong><span style="font-size: 18pt;">Import SQL database having .sql Extension</span></strong></span></p>
+<p><span style="font-size: 14pt;">1.Open sql server</span></p>
+<p><span style="font-size: 14pt;">2.Goto file menu</span></p>
+<p><span style="font-size: 14pt;">3.Then&nbsp; click Open&nbsp;</span></p>
+<p><span style="font-size: 14pt;">4. then click&nbsp; file </span></p>
+<p><span style="font-size: 14pt;">5 . then select .sql file then will display all database in view </span></p>
+<p><span style="font-size: 14pt;">6. so just execute it.</span></p>
+<p><span style="font-size: 14pt;">7Then you will get database on Databases folder of sql</span></p>
+
+<img src="img/1.png"><br>
+<img src="img/2.png">
+Then click execute to get database
+=================================================================================================================
+<p><span style="color: #ff00ff;"><strong><span style="font-size: 18pt;">Backup ur Database file ie .bak Extension file</span></strong></span></p>
+<img src="img/1backup.png"><br>
+<img src="img/2backup.png">
+Important Note :Goto media options and select overwrite existing database on second image
+===================================================================================================================
+
+<p><span style="color: #ff00ff;"><strong><span style="font-size: 18pt;">Open/Restore SQL database having .bak Extension</span></strong></span></p>
+<p><span style="font-size: 14pt;">1.Right click on Database Folder</span></p>
+
+<img src="img/1bak file.png"><br>
+<p><span style="font-size: 14pt;">2.click Restore Database</span></p>
+<p><span style="font-size: 14pt;">3.Navigate to From Device and click Add and select .bak file then press OK</span></p>
+<img src="img/2bak.png"><br>
+
+
+==========================================================================================================
+
+
+
+
+
+==================================================
+<h2>LDF vs MDF</h2>
+<p><span style="font-size: 18pt; color: #ff0000;">MDF&nbsp; (Master Data File=====Primary Data File=====)</span></p>
+<ul>
+<li><span style="font-size: 14pt;">MDF file in SQL Server are associated with other related files of the same database.</span></li>
+<li><span style="font-size: 14pt;">&nbsp;That is why every database is represented by Primary Data File. </span></li>
+<li><span style="font-size: 14pt;">Therefore, all the triggers, stored procedures, views, tables etc. related to the same database are also stored in the MDF file.</span></li>
+</ul>
+<p><span style="font-size: 18pt; color: #ff0000;">LDF (Log Data File)</span></p>
+<ul>
+<li><span style="font-size: 14pt;">LDF files in SQL Server are very useful for <span style="font-family: 'comic sans ms', sans-serif; color: #ff00ff;"><strong>the database recovery purpose</strong> </span>in future. </span></li>
+<li><span style="font-size: 14pt;">The limitations and size of LDF file can be defined at the time of database designing. </span></li>
+<li><span style="font-size: 14pt;">Every database has at least one log data file, but it is also possible that there may be several data log files for the same database.</span></li>
+<li><span style="font-size: 14pt;">SQL Server LDF files store the transaction information (insert, update, delete etc.) Log files helps to track the changes in the database and helps in tracking the source of problems when any threat occurs. </span></li>
+<li><span style="font-size: 14pt;">Log files are also used for the database forensics purpose as they log the information regarding each activity conducted on the associated database. </span></li>
+<li><span style="font-size: 14pt;">The extension of log data file is <span style="color: #ff0000;">.ldf</span></span></li>
+</ul>
+<h3><strong><span style="color: #ff00ff;">Importance of MDF and LDF Files in SQL Server</span></strong></h3>
+<ul>
+<li><span style="font-size: 14pt;">Generally, SQL Server contains two types of data file; <span style="color: #800000;">Primary data file</span> and <span style="color: #800000;">secondary data file.</span> </span></li>
+<li><span style="font-size: 14pt;">The most important aspect of these files is that it can be used as backup files. </span></li>
+<li><span style="font-size: 14pt;">In SQL Server database sometimes errors occurs due to improper/unexpected shutdown of computer system, virus attack and many other reasons that create severe problem related to database access.</span></li>
+</ul>
+==========================================================================================
+<br>
+<p><span style="color: #ff00ff;"><strong><span style="font-size: 14pt;">Generate Scripts in SQL</span></strong></span></p>
+<ol>
+<li><span style="color: #000000;"><strong><span style="font-size: 14pt;">Right click on Database name</span></strong></span></li>
+<li><span style="color: #000000;"><strong><span style="font-size: 14pt;">select Generate Scripts</span></strong></span></li>
+<li><span style="color: #000000;"><strong><span style="font-size: 14pt;">Next</span></strong></span></li>
+<li><span style="color: #000000;"><strong><span style="font-size: 14pt;">Select Table ==&gt; Then select any table whose you want to generate scripts</span></strong></span></li>
+<li><span style="color: #000000;"><strong><span style="font-size: 14pt;">Next</span></strong></span></li>
+<li><span style="color: #000000;"><strong><span style="font-size: 14pt;">Click on Advance</span></strong></span></li>
+<li><span style="color: #000000;"><strong><span style="font-size: 14pt;">Find : Type of Data To Script</span></strong></span></li>
+<li><span style="color: #000000;"><strong><span style="font-size: 14pt;">There select data only</span></strong></span></li>
+<li><span style="color: #000000;"><strong><span style="font-size: 14pt;">Ok</span></strong></span></li>
+<li><span style="color: #000000;"><strong><span style="font-size: 14pt;">Select Radio button : Save to new query Window</span></strong></span></li>
+<li><span style="color: #000000;"><strong><span style="font-size: 14pt;">Next==&gt;Next ==&gt; Finish</span></strong></span></li>
+</ol>
+<p><span style="color: #000000;"><strong><span style="font-size: 14pt;">So ,we have successfully create data for that table as below:</span></strong></span></p>
+<p><span style="color: #000000;"><strong><span style="font-size: 14pt;">Eg: Table :StudentClass</span></strong></span></p>
+<p><span style="color: #000000;"><strong><span style="font-size: 14pt;">&nbsp; &nbsp; &nbsp; &nbsp;Database :PracticeDb</span></strong></span></p>
+
+<xmp class="prettyprint">
+    USE [PracticeDB]
+    GO
+    INSERT [dbo].[StudentClass] ([ID], [StudentName], [ClassName], [Marks]) VALUES (1, N'Roger', N'Science', 50)
+    GO
+    INSERT [dbo].[StudentClass] ([ID], [StudentName], [ClassName], [Marks]) VALUES (2, N'Sara', N'Science', 40)
+    GO
+    INSERT [dbo].[StudentClass] ([ID], [StudentName], [ClassName], [Marks]) VALUES (3, N'Jimmy', N'Science', 30)
+    GO
+    INSERT [dbo].[StudentClass] ([ID], [StudentName], [ClassName], [Marks]) VALUES (4, N'Mike', N'Maths', 50)
+    GO
+    INSERT [dbo].[StudentClass] ([ID], [StudentName], [ClassName], [Marks]) VALUES (5, N'Mona', N'Maths', 30)
+    GO
+    INSERT [dbo].[StudentClass] ([ID], [StudentName], [ClassName], [Marks]) VALUES (6, N'Ronnie', N'Maths', 10)
+    GO
+    INSERT [dbo].[StudentClass] ([ID], [StudentName], [ClassName], [Marks]) VALUES (7, N'James', N'Art', 50)
+    GO
+    INSERT [dbo].[StudentClass] ([ID], [StudentName], [ClassName], [Marks]) VALUES (8, N'Mona', N'Art', 35)
+    GO
+    INSERT [dbo].[StudentClass] ([ID], [StudentName], [ClassName], [Marks]) VALUES (9, N'Roger', N'Art', 25)
+    GO
+    
+</xmp>
+
+<h2>Note : You</h2>
+
+
+    <script src="js/prism.js"></script>
+    <script type="text/javascript">
+      Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+          'remove-trailing': true,
+          'remove-indent': true,
+          'left-trim': true,
+          'right-trim': true,
+          // 'break-lines': 10,
+          // 'indent': 2,
+          // 'remove-initial-line-feed': false,
+          // 'tabs-to-spaces': 4,
+          // 'spaces-to-tabs': 4
+        });
+    </script>
+  </body>
+</html>

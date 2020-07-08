@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../Ef/css/bootstrap.css">
+    <link rel="stylesheet" href="../Ef/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../Ef/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../Ef/css/dracula.css">
+    <link rel="stylesheet" href="../Ef/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+    <h2>postgresql Table to CSV</h2>
+
+    Only Certain Field
+    <pre>
+        <code class="language-csharp">
+                COPY products(is_public, title, discount) TO 'D:\csv_backup\products_db.csv' DELIMITER ',' CSV HEADER; 
+            </code>
+    </pre>
+
+    <h2>postgresql Table to CSV </h2>
+
+    All Field of the table
+    <pre>
+        <code class="language-csharp">
+                COPY products TO 'D:\csv_backup\products_db.csv' DELIMITER ',' CSV HEADER;   
+            </code>
+    </pre>
+
+
+    <h2>Backup Postgresql File </h2>
+
+    <pre>
+        <code class="language-csharp">
+            1. Right click on database 
+            2. Click on Backup w
+            3. Give filename and select filetype:backup    
+            4. Set Format : Tar 
+            5. Click on Ok
+        </code>
+           
+    </pre>
+
+
+
+
+    <h2>Restore Postgresql File</h2>
+
+
+    <pre>
+        <code class="language-csharp">
+            1. Right click on database 
+            2. Click on Restore
+            3. Find your backup file    
+            4. Click on Restore
+        </code>
+           
+    </pre>
+
+    <script src="../EF/js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+    </script>
+</body>
+
+</html>

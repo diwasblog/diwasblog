@@ -1,0 +1,318 @@
+<html>
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+
+<xmp class="prettyprint">
+@using Vereyon.Web
+@{
+    ViewBag.Title = "Status Management";
+}
+
+<div class="row" id="app" v-cloak>
+    <div class="col-lg-12 col-md-12">
+        <div class="page-container">
+            <div class="row">
+                <div class="col-lg-5 col-md-5">
+                    <h4>@Html.Partial("_HRMSIcon") HRMS Setting | Status Management</h4>
+                </div>
+                <div class="col-lg-7 col-md-7">
+                    <button @@click="addModal.show = true" class="btn btn-default pull-right"><i class="fa fa-plus"></i> Add New</button>
+                </div>
+            </div>
+            <hr />
+            <ol class="breadcrumb">
+                <li><a href="/hrms">HRMS Home</a></li>
+                <li><a href="/hrms/setting">Setting</a></li>
+                <li class="active">Manage Status</li>
+            </ol>
+            <hr />
+            <div class="msg-container">
+                @Html.RenderFlashMessages()
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        @Html.ValidationSummary()
+                    </div>
+                }
+            </div>
+            <div class="row">
+                <div class="col-lg-8 col-md-8">
+                    <h4 v-if="statusDataLoading" class="text-center"><i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i> Loading Status data...</h4>
+                    <h4 v-if="statusData.length==0">No Status Data ...</h4>
+                    <v-client-table v-if="statusData.length > 0" :data="statusData" :columns="columns" :options="options">
+                        <template slot="Action" slot-scope="props">
+                            <div>
+                                <button @@click="showEditStatusModal(props.row)" class="btn btn-xs btn-outline-primary"><i class="fa fa-edit"></i> Edit </button>
+                                <button @@click="deleteStatus(props.row)" class="btn btn-xs btn-outline-danger"><i class="fa fa-times"></i>Delete </button>
+                            </div>
+                        </template>
+                    </v-client-table>
+                </div>
+            </div>
+        </div>
+    </div>
+    @* Template Add Status Modal *@
+    <modal v-if="addModal.show" @@close="closeAddStatus">
+        <h3 slot="header">Add Status</h3>
+        <div slot="body">
+            <form id="statusForm" @@submit.prevent="addStatus">
+                @Html.AntiForgeryToken()
+                <div class="form-group">
+                    <label for="name"> Name</label>
+                    <input type="text" id="name" class="form-control" name="Name" v-model="status.name" v-validate="'required'" data-vv-as="Name" placeholder="Name" />
+                    <span v-show="errors.has('Name')" class="text-danger form-error">{{ errors.first('Name') }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="code">Code</label>
+                    <input type="text" id="code" class="form-control" name="Code" v-model="status.code" placeholder="Code" />
+                </div>
+
+                <div class="form-group">
+                    <label for="orderId">OrderId</label>
+                    <input type="number" id="orderId" class="form-control" name="OrderId" v-model="status.orderId" placeholder="OrderId" />
+                </div>
+            </form>
+        </div>
+        <div slot="footer">
+            <span class="text-danger">{{ addModal.errorMessage }}</span>
+            @*<button @@click="addStatus" class="btn btn-primary">Submit</button>*@
+            <posting-button skin="btn btn-primary" :clicked="addStatus"
+                            value="Submit" :posting="isPosting">
+            </posting-button>
+        </div>
+    </modal>
+    @* Template Edit Status Modal *@
+    <modal v-if="editModal.show" @@close="closeEditStatus">
+        <h3 slot="header">Edit Status</h3>
+        <div slot="body">
+            <form id="bankTitleEditForm">
+                @Html.AntiForgeryToken()
+                <div class="form-group">
+                    <label for="name"> Name</label>
+                    <input type="text" id="name" class="form-control" name="Name" v-model="status.name" v-validate="'required'" data-vv-as="Name" placeholder="Name" />
+                    <span v-show="errors.has('Name')" class="text-danger form-error">{{ errors.first('Name') }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="code">Code</label>
+                    <input type="text" id="code" class="form-control" name="Code" v-model="status.code" placeholder="Code" />
+                </div>
+
+                <div class="form-group">
+                    <label for="">OrderId</label>
+                    <input type="number" id="orderId" class="form-control" name="OrderId" v-model="status.orderId" placeholder="OrderId" />
+                </div>
+            </form>
+        </div>
+        <div slot="footer">
+            <span class="text-danger">{{ editModal.errorMessage }}</span>
+            @*<button @@click="editStatus" class="btn btn-primary">Submit</button>*@
+            <posting-button skin="btn btn-primary" :clicked="editStatus"
+                            value="Submit" :posting="isPosting">
+            </posting-button>
+        </div>
+    </modal>
+    @Html.Partial("_modaltemplate")
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        Vue.use(VeeValidate);
+        Vue.component('modal', {
+            template: document.querySelector("#modal-template")
+        });
+        Vue.use(ClientTable, {}, false, abc);
+        new Vue({
+            el: '#app',
+            components: {
+                'posting-button': PostingButton
+            },
+            data: {
+                status: {
+                    name: '',
+                    code: '',
+                    orderId: 0
+                },
+                addModal: {
+                    show: false,
+                    errorMessage:''
+                },
+                editModal: {
+                    show: false,
+                    errorMessage: ''
+                },
+                statusData: [],
+                statusDataLoading: false,
+                columns: ['Name','Code', 'Action'],
+                options: {
+                    sortable: ['Name'],
+                    perPage: 25,
+                    orderBy: { column: "OrderId" }
+                },
+                isPosting: false
+            },
+            methods: {
+                addStatus() {
+                    var vm = this;
+                    vm.$validator.validateAll().then((result) => {
+                        if (result) {
+                            vm.isPosting = true;
+
+                            axios.post("/hrms/setting/api/status/insert",vm.status)
+                            .then(function (response) {
+                                if (response.data.Result) {
+                                    vm.loadStatusData();
+                                    vm.addModal.show = false;
+                                    vm.addModal.errorMessage = '';
+                                    vm.resetStatusData();
+                                    vm.isPosting = false;
+                                }
+                                }).catch(function (error) {
+                                    vm.isPosting = false;
+                                    if (error.hasOwnProperty('response')) {
+                                        alert(error.response.data.Message);
+                                    }
+                                    else {
+                                        alert(error);
+                                    }
+                            });
+                        }
+                    })
+                    .catch((errors) => {
+                        //alert(errors);
+                    })
+                },
+                resetStatusData() {
+                    let vm = this;
+                    vm.status.name = '';
+                    vm.status.code = '';
+                    vm.status.orderId = '';
+                },
+                showAddBankTitleModal() {
+                    let vm = this;
+                    vm.addModal.show = true;
+                },
+                closeAddStatus() {
+                    let vm = this;
+                    vm.addModal.show = false;
+                    vm.addModal.errorMessage = '';
+                    vm.resetStatusData();
+                },
+                loadStatusData() {
+                    var vm = this;
+                    vm.statusDataLoading = true;
+                    axios.get("/hrms/setting/api/status/getall")
+                    .then(function (response) {
+                        if (response) {
+                            vm.statusData = [];
+                            vm.statusData = response.data.Result;
+                            vm.statusDataLoading = false;
+                        }
+                    })
+                    .catch(function (error) {
+                        vm.statusDataLoading = false;
+                        alert(error.response.data.Message);
+                    });
+                },
+                showEditStatusModal(row) {
+                    let vm = this;
+                    vm.editModal.show = true;
+                    vm.status.name = row.Name;
+                    vm.status.code = row.Code;
+                    vm.status.id = row.Id;
+                    vm.status.orderId = row.OrderId;
+                },
+                closeEditStatus() {
+                    let vm = this;
+                    vm.editModal.show = false;
+                    vm.editModal.errorMessage = '';
+                    vm.resetStatusData();
+                },
+                editStatus() {
+                    let vm = this;
+                    vm.$validator.validateAll().then((result) => {
+                        if (result) {
+                            vm.isPosting = true;
+                            axios.post("/hrms/setting/api/status/edit", vm.status)
+                            .then(function (response) {
+                                if (response.data.Result) {
+                                    vm.loadStatusData();
+                                    vm.editModal.show = false;
+                                    vm.editModal.errorMessage = '';
+                                    vm.resetStatusData();
+                                    vm.isPosting = false;
+                                }
+                                }).catch(function (error) {
+                                    vm.isPosting = false;
+                                    if (error.hasOwnProperty('response')) {
+                                        alert(error.response.data.Message);
+                                    }
+                                    else {
+                                        alert(error);
+                                    }
+                            });
+                        }
+                    })
+                    .catch((errors) => {
+                        //alert(errors);
+                    })
+                },
+                deleteStatus: function (row) {
+                    let vm = this;
+                    console.log(row.Id);
+                    var result = confirm(`Are you sure you want to delete  Status : ${row.Name} ?`);
+                    if (result) {
+                        console.log(result);
+                        axios.post("/hrms/setting/api/status/delete", {"Id":row.Id})
+                            .then(response => {
+                            if (response.data.Result) {
+                                vm.loadStatusData();
+                                vm.editModal.show = false;
+                                vm.editModal.errorMessage = '';
+                                vm.resetStatusData();
+                            }
+                            }).catch(function (error) {
+
+                            //vm.deleteModal.errorMessage = error.response.data.Message;
+                                if (error.hasOwnProperty('response')) {
+                                    alert(error.response.data.Message);
+                                }
+                                else {
+                                    alert(error);
+                                }
+                        });
+                    }
+
+
+                }
+            },
+            mounted: function () {
+                let vm = this;
+                vm.loadStatusData();
+            }
+        });
+    </script>
+}
+
+</xmp>	
+
+
+
+</body>
+</html>

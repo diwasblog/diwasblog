@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../CSS SandBox/Sandbox/css/bootstrap.css">
+    <link rel="stylesheet" href="../CSS SandBox/Sandbox/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../CSS SandBox/Sandbox/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../CSS SandBox/Sandbox/css/dracula.css">
+    <link rel="stylesheet" href="../CSS SandBox/Sandbox/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+<p><span style="color: #ff00ff;"><strong><span style="font-size: 18pt;">What is web Server?</span></strong></span></p>
+<p><span style="color: #000000; font-size: 12pt;"><strong>In simple terms , a web server is a software , that is used to deliver webpages to clients using HTTP .For example,IIS is a Webserver that can be used to run asp.net web applications.</strong></span></p>
+<p><span style="font-size: 12pt; color: #000000;">The web server allows an application to process messages that arrive through specific TCP ports (by default). For example, the default port for HTTP traffic is 80, and the one for HTTPS is 443.</span></p>
+<p><span style="font-size: 12pt; color: #000000;">When you visit a website in your browser, you don&rsquo;t typically specify the port number unless the web server is configured to receive traffic on ports other than the default. Visiting&nbsp;<a style="color: #000000;" href="http://www.example.com/" target="_blank" rel="noopener noreferrer">http://www.example.com</a>&nbsp;will send your request to port 80 implicitly. You could specify the port number if you&rsquo;d like&nbsp;<a style="color: #000000;" href="http://www.example.com/" target="_blank" rel="noopener noreferrer">http://www.example.com:80</a>, and&nbsp;<a style="color: #000000;" href="https://www.example.com/" target="_blank" rel="noopener noreferrer">https://www.example.com:443&nbsp;</a>for TLS (<a style="color: #000000;" href="https://en.wikipedia.org/wiki/Transport_Layer_Security" target="_blank" rel="noopener noreferrer">Transport Layer Security</a>).</span></p>
+<p><span style="color: #ff00ff;"><strong><span style="font-size: 18pt;">Do we need IIS to develop and test asp.net web applications?</span></strong></span></p>
+<p><span style="color: #000000; font-size: 12pt;"><strong>No,Visual Studio ships with a built-in web server.If you</strong></span></p>
+<p><span style="color: #000000; font-size: 12pt;"><strong>want to just build and test web applications on your machine,you don't need an IIS. Built-in web server will not&nbsp; serve requests to another computer on network. By Default , Visual Studio uses the built-in web server.</strong></span></p>
+<p><span style="color: #000000; font-size: 12pt;"><strong>Press ctrl+F5 then you get like this :localhost://49800 actaully while pressing ctrl+F5 VS will run built-in web server</strong></span></p>
+<p><span style="color: #ff00ff;"><strong><span style="font-size: 18pt;">========================================================</span></strong></span></p>
+<p><span style="color: #ff00ff;"><strong><span style="font-size: 18pt;">IIS:Internet Information Services.</span></strong></span></p>
+<p><strong><span style="font-size: 14pt;">You have to explicitly install this in your computer but sometimes it will auto comes with your OS Installed.</span></strong></p>
+
+It provides support for HTTP, HTTPS (which contains security certificate and is secure than HTTP) , FTP (File Transfer Protocol used to transfer files) and SMTP (Simple Mail Transfer Protocol used in transferring of email)
+<p><span style="color: #000000;"><strong><span style="font-size: 14pt;">=======================================================================</span></strong></span></p>
+<p><span style="font-size: 14pt; color: #ff0000;">How to check if installed or not ?</span></p>
+<p><span style="font-size: 14pt;">Type : <strong><a href="http://localhost/">http://localhost/</a></strong>========&gt; in browser and if iis page will open then&nbsp; ok else install it by below process.</span></p>
+<p><span style="font-size: 14pt;">==================================================================================</span></p>
+<p><span style="color: #ff00ff;"><strong><span style="font-size: 18pt;">Installing IIS in Computer?</span></strong></span></p>
+<p><span style="font-size: 12pt;">1)Open <strong>ControlPane</strong>l&gt;<strong>Program Files</strong>&gt;<strong>Program and Features</strong></span></p>
+<p><span style="font-size: 12pt;">2)On left side click :<strong> Turn on windows features on or off</strong></span></p>
+<p><span style="font-size: 12pt;">3)Then Check all checkbox of<strong> Internet Information Service</strong> then click Ok&nbsp;</span></p>
+<p>&nbsp;<span style="font-size: 12pt;">Wait for sometimes then it will automatically installed</span></p>
+<p><span style="font-size: 12pt;">4) Goto : <span style="color: #000000;"><strong><a style="color: #000000;" href="http://localhost/">http://localhost/</a> </strong></span> &nbsp; &nbsp; &nbsp; &nbsp;====&gt; You will get IIS Default Website this proved iis is installed</span></p>
+<p><strong><span style="font-size: 12pt;">When IIS get installed then inetpub folder is created inside&nbsp; %system% folder and this default page is present at %system%/inetpub/wwwroot/iisstart.htm</span></strong></p>
+<p>&nbsp;</p>
+<p>If you create any html page or content inside %system%/inetpub/wwwroot/&nbsp; then that html page can be acess from any place through internet</p>
+
+<br>
+===========================================================================================
+<br>
+
+<p><strong><span style="font-size: 18pt;">Ways to publish Site</span></strong></p>
+<ul>
+<li><span style="font-size: 12pt;">You can publish your site via putting it inside <span style="color: #ff00ff;">wwwroot</span> folder in C:// drive&nbsp;</span></li>
+<li><span style="font-size: 12pt;">By Creating <span style="color: #ff00ff;"><strong>Virtual Directory</strong></span></span></li>
+</ul>
+
+================================================================
+<br>
+<p><span style="color: #ff00ff;"><strong><span style="font-size: 14pt;">Virtual Directory</span></strong></span></p>
+<p><span style="font-size: 12pt;">A virtual directory is a name that you specify in IIS and that maps to a physical directory on a server similar to how DNS maps a URL to an IP address.</span></p>
+<p><span style="font-size: 12pt;">The directory name becomes part of the application allowing users to navigate to a website or application and gain access to the content hosted on the server. </span></p>
+<p><span style="font-size: 12pt;">This content could be a website itself or media such as photos or videos within a web application or site.</span></p>
+==================================================================================
+<br>
+
+
+<h2 style="color:red">Connecting your local ip site from any where</h2>
+<h2>Link: <a href="https://manage.accuwebhosting.com/knowledgebase/2886/How-to-configure-IIS-to-access-website-using-IP-address.html">Access Site From same network  via ip address</a>
+</h2>
+
+<br>
+<h3 style="color:black">We are not able to access localhost outside of local network because here we are using local iis server 
+  as webserver so that we can access only with in the network. 
+</h3>
+<h3>Note : If we remote iis server(hosting localhost site) then we can access localsite from any public place</h3>
+
+<h2>Note: for allowing other computer in same network to connect to localhost computer then you have to setup firewall in localhost computer by adding new rule as created above link</h2>
+=================================================================================================
+<h2>Ngrok(en-grock)</h2>
+<h1 class="title style-scope ytd-video-primary-info-renderer"><span style="color: #ff00ff;"><strong>Ngrok allow to access your localhost from anywhere of the world</strong></span></h1><br>
+<h5><span style="color: #000000; font-size: 14pt;"><strong>Ngrok is one of the open source project developed by GitHub.</strong></span></h5>
+<p><span style="color: #000000; font-size: 14pt;">Ngrok creates a secure tunnel to your localhost deployment over a publicly accessible&nbsp; URL. So that we can access localhost from any where in the world.</span></p>
+<p><span style="font-size: 14pt;">ngrok is able to<span style="color: #ff0000;"> bypass NAT Mapping</span> and <span style="color: #ff0000;">firewall</span> restrictions by creating a long-lived TCP tunnel from a <span style="color:#ff0000;">randomly generated subdomain </span>on <strong><span style="color: #ff0000;">ngrok.com</span> </strong>(e.g. 3gf892ks.ngrok.com ==> this is subdomain of domain ngrok.com) to the local machine. After specifying the port that your web server listens on, the ngrok client program initiates a secure connection to the ngrok server and then anyone can make requests to your local server with the unique ngrok tunnel address</span></p>
+
+No need to touch firewall or NAT setting in ngrok.
+
+Ngrok is using reverse ssh tunnel system to bypass the firewall and work as proxy server between you and public
+visitor.It is perfect for making localhost online.
+<pre>
+  <code class="language-csharp">
+    ngrok http 5001
+  </code>
+</pre>
+Then ngrok create secure tunnel on port 5001
+
+
+<h4>Output</h4>
+<pre>
+  <code class="language-csharp">
+ngrok by @inconshreveable                                                                               (Ctrl+C to quit)
+Session Status                online
+Session Expires               7 hours, 59 minutes
+Version                       2.2.8
+Region                        United States (us)
+Web Interface                 http://127.0.0.1:4040
+Forwarding                    http://dcc6a5fb.ngrok.io -> localhost:5001
+Forwarding                    https://dcc6a5fb.ngrok.io -> localhost:5001
+
+Connections                   ttl     opn     rt1     rt5     p50     p90
+                              0       0       0.00    0.00    0.00    0.00
+  </code>
+</pre>
+
+Here :<b>http://dcc6a5fb.ngrok.io</b>is equivalent to: <b>localhost:5001</b>.So ,any requests to http://dcc6a5fb.ngrok.io will go to my local machine on port 5000
+
+<p><span style="font-size: 14pt;">Various tunnel servers are available around the world and locations include: <span style="color: #ff0000;">US (Ohio)</span>, <span style="color: #ff0000;">Europe (Frankfurt)</span>, <span style="color: #ff0000;"><strong>Asia (Singapore)</strong></span>, and <span style="color: #ff0000;"><strong>Australia (Sydney)</strong></span>. Alternatively, the ngrok server software can be self-hosted on a VPS or dedicated server.</span></p>
+<p><span style="font-size: 14pt;">As tunnel server is available in various country so that we are able to access localhost website through public url address.</span></p>
+<p><span style="color: #ff00ff; font-size: 18pt;"><strong>Use Case:&nbsp;</strong></span></p>
+<ol>
+<li><span style="font-size: 14pt;">Quickly showcasing local demos to clients</span></li>
+<li><span style="font-size: 14pt;">Testing mobile application backends,</span></li>
+<li><span style="font-size: 14pt;">&nbsp;Running personal cloud services from your home PC.</span></li>
+</ol>
+==========================================================================================
+<p><span style="font-size: 18pt;">How ngrok works behind firewall?</span></p>
+<p><span style="font-size: 14pt; color: #000000;">Because an ngrok tunnel is&nbsp;<span style="color: #ff0000;"><strong>always initiated on the client-side first</strong></span>, this is how it can negotiate a secure channel with the server. It's a really slick solution to getting around conventional firewall configurations.</span></p>
+<p><span style="font-size: 14pt; color: #000000;">This is internally accomplished by the client opening up a single long-lived tcp connection where many logical sockets are created within one physical socket connection. This technique is called&nbsp;<span style="color: #ff0000;"><a style="color: #ff0000;" href="http://en.wikipedia.org/wiki/Multiplexing" rel="noreferrer">stream multiplexing</a></span>. With this setup in place there is no need for any kind of polling because the client and server still have fully bi-directional communication in place.</span></p>
+<p><span style="font-size: 14pt; color: #000000;">The client and server then stay alive with a heartbeat mechanism that makes sure the connection is open and working appropriately and will even reconnect upon error or a lost/closed connection.</span></p>
+
+====================================================================================
+<script src="../CSS SandBox/Sandbox/js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

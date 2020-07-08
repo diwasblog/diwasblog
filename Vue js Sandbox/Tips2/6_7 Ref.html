@@ -1,0 +1,122 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+
+<xmp class="prettyprint">
+    <script src="https://unpkg.com/vue"></script>
+
+    <div id="app">
+    {{message}}
+    <input type="text" ref="input">
+    <button v-on:click="readRefs">Submit</button>
+    <p>
+    <div ref="test"></div>
+    </p>
+    </div>
+
+    
+    new Vue({
+      el: '#app',
+      data: {
+        message: 'Hello Vue.js!'
+      },
+      methods:{
+        readRefs(){
+          console.log(this.$refs);
+          console.log(this.$refs.test.innerHtml);
+          this.message=this.$refs.input.value;
+        }
+      }
+    })
+</xmp>
+  ====================================================================================================
+<h2>Set Focus with ref</h2>
+<div class="row">
+  <div class="col-lg-7">
+    <xmp class="prettyprint">
+        <script src="https://unpkg.com/vue"></script>
+        <div class="container" id="app">
+            <div class="form-group">
+              <input type="text" class="form-control" ref="search"  placeholder="Focus On Me" />
+            </div>
+            <div class="form-group">
+              <button type="button" class="btn btn-primary btn-block" @click="setFocus()">Set Focus</button>
+            </div>
+          </div>
+          
+        
+          <script>
+            
+        new Vue({
+          el: '#app',
+          data: {},
+          methods: {
+            setFocus: function()
+            {
+              let vm=this;
+              // Note, you need to add a ref="search" attribute to your input.
+              vm.$refs.search.focus();
+            }
+          }
+        });
+        
+          </script>
+        
+    </xmp>
+  </div>
+
+  <div class="col-lg-5">
+      <script src="https://unpkg.com/vue"></script>
+      <div class="container" id="app">
+          <div class="form-group">
+            <input type="text" class="form-control" ref="search"  placeholder="Focus On Me" />
+          </div>
+          <div class="form-group">
+            <button type="button" class="btn btn-primary btn-block" @click="setFocus()">Set Focus</button>
+          </div>
+        </div>
+        
+      
+        <script>
+          
+      new Vue({
+        el: '#app',
+        data: {},
+        methods: {
+          setFocus: function()
+          {
+            
+            // Note, you need to add a ref="search" attribute to your input.
+            this.$refs.search.focus();
+          }
+        }
+      });
+      
+        </script>
+      
+  </div>
+</div>
+
+
+  
+
+
+  ===================================================================================================
+  </body>
+  </html>

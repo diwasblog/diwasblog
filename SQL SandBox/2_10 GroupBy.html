@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+<body>
+<div class="row">
+  <div class="col">
+    tblEmployee
+      <table style="border-collapse: collapse; width: 28.1971%; height: 405px;" border="1">
+          <tbody>
+          <tr style="background: black; color: white;">
+          <td style="width: 10.7023%;">ID</td>
+          <td style="width: 19.7324%;">Name</td>
+          <td style="width: 20.7358%;">Gender</td>
+          <td style="width: 18.0602%;">Salary</td>
+          <td style="width: 14.3813%;">Department</td>
+          </tr>
+          <tr>
+          <td style="width: 10.7023%;">1</td>
+          <td style="width: 19.7324%;">Tom</td>
+          <td style="width: 20.7358%;">M</td>
+          <td style="width: 18.0602%;">4000</td>
+          <td style="width: 14.3813%;">1</td>
+          </tr>
+          <tr>
+          <td style="width: 10.7023%;">2</td>
+          <td style="width: 19.7324%;">Pam</td>
+          <td style="width: 20.7358%;">F</td>
+          <td style="width: 18.0602%;">3000</td>
+          <td style="width: 14.3813%;">2</td>
+          </tr>
+          <tr>
+          <td style="width: 10.7023%;">3</td>
+          <td style="width: 19.7324%;">John</td>
+          <td style="width: 20.7358%;">M</td>
+          <td style="width: 18.0602%;">3500</td>
+          <td style="width: 14.3813%;">1</td>
+          </tr>
+          <tr>
+          <td style="width: 10.7023%;">4</td>
+          <td style="width: 19.7324%;">Sam</td>
+          <td style="width: 20.7358%;">M</td>
+          <td style="width: 18.0602%;">4500</td>
+          <td style="width: 14.3813%;">1</td>
+          </tr>
+          <tr   >
+          <td style="width: 10.7023% ">5</td>
+          <td style="width: 19.7324% ">Todd</td>
+          <td style="width: 20.7358% ">M</td>
+          <td style="width: 18.0602% ">2800</td>
+          <td style="width: 14.3813% ">3</td>
+          </tr>
+          <tr   >
+          <td style="width: 10.7023% ">6</td>
+          <td style="width: 19.7324% ">Ben</td>
+          <td style="width: 20.7358% ">M</td>
+          <td style="width: 18.0602% ">7000</td>
+          <td style="width: 14.3813% ">2</td>
+          </tr>
+          <tr   >
+          <td style="width: 10.7023%; height: 30px;">7</td>
+          <td style="width: 19.7324%; height: 30px;">Sara</td>
+          <td style="width: 20.7358%; height: 30px;">F</td>
+          <td style="width: 18.0602%; height: 30px;">4800</td>
+          <td style="width: 14.3813%; height: 30px;">3</td>
+          </tr>
+          <tr style="height: 10px;">
+          <td style="width: 10.7023%; height: 10px;">8</td>
+          <td style="width: 19.7324%; height: 10px;">Valarie</td>
+          <td style="width: 20.7358%; height: 10px;">F</td>
+          <td style="width: 18.0602%; height: 10px;">5500</td>
+          <td style="width: 14.3813%; height: 10px;">2</td>
+          </tr>
+          <tr style="height: 35px;">
+          <td style="width: 10.7023%; height: 35px;">9</td>
+          <td style="width: 19.7324%; height: 35px;">James</td>
+          <td style="width: 20.7358%; height: 35px;">M</td>
+          <td style="width: 18.0602%; height: 35px;">6500</td>
+          <td style="width: 14.3813%; height: 35px;">1</td>
+          </tr>
+          <tr style="height: 30px;">
+          <td style="width: 10.7023%; height: 30px;">10</td>
+          <td style="width: 19.7324%; height: 30px;">Russell</td>
+          <td style="width: 20.7358%; height: 30px;">M</td>
+          <td style="width: 18.0602%; height: 30px;">8800</td>
+          <td style="width: 14.3813%; height: 30px;">1</td>
+          </tr>
+          </tbody>
+          </table>
+  </div>
+
+  <div class="col">
+    tblDepartment
+      <table style="border-collapse: collapse; width: 12.4865%;" border="1">
+          <tbody>
+          <tr style="background: black; color: white;">
+          <td style="width: 5.00538%;">Id</td>
+          <td style="width: 7.48114%;">Location</td>
+          </tr>
+          <tr>
+          <td style="width: 5.00538%;">1</td>
+          <td style="width: 7.48114%;">London</td>
+          </tr>
+          <tr>
+          <td style="width: 5.00538%;">2</td>
+          <td style="width: 7.48114%;">NewYork</td>
+          </tr>
+          <tr>
+          <td style="width: 5.00538%;">3</td>
+          <td style="width: 7.48114%;">Syndney</td>
+          </tr>
+          </tbody>
+          </table>
+
+          
+  </div>
+</div>
+
+<h2>Total Employee Count in Office</h2>
+<div class="row">
+  <div class="col-lg-8">
+      <pre>
+          <code class="language-sql">
+              Select Count(Id) From tblEmployee;
+          </code>
+        </pre>
+  </div>
+
+  <div class="col-lg-4">
+     
+  </div>
+</div>
+=======================================================================================
+<h2>Total Employee Count in Office on each Department</h2>
+<div class="row">
+  <div class="col-lg-8">
+      <pre>
+          <code class="language-sql">
+              Select Count(Id) From tblEmployee 
+              Group By DepartmentId
+          </code>
+        </pre>
+  </div>
+
+  <div class="col-lg-4">
+     
+  </div>
+</div>
+=======================================================================================
+<h2>Total Salary SUM   in Office </h2>
+<div class="row">
+  <div class="col-lg-8">
+      <pre>
+          <code class="language-sql">
+              Select SUM(Salary) as Total Salary From tblEmployee 
+          </code>
+        </pre>
+  </div>
+
+  <div class="col-lg-4">
+     
+  </div>
+</div>
+
+=======================================================================================
+<h2>Total Salary SUM   in Office on each Department </h2>
+<div class="row">
+  <div class="col-lg-6">
+      <pre>
+          <code class="language-sql">
+              Select SUM(Salary) as Total Salary From tblEmployee 
+              GROUP BY DepartmentId
+          </code>
+        </pre>
+  </div>
+
+  <div class="col-lg-6">
+     
+  </div>
+</div>
+
+=======================================================================================
+<h2>Total Salary in Office by Department ,by Gender </h2>
+<div class="row">
+  <div class="col-lg-8">
+      <pre>
+          <code class="language-sql">
+              Select Department,Gender,SUM(Salary) as Total Salary From tblEmployee 
+              GROUP BY DepartmentId,Gender
+          </code>
+        </pre>
+  </div>
+
+  <div class="col-lg-4">
+     
+  </div>
+</div>
+
+=======================================================================================
+<h2>Total Salary in Office by Department ,by Gender Then order it </h2>
+<div class="row">
+  <div class="col-lg-8">
+      <pre>
+          <code class="language-sql">
+              Select Department,Gender,SUM(Salary) as Total Salary From tblEmployee 
+              GROUP BY DepartmentId,Gender
+              ORDER BY DepartmentId
+          </code>
+        </pre>
+  </div>
+
+  <div class="col-lg-4">
+     
+  </div>
+</div>
+<script src="js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

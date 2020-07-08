@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+==========================================================================================================
+<p><span style="font-size: 14pt;">The first connection string is named&nbsp;<span style="color: #ff00ff;"><code><strong>DefaultConnection</strong>&nbsp;</code></span>and is <span style="color: #000000;"><strong>used for the membership database to control who can access the application. </strong></span></span></p>
+<p><span style="font-size: 14pt;">The connection string you've added specifies a LocalDB database named&nbsp;<strong><em>Movie.mdf</em>&nbsp;</strong>located in the<strong>&nbsp;<em>App_Data</em>&nbsp;folder.&nbsp;</strong></span></p>
+
+
+
+=================================================================================================================
+<pre>
+  <code class='langauge-html'>
+      &lt;html>
+      &lt;head>
+      &lt;script>
+      function yHandler(){
+        // Watch video for line by line explanation of the code
+        // http://www.youtube.com/watch?v=eziREnZPml4
+        var wrap = document.getElementById('wrap');
+        var contentHeight = wrap.offsetHeight;
+        var yOffset = window.pageYOffset; 
+        var y = yOffset + window.innerHeight;
+        if(y >= contentHeight){
+          // Ajax call to get more dynamic data goes here
+          wrap.innerHTML += '&lt;div class="newData">lt;/div>';
+        }
+        var status = document.getElementById('status');
+        status.innerHTML = contentHeight+" | "+y;
+      }
+      window.onscroll = yHandler;
+      &lt;/script>
+      &lt;style>
+      div#status{position:fixed; font-size:24px;}
+      div#wrap{width:800px; margin:0px auto;}
+      div.newData{height:1000px; background:#09F; margin:10px 0px;}
+      &lt;/style>
+      &lt;/head>
+      &lt;body>
+      &lt;div id="status">0 | 0&lt;/div>
+      &lt;div id="wrap">&lt;img src="temp.jpg">&lt;/div>
+      &lt;/body>
+      &lt;/html>
+  </code>
+</pre>
+
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+function yHandler(){
+	// Watch video for line by line explanation of the code
+	// http://www.youtube.com/watch?v=eziREnZPml4
+	var wrap = document.getElementById('wrap');
+	var contentHeight = wrap.offsetHeight;
+	var yOffset = window.pageYOffset; 
+	var y = yOffset + window.innerHeight;
+	if(y >= contentHeight){
+		// Ajax call to get more dynamic data goes here
+		wrap.innerHTML += '<div class="newData"></div>';
+	}
+	var status = document.getElementById('status');
+	status.innerHTML = contentHeight+" | "+y;
+}
+window.onscroll = yHandler;
+</script>
+<style>
+div#status{position:fixed; font-size:24px;}
+div#wrap{width:800px; margin:0px auto;}
+div.newData{height:1000px; background:#09F; margin:10px 0px;}
+</style>
+</head>
+<body>
+<div id="status">0 | 0</div>
+<div id="wrap"><img src="temp.jpg"></div>
+</body>
+</html>
+
+<script src="js/prism.js"></script>
+
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

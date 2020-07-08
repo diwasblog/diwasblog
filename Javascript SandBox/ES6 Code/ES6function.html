@@ -1,0 +1,409 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+
+
+<style>
+xmp.prettyprint{
+    font-size:10pt;
+    font-family:monospace;
+
+}
+</style>
+ 
+</head>
+<body>
+
+  <p><strong><span style="font-size: 14pt;">ES6 features are&nbsp;</span></strong></p>
+  <p>Let and Const Declaration</p>
+  <p>Destructuring Assignment</p>
+  <p>Classes and Inheritance</p>
+  <p>Template String</p>
+  <p>String Features</p>
+  <p>Math and Number Features</p>
+  <p>Iterators</p>
+  <p>Generators</p>
+  <p>Promises</p>
+  <p>Arrow Functions</p>
+
+
+<script>
+  const pi=3.14;
+
+  function calcArea(r){
+    console.log("The area is :"+pi*r*r);
+  }
+
+  console.log(pi);
+  calcArea(5);
+</script>
+
+
+<xmp class="prettyprint">
+  <script>
+    const pi=3.14;
+  
+    function calcArea(r){
+      console.log("The area is :"+pi*r*r);
+    }
+  
+    console.log(pi);
+    calcArea(5);
+  </script>
+</xmp>
+
+
+<br>
+
+<div class="container">
+<div class="row">
+  
+  <div class="col-xs-6 col-lg-6">
+Inside if: 5 <br>
+Outside if:5
+
+<script>
+  function testVar(){
+  var x=10;
+
+  if(x>5)
+  {
+    var x=5;
+    console.log("Inside if:"+x);
+  }
+  console.log("Outside if"+x);
+
+  }
+  testVar();
+</script>
+
+<xmp class="prettyprint">
+    <script>
+        function testVar(){
+        var x=10;
+      
+        if(x>5)
+        {
+          var x=5; //global scope
+          console.log("Inside if:"+x);
+        }
+        console.log("Outside if"+x);
+      
+        }
+        testVar();
+      </script>
+</xmp>
+</div>
+
+<div class="col-xs-6 col-lg-6">
+    Inside if: 5 <br>
+    Outside if:10
+    <script>
+        function testLet(){
+        let x=10;
+      
+        if(x>5)
+        {
+          let x=5; 
+          console.log("Inside if:"+x);
+        }
+        console.log("Outside if"+x);
+      
+        }
+        testLet();
+      </script>
+      
+      <xmp class="prettyprint">
+          <script>
+              function testLet(){
+              let x=10;
+            
+              if(x>5)
+              {
+                let x=5; //local scope and exist her only
+                console.log("Inside if:"+x);
+              }
+              console.log("Outside if"+x);
+            
+              }
+              testLet();
+            </script>
+      </xmp>
+</div>
+</div>
+</div>
+
+<div class="container">
+<div class="row">
+  <div class="col-xs=6 col-lg-6">
+      <p><span style="color: #ff0000;">&nbsp;Uncaught ReferenceError: i is not defined</span></p>
+   
+    <xmp class="prettyprint">
+        <script>
+            for(let i=0;i<3;i++){
+              console.log("Hello");
+            }
+            console.log(i);
+            </script>
+    </xmp>
+  </div>
+
+  <div class="col-xs=6 col-lg-6">
+    Output: Hello Hello Hello 2
+   
+  <xmp class="prettyprint">
+      <script>
+          for (var i=0;i<3;i++)
+          {
+            console.log("Hello");
+          }
+          console.log(i);
+        </script>
+  </xmp>
+    </div>
+</div>
+</div>
+
+===========================================================================================
+<div class="container">
+    <p><span style="color: #ff00ff;"><strong><span style="font-size: 18pt;">Use of Template</span></strong></span></p>
+<p><span style="color: #ff0000;"><strong><span style="font-size: 18pt;">focus at : `&nbsp; `&nbsp; ,${ }</span></strong></span></p>
+<p><span style="color: #000000; font-size: 12pt;"><strong>Note : ` ` will accept multiline template string</strong></span></p>
+  
+<h1>Output</h1>
+<div id="template"></div>
+</div>
+
+
+<script>
+  let name="Diwas";
+  
+  function makeUppercase(word)
+  {
+    return word.toUpperCase();
+  }
+  let template=`<h3> ${makeUppercase('Hello')},
+  ${name}</h3><p> This is simple template</p>`;
+
+  document.getElementById('template').innerHTML=template;
+</script>
+<xmp class="prettyprint">
+    <script>
+        let name="Diwas";
+        
+        function makeUppercase(word)
+        {
+          return word.toUpperCase();
+        }
+        let template=`<h1> ${makeUppercase('Hello')},${name}</h1><p> This is simple template</p>`;
+      
+        document.getElementById('template').innerHTML=template;
+    </script>
+</xmp>
+
+
+<p style="text-align: center;"><span style="font-family: 'comic sans ms', sans-serif; font-size: 18pt;"><strong><span style="color: #ff00ff;">Arrow Function</span></strong></span></p>
+<div class="container">
+  <div class="row">
+    
+    <div class="col-sm-6">
+        General <br>
+        Output :15
+        <script>
+          let add=function(a,b){
+            let sum=a+b;
+            console.log(sum);
+            return false;
+          }
+
+           add(5,10);
+        </script>
+
+        <xmp class="prettyprint">
+            <script>
+                let add=function(a,b){
+                  let sum=a+b;
+                  console.log(sum);
+                  return false;
+                }
+      
+                 add(5,10);
+              </script>
+        </xmp>
+       
+    </div>
+
+
+    <div class="col-sm-6">
+        <p>Using Arrow (<span style="color: #ff0000;">remove function</span> and<span style="color: #ff0000;"> add arrow between&nbsp; ) and {</span>&nbsp; &nbsp;)&nbsp;<br> Output :15</p>
+        
+        <script>
+          let add=(a,b)=>{
+            let sum=a+b;
+            console.log(sum);
+            return false;
+          }
+
+           add(5,10);
+        </script>
+
+
+        <xmp class="prettyprint">
+            <script>
+                let add=(a,b)=>{
+                  let sum=a+b;
+                  console.log(sum);
+                  return false;
+                }
+      
+                 add(5,10);
+              </script>
+        </xmp>
+      </div>
+  </div>
+</div>
+
+<h2>Fact about ES6 Function</h2>
+<div class="row">
+  Syntax
+  The portion to the left of the arrow (=>) is the parameters in parenthesis, and to the right is the function statements in curly braces. When the function contains no statements, undefined is returned.
+
+  <div class="col-lg-6">
+    <xmp class="prettyprint">
+      //no params, empty body
+      () => {};
+    </xmp>
+  </div>
+
+  <div class="col-lg-6">
+    <xmp class="prettyprint">
+      function(){}
+      </xmp>
+  </div>
+</div>
+
+If the function contains only a single parameter, then you can omit the parenthesis surrounding it. The same goes for the function BODY- a single BODY statement requires no braces around it:
+<div class="row">
+  <div class="col-lg-6">
+      <xmp class="prettyprint">
+//single param, single statement
+x => x;
+      </xmp>
+  </div>
+
+  <div class="col-lg-6">
+      <xmp class="prettyprint">
+  function(x){
+    return x;
+}
+      </xmp>
+    </div>
+</div>
+
+When your arrow function only contains a single BODY statement with no braces around it, it will automatically return the value derived from that statement; there's no need to use the keyword "return".
+<div class="row">
+    <div class="col-lg-6">
+        <xmp class="prettyprint">
+            //single param, single statement
+            x => x + 5;
+        </xmp>
+    </div>
+  
+    <div class="col-lg-6">
+        <xmp class="prettyprint">
+            function(x){
+              return x + 5;
+          }
+        </xmp>
+      </div>
+  </div>
+
+  For arrow functions with more multiple parameters, wrap them in parenthesis:
+  <div class="row">
+      <div class="col-lg-6">
+          <xmp class="prettyprint">
+              //multiple params
+              (x, y) => x * y;
+          </xmp>
+      </div>
+    
+      <div class="col-lg-6">
+          <xmp class="prettyprint">
+              function(x, y){
+                return x * y;
+            }
+          </xmp>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <xmp class="prettyprint">
+                //multiple params and statements
+                (x, y) => {
+                    var factor = 5;
+                    var growth = (x-y) * factor;
+                }
+            </xmp>
+        </div>
+      
+        <div class="col-lg-6">
+            <xmp class="prettyprint">
+                function(x, y){
+                  var factor = 5;
+                  var growth = (x-y) * factor;
+              }
+            </xmp>
+          </div>
+      </div>
+
+      When you wrap a function BODY in curly braces, no value is automatically returned like in a regular function- you should use the return keyword for that purpose.
+      <div class="row">
+          <div class="col-lg-6">
+              <xmp class="prettyprint">
+      //multiple params and statements
+      (x, y) => {
+      var z = 5;
+      return (x * y) + z;
+      }
+              </xmp>
+          </div>
+        
+          <div class="col-lg-6">
+              <xmp class="prettyprint">
+                  function(x, y){
+                    var z = 5;
+                    return (x * y) + z;
+                }
+              </xmp>
+            </div>
+        </div>
+      
+        If your arrow function contains a single BODY statement that returns a object literal, you need to wrap the function BODY in parenthesis to preventing the curly braces surrounding the object literal from being interpreted as a function BODY wrapper:
+        <div class="row">
+            <div class="col-lg-6">
+                <xmp class="prettyprint">
+                    //Single object literal statement
+                    //Wrap function BODY in parenthesis
+                    x => ({id: x, height: 270});
+                </xmp>
+                <xmp class="prettyprint">
+              // OR
+              // Use an explicit return 
+              x => {return {id: x, height: 270}};
+                </xmp>
+            </div>
+          
+            <div class="col-lg-6">
+                <xmp class="prettyprint">
+                    function(x){
+                      return {id: x, height: 270};
+                  }
+                </xmp>
+              </div>
+          </div>
+</body>
+</html>

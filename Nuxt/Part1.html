@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../Ef/css/bootstrap.css">
+    <link rel="stylesheet" href="../Ef/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../Ef/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../Ef/css/dracula.css">
+    <link rel="stylesheet" href="../Ef/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+    <h2>Setup</h2>
+    <pre>
+        <code class="language-csharp">
+            
+        1)npx create-nuxt-app <project-name>
+        2) Follow Other Steps
+        
+        //for local testing
+        3) cd <project-name>
+        4) npm run dev
+        
+        //for production
+        3) cd <project-name>
+        4) npm run build and then npm run start
+        
+        
+        
+        </code>
+    </pre>
+    <h2> Nuxt Folder Structure</h2>
+    <div class="row">
+
+        <div class="col-lg-6">
+
+            <pre>
+                    <code class="language-csharp">
+                         .nuxt
+                         assets
+                         components
+                         layouts
+                         middleware
+                         node_modules
+                         pages
+                         plugins
+                         static
+                         store
+                         .editorconfig
+                         .gitignore
+                         nuxt.config.js
+                         package-lock.json
+                         package.json
+                         README.md
+                    </code>
+                </pre>
+        </div>
+    </div>
+
+    <h2>Assets</h2>
+    <table style="border-collapse: collapse; width: 100%;" border="1">
+        <tbody>
+            <tr>
+                <td style="width: 50%;"><span style="color: #000000;"><strong><span style="font-size: 18pt;">Assets
+                                Folder</span></strong></span></td>
+                <td style="width: 50%;">
+                    <ul>
+                        <li><span style="font-size: 14pt;"><strong><span style="color: #000000;">Holds your <span
+                                            style="color: #2dc26b;">un-compiled assets,</span> such as <span
+                                            style="color: #f1c40f;">JavaScript</span>, <span
+                                            style="color: #f1c40f;">SCSS </span>files and <span
+                                            style="color: #f1c40f;">images</span>.</span></strong></span></li>
+                        <li><span style="font-size: 14pt;"><strong><span style="color: #000000;"> Nuxt.js uses <span
+                                            style="color: #2dc26b;">webpack </span>to process and serve these
+                                        assets.</span></strong></span></li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p><span style="font-family: 'comic sans ms', sans-serif;"><strong><span
+                    style="font-size: 18pt; color: #000000;">Files stored in that folder can be imported into your Vue
+                    component files like below</span></strong></span></p>
+    <div class="row">
+        <div class="col-lg-6">
+            <h4>Using Import</h4>
+            <pre>
+                <code class="language-csharp">
+                        &lt;script>
+                            import NuxtLogo from '@/assets/images/nuxt-logo.jpg'
+                            //import CustomButton from '../assets/images/nuxt-logo.jpg'
+
+                            export default {
+                                data() {
+                                    nuxtLogo: NuxtLogo
+                                }
+                            }
+                            &lt;/script>
+
+                        <!-- then in template -->
+                        &lt;template>
+                            &lt;img :src="nuxtLogo">
+                        &lt;/template>
+                </code>
+            </pre>
+        </div>
+
+        <div class="col-lg-6">
+            <h4>Without Import ie. using Directly</h4>
+            <pre>
+                    <code class="language-csharp">
+                            &lt;template>
+                                &lt;img src="~assets/images/nuxt-logo.jpg">
+                            &lt;/template>
+                    </code>
+                </pre>
+        </div>
+    </div>
+    <p><span style="font-size: 14pt;"><span style="color: #000000;">Notice the</span>&nbsp;<strong><span
+                    style="color: #2dc26b;"><code>~</code>&nbsp;</span></strong><span style="color: #000000;">-
+                it&rsquo;s essentially the same as&nbsp;</span><strong><span
+                    style="color: #2dc26b;"><code>@</code></span></strong><span style="color: #000000;">: It references
+                the root folder. </span></span></p>
+    <ul>
+        <li><span style="font-size: 14pt;"><span style="color: #000000;">In your</span>&nbsp;<strong><span
+                        style="color: #e03e2d;"><code>&lt;template&gt;</code></span></strong>&nbsp;or&nbsp;<strong><span
+                        style="color: #e03e2d;"><code>&lt;style&gt;</code></span></strong>&nbsp;<span
+                    style="color: #000000;">section, you have to use</span>&nbsp;<code>~</code> .</span></li>
+        <li><span style="font-size: 14pt;"><span style="color: #000000;">In import part use</span> <strong><span
+                        style="color: #2dc26b;"><code>@</code></span></strong> </span></li>
+    </ul>
+    <p><span style="font-size: 14pt; color: #000000;">This import is handled by <span
+                style="color: #2dc26b;"><strong>Webpack </strong></span>- the build tool used behind the scenes.</span>
+    </p>
+    <p><span style="font-size: 14pt; color: #000000;">It will basically find that image, potentially <strong>optimize
+            </strong>it, and then copy it over into the folder that holds your build artifacts (where your compiled JS
+            code will also end up in).</span></p>
+    <p><span style="font-size: 14pt;"><span style="color: #000000;">This processing of files only occurs for assets
+                stored in the&nbsp;</span><strong><span
+                    style="color: #2dc26b;"><code>assets</code></span></strong>&nbsp;<span
+                style="color: #000000;">folder, hence that&rsquo;s the place to use for most images, SCSS code, etc.
+            </span></span></p>
+    <p>&nbsp;</p>
+    <hr>
+    <p><span style="color: #2dc26b;"><strong><span style="font-size: 18pt;">Page Folder</span></strong></span></p>
+    <p><span style="font-size: 14pt; color: #000000;">Nuxt.js does one very important thing: It automatically creates
+            routes for you. Behind the scenes, it still uses&nbsp;<a style="color: #000000;"
+                href="https://router.vuejs.org/en/">Vue Router</a>&nbsp;for this but you don&rsquo;t need to create a
+            route config manually anymore. </span></p>
+    <p><span style="font-size: 14pt; color: #000000;">&nbsp;You create your route structure as a folder structure -
+            inside the folder. </span></p>
+    <div class="row">
+        <div class="col-lg-6">
+            <pre>
+                    <code class="language-csharp">
+                            pages / users / index.vue
+                            index.vue
+                            _id / index.vue
+                    </code>
+            </pre>
+        </div>
+        <div class="col-lg-6">
+            Will translate automatically to
+            <pre>
+                        <code class="language-csharp">
+                            ;[
+                            { path: '/', component: 'pages/index.vue' },
+                            { path: '/users', component: 'pages/users/index.vue' },
+                            { path: '/users/:id', component: 'pages/users/_id/index.vue' },
+                            ]
+                        </code>
+                </pre>
+        </div>
+    </div>
+
+    <p><span style="font-size: 14pt;"><strong><span style="color: #e03e2d;">The core takeaway is</span></strong>,<span
+                style="color: #000000;"> that routing is configured through folders and files in
+                the&nbsp;</span><strong><span style="color: #e03e2d;"><code>pages</code>&nbsp;</span></strong><span
+                style="color: #000000;">folder</span>. </span></p>
+
+    <p><span style="color: #2dc26b;"><span style="font-size: 18.6667px;"><strong>Component Folder</strong></span></span>
+    </p>
+    <ul>
+        <li><span style="color: #000000;"><span style="color: #e03e2d;"><span style="font-size: 18.6667px;"><span
+                            style="color: #000000;">You might&rsquo;ve noticed that the </span><code>pages</code> <span
+                            style="color: #000000;">folder contains files. These are of course normal single component
+                            files. They&rsquo;re just loaded via the <strong><span style="color: #2dc26b;">Vue
+                                    router</span></strong>. But Component are not loaded via Vue
+                            router.</span></span></span></span></li>
+        <li><span style="color: #000000;"><span style="color: #e03e2d;"><span style="font-size: 18.6667px;"><span
+                            style="color: #000000;">Pages folder contains <strong><span style="color: #2dc26b;">.vue
+                                    files </span></strong>which are pages like <strong><span
+                                    style="color: #2dc26b;">index.html, error.html </span></strong>but component folder
+                            contains<strong><span style="color: #2dc26b;"> reusable component</span></strong> like
+                            <strong><span style="color: #e03e2d;">&lt;custom-Button&gt;</span></strong> , <strong><span
+                                    style="color: #e03e2d;">&lt;image-carousel&gt;</span></strong> which can be used in
+                            more than one pages.</span></span></span></span></li>
+        <li><span style="color: #000000;"><span style="color: #e03e2d;"><span style="font-size: 18.6667px;"><span
+                            style="color: #000000;">In Nuxt.js apps, you can load your <strong><span
+                                    style="color: #e03e2d;">re-usable components</span></strong> into <strong><span
+                                    style="color: #2dc26b;">other components</span></strong> or <strong><span
+                                    style="color: #2dc26b;">pages </span></strong>like this:
+                        </span></span></span></span></li>
+    </ul>
+    <pre>
+            <code class="language-csharp">
+                &lt;script>
+                    import CustomButton from '@/components/UI/CustomButton'
+
+                    export default {
+                        components: {
+                            CustomButton
+                        }
+                    }
+                    &lt;/script>
+
+        </code>
+    </pre>
+    <p><span style="font-size: 14pt; color: #000000;">This allows you to use&nbsp;<span
+                style="color: #2dc26b;"><code>&lt;CustomButton /&gt;</code></span>&nbsp;(or&nbsp;<strong><span
+                    style="color: #2dc26b;"><code>&lt;custom-button&gt;&lt;/custom-button&gt;</code></span></strong>) in
+            the template of that component. </span></p>
+    <hr>
+    <hr>
+    <p><span style="color: #2dc26b; font-size: 18pt;"><strong>'Layout' Folder</strong></span></p>
+    <p><span style="color: #000000; font-size: 14pt;">You got pages (in the&nbsp;<code>pages</code>&nbsp;folder), right?
+            <strong>These are components that are loaded via the Vue Router.</strong></span></p>
+    <p><span style="color: #000000; font-size: 14pt;">Typically, these pages should use some layouts. Some wrapping
+            component that provides shared UI elements like a<strong><span style="color: #2dc26b;"> header or
+                    footer.</span></strong> Without such a wrapping component, you&rsquo;d have to add your header and
+            footer components to each page separately.</span></p>
+
+    <p><span style="font-size: 14pt;">you will have one default layout in nuxt ie. <strong><span
+                    style="color: #2dc26b;">default.vue</span></strong> and it looks like this.</span></p>
+    <pre>
+                            <code class="language-csharp">
+                                        &lt;template>
+                                            &lt;nuxt/>
+                                        &lt;/template>
+                                       ...
+                                </code>
+                            </pre>
+    <p><span style="font-size: 18.6667px;">You can also create on your own as <span
+                style="color: #000000;"><strong>layouts/blog.vue </strong></span></span></p>
+
+    <pre>
+            <code class="language-csharp">
+                            &lt;template>
+                                &lt;div>
+                                    &lt;div>My blog navigation bar here</div>
+                                        &lt;nuxt/>
+                                &lt;/div>
+                            &lt;/template>
+                    </code>
+                </pre>
+
+
+    <p><span style="font-size: 14pt;"><span style="color: #000000;">Then we have to tell the pages</span>
+            (i.e.&nbsp;<span style="color: #000000;"><strong><code>pages/posts.vue</code></strong></span>) <span
+                style="color: #000000;">to use your custom layout: </span></span></p>
+
+    <pre>
+            <code class="language-csharp">
+                            &lt;template>
+                                    <!-- Your template -->
+                                    &lt;/template>
+                                    &lt;script>
+                                        export default {
+                                            layout: 'blog'
+                                            // page component definitions
+                                        }
+                                        &lt;/script>
+                    </code>
+                </pre>
+
+    <h1 id="the-store-folder"><strong><span style="font-size: 18pt; color: #2dc26b;">The &ldquo;store&rdquo;
+                Folder</span></strong></h1>
+    <ul>
+        <li><span style="font-size: 14pt;">Nuxt.js actually comes with Vuex already installed. You have to
+                &ldquo;activate&rdquo; it though. And how do you activate it? </span></li>
+        <li><span style="font-size: 14pt;">By adding a&nbsp;<code>store/index.js</code> file, Vuex gets added to the app
+                and you can start setting up mutations, actions, etc in that file. </span></li>
+    </ul>
+
+    <h1 id="the-static-folder"><span style="font-size: 18pt;">The &ldquo;static&rdquo; Folder</span></h1>
+    <ul>
+        <li><span style="font-size: 14pt;">Some assets shouldn&rsquo;t be processed though. You might have some images
+                which you don&rsquo;t want to funnel through <span style="color: #2dc26b;"><strong>Webpack&rsquo;s build
+                        process</strong></span>. You might have some CSS that&rsquo;s good to use just as it is.</span>
+        </li>
+        <li><span style="font-size: 14pt;">Such assets should go into the&nbsp;<code>static</code>&nbsp;folder. You
+                won&rsquo;t import them into your Vue components as you imported assets but instead you simply use them
+                in your templates like this:</span></li>
+    </ul>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+
+    <pre>
+    <code class="language-csharp">
+            &lt;template>
+                &lt;img src="my-image.png">
+            &lt;/template>
+    </code>
+</pre>
+
+    <p><span style="font-size: 14pt;">Here,&nbsp;<strong><span
+                    style="color: #000000;"><code>my-image.png</code></span></strong>&nbsp;would be stored in&nbsp;<span
+                style="color: #000000;"><strong><code>static</code></strong></span>. Please note that you omit the path.
+            You don&rsquo;t import&nbsp;<span
+                style="color: #000000;"><strong><code>static/my-image.png</code></strong></span>&nbsp;- static assets
+            are copied directly into your root folder and hence can be imported from there. </span></p>
+
+
+    <h1 id="the-static-folder"><span style="font-size: 18pt;">The &ldquo;middlware&rdquo; Folder</span></h1>
+    <p><span style="font-size: 14pt;">Whenever a route is loaded, Nuxt.js can execute some middleware. That&rsquo;s
+            essentially a function which is executed right before the target component for a given route is rendered to
+            the screen.</span></p>
+    <p><span style="font-size: 14pt;">Note: In universal mode, middlewares will be called server-side once (on the first
+            request to the Nuxt app or when page refreshes) and client-side when navigating to further routes. In SPA
+            mode, middlewares will be called client-side on the first request and when navigating to further
+            routes.</span></p>
+    <p>&nbsp;</p>
+    <p><strong><span style="font-size: 14pt; color: #e03e2d;">What&rsquo;s the use of middleware?</span></strong></p>
+    <p><span style="font-size: 14pt;">You can, for example, use it to check whether a user is allowed to enter a certain
+            route/ page. You could check the user&rsquo;s authentication status and redirect if he&rsquo;s
+            unauthenticated.</span></p>
+    <p>&nbsp;</p>
+    <p><span style="font-size: 14pt;">Here&rsquo;s what a middleware function looks like in Nuxt.js: </span></p>
+
+    <pre>
+    <code class="language-csharp">
+            export default function({ store }) {
+                return store.getters.isAuth
+              }
+    </code>
+</pre>
+
+
+    <p><span style="font-size: 14pt;">This code would be put into a file in the&nbsp;<strong><span
+                    style="color: #e03e2d;"><code>middleware</code>&nbsp;</span></strong>folder. Maybe
+            the&nbsp;<strong><span
+                    style="color: #e03e2d;"><code>middleware/auth.js</code></span></strong>&nbsp;file.</span></p>
+    <p><span style="font-size: 14pt;">You can then assign this middleware to all routes by adding it to
+            the&nbsp;<code>router</code>&nbsp;config in your&nbsp;<code>nuxt.config.js</code>&nbsp;file (an example can
+            be seen&nbsp;<a href="https://nuxtjs.org/guide/routing#middleware">here</a>) or to a specific layout (=
+            group of pages) or single pages.</span></p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    You assign a middleware to layouts and pages by adding the special middleware property to the Vue component objects
+    <pre>
+        <code class="language-csharp">
+                <script>
+                    export default {
+                        middleware: 'auth' // or ['auth'] to assign multiple middlewares
+                    }
+                </script>
+        </code>
+
+    </pre>
+
+    <h1 id="the-plugins-folder">The &ldquo;plugins&rdquo; Folder</h1>
+    <p><strong><span style="font-size: 14pt; color: #000000;">How do you register global components in a
+                &ldquo;normal&rdquo; Vue app?</span></strong></p>
+    <p><span style="font-size: 14pt;">You add the following code to your&nbsp;<strong><span
+                    style="color: #e03e2d;"><code>main.js</code></span></strong>&nbsp;file:</span></p>
+    <p>&nbsp;</p>
+
+    <pre>
+        <code class="language-csharp">
+                import MyComponent from 'path/to/my-component'
+
+                Vue.component('my-component', MyComponent)
+        </code>
+    </pre>
+
+
+    <p><span style="font-size: 14pt;">The same approach is used to register <span style="color: #2dc26b;">global
+                directives or filters</span> etc.</span></p>
+    <p><span style="font-size: 14pt;">Where do you add that code in a Nuxt.js project though? You got
+            no&nbsp;<code>main.js</code>&nbsp;file there!</span></p>
+    <p><span style="font-size: 14pt;">The answer is: You create a plugin.</span></p>
+    <p>&nbsp;</p>
+    <ul>
+
+
+        <ul>
+            <li><span style="font-size: 14pt;">You simply add a file to the&nbsp;<span
+                        style="color: #2dc26b;"><strong><code>plugins</code>&nbsp;</strong></span>folder -
+                    maybe&nbsp;<strong><span
+                            style="color: #2dc26b;"><code>plugins/global-components.js</code></span></strong>.</span>
+            </li>
+            <li><span style="font-size: 14pt;">In that file, you import Vue (<strong><span
+                            style="color: #2dc26b;"><code>import Vue from 'vue'</code></span></strong>) and you add the
+                    above code to register a global component/directive/&hellip;</span></li>
+            <li><span style="font-size: 14pt;">Once that&rsquo;s done, you just have to inform Nuxt.js about your newly
+                    created plugin. You do this in the&nbsp;<code>nuxt.config.js</code>&nbsp;file.</span></li>
+            <li><span style="font-size: 14pt;">There, you either find or add a&nbsp;<code>plugins</code>&nbsp;property
+                    to the exported object. It should look like this:</span></li>
+        </ul>
+        <p>&nbsp;</p>
+
+        <pre>
+    <code class="language-csharp">
+            module.exports = {
+                plugins: ['~/plugins/vue-notifications'],
+              }
+    </code>
+</pre>
+
+        <ul>
+            <li><span style="font-size: 14pt;"><code>plugins</code>&nbsp;holds an array of paths, pointing to your
+                    custom plugin files. The&nbsp;<code>~</code>&nbsp;works like the&nbsp;<code>@</code>&nbsp;sign
+                    (which isn&rsquo;t available in that file) and references the root folder.</span></li>
+            <li><span style="font-size: 14pt;">And that&rsquo;s it! Nuxt.js will now execute the code in that file (or
+                    all referenced files of course) whenever your app starts!</span></li>
+        </ul>
+
+
+        <h2>Note</h2>
+
+        <p id="the-nuxt-config-js-file"><span
+                style="font-size: 18pt; font-family: 'comic sans ms', sans-serif; color: #000000;">It is important to
+                know that in any Vue&nbsp;<a style="color: #000000;"
+                    href="https://vuejs.org/v2/guide/instance.html#Lifecycle-Diagram">instance lifecycle</a>,
+                only&nbsp;<span
+                    style="color: #169179;"><strong><code>beforeCreate</code>&nbsp;</strong></span>and&nbsp;<span
+                    style="color: #169179;"><strong><code>created</code>&nbsp;</strong></span>hooks are
+                called&nbsp;<strong>both, from client-side and server-side</strong>. All other hooks are called only
+                from the client-side. </span></p>
+</body>
+<script src="../EF/js/prism.js"></script>
+<script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true,
+            // 'break-lines': 10,
+            // 'indent': 2,
+            // 'remove-initial-line-feed': false,
+            // 'tabs-to-spaces': 4,
+            // 'spaces-to-tabs': 4
+        });
+</script>
+</body>
+
+</html>

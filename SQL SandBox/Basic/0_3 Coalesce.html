@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../css/dracula.css">
+    <link rel="stylesheet" href="../css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+===========================================================================
+<h2>Coalesce </h2>
+<h3 class="post-title entry-title"><strong><span style="color: #000000; font-size: 14pt;">COALESCE() returns the first Non NULL value.&nbsp;</span></strong></h3>
+
+<div class="row">
+<div class="col-lg-6">
+  <h2>Employee Table</h2>
+  <table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr style="background-color: gray; color: white;">
+<td style="width: 25%;">ID</td>
+<td style="width: 25%;">FirstName</td>
+<td style="width: 25%;">MiddleName</td>
+<td style="width: 25%;">LastName</td>
+</tr>
+<tr>
+<td style="width: 25%;">1</td>
+<td style="width: 25%;">Sam</td>
+<td style="width: 25%;">NULL</td>
+<td style="width: 25%;">NULL</td>
+</tr>
+<tr>
+<td style="width: 25%;">2</td>
+<td style="width: 25%;">NULL</td>
+<td style="width: 25%;">Todd</td>
+<td style="width: 25%;">Tanzan</td>
+</tr>
+<tr>
+<td style="width: 25%;">3</td>
+<td style="width: 25%;">NULL</td>
+<td style="width: 25%;">NULL</td>
+<td style="width: 25%;">Sara</td>
+</tr>
+<tr>
+<td style="width: 25%;">4</td>
+<td style="width: 25%;">Diwas</td>
+<td style="width: 25%;">Poudel</td>
+<td style="width: 25%;">NULL</td>
+</tr>
+<tr>
+<td style="width: 25%;">5</td>
+<td style="width: 25%;">James</td>
+<td style="width: 25%;">Watt</td>
+<td style="width: 25%;">Nancy</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="col-lg-6">
+  <h2>Output Required</h2>
+  <table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr style="background-color: gray; color: white;">
+<td style="width: 50%;">ID</td>
+<td style="width: 50%;">Name</td>
+</tr>
+<tr>
+<td style="width: 50%;">1</td>
+<td style="width: 50%;">Sam</td>
+</tr>
+<tr>
+<td style="width: 50%;">2</td>
+<td style="width: 50%;">Todd</td>
+</tr>
+<tr>
+<td style="width: 50%;">3</td>
+<td style="width: 50%;">Sara</td>
+</tr>
+<tr>
+<td style="width: 50%;">4</td>
+<td style="width: 50%;">Diwas</td>
+</tr>
+<tr>
+<td style="width: 50%;">5</td>
+<td style="width: 50%;">James</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>  
+
+
+<pre class="limit-15">
+  <code class='language-sql'>
+    SELECT Id, COALESCE(FirstName, MiddleName, LastName) AS Name
+    FROM Employee
+  </code>
+</pre>
+
+=================================================
+<p><span style="text-decoration: underline;"><span style="font-size: 18pt; color: #ff0000; text-decoration: underline;">Best way to contact a person&nbsp;</span></span></p>
+<p><span style="font-size: 14pt;">Business Phone First if exists,cell_phone Second if exists, Landline if exists else null</span></p>
+<p><strong><span style="font-size: 14pt;">Contact Table</span></strong></p>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr style="background-color: gray; color: white;">
+<td style="width: 25%;">Name</td>
+<td style="width: 25%;">Bussiness_Phone</td>
+<td style="width: 25%;">Cell_Phone</td>
+<td style="width: 25%;">Home_Phone</td>
+</tr>
+<tr>
+<td style="width: 25%;">Diwas&nbsp;</td>
+<td style="width: 25%;">531-2531</td>
+<td style="width: 25%;">622-7813</td>
+<td style="width: 25%;">565-9901</td>
+</tr>
+<tr>
+<td style="width: 25%;">Laura</td>
+<td style="width: 25%;">NULL</td>
+<td style="width: 25%;">772-5588312</td>
+<td style="width: 25%;">312-4088</td>
+</tr>
+<tr>
+<td style="width: 25%;">Peter</td>
+<td style="width: 25%;">NULL</td>
+<td style="width: 25%;">NULL</td>
+<td style="width: 25%;">594-7477</td>
+</tr>
+</tbody>
+</table>
+<p><strong></strong></p>
+
+<pre>
+  <code class="language-sql">
+SELECT Name, COALESCE (Business_Phone, Cell_Phone, Home_Phone) Contact_Phone FROM Contact;
+  </code>
+</pre>
+
+<p>&nbsp;</p>
+<table class="result" border="1">
+<tbody>
+<tr style="background-color: gray; color: white;">
+<td><u>Name</u></td>
+<td><u>Contact_Phone</u></td>
+</tr>
+<tr>
+<td>Jeff</td>
+<td align="right">531-2531</td>
+</tr>
+<tr>
+<td>Laura</td>
+<td align="right">772-5588</td>
+</tr>
+<tr>
+<td>Peter</td>
+<td align="right">594-7477</td>
+</tr>
+</tbody>
+</table>
+=============================================================================
+
+<h2>Practical</h2>
+Suppose I have this in table Person
+<table border="1">
+<tbody>
+<tr style="background-color: black; color: white;" >
+<td>Id</td>
+<td>FirstName</td>
+<td>MiddleName</td>
+<td>LastName</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Diwas</td>
+<td>NULL</td>
+<td>Poudel</td>
+</tr>
+</tbody>
+</table>
+
+Then I want to get Full Name of this Person
+
+    <pre>
+      <code class="language-sql">
+        SELECT FirstName +' '+MiddleName+' '+ LastName FullName FROM Person
+      </code>
+    </pre>
+
+Result:
+<table style="border-collapse: collapse; width: 20.8814%; height: 65px;" border="1">
+<tbody>
+<tr style="background-color: gray; color: white;">
+<td style="width: 100%; height: 49px;">FullName</td>
+</tr>
+<tr style="height: 49px;">
+<td style="width: 100%; height: 49px;">Null</td>
+</tr>
+</tbody>
+</table>
+
+===
+
+    <pre>
+      <code class="language-sql">
+        SELECT FirstName +' '+COALESCE(MiddleName,'') +' '+ LastName  FROM Person
+      </code>
+    </pre>
+    Result:
+<table style="border-collapse: collapse; width: 21.511%; height: 66px;" border="1">
+<tbody>
+<tr style="background-color: gray; color: white;">
+<td style="width: 100%; height: 49px;">FullName</td>
+</tr>
+<tr style="height: 49px;">
+<td style="width: 100%; height: 49px;">Diwas Poudel</td>
+</tr>
+</tbody>
+</table>
+
+Here ,MiddleName is Null and gets ' '  (space) in place of MiddleName
+
+
+=============================================================================
+
+<h2>Example</h2>
+<pre>
+      <code class="language-sql">
+        COALESCE(HourlyWage * HoursPerWeek,0)
+      </code>
+    </pre>
+
+
+
+=============================================================================
+<script src="../js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

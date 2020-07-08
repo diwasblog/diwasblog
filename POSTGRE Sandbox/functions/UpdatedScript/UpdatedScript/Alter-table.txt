@@ -1,0 +1,2 @@
+ALTER TABLE office.users  ADD COLUMN is_signin boolean DEFAULT false;
+alter table sms.sms_setup add column start_hangfire boolean default false

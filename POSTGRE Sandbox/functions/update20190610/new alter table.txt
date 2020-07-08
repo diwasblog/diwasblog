@@ -1,0 +1,7 @@
+alter table sms.sms_setup add column auto_send_failed_sms bool default false
+alter table sms.sms_setup add column loan_sms_activation_alert bool default false
+
+alter table sms.sms_log add column cell_number character varying
+alter table sms.sms_log add column sms_resent_date character varying
+alter table sms.sms_log add column attempt_count int default 0
+

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+  <link rel="stylesheet" href="../Ef/css/bootstrap.css">
+  <link rel="stylesheet" href="../Ef/css/bootstrap-grid.css">
+  <link rel="stylesheet" href="../Ef/css/bootstrap-reboot.css">
+  <link rel="stylesheet" href="../Ef/css/dracula.css">
+  <link rel="stylesheet" href="../Ef/css/dracula-prism.css">
+  <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+  <h2>Main Logic of If else</h2>
+  <div class="row">
+    <div class="col-lg-4">
+      <pre>
+      <code class="language-csharp">
+        IF boolean-expression THEN
+        statements
+    ELSE
+        statements
+    END IF;
+      </code>
+    </pre>
+    </div>
+    <div class="col-lg-4">
+      <pre>
+      <code class="language-csharp">
+        DO $$ BEGIN
+        CASE
+            WHEN boolean-expression THEN
+              statements;
+            WHEN boolean-expression THEN
+              statements;
+            ...
+            ELSE
+              statements;
+        END CASE;
+    END $$;
+      </code>
+    </pre>
+    </div>
+    <div class="col-lg-4">
+      <pre>
+      <code class="language-csharp">
+        IF select count(*) from orders > 0       
+        // return true or false ,ie. if count >0 then true else false
+        THEN
+          DELETE from orders
+        ELSE 
+          INSERT INTO orders values (1,2,3);
+        END IF;
+      </code>
+    </pre>
+    </div>
+  </div>
+
+  <pre>
+        <code class="language-csharp">
+            //productname,unitprice  are column name 
+                SELECT productname,unitprice,
+                CASE WHEN unitprice<10 THEN 'inexpensive'
+                     WHEN unitprice>=10 AND unitprice<=50 THEN 'mid-range'
+                     WHEN unitprice > 50 THEN 'premium'
+                END AS quality
+                FROM products;
+        </code>
+    </pre>
+
+  <h2>If else Query</h2>
+
+  <pre>
+      <code class="language-csharp">
+        CREATE OR REPLACE FUNCTION public.fn_getdatas( roleId integer )
+            RETURNS TABLE(id bigint, user_id integer, tech_name character varying, breed_id integer, breed_name text, total_ai bigint, count bigint) 
+            LANGUAGE 'plpgsql'   // use 'plpgsql' instead of sql            Need ====>  1
+        
+            COST 100
+            STABLE 
+            ROWS 1000
+        AS $BODY$
+        BEGIN
+        if roleId >=4 then
+        return QUERY  
+            SELECT * from tableName ;   // Required ';'   Need ====>  2
+	elseif roleId == 6              //Need to be elseif/ELSIF but not else if  =====> Important          
+	return query
+             select * from tableName;
+        else return QUERY
+            SELECT * from tableName where Id = 5; 
+        END If;
+        end
+
+
+        You need a ; at the end of each statement in plpgsql (except for the final END).
+        You need END IF; at the end of the IF statement.
+      </code>
+  </pre>
+
+  <h2>Next Example</h2>
+  <pre>
+<code class="language-csharp">
+SELECT 
+f.a, 
+CASE WHEN s.Gender = 'M' THEN 1 ELSE 0 END
+FROM Student s 
+JOIN Department d on d.id = s.department_id
+</code>
+
+  </pre>
+
+  </br>
+  <h2>Check If Exist </h2>
+  will return true if exist and return false if doesnot exist. And returning boolean is best
+  <pre>
+  <code class="language-csharp">
+    SELECT EXISTS(SELECT 1 FROM Student s WHERE s.student_id = 1 )     // This will return true if exists or false if not
+  </code>
+</pre>
+  <br>
+  <hr>
+
+  <div class="row">
+    <div class="col-lg-6">
+      <pre>
+            <code class="language-sql">
+              select
+              case
+                when precipitation = 0 then 'none'
+                when precipitation <= 5 then 'little'
+                when precipitation > 5 then 'lots'
+                else 'unknown'
+              end as amount_of_rain
+            from weather_data;
+            </code>
+        </pre>
+    </div>
+  </div>
+  <hr>
+  <h2>case in where condition</h2>
+  <pre>
+  <code class="language-csharp">
+    WHERE
+      @district = 
+      CASE d.districtId
+          WHEN '5' THEN 'Jhapa'
+          WHEN '7' THEN  'Kailali' 
+      END
+  </code>
+</pre>
+
+  <br>
+  <hr>
+  <h2>TRUE FALSE NULL</h2>
+  <table style="border-collapse: collapse; width: 23.1915%;" border="1">
+    <tbody>
+      <tr>
+        <td style="width: 11.9681%;"><span style="color: #000000;"><strong>True Supported</strong></span></td>
+        <td style="width: 11.2367%;"><span style="color: #000000;"><strong>False Supported</strong></span></td>
+      </tr>
+      <tr>
+        <td style="width: 11.9681%;"><span style="color: #000000;"><strong>true </strong></span></td>
+        <td style="width: 11.2367%;"><span style="color: #000000;"><strong>false </strong></span></td>
+      </tr>
+      <tr>
+        <td style="width: 11.9681%;"><span style="color: #000000;"><strong>'t' </strong></span></td>
+        <td style="width: 11.2367%;"><span style="color: #000000;"><strong>'f' </strong></span></td>
+      </tr>
+      <tr>
+        <td style="width: 11.9681%;"><span style="color: #000000;"><strong>'tr' </strong></span></td>
+        <td style="width: 11.2367%;"><span style="color: #000000;"><strong>'fa' </strong></span></td>
+      </tr>
+      <tr>
+        <td style="width: 11.9681%;"><span style="color: #000000;"><strong>'tru' </strong></span></td>
+        <td style="width: 11.2367%;"><span style="color: #000000;"><strong>'fal' </strong></span></td>
+      </tr>
+      <tr>
+        <td style="width: 11.9681%;"><span style="color: #000000;"><strong>'true' </strong></span></td>
+        <td style="width: 11.2367%;"><span style="color: #000000;"><strong>'fals' </strong></span></td>
+      </tr>
+      <tr>
+        <td style="width: 11.9681%;"><span style="color: #000000;"><strong>'y' </strong></span></td>
+        <td style="width: 11.2367%;"><span style="color: #000000;"><strong>'false' </strong></span></td>
+      </tr>
+      <tr>
+        <td style="width: 11.9681%;"><span style="color: #000000;"><strong>'ye' </strong></span></td>
+        <td style="width: 11.2367%;"><span style="color: #000000;"><strong>'n' </strong></span></td>
+      </tr>
+      <tr>
+        <td style="width: 11.9681%;"><span style="color: #000000;"><strong>'yes' </strong></span></td>
+        <td style="width: 11.2367%;"><span style="color: #000000;"><strong>'no' </strong></span></td>
+      </tr>
+      <tr>
+        <td style="width: 11.9681%;"><span style="color: #000000;"><strong>'on' </strong></span></td>
+        <td style="width: 11.2367%;"><span style="color: #000000;"><strong>'of' </strong></span></td>
+      </tr>
+      <tr>
+        <td style="width: 11.9681%;"><span style="color: #000000;"><strong>'1' </strong></span></td>
+        <td style="width: 11.2367%;"><span style="color: #000000;"><strong>'off' </strong></span></td>
+      </tr>
+      <tr>
+        <td style="width: 11.9681%;">&nbsp;</td>
+        <td style="width: 11.2367%;"><span style="color: #000000;"><strong>'0' </strong></span></td>
+      </tr>
+    </tbody>
+  </table>
+  <p><span style="font-size: 18pt;">Other similar options will cause a <strong><span style="color: #e03e2d;">syntax
+          error</span></strong>, such as&nbsp;<code>1</code>, or&nbsp;<code>tru</code>. </span></p>
+  <p><span style="font-size: 18pt;">Other similar options that throw <strong><span style="color: #e03e2d;">syntax
+          errors</span></strong> include&nbsp;<code>0</code>,&nbsp;<code>fa</code>, and&nbsp;<code>'0.0'</code>.</span>
+  </p>
+  <p><strong><span style="font-size: 18pt; color: #e03e2d;">Null or NULL or null</span></strong></p>
+  <p><strong><span style="font-size: 18pt; color: #000000;"><code>NULL</code>&nbsp;is the value PostgreSQL uses for a
+        <em>missing value</em>&nbsp;or&nbsp;<em>no value</em>. Note that&nbsp;<code>NULL</code>&nbsp;is not equal to any
+        value.&nbsp;<code>NULL</code>&nbsp;isn't even equal to itself! </span></strong></p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+
+  <hr>
+
+
+
+
+  <script src="../Ef/js/prism.js"></script>
+  <script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+      {
+        'remove-trailing': true,
+        'remove-indent': true,
+        'left-trim': true,
+        'right-trim': true,
+        // 'break-lines': 10,
+        // 'indent': 2,
+        // 'remove-initial-line-feed': false,
+        // 'tabs-to-spaces': 4,
+        // 'spaces-to-tabs': 4
+      });
+  </script>
+</body>
+
+</html>

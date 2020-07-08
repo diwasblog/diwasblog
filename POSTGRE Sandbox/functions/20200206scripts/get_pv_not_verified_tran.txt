@@ -1,0 +1,43 @@
+-- FUNCTION: deposit.get_pv_not_verified_tran(bigint, date)
+
+-- DROP FUNCTION deposit.get_pv_not_verified_tran(bigint, date);
+
+CREATE OR REPLACE FUNCTION deposit.get_pv_not_verified_tran(
+	account_number_id_ bigint,
+	till_ date)
+    RETURNS TABLE(tran_id bigint, approved boolean, tran_date character varying, value_date character varying, debit numeric, credit numeric, collector_name character varying, check_number text, user_name text, description text) 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+----SELECT * FROM deposit.get_pv_not_verified_tran(15155549, '2019-09-15')
+BEGIN
+    CREATE TEMP TABLE _pvs(tran_id bigint, 
+						   approved boolean, 
+						   tran_date character varying,
+						   value_date character varying, 
+						   debit decimal, 
+						   credit decimal, 
+						   collector_name character varying, 
+						   check_number text, 
+						   user_name text, 
+						   description text) ON COMMIT DROP;
+
+    INSERT INTO _pvs(tran_id , approved , tran_date,value_date , debit , credit , collector_name , check_number 
+					 , user_name , description ) 
+	SELECT p.tran_id, false approved,core.date_bs_from_ad(p.tran_date::date) tran_date, core.date_bs_from_ad(p.value_date::date)value_date, 
+p.debit::decimal , p.credit::decimal, office.get_collector_name(p.collector_id) collector_name, p.check_number,office.get_user_name_by_user_id(p.user_id) user_name,'' Description
+FROM deposit.tranaction_view_for_pb p
+WHERE P.account_number_id =account_number_id_ AND p.tran_date<= till_ AND p.pv_id IS NULL;
+
+    RETURN QUERY(
+    SELECT _pvs.tran_id , _pvs.approved , _pvs.tran_date, _pvs.value_date , _pvs.debit , _pvs.credit , _pvs.collector_name , _pvs.check_number 
+					 , _pvs.user_name , _pvs.description FROM _pvs ORDER BY tran_date);
+END
+
+$BODY$;
+
+ALTER FUNCTION deposit.get_pv_not_verified_tran(bigint, date)
+    OWNER TO postgres;

@@ -1,0 +1,74 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+
+<div class="row">
+  <div class="col-lg-12" style="padding:15px">
+    <p><span style="color: #ff0000;"><strong><span style="font-size: 14pt;">MiddleWare</span></strong></span></p>
+<p><span style="font-size: 12pt;">Middleware is like middle man.</span></p>
+<p><span style="font-size: 12pt;">he ASP.NET Core architecture features a system of&nbsp;<strong>middleware</strong>, which are <span style="color: #000000;"><strong>pieces of code that handle requests and responses</strong></span>. </span></p>
+<p><span style="font-size: 12pt;"><span style="color: #ff0000;"><strong>Middleware are chained to each other to form a&nbsp;pipeline.</strong></span> <strong><span style="color: #ff0000;">Incoming requests</span></strong> are passed through the pipeline, where each middleware has a chance to do something with them before passing them to the next middleware. Outgoing responses are also passed through the pipeline,<span style="color: #ff0000;"><strong> in reverse order.</strong></span></span></p>
+<p><span style="font-size: 12pt;">They are mostly hidden behind nicely named <span style="color: #ff0000;"><strong>extension&nbsp; methods</strong></span> like <span style="color: #ff0000;"><strong>UseMvc()</strong></span>,<span style="color: #ff0000;"><strong>UserAuthentication(),UseDeveloperExceptionPage(</strong></span>)&nbsp;</span></p>
+
+<img src="img/middleware.png">
+
+
+MiddelWare1, Middleware2 and Middleware3 forms a pipelining.
+<p><span style="font-size: 12pt;">Middleware is present in Startup.cs file inside Configure Method as below:</span></p>
+
+
+<xmp class="prettyprint">
+      public void Configure(IApplicationBuilder app)
+      {    
+        app.UseExceptionHandler("/Home/Error");  ====> A
+
+        app.UseStaticFiles();                    ====> B
+
+        app.UseAuthentication();                 ====> C 
+
+        app.UseMvcWithDefaultRoute();            ====> D
+      }
+</xmp>
+====================================================================================
+<div class="line number7 index6 alt2"><code class="csharp plain"></code></div>
+<p><span style="font-size: 12pt;">Here 4 middleware are chained together to form pipelining.</span></p>
+<p><span style="font-size: 12pt;">Imagine the request pipeline as a huge tube where you can call something in and where an echo comes back.&nbsp;</span></p>
+<p><strong><span style="font-size: 12pt; color: #000000;">===============================================================================================</span></strong></p>
+<p><span style="font-size: 12pt;">In an ASP.NET Core web, if the client requests an image or any other static file, the&nbsp;<code><strong><span style="color: #000000;">StaticFileMiddleWare</span></strong>(ie. <strong><span style="color: #ff0000;">UseStaticFiles(</span></strong><span style="color: #ff0000;">)</span>) </code><strong><span style="color: #000000;">searches for that resource and returns that resource if it finds one.</span> </strong></span></p>
+<p><span style="font-size: 12pt;"><strong><span style="color: #ff00ff;">If not, this middleware does nothing except to call the next one.</span> </strong>If there is no last middleware that handles the request pipeline( must have app.Run extension), the request returns nothing. </span></p>
+<p><span style="font-size: 12pt;">The<span style="color: #000000;"><strong>&nbsp;<code>MvcMiddleWare</code></strong></span>&nbsp;also <strong><span style="color: #000000;">checks the requested resource,</span></strong> <span style="color: #ff00ff;"><strong>tries to map it to a configured route</strong></span>, <strong><span style="color: #0000ff;">executes the controller</span></strong>, <span style="color: #003366;"><strong>creates a view,</strong> </span>and <strong><span style="color: #ff0000;">returns an HTML or Web API result.</span></strong></span></p>
+<p><span style="font-size: 12pt;"> If&nbsp;<strong><span style="color: #ff00ff;"><code>MvcMiddleWare </code>doesn't find a matching controller</span></strong>, it will return a result anyway, in this case, <strong><span style="color: #000000;">a 404 Status</span></strong> result. It returns an echo in any case. This is <span style="color: #ff0000; font-size: 18pt;"><strong>why&nbsp;<code>MvcMiddleWare</code>&nbsp;is the last configured middleware.</strong></span></span></p>
+<p><strong><span style="color: #000000;">==================================================================================================================</span></strong></p>
+<p><span style="font-size: 12pt;">The <span style="color: #ff00ff;"><strong>exception handling middleware</strong></span> usually is one of the first middlewares to get configured, but <strong><span style="color: #000000;">it is not because it gets executed not first but last.</span></strong> &nbsp;An exception handling middleware validates the result and displays a possible exception in a browser and client-friendly way. <span style="color: #ff0000;"><strong>This is where a runtime error gets a 500 Status.</strong></span></span></p>
+<p><span style="font-size: 12pt;"><span style="color: #ff0000;"><strong>Execute in this way:</strong></span></span></p>
+<p><strong><span style="font-size: 12pt; color: #000000;">A</span></strong></p>
+<p><strong><span style="font-size: 12pt; color: #000000;">B</span></strong></p>
+<p><strong><span style="font-size: 12pt; color: #000000;">C</span></strong></p>
+<p><strong><span style="font-size: 12pt; color: #000000;">D</span></strong></p>
+<p><strong><span style="font-size: 12pt; color: #000000;">C</span></strong></p>
+<p><strong><span style="font-size: 12pt; color: #000000;">B</span></strong></p>
+<p><span style="font-size: 12pt;"><span style="color: #ff0000;"><strong><span style="color: #000000;">A</span>&nbsp; <span style="color: #ff00ff;">(This ie . <code class="csharp plain">app.UseExceptionHandler(</code><code class="csharp string">"/Home/Error"</code><code class="csharp plain">);</code> will execute at last so it is said " The first configured middleware is also the last one if the echo comes back down the tube."&nbsp;</span></strong></span></span></p>
+<p><span style="font-size: 12pt;">The&nbsp;<code>Use*</code>&nbsp;methods in this example are actually just "shortcuts" to make it easier to build the pipeline. Behind the scenes, they all end up using (directly or indirectly) these low-level primitives:&nbsp;<span style="color: #ff0000;"><strong><code>Use</code>&nbsp;and&nbsp;<code>Run</code>.</strong></span> Both add a middleware to the pipeline, the difference is that<strong><span style="color: #000000;">&nbsp;<code>Run</code>&nbsp;adds a&nbsp;<em>terminal</em>&nbsp;middleware</span></strong>, i.e. a middleware that is the last in the pipeline.</span></p>
+
+
+
+<span style="color: #ff0000;"><strong><span style="font-size: 14pt;">Note: The middleware is initialized when the application starts and exists once during the application's lifetime. The constructor gets called once. On the other hand, the&nbsp;<code>Invoke()</code><span id="_tmp_pre_1">&nbsp;</span>method is called once per request.</span>
+  </div>
+</div>
+  </body>
+</html>

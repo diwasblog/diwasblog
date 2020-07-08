@@ -1,0 +1,20 @@
+
+1)npx create-nuxt-app <project-name>
+2) Follow Other Steps
+
+//for local testing
+3) cd <project-name>
+4) npm run dev
+
+//for production
+3) cd <project-name>
+4) npm run build and then npm run start
+
+
+
+npm test, npm start, npm restart, and npm stop are all aliases for npm run xxx
+
+
+Asset: for putting images and css
+
+page folder is heart of nuxt js

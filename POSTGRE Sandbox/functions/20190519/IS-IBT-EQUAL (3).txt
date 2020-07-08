@@ -1,0 +1,30 @@
+
+-- DROP FUNCTION sms.is_ibt_equal(int);
+
+--SELECT * FROM core.is_ibt_equal(1)
+
+CREATE OR REPLACE FUNCTION core.is_ibt_equal(_office_id int)
+    RETURNS boolean
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+AS $BODY$
+DECLARE _diff money;
+
+
+BEGIN
+
+
+SELECT COALESCE(SUM(COALESCE(debit,'0')) -SUM(COALESCE(credit,'0')),'0') FROM core.temp_ibt_settlement INTO _diff;
+
+IF _diff <> '0' THEN
+RETURN false;
+ELSE
+RETURN TRUE;
+END IF;
+END
+$BODY$;
+
+ALTER FUNCTION core.is_ibt_equal(int)
+    OWNER TO postgres;

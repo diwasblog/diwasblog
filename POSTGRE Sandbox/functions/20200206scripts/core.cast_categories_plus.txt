@@ -1,0 +1,12 @@
+CREATE TABLE IF NOT EXISTS core.cast_catagories(cast_id serial UNIQUE,
+								 cast_name character varying(20) NOT NULL);
+								 
+alter table core.non_corporate_customers add column cast_id INTEGER REFERENCES core.cast_catagories(cast_id);
+
+--INSERT INTO core.menus (menu_text,url,parent_menu_id)
+--VALUES('Cast Category Setup','~/MicroFinanceSetup/CastCategorySetup.aspx',(SELECT --menu_id FROM core.menus where menu_text='Account Setup'));
+
+INSERT INTO core.cast_catagories(cast_id, cast_name)
+SELECT 1,'OTHERS' UNION ALL
+SELECT 2, 'JANAJATI' UNION ALL
+SELECT 3, 'DALIT';

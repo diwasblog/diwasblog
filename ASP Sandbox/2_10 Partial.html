@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+    <p><span style="font-size: 18pt; color: #ff0000;"><strong>Partial or RenderPartial:</strong></span></p>
+
+    <h4><span style="color: #ff0000;"><strong>Characteristics of is Partial view:</strong></span></h4>
+<p><span style="font-size: 12pt;">It&rsquo;s a view who do not have layout defined,&nbsp;&nbsp;starts with '_' , can be placed in shared views folder.</span></p>
+<h4><strong><span style="color: #ff0000;">Where / When to Partial views can be used?</span></strong></h4>
+<ul>
+<li><span style="font-size: 12pt;">Need to reuse same view at multiple places (e.g. Header, Footer, Left panel)</span></li>
+<li><span style="font-size: 12pt;">Need to use multiple / Related models in Main view (e.g. Get Products additional Info )</span></li>
+</ul>
+<h4><strong><span style="color: #ff0000;">Syntax of using Partial view :</span></strong></h4>
+<pre>
+    <code class="language-csharp">
+Html.RenderPartial("~/Views/Shared/_Header.cshtml");
+
+Html.RenderPartial("~/Views/Shared/_Product.cshtml", product);
+
+OR
+
+@Html.Partial("~/Views/Shared/_Header.cshtml");
+
+@Html.Partial("~/Views/Shared/_Product.cshtml", product);
+    </code>
+</pre>
+<ul>
+<li>&nbsp;<span style="font-size: 14pt;">No need to create action method. </span></li>
+<li><span style="font-size: 14pt;">Use when data to be display on the partial view is already present in model of current page.</span></li>
+</ul>
+<p><span style="font-size: 18pt; color: #ff0000;"><strong>Action or RenderAction:</strong>&nbsp;</span></p>
+<ul>
+<li><span style="font-size: 14pt;">Requires child action method. </span></li>
+<li><span style="font-size: 14pt;">Use when data to display on the view has independent model.</span></li>
+</ul>
+<ol class="linenums">
+<li class="L0"><span class="pun">@{</span><span class="typ">Html</span><span class="pun">.</span><span class="typ">RenderAction</span><span class="pun">(</span><span class="str">"Category"</span><span class="pun">,</span><span class="str">"Home"</span><span class="pun">);}</span></li>
+<li class="L0"><span class="pun">@{</span><span class="typ">Html</span><span class="pun">.</span><span class="typ">Action</span><span class="pun">(</span><span class="str">"Category"</span><span class="pun">,</span><span class="str">"Home"</span><span class="pun">);}</span></li>
+</ol>
+<p><span class="pun" style="font-size: 12pt;">RenderAction&nbsp; and Action method is useful when the displaying data in the partial view is independent from corresponding view model.</span></p>
+<p><span class="pun"><strong>For example :&nbsp;</strong>In a blog to show category list on each and every page, we would like to use RenderAction method since the list of category is populated by the different model.</span></p>
+<p><strong><span style="color: #ff00ff;">Render Action is best choice when you want to cache partial view. It is faster than action method as well since&nbsp;since its result is directly written to the HTTP response stream.</span></strong></p>
+<p><span style="font-size: 14pt; color: #ff0000;">Partial vs RenderPartial</span></p>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<td style="width: 50%;">Render Partial</td>
+<td style="width: 50%;">Partial</td>
+</tr>
+<tr>
+<td style="width: 50%;"><code>RenderPartial()</code>&nbsp;returns void and the output will be written directly to the output stream,</td>
+<td style="width: 50%;"><code>Partial()</code>method returns&nbsp;<code>MvcHtmlString</code>, which can be assigned to a variable and manipulate it if required.</td>
+</tr>
+<tr>
+<td style="width: 50%;">From a performance perspective, rendering directly to the output stream is better so Render Partial is better</td>
+<td style="width: 50%;">Not much better</td>
+</tr>
+<tr>
+<td style="width: 50%;">No need to create action method</td>
+<td style="width: 50%;">No need to create action method&nbsp;</td>
+</tr>
+<tr>
+<td style="width: 50%;">
+<p><span class="pun">@{</span><span class="typ">Html</span><span class="pun">.</span><span class="typ">RenderPartial</span><span class="pun">(</span><span class="str">"_Comments"</span><span class="pun">);}</span></p>
+</td>
+<td style="width: 50%;">
+<p><span class="lit">@Html</span><span class="pun">.</span><span class="typ">Partial</span><span class="pun">(</span><span class="str">"_Comments"</span><span class="pun">)</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>RenderAction</strong>&nbsp;and&nbsp;<strong>RenderPartial</strong>&nbsp;are faster.</p>
+=======================================================================
+
+Create _header,_footer,_category as partial view selected
+<img src="img/partialview/partialview1.png">
+
+<h2>HomeController</h2>
+<pre>
+<code class="language-html">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace WebApplication1.Controllers
+{
+    public class HomeController : Controller
+    {
+        // GET: Home
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        public PartialViewResult Category()
+        {
+            string[] arrays = { "Sunglass", "Computer", "Laptops" };
+            return PartialView("_Category",arrays);
+        }
+    }
+}
+
+</code>
+
+ </pre> 
+
+<h2>Index.cshtml</h2>
+<pre><code class="language-html">
+  @{
+    ViewBag.Title = "Index";
+}
+
+</code>
+  </pre>
+
+
+  <h2>layout.cshtml</h2>
+<pre><code class="language-html">
+  &lt;!DOCTYPE html>
+&lt;html>
+&lt;head>
+//script and style
+&lt;/head>
+&lt;body>
+    &lt;div class="navbar navbar navbar-fixed-top" style="color:indianred">
+        @{ 
+            var headerpart = Html.Partial("_Header");
+            headerpart = new MvcHtmlString(headerpart.ToString() + "<p> Header Manipulation</p>");
+                 }
+        @headerpart
+    &lt;/div>
+
+    &lt;div class="container body-content">
+        @RenderBody()
+        @{ Html.RenderAction("Category", "Home");}
+        &lt;hr />
+        @{ Html.RenderPartial("_Footer");}
+
+    &lt;/div>
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+</body>
+</html>
+
+
+</code>
+  </pre>
+
+
+<h2>_category.cshtml</h2>
+<pre><code class="language-html">
+&lt;h2> Category&lt;/h2>
+&lt;ul>
+    @foreach (var item in Model)
+    {
+     &lt;li>@item&lt;/li>
+
+    }
+
+&lt;/ul>
+
+</code>
+  </pre>
+
+
+<h2>_footer.cshtml</h2>
+<pre><code class="language-html">
+&lt;footer>
+    &lt;p>&copy; @DateTime.Now.Year - My ASP.NET Application&lt;/p>
+&lt;/footer>
+
+</code>
+  </pre>
+
+  <h2>_header.cshtml</h2>
+<pre><code class="language-html">
+&lt;div class="container">
+
+    &lt;div class="navbar-collapse collapse">
+        &lt;ul class="nav navbar-nav">
+            &lt;li>&lt;h3>Index&lt;/h3>&lt;/li>
+            &lt;li>&lt;h3>Home&lt;/h3>&lt;/li>
+        &lt;/ul>
+    &lt;/div>
+&lt;/div>
+
+</code>
+  </pre>
+
+<img src="img/partialview/partialview2.png">
+
+<script src="js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

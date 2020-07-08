@@ -1,0 +1,39 @@
+-- View: sms.maturity_view
+
+-- DROP VIEW sms.maturity_view;
+
+
+CREATE OR REPLACE VIEW sms.maturity_view AS
+ SELECT s.id,
+ 	a.office_id,
+    s.customer_id,
+    c.customer_name,
+    s.account_number,
+    s.expires_in AS maturity_date_ad,
+    core.date_bs_from_ad(s.expires_in::date) AS maturity_date_bs,
+    s.account_type,
+    s.status,
+    s.ref_dep_ac
+   FROM sms.customer_sms s
+     JOIN deposit.account_holders a ON s.account_number = a.account_number::text
+     JOIN core.customers_view c ON s.customer_id = c.customer_id
+  WHERE s.status = true AND a.status = true AND s.expires_in < core.get_date() AND s.account_type::text = 'Deposit'::text
+UNION ALL
+ SELECT s.id,
+ 	g.office_id,
+    s.customer_id,
+    c.customer_name,
+    s.account_number,
+    s.expires_in AS maturity_date_ad,
+    core.date_bs_from_ad(s.expires_in::date) AS maturity_date_bs,
+    s.account_type,
+    s.status,
+    s.ref_dep_ac
+   FROM sms.customer_sms s
+     JOIN loan.loan_grant g ON s.account_number = g.loan_account_number::text
+     JOIN core.customers_view c ON s.customer_id = c.customer_id
+  WHERE s.status = true AND g.is_dead = false AND s.expires_in < core.get_date() AND s.account_type::text = 'Loan'::text;
+
+ALTER TABLE sms.maturity_view
+    OWNER TO postgres;
+

@@ -1,0 +1,32 @@
+/* :: 5.0 Hero Area */
+.hero-area {
+  position: relative;
+  z-index: 1;
+  background-color: #f3f5f8;
+  padding-top: 50px;
+  border-bottom: 5px solid #e20378; 
+}
+
+.hero-area .post-thumb{
+  position: relative;
+    width: 100%;
+    padding-top: 48%;
+    overflow: hidden;
+}
+
+.hero-area .post-thumb img{
+ position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    text-align: center;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center center;
+  }
+
+  .hero-area .post-data .post-title{
+    text-decoration: none;
+    font-size:30px;
+  }

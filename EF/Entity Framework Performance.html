@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+
+    <p><strong><span style="font-size: 14pt; color: #000000;">Note: <span style="color: #e03e2d;">.ToList()</span>
+                and<span style="color: #e03e2d;"> Enumerable </span>calls the database immediately.&nbsp; But <span
+                    style="color: #e03e2d;">AsQueryAble </span>doesn't call the database immediately.</span></strong>
+    </p>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <h3>Bad Way</h3>
+            <pre>
+                    <code class="language-csharp">
+                            var myCourses = ctx.Courses.ToList();
+                            myCourses = myCourses.Where(c => c.IsActive);
+                            myCourses = myCourses.OrderBy(c => c.CourseName);
+                    </code>
+                </pre>
+            <p><span style="font-size: 14pt;">Here, the first statement will hit the database and is equivalent to
+                    "<strong><span style="color: #000000;">select * from courses</span></strong>" and will return the
+                    <strong><span style="color: #000000;">entire table and store that in memory</span></strong>. Then we
+                    are performing a <span style="color: #000000;"><strong>filter </strong></span>for getting an active
+                    course and <span style="color: #000000;"><strong>order by</strong></span> course. This does high CPU
+                    and memory usage.</span></p>
+        </div>
+
+
+
+
+        <div class="col-lg-6">
+            <h3>Good way</h3>
+            //Use of AsQueryable for deferred Execution
+            <pre>
+                        <code class="language-csharp">
+                                var myQuery = ctx.Courses.AsQueryable();
+                                myQuery = myQuery.Where(c => c.IsActive);
+                                myQuery = myQuery.OrderBy(c => c.CourseName);
+                        </code>
+                    </pre>
+
+            <p>Here, upto last line we are just building a <strong><span style="color: #e03e2d;">query statement (<span
+                            style="color: #000000;">note upto now query is not hitting database but just building query
+                            statement</span>)</span></strong>&nbsp;and<strong><span style="color: #e03e2d;"> will
+                        execute or call to the database</span></strong> only&nbsp; when we enumerate the list as we do
+                in <strong><span style="color: #e03e2d;">foreach </span></strong>loop&nbsp;</p>
+        </div>
+    </div>
+    <br>
+    <h2>Entities Tracking</h2>
+    <p><span style="font-size: 14pt;">When you run the<span style="color: #000000;"><strong> EF query</strong></span>,
+            the context entities are saved, which we called as <span style="color: #e03e2d;"><strong>Entities
+                    Tracking</strong></span>. The reason is that the Entity Framework needs to know what&rsquo;s the
+            differences happened while the context of life is running. This means <strong><span
+                    style="color: #000000;">when you can make changes to entity instances then EF tracks all those
+                    changes made on the entities in server cache and finally trackings gets closed when we execute the
+                    SaveChanges method </span></strong>because <span style="color: #e03e2d;"><strong>at this point we
+                    need not have to track because this Save changes() method already saved it to the database.
+                </strong></span>B<strong>ut <span style="color: #e03e2d;">add an overload</span></strong> in your server
+            and this affects the track queries performance.&nbsp;</span></p>
+    <div class="row">
+
+        <div class="col-lg-12">
+            <pre class="language-csharp">
+                    var blog = context.Blogs.SingleOrDefault(b => b.BlogId == 1);
+                    blog.Rating = 5;
+                    context.SaveChanges();
+</pre>
+        </div>
+    </div>
+    Here , entity : Blogs is tracked .the change to the blogs rating will be detected and persisted to the database
+    during SaveChanges().
+
+
+    <h4>Other Example</h4>
+    <pre class="language-csharp">
+        using(Entities context = new Entities())  
+        {  
+            var employeeWith = context.Employees.AsNoTracking().ToList();   // Takes 10 ms
+            //since we don't track changes, it doesn't work well with CUD (Create, Update, Delete).
+            var employeeWithout = context.Employees.ToList();       // Takes 13 ms
+        } 
+</pre>
+
+    <p><span style="font-size: 18pt;">Use&nbsp;<strong>AsNoTracking()</strong>&nbsp;whenever you:</span></p>
+    <ul style="list-style-type: disc;">
+        <li><strong><span style="font-size: 18pt; color: #000000;">retrieve the data that will be not changed (ex. a
+                    read-only list of books etc).</span></strong></li>
+    </ul>
+
+
+    <br>
+
+    <h2>Getting First Data</h2>
+    <div class="row">
+        <div class="col-lg-6">
+            <h2>Bad</h2>
+            <pre class="language-csharp">
+                    dbContext.Products.ToList().FirstOrDefault();
+            </pre>
+            //If has 100000 then it brings 100000 data in memory and get first data
+        </div>
+
+        <div class="col-lg-6">
+            <h2>Good</h2>
+            <pre class="language-csharp">
+                    dbContext.Products.FirstOrDefault();
+                </pre>
+            //It only bring 1 data in memory and which is top data
+        </div>
+    </div>
+
+    <h2>Bringing only required data from database</h2>
+    <div class="row">
+        <div class="col-lg-6">
+            <h2>Bad</h2>
+            <pre class="language-csharp">
+                    var products = dbContext.Products.ToList();
+            </pre>
+
+        </div>
+
+        <div class="col-lg-6">
+            <h2>Good</h2>
+            <pre class="language-csharp">
+                    var products = dbContext.Products.Select(r => new Product { r.ProductId, r.Title }).ToList();
+                </pre>
+
+        </div>
+    </div>
+
+
+    <h2>Use StringBuilder or String Interplotation instead of String</h2>
+    <div class="row">
+        <div class="col-lg-12">
+            <pre class="language-csharp">
+                string str = ""; // Setting it to null would cause additional problems.
+
+                // Way 1
+                str = "Name: " + name + ", Age: " + age;
+
+                // Way 2
+                str = string.Format("Name: {0}, Age: {1}", name, age);
+
+                // Way 3 Best
+                var builder = new StringBuilder();
+                builder.Append("Name: ");
+                builder.Append(name);
+                builder.Append(", Age: ");
+                builder.Append(age);
+                str = builder.ToString();
+
+                //Ways 4  Much Better ===> String Interpolation 
+                string str = $"Name: {name}, Age: {age}";
+            </pre>
+        </div>
+    </div>
+
+
+    <h2>Use Tuple as far as possible</h2>
+    <p><span style="font-size: 18pt; color: #000000;">Many developers build a<span style="color: #f1c40f;"> <strong>POCO
+                    class</strong></span> in order to <strong><span style="color: #f1c40f;">return multiple
+                    values</span> from a method</strong>. <span style="color: #f1c40f;"><strong>Tuples
+                </strong></span>are initiated in .NET Framework 4.0. They can be used effectively as follows.</span></p>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <pre class="language-csharp">
+                public static void Main()
+                {
+                    Console.WriteLine("Welcome Tuple");
+                    
+                    Tuple<int, string, string> tp = GetMultipleValue();
+                    Console.WriteLine(tp);   // (100, "Rudy","Koertson")
+                    Console.WriteLine(tp.Item1) // 100
+                }
+                
+                public static Tuple<int, string, string> GetMultipleValue()
+            {
+                    int employeeId = 1001;
+            
+                    string firstName = "Rudy";
+            
+                    string lastName = "Koertson";
+                    
+                     return Tuple.Create(1,firstName,lastName);
+            }
+                        </pre>
+        </div>
+    </div>
+
+    <h2>For loop is faster than Foreach</h2>
+    <div class="row">
+        <div class="col-lg-12">
+            <pre class="language-csharp">
+
+
+                      for (int i = 0; i < Count.Count; i++)  
+                       {  
+                              lst1.Add(i);  
+                       }  
+
+                      foreach (int a in Count)  
+                     {  
+                          lst2.Add(a);  
+                      }  
+                        </pre>
+        </div>
+    </div>
+    <hr>
+    <h2>Use asynchronous Methods</h2>
+
+
+    <h2>Try to Avoid Task.Wait or Task.Result in Aync Methods </h2>
+    <p><span style="font-size: 18pt;">When you use <span style="color: #e03e2d;"><strong>wait</strong></span>, you are
+            <strong><span style="color: #000000;">actually blocking thread until the task is completed</span></strong>,
+            which works <span style="color: #e03e2d;"><strong>synchronously</strong></span>, but when you use await
+            keyword, it doesn't block the thread, work <strong><span
+                    style="color: #e03e2d;">asynchronously</span></strong>.</span></p>
+    <div class="row">
+        <div class="col-lg-12">
+            <pre class="language-csharp">
+                //Good Example
+                Task task = GetStudents();
+                await task;
+
+
+                //Bad Example
+                Task task = GetStudents();
+                task.wait()
+
+            </pre>
+        </div>
+    </div>
+
+
+
+</body>
+<script src="js/prism.js"></script>
+<script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true,
+            // 'break-lines': 10,
+            // 'indent': 2,
+            // 'remove-initial-line-feed': false,
+            // 'tabs-to-spaces': 4,
+            // 'spaces-to-tabs': 4
+        });
+</script>
+</body>
+
+</html>
+
+</html>

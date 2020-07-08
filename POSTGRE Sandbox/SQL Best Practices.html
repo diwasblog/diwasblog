@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../Ef/css/bootstrap.css">
+    <link rel="stylesheet" href="../Ef/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../Ef/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../Ef/css/dracula.css">
+    <link rel="stylesheet" href="../Ef/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+    <pre>
+        <code class="language-csharp">
+            Always keep default value for bool in database.   
+        </code>
+
+    </pre>
+
+    <hr>
+
+    <h2>Dividing integer by integer result float so use casting </h2>
+    <pre>
+        <code class="language-csharp">
+            SELECT tax / price AS tax_ratio FROM sale    //bad
+            SELECT tax / price::float AS tax_ratio from sale  //good
+        </code>
+
+    </pre>
+
+    <hr>
+    <h2>Dividing by zero problem and solution</h2>
+    <pre>
+        <code class="lanuguage-csharp">
+            SELECT COALESCE(1 / myvalue);  //bad
+            SELECT COALESCE(1 / NULLIF(myvalue, 0), 1); //good
+        </code>
+    </pre>
+    <h4> Use NOCOUNT for Large Batch Queries</h4>
+
+    <pre>
+        <code class="language-csharp">
+           
+
+            When you perform insert and update to the database then it will always return total no. of row affected.
+            
+            But In a production if you perform insert and update regularly then it is not necessary to send back no.
+            of row affected so use NO COUNT for large Queries
+        </code>
+
+    </pre>
+
+    <hr>
+
+    <pre>
+        <code class="language-csharp">
+            Always Consider Performance, Even If the Query Seems Simple because application can grow any time.
+            </code>
+    </pre>
+
+    <hr>
+    <pre>
+        <code class="language-csharp">
+            Always think about relationship in database eg. Student and School
+            </code>
+    </pre>
+
+
+    <hr>
+    <pre>
+        <code class="language-csharp">
+            USE TABLE ALIASES FOR EASIER READING
+            </code>
+    </pre>
+
+
+    <hr>
+    <h4> Be Specific in Your SELECT Clauses</h4>
+    <pre>
+        <code class="language-csharp">
+          
+
+            select * from table (Bad Way)
+            select a ,b from table ( Good Way)
+            </code>
+    </pre>
+
+
+    <hr>
+    <h4> Know how SQL Actually Works:</h4>
+    <pre>
+        <code class="language-csharp">
+            Order of Keyword:
+
+            SELECT
+            FROM
+            WHERE
+            GROUP BY
+            ORDER BY
+            LIMIT
+            
+            Order of Execution:
+            
+            FROM
+            WHERE
+            GROUP BY
+            SELECT
+            ORDER BY
+            LIMIT
+            
+            SQL first checks which data table we will work with. Then it checks the filters. After that it groups the data.
+            Finally it gets the data – and if necessary, sorts it and prints only the first X lines.
+            </code>
+    </pre>
+
+
+    <hr>
+    <h4> Prettify Code</h4>
+    <pre>
+        <code class="language-csharp">
+            Prettify Your Code (https://codebeautify.org/sqlformatters)
+            </code>
+    </pre>
+
+
+    <hr>
+    <h4> UpperCase and LowerCase</h4>
+    <pre>
+        <code class="language-csharp">
+            All reserve keyword : UpperCase
+            All field values, column names and table names: Lowercase.
+            </code>
+    </pre>
+
+
+    <hr>
+    <h4> Be Specific in Your SELECT Clauses</h4>
+    <pre>
+        <code class="language-csharp">
+            Comment if necessary
+            </code>
+    </pre>
+
+
+    <hr>
+    <h4>Don't use number in ORDER BY and GROUP BY</h4>
+    <pre>
+        <code class="language-csharp">
+            Always use the actual name of the columns in ORDER BY , GROUP BY and never use number
+            </code>
+    </pre>
+
+
+    <hr>
+    <h4> Use the more readable ANSI-Standard Join clauses instead of the old style joins.</h4>
+    <pre>
+        <code class="language-csharp">
+          
+Old Style: (This creates cartesian join)
+=========
+SELECT a.Au_id,
+
+t.Title
+
+FROM TITLES t,
+
+AUTHORS a,
+
+TITLEAUTHOR ta
+
+WHERE a.Au_id = ta.Au_id
+
+AND ta.Title_id = t.Title_id
+
+AND t.Title LIKE ‘%Computer%’
+
+
+
+
+
+ANSI Standard (This donot create cartesian join) 
+============
+
+SELECT a.Au_id,
+
+t.Title
+
+FROM AUTHORS a
+
+INNER JOIN TITLEAUTHOR ta
+
+ON a.Au_id = ta.Au_id
+
+INNER JOIN TITLES t
+
+ON ta.Title_id = t.Title_id
+
+WHERE t.Title LIKE ‘%Computer%’
+            </code>
+    </pre>
+
+
+    <hr>
+    <h4> Always use a column list in your INSERT statements This helps in avoiding problems when the table structure
+        changes
+        (like adding or dropping a column).</h4>
+    <pre>
+        <code class="language-csharp">
+            Don't Use:
+            INSERT INTO EuropeanCountries VALUES (1, ‘Ireland’)
+            
+            Better Use:
+            INSERT INTO EuropeanCountries (CountryID, CountryName) VALUES (1, ‘England’)
+            </code>
+    </pre>
+
+    <hr>
+    <h4>Don't use number in ORDER BY and GROUP BY</h4>
+    <pre>
+        <code class="language-csharp">
+            Always use the actual name of the columns in ORDER BY , GROUP BY and never use number
+            </code>
+    </pre>
+
+    <hr>
+    <h4>
+        Do not prefix your stored procedure names with “sp_”</h4>
+    <pre>
+        <code class="language-csharp">
+            
+The prefix sp_ is reserved for system stored procedure that ship with SQL Server.Whenever SQL Server encounters a
+procedure name starting with sp_, it first tries to locate the procedure in the master database, then it looks for any
+qualifiers (database, owner) provided, then it tries dbo as the owner.
+            </code>
+    </pre>
+
+    <hr>
+
+    <pre>
+        <code class="language-csharp">
+            Names must begin with a letter and may not end with an underscore.
+            </code>
+    </pre>
+
+    <hr>
+
+    <pre>
+        <code class="language-csharp">
+            Avoid the use of multiple consecutive underscores—these can be hard to read.
+            </code>
+    </pre>
+
+    <hr>
+
+    <pre>
+        <code class="language-csharp">
+            Donot prefix table name with tbl.
+            </code>
+    </pre>
+
+    <hr>
+
+    <pre>
+        <code class="language-csharp">
+            Never give a table the same name as one of its columns and vice versa.
+            </code>
+    </pre>
+
+    <hr>
+    <h4> Stored procedures</h4>
+    <pre>
+        <code class="language-csharp">
+         
+            === The name must contain a verb
+            === Do not prefix with sp_
+            </code>
+    </pre>
+
+    <hr>
+    <h4>Don't use number in ORDER BY and GROUP BY</h4>
+    <pre>
+        <code class="language-csharp">
+            Make use of BETWEEN where possible instead of combining multiple statements with AND
+
+
+            SELECT COUNT(productid) FROM public.order_details where productid between 1 AND 40
+            
+            SELECT COUNT(productid) FROM public.order_details where productid >= 1 AND productid <= 40
+            </code>
+    </pre>
+
+    <hr>
+    <h4>For Date Related Better use Between Instead of writing multiple column name</h4>
+    <pre>
+        <code class="language-csharp">
+            //Good Way
+            SELECT * FROM public.employees where birthdate between '1937-09-19' AND '1966-01-27'
+
+
+            //Bad Way
+            SELECT * FROM public.employees where birthdate >= '1937-09-19' AND birthdate <= '1996-01-27'
+            </code>
+    </pre>
+
+    <hr>
+    <h4>use IN() instead of multiple OR clauses</h4>
+    <pre>
+        <code class="language-csharp">
+                Bad
+                ===
+                SELECT * FROM `members` WHERE `membership_number` = 1 || `membership_number`= 2 || `membership_number` = 3);
+
+
+                Good
+                ===
+
+                SELECT * FROM `members` WHERE `membership_number` IN (1,2,3);
+            </code>
+    </pre>
+    <hr>
+    <h4>Use Like Query like this :</h4>
+    <pre>
+        <code class="language-csharp">
+                Charleston, Charlotte, and Charlton,Cape Charles, Crab Orchard, and Richardson
+
+                We want name start with cha: ie. Charleston, Charlotte, Charlton, Cape Charles but not Richardson
+                
+                //Bad Way
+                SELECT City FROM Customers WHERE City LIKE ‘%cha%’
+                
+                Output will be : Charleston, Charlotte, and Charlton,Cape Charles, Crab Orchard, and Richardson
+                
+                ==
+      
+                //Good Way
+                SELECT City FROM Customers WHERE City LIKE ‘Char%’
+
+
+               // Charleston, Charlotte, Charlton, Cape Charles 
+            </code>
+    </pre>
+    <hr>
+
+    <pre>
+        <code class="language-csharp">
+                Try to avoid “TABLE OR INDEX SCAN” in queries
+            </code>
+    </pre>
+    <hr>
+
+    <pre>
+        <code class="language-csharp">
+                Use TRY-CATCH block for error handling
+            </code>
+    </pre>
+    <hr>
+    <h4> Avoid SubQueries</h4>
+    <pre>
+        <code class="language-csharp">
+             
+                Badly written queries always damage SQL Server performance.
+
+
+Bad
+===
+SELECT p.Name,(SELECT pm.Name FROM Production.ProductCategory pm WHERE pm.ProductCategoryID=p.ProductSubcategoryID)
+AS modelname FROM production.Product p
+
+Good
+===
+SELECT
+P.NAME ,PM.NAME FROM
+production.Product p LEFT JOIN
+Production.ProductCategory pm ON pm.ProductCategoryID=p.ProductSubcategoryID
+            </code>
+    </pre>
+
+
+    <pre>
+        <code class="language-csharp">
+            Count(column) only counts non null values. 
+            count(*) counts rows. 
+        </code>
+    </pre>
+
+
+
+    <pre>
+        <code class="language-csharp">
+            SELECT COUNT(*) FROM (SELECT DISTINCT column_name FROM table_name) AS temp; 
+            is faster than
+            COUNT(DISTINCT column_name)
+        </code>
+    </pre>
+    <hr>
+    <h2>Do not use the COUNT() aggregate in a subquery to do an existence check</h2>
+    <h4>Donot Use</h4>
+    <pre>
+    <code class="language-csharp">
+        SELECT column_list FROM table WHERE 0 < (SELECT count(*) FROM table2 WHERE ..)
+    </code>
+    </pre>
+    <h4>Instead Use this:</h4>
+    <pre>
+        <code class="language-csharp">
+            SELECT column_list FROM table WHERE EXISTS (SELECT * FROM table2 WHERE ...)
+        </code>
+        </pre>
+    <ul>
+        <li><span style="font-size: 14pt; color: #000000;">When you use&nbsp;<code>COUNT()</code>, SQL Server does not
+                know that you are doing an existence check. <strong><span style="color: #e03e2d;">It counts all matching
+                        values</span></strong>, either by doing a table scan or by scanning the smallest non-clustered
+                index.</span></li>
+        <li><span style="font-size: 14pt; color: #000000;">When you use&nbsp;<code>EXISTS</code>, SQL Server knows you
+                are doing an existence check. <strong><span style="color: #e03e2d;">When it finds the first matching
+                        value, it returns&nbsp;<code>TRUE</code>&nbsp;and stops looking.</span></strong> The same
+                applies to using&nbsp;<code>COUNT()</code>&nbsp;instead
+                of&nbsp;<code>IN</code>&nbsp;or&nbsp;<code>ANY</code>.</span></li>
+    </ul>
+
+    <hr>
+    <h2>Try to avoid dynamic SQL</h2>
+    <hr>
+    <h2>Implement the following good practices in User Defined Functions</h2>
+    <hr>
+    <ul>
+        <li><span style="font-size: 18pt; color: #000000;"><strong><span style="color: #2dc26b;">Do not call functions
+                        repeatedly within your Stored Procedures, triggers, functions, and batches</span></strong>. For
+                example, you might need the length of a string variable in many places of your procedure, but don't call
+                the&nbsp;<code>LEN</code>&nbsp;function whenever it's needed; instead,<strong> call
+                    the&nbsp;<code>LEN</code>&nbsp;function once</strong>, and store the result in a variable for later
+                use. </span></li>
+    </ul>
+    <br>
+    <hr>
+    <h2>Implement the following good practices in Stored Procedures</h2>
+    <ul>
+        <li>
+            <ul>
+                <li><span style="font-size: 18pt; color: #000000;">Do&nbsp;<strong>not</strong>&nbsp;use "<span
+                            style="color: #169179;">SP_XXX</span>" as a naming convention.<strong> It causes additional
+                            searches and added I/O (because the system Stored Procedure names start with
+                            "SP_").</strong> Using "SP_XXX" as the naming convention also increases the possibility of
+                        conflicting with an existing system Stored Procedure.</span></li>
+                <li><span style="font-size: 18pt; color: #000000;">Use "<span
+                            style="color: #169179;"><strong><code>Set Nocount On</code></strong></span>" to eliminate
+                        extra network trip.</span></li>
+                <li><span style="font-size: 18pt; color: #000000;">Use the&nbsp;<code>WITH RECOMPILE</code>&nbsp;clause
+                        in the&nbsp;<code>EXECUTE</code>&nbsp;statement (first time) when the index structure changes
+                        (so that the compiled version of the Stored Procedure can take advantage of the newly created
+                        indexes).</span></li>
+                <li><span style="font-size: 18pt; color: #000000;">Use default parameter values for easy testing.</span>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+    <hr>
+
+    <h2>Implement the following good practices in Views</h2>
+    <p><span style="color: #000000;"><strong><span style="font-size: 18pt;"><span style="color: #e03e2d;">Do not use
+                        views that retrieve data from a single table only</span> (<span style="color: #e03e2d;">t<span
+                            style="color: #000000;">hat will be an unnecessary overhead</span></span>). Use views for
+                    writing queries that access columns from multiple tables. </span></strong></span></p>
+    <hr>
+
+    <h2>Minimum Among Group By</h2>
+    <pre>
+    <code class="language-sql">
+        SELECT id,
+        name,
+        department,
+        salary,
+        MIN(salary) OVER (PARTITION BY department) AS min_result
+ FROM   employee.employees;
+    </code>
+</pre>
+    <div class="row">
+        <div class="col-lg-6">
+            <table style="border-collapse: collapse; width: 32.8723%;" border="1">
+                <tbody>
+                    <tr style="background: black; color: white;">
+                        <td style="width: 4.27745%;">id</td>
+                        <td style="width: 9.46367%;">name</td>
+                        <td style="width: 12.6773%;">department</td>
+                        <td style="width: 6.49383%;">salary</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 4.27745%;">1</td>
+                        <td style="width: 9.46367%;">diwas</td>
+                        <td style="width: 12.6773%;">IT</td>
+                        <td style="width: 6.49383%;">4500</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 4.27745%;">2</td>
+                        <td style="width: 9.46367%;">yogesh</td>
+                        <td style="width: 12.6773%;">Management</td>
+                        <td style="width: 6.49383%;">1200</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 4.27745%;">3</td>
+                        <td style="width: 9.46367%;">rakesh</td>
+                        <td style="width: 12.6773%;">General</td>
+                        <td style="width: 6.49383%;">1500</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 4.27745%;">4</td>
+                        <td style="width: 9.46367%;">Ananda</td>
+                        <td style="width: 12.6773%;">Management</td>
+                        <td style="width: 6.49383%;">200</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 4.27745%;">5</td>
+                        <td style="width: 9.46367%;">dipesh</td>
+                        <td style="width: 12.6773%;">IT</td>
+                        <td style="width: 6.49383%;">700</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 4.27745%;">6</td>
+                        <td style="width: 9.46367%;">saroj</td>
+                        <td style="width: 12.6773%;">Management</td>
+                        <td style="width: 6.49383%;">700</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-lg-6">
+            //Results
+            <table style="border-collapse: collapse; width: 32.8723%;" border="1">
+                <tbody>
+                    <tr style="background: black; color: white;">
+                        <td style="width: 4.27745%;">id</td>
+                        <td style="width: 9.46367%;">name</td>
+                        <td style="width: 12.6773%;">department</td>
+                        <td style="width: 3.24691%;">salary</td>
+                        <td style="width: 3.24691%;">min_result</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 4.27745%;">1</td>
+                        <td style="width: 9.46367%;">rakesh</td>
+                        <td style="width: 12.6773%;">General</td>
+                        <td style="width: 3.24691%;">1500</td>
+                        <td style="width: 3.24691%;">1500</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 4.27745%;">2</td>
+                        <td style="width: 9.46367%;">diwas</td>
+                        <td style="width: 12.6773%;">IT</td>
+                        <td style="width: 3.24691%;">4500</td>
+                        <td style="width: 3.24691%;">700</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 4.27745%;">3</td>
+                        <td style="width: 9.46367%;">dipesh</td>
+                        <td style="width: 12.6773%;">IT</td>
+                        <td style="width: 3.24691%;">700</td>
+                        <td style="width: 3.24691%;">700</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 4.27745%;">4</td>
+                        <td style="width: 9.46367%;">yogesh</td>
+                        <td style="width: 12.6773%;">Management</td>
+                        <td style="width: 3.24691%;">1200</td>
+                        <td style="width: 3.24691%;">200</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 4.27745%;">5</td>
+                        <td style="width: 9.46367%;">ananda</td>
+                        <td style="width: 12.6773%;">Management</td>
+                        <td style="width: 3.24691%;">200</td>
+                        <td style="width: 3.24691%;">200</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 4.27745%;">6</td>
+                        <td style="width: 9.46367%;">saroj</td>
+                        <td style="width: 12.6773%;">Management</td>
+                        <td style="width: 3.24691%;">700</td>
+                        <td style="width: 3.24691%;">200</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="../EF/js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+    </script>
+</body>
+
+</html>

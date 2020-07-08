@@ -1,0 +1,49 @@
+--DROP TABLE policies.access_policy
+
+CREATE TABLE policies.access_policy
+(
+    policy_id 					bigserial,
+	user_id						integer NOT NULL,
+	ac_type			  			character varying(10),
+    account_number_id			bigint,
+	share_account_id		bigint,
+	loan_id					bigint,
+	gl_account_id			bigint,
+    dr_limit 			money,
+    cr_limit 			money,
+    audit_user_id 		integer NOT NULL,
+    audit_ts 			timestamp with time zone NOT NULL DEFAULT now(),
+    CONSTRAINT access_policy_pkey PRIMARY KEY (policy_id),
+    CONSTRAINT access_policy_account_number_id_fkey FOREIGN KEY (account_number_id)
+        REFERENCES deposit.account_holders (account_number_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT access_policy_audit_user_id_fkey FOREIGN KEY (audit_user_id)
+        REFERENCES office.users (user_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT access_policy_gl_account_id_fkey FOREIGN KEY (gl_account_id)
+        REFERENCES core.gl_accounts (gl_account_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+	CONSTRAINT access_policy_user_id_fkey FOREIGN KEY (user_id)
+        REFERENCES office.users (user_id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+WITH (
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
+ALTER TABLE policies.access_policy
+    OWNER to postgres;
+
+
+
+
+CREATE INDEX access_policy_policy_id_ix
+    ON policies.access_policy USING btree
+    (policy_id)
+    TABLESPACE pg_default;
+

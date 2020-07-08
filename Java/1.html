@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<xmp class="prettyprint">
+    /*
+    * To change this license header, choose License Headers in Project Properties.
+    * To change this template file, choose Tools | Templates
+    * and open the template in the editor.
+    */
+   package demo;
+   
+   import javafx.application.Application;
+   import javafx.event.ActionEvent;
+   import javafx.event.EventHandler;
+   import javafx.scene.Scene;
+   import javafx.scene.control.Button;
+   import javafx.scene.layout.StackPane;
+   import javafx.stage.Stage;
+   
+   /**
+    *
+    * @author DIWAS
+    */
+   public class Demo extends Application {
+       
+       @Override
+       public void start(Stage primaryStage) {
+           Button btn = new Button();
+           
+           btn.setOnAction(new EventHandler<ActionEvent>(){
+               @Override
+               public void handle(ActionEvent event) {
+                 System.out.println("Hello Diwas");
+               }
+               
+           });
+           btn.setText("Click Me");
+   
+           StackPane root = new StackPane();
+           root.getChildren().add(btn);
+           
+           Scene scene = new Scene(root, 300, 250);
+           
+           primaryStage.setTitle("This is Title !");
+           primaryStage.setScene(scene);
+           primaryStage.show();
+       }
+   
+       /**
+        * @param args the command line arguments
+        */
+       public static void main(String[] args) {
+           launch(args);
+       }
+       
+   }
+   
+</xmp>
+
+  </body>
+  </html>

@@ -1,0 +1,22 @@
+CREATE OR REPLACE FUNCTION sms.verification_for_online_registration(
+	account_number_ character varying,
+    phone_number_ character varying)
+    RETURNS boolean
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE 
+AS $BODY$
+
+BEGIN
+IF EXISTS(SELECT account_number,cell_number FROM deposit.account_holders as ab inner join core.non_corporate_customers as bc
+on bc.customer_id=ab.customer_id where account_number=account_number_ and cell_number=phone_number_  ) THEN
+RETURN true;
+ELSE
+RETURN false;
+END IF;
+END
+
+$BODY$;
+
+ALTER FUNCTION sms.verification_for_online_registration(character varying,character varying)
+    OWNER TO postgres;

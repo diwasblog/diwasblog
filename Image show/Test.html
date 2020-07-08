@@ -1,0 +1,46 @@
+<head>
+<style type="text/css">
+
+.flashclass{ /*sample CSS class added to image slideshow container*/
+width: 200px; /*a width should be defined for transition to work*/
+border: 5px solid orange;
+padding: 5px;
+}
+
+.flashclass img{
+border-width: 0;
+}
+
+</style>
+
+<script type="text/javascript" src="transitionshow.js">
+
+/***********************************************
+* Random Transitions Slideshow- by JavaScript Kit (www.javascriptkit.com)
+* This notice must stay intact for usage
+* Visit JavaScript Kit at http://www.javascriptkit.com/ for full source code
+***********************************************/
+
+</script>
+</head>
+
+<script type="text/javascript">
+
+var flashyshow=new flashyslideshow({ //create instance of slideshow
+	wrapperid: "myslideshow", //unique ID for this slideshow
+	wrapperclass: "flashclass", //desired CSS class for this slideshow
+	imagearray: [
+		["food1.jpg", "", "", "Such a nice Summer getaway."],
+		["food2.jpg", "", "", "Winter is nice, as long as there's snow right?"],
+		["food3.jpg", "", "", "Flowers spring back to life in Spring."],
+		["food4.jpg", "", "", "Ah the cool breeze of autumn."]
+		
+	],
+	pause: 2000, //pause between content change (millisec)
+	transduration: 1000 //duration of transition (affects only IE users)
+})
+
+</script>
+
+/* ways*/
+ ["image_path", "optional_image_link", "optional_link_target", "optional_text_description],

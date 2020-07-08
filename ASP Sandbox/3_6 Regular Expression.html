@@ -1,0 +1,162 @@
+<p><span style="color: #ff00ff;"><strong><span style="font-size: 14pt;">Regular Expression</span></strong></span></p>
+<p><span style="font-size: 12pt;">Useful in extracting information from text such as code,log files, spreadsheets or even document.</span></p>
+<p><strong><span style="font-size: 12pt;">Remember:</span></strong></p>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<td style="width: 33.3333%;"><span style="font-size: 14pt;"><span style="color: #ff00ff;">B</span> for Bracket</span></td>
+<td style="width: 33.3333%;"><span style="font-size: 14pt;"><span style="color: #ff00ff;">C</span> for Caret</span></td>
+<td style="width: 33.3333%;"><span style="font-size: 14pt;"><span style="color: #ff00ff;">D</span> for Dollar</span></td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<td style="width: 19.9881%;"><span style="font-size: 14pt;">B</span></td>
+<td style="width: 80.0119%;">
+<p><span style="font-size: 14pt;"><span style="color: #ff0000;"><strong>'</strong></span><span style="color: #ff0000;"><strong>['</strong> </span>Specify character which <span style="color: #ff0000;">needs to be matched</span></span></p>
+<p><span style="font-size: 14pt;"><strong><span style="color: #ff0000;">'{'</span></strong> specify <span style="color: #ff0000;">how many character&nbsp;</span></span></p>
+<p><span style="font-size: 14pt;"><span style="color: #ff0000;"><strong>'('</strong></span> for <span style="color: #ff0000;">grouping</span></span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 19.9881%;"><span style="font-size: 14pt;">C</span></td>
+<td style="width: 80.0119%;">
+<p><span style="font-size: 14pt;"><span style="color: #ff0000;">'^'&nbsp;</span> marks starts of a pattern</span></p>
+<p><span style="font-size: 14pt;"><span style="color: #008000;">^xyz </span>matches&nbsp;<span style="color: #008000;"> xyz123 (yes)</span></span></p>
+<p><span style="font-size: 14pt;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #008000;">&nbsp;xyz456 (yes)</span></span></p>
+<p><span style="font-size: 14pt;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #008000;"> &nbsp; &nbsp;xyzsdfkj(Yes)</span></span></p>
+<p><span style="font-size: 14pt;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #ff0000;"> &nbsp; &nbsp;123xyz (No)</span></span></p>
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 19.9881%;"><span style="font-size: 14pt;">D</span></td>
+<td style="width: 80.0119%;">
+<p><span style="font-size: 14pt;"><span style="color: #ff0000;">'$'</span> marks end of a pattern.</span></p>
+<p><span style="font-size: 14pt;"><span style="color: #008000;">pqr$</span> matches <span style="color: #008000;">123pqr&nbsp; &nbsp;(Yes)</span></span></p>
+<p><span style="font-size: 14pt;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #ff0000;">pgr123&nbsp; &nbsp;(No)</span></span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Example:</p>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<td style="width: 50%;"><span style="font-size: 14pt;">^xyz</span></td>
+<td style="width: 50%;">
+<p><span style="color: #339966; font-size: 14pt;">xyzabc&nbsp; (Yes)</span></p>
+<p><span style="color: #339966; font-size: 14pt;">xyz123&nbsp;&nbsp;(Yes)</span></p>
+<p><span style="color: #ff0000; font-size: 14pt;">123xyz&nbsp; (No)</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 50%;"><span style="font-size: 14pt;">xyz$</span></td>
+<td style="width: 50%;">
+<p><span style="font-size: 14pt; color: #ff0000;">xyz123&nbsp; (No)</span></p>
+<p><span style="font-size: 14pt; color: #008000;">123xyz&nbsp; &nbsp;(Yes)</span></p>
+</td>
+</tr>
+<tr>
+<td style="width: 50%;"><span style="font-size: 14pt;">^xyz$</span></td>
+<td style="width: 50%;">
+<p><span style="font-size: 14pt; color: #008000;">xyz&nbsp; &nbsp;(Yes)</span></p>
+<p><span style="font-size: 14pt; color: #ff0000;">abc&nbsp;&nbsp; (No)</span></p>
+<p><span style="font-size: 14pt; color: #ff0000;">123&nbsp;&nbsp; (No)</span></p>
+<p><span style="font-size: 14pt; color: #ff0000;">abcd&nbsp;&nbsp; (No)</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><span style="font-size: 14pt;">Q.<strong> Enter character which exists between a-g?</strong></span></p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span style="color: #ff0000;">&nbsp;<strong><span style="font-size: 14pt;">[a-g]</span></strong></span></p>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<td style="width: 50%;">
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<td style="width: 50%;"><span style="color: #008000;"><strong>a</strong></span></td>
+<td style="width: 50%;"><span style="color: #008000;"><strong>Yes</strong></span></td>
+</tr>
+<tr>
+<td style="width: 50%;"><span style="color: #008000;"><strong>b</strong></span></td>
+<td style="width: 50%;"><span style="color: #008000;"><strong>Yes</strong></span></td>
+</tr>
+<tr>
+<td style="width: 50%;"><span style="color: #008000;"><strong>ab</strong></span></td>
+<td style="width: 50%;"><span style="color: #008000;"><strong>Yes</strong></span></td>
+</tr>
+</tbody>
+</table>
+</td>
+<td style="width: 50%;">
+<table style="border-collapse: collapse; width: 100%; height: 147px;" border="1">
+<tbody>
+<tr style="height: 49px;">
+<td style="width: 50%; height: 49px;"><strong><span style="color: #008000;">az</span></strong></td>
+<td style="width: 50%; height: 49px;"><strong><span style="color: #008000;">yes</span></strong></td>
+</tr>
+<tr style="height: 49px;">
+<td style="width: 50%; height: 49px;"><strong><span style="color: #008000;">axy</span></strong></td>
+<td style="width: 50%; height: 49px;"><strong><span style="color: #008000;">yes</span></strong></td>
+</tr>
+<tr style="height: 49px;">
+<td style="width: 50%; height: 49px;"><strong><span style="color: #ff0000;">z</span></strong></td>
+<td style="width: 50%; height: 49px;"><strong><span style="color: #ff0000;">no</span></strong></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p><span style="font-size: 12pt;">It only check one digit character if match then true and donot look for rest of digit.</span></p>
+<p>&nbsp; &nbsp;<span style="color: #ff0000;"><strong><span style="font-size: 14pt;">ie .It done for one character check.</span></strong></span></p>
+<p><strong><span style="color: #000000;"><span style="font-size: 14pt;">=========================================================================</span><span style="font-size: 14pt;">==</span></span></strong></p>
+<p><span style="color: #000000;"><strong><span style="font-size: 14pt;">Q. Enter character between [a-g] with length of 3?</span></strong></span></p>
+<p><span style="color: #ff0000;"><strong><span style="font-size: 14pt;">&nbsp; &nbsp; &nbsp;[a-g] {3}</span></strong></span></p>
+<p>&nbsp;</p>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<td style="width: 50%;">
+<table style="border-collapse: collapse; width: 100%; height: 193px;" border="1">
+<tbody>
+<tr style="height: 51px;">
+<td style="width: 50%; height: 51px;"><span style="color: #008000;"><strong><span style="font-size: 12pt;">abc</span></strong></span></td>
+<td style="width: 50%; height: 51px;"><span style="color: #008000;"><strong><span style="font-size: 12pt;">Yes</span></strong></span></td>
+</tr>
+<tr style="height: 51px;">
+<td style="width: 50%; height: 51px;"><span style="color: #ff0000;"><strong><span style="font-size: 12pt;">azb</span></strong></span></td>
+<td style="width: 50%; height: 51px;"><span style="color: #ff0000;"><strong><span style="font-size: 12pt;">No</span></strong></span></td>
+</tr>
+<tr style="height: 91px;">
+<td style="width: 50%; height: 91px;"><span style="color: #008000;"><strong><span style="font-size: 12pt;">abcxyz</span></strong></span></td>
+<td style="width: 50%; height: 91px;"><span style="color: #008000;"><strong><span style="font-size: 12pt;">Yes&nbsp; (It checks only 3 character and doesnot matter rest like xyz)</span></strong></span></td>
+</tr>
+</tbody>
+</table>
+</td>
+<td style="width: 50%;">
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<td style="width: 50%;"><strong><span style="font-size: 12pt; color: #008000;">abcl</span></strong></td>
+<td style="width: 50%;"><strong><span style="font-size: 12pt; color: #008000;">Yes</span></strong></td>
+</tr>
+<tr>
+<td style="width: 50%;"><strong><span style="font-size: 12pt; color: #008000;">abcd</span></strong></td>
+<td style="width: 50%;"><strong><span style="font-size: 12pt; color: #008000;">Yes</span></strong></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>

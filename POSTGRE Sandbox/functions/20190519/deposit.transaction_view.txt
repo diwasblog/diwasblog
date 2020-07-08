@@ -1,0 +1,161 @@
+alter table transactions.transactions add column mtran_id bigint;
+
+-- View: deposit.transaction_view
+
+-- DROP VIEW deposit.transaction_view;
+
+CREATE OR REPLACE VIEW deposit.transaction_view AS
+ SELECT t.tran_id,
+    t.office_id,
+    t.tran_date,
+    t.value_date,
+    t.book_name,
+    COALESCE(t.collector_id, office.get_office_collector_id(t.office_id)) AS collector_id,
+    td.account_number_id,
+    COALESCE(td.slip_number::text, ''::text) || COALESCE(td.check_number::text, ''::text) AS check_number,
+    td.statement_reference,
+    td.debit,
+    td.credit,
+    t.audit_user_id AS user_id,
+    t.mtran_id::text AS mtran_id
+   FROM transactions.transactions t
+     JOIN transactions.transaction_details td ON t.tran_id = td.tran_id
+  WHERE t.verification_status_id > 0 AND td.account_number_id IS NOT NULL AND t.book_name::text <> 'Deposit Interest Transit'::text
+UNION ALL
+ SELECT account_holders.account_number_id AS tran_id,
+    account_holders.office_id,
+    account_holders.creation_date AS tran_date,
+    account_holders.creation_date AS value_date,
+    'Opening Balance'::character varying AS book_name,
+    office.get_office_collector_id(account_holders.office_id) AS collector_id,
+    account_holders.account_number_id,
+    NULL::text AS check_number,
+    NULL::character varying AS statement_reference,
+        CASE
+            WHEN account_holders.opening_balance > '$0.00'::money THEN account_holders.opening_balance
+            ELSE NULL::money
+        END AS debit,
+        CASE
+            WHEN account_holders.opening_balance < '$0.00'::money THEN account_holders.opening_balance * '-1'::integer
+            ELSE NULL::money
+        END AS credit,
+    account_holders.audit_user_id AS user_id,
+    NULL::text AS mtran_id
+   FROM deposit.account_holders
+  WHERE account_holders.is_old_account = true
+UNION ALL
+ SELECT t.trans_id AS tran_id,
+    a.office_id,
+    t.value_date AS tran_date,
+    t.value_date,
+    'Interest Transfer'::character varying AS book_name,
+    NULL::integer AS collector_id,
+    t.nominee_account_number_id AS account_number_id,
+    NULL::text AS check_number,
+    'Interest transfered from '::text || a.account_number::text AS statement_reference,
+    '$0.00'::money AS debit,
+    t.interest::money AS credit,
+    t.audit_user_id AS user_id,
+    NULL::text AS mtran_id
+   FROM deposit.interest_transfer t
+     JOIN deposit.account_holders a ON t.account_number_id = a.account_number_id
+UNION ALL
+ SELECT t.trans_id AS tran_id,
+    a.office_id,
+    t.value_date AS tran_date,
+    t.value_date,
+    'Interest Transfer'::character varying AS book_name,
+    NULL::integer AS collector_id,
+    t.nominee_account_number_id AS account_number_id,
+    NULL::text AS check_number,
+    'Tax deducted from '::text || a.account_number::text AS statement_reference,
+    t.tax::money AS debit,
+    '$0.00'::money AS credit,
+    t.audit_user_id AS user_id,
+    NULL::text AS mtran_id
+   FROM deposit.interest_transfer t
+     JOIN deposit.account_holders a ON t.account_number_id = a.account_number_id;
+
+ALTER TABLE deposit.transaction_view
+    OWNER TO postgres;
+
+
+
+
+-- FUNCTION: deposit.get_account_statement(bigint, date, date)
+
+-- DROP FUNCTION deposit.get_account_statement(bigint, date, date);
+
+CREATE OR REPLACE FUNCTION deposit.get_account_statement(
+	account_number_id_ bigint,
+	from_ date,
+	to_ date)
+    RETURNS TABLE(tran_id bigint, tran_date date, value_date date, statement_reference text, collector text, debit money, credit money, balance money, check_number text, mtran_id bigint) 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+
+DECLARE _opening_balance money;
+BEGIN
+	DROP TABLE IF EXISTS _t;
+	CREATE TEMP TABLE _t(
+		id SERIAL,
+		tran_id	bigint,
+		mtran_id bigint,
+		tran_date date, 
+		value_date date, 
+		statement_reference text,
+		collector text, 
+		debit money, 
+		credit money, 
+		balance money,
+		check_number text
+	) ON COMMIT DROP;
+
+	SELECT 
+		SUM(COALESCE(t.credit, '0')) - SUM(COALESCE(t.debit, '0')) INTO _opening_balance
+	FROM deposit.transaction_view t
+	WHERE t.account_number_id = account_number_id_
+	AND t.tran_date < from_;
+
+	IF (_opening_balance <> '0') THEN
+		INSERT INTO _t(tran_date, value_date, statement_reference, debit, credit)
+		SELECT from_, from_, 'Balance B/d.', CASE WHEN _opening_balance <'0' THEN _opening_balance * -1 ELSE NULL END, 
+		CASE WHEN _opening_balance>'0' THEN _opening_balance ELSE NULL END;
+	END IF;
+
+	INSERT INTO _t(tran_id, tran_date, value_date, statement_reference, collector, debit, credit, check_number, mtran_id)
+	SELECT --||'MtranId='||(COALESCE(t.mtran_id,''))
+		t.tran_id, t.tran_date, t.value_date, t.statement_reference, office.collectors.collector_name, t.debit, t.credit, t.check_number, t.mtran_id::bigint
+	FROM deposit.transaction_view t
+	LEFT JOIN office.collectors ON t.collector_id = office.collectors.collector_id
+	WHERE t.account_number_id = account_number_id_
+	AND t.tran_date BETWEEN from_ AND to_
+	ORDER BY t.tran_date, t.tran_id, t.credit;
+
+	UPDATE _t SET 
+		balance = child.balance
+	FROM (
+		SELECT 
+			p.id,
+			SUM(COALESCE(c.credit, '0') - COALESCE(c.debit, '0')) AS balance
+		FROM _t p, _t c
+		WHERE c.id <= p.id
+		GROUP BY p.id
+	) child
+	WHERE _t.id = child.id;
+
+	INSERT INTO _t(tran_date, value_date, statement_reference, debit, credit)
+	SELECT NULL, NULL, 'Total', SUM(COALESCE(_t.debit, '0')), SUM(COALESCE(_t.credit, '0')) FROM _t;
+	
+	RETURN QUERY(SELECT _t.tran_id, _t.tran_date, _t.value_date, _t.statement_reference, _t.collector, _t.debit, _t.credit, _t.balance, _t.check_number,_t.mtran_id FROM _t ORDER BY _t.id);
+
+END
+
+$BODY$;
+
+ALTER FUNCTION deposit.get_account_statement(bigint, date, date)
+    OWNER TO postgres;

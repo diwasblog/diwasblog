@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../Ef/css/bootstrap.css">
+    <link rel="stylesheet" href="../Ef/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../Ef/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../Ef/css/dracula.css">
+    <link rel="stylesheet" href="../Ef/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+    <h2>Groupby</h2>
+    <ul>
+        <li><span style="font-size: 14pt;">The GROUP BY clause enables you to establish data groups based on
+                columns.</span></li>
+        <li><span style="font-size: 14pt;">All columns that are used <strong><span style="color: #e03e2d;">besides
+                    </span></strong>the <strong><span style="color: #e03e2d;">aggregate functions</span></strong> must
+                be <strong><span style="color: #e03e2d;">included in the GROUP BY clause.</span></strong></span></li>
+        <li><span style="font-size: 14pt;">The GROUP BY clause <strong>does not support</strong> the <strong><span
+                        style="color: #e03e2d;">use of column aliases;</span></strong> you must use the actual column
+                names.</span></li>
+        <li><span style="font-size: 14pt;">The GROUP BY columns may or may not appear in the <strong><span
+                        style="color: #e03e2d;">SELECT </span></strong>list.&nbsp;</span></li>
+        <li><span style="font-size: 14pt;">The GROUP BY clause can only be used with aggregate functions such as
+                <strong><span style="color: #e03e2d;">SUM, AVG, COUNT, MAX, and MIN</span></strong>.&nbsp;</span></li>
+        <li><span style="font-size: 14pt;">The GROUP BY clause must appear right after the FROM or WHERE
+                clause.</span></strong>.&nbsp;</span></li>
+    </ul>
+    <pre>
+        <code class="language">
+                SELECT expression1, expression2, ... expression_n, aggregate_function (expression) FROM tables WHERE conditions GROUP BY expression1, expression2, ... expression_n; 
+        </code>
+    </pre>
+    <ul>
+        <li>The expression1, expression2, ... expression_n commands are expressions that are <span
+                style="color: #e03e2d;"><strong>not encapsulated/present</strong></span>&nbsp;within an aggregate
+            function and must be included in the GROUP BY clause.&nbsp;</li>
+    </ul>
+
+    <ul>
+        <li> the GROUP BY clause divides rows returned from the SELECT statement into groups. </li>
+    </ul>
+
+    <pre>
+        <code class="language-sql">
+                SELECT product, SUM(sale) AS "Total sales" FROM order_details GROUP BY product; 
+        </code>
+    </pre>
+    <ul>
+        <li><strong><span style="font-size: 18pt; color: #000000;">In the select statement, we have <span
+                        style="color: #e03e2d;">sales </span>where we applied the <span style="color: #e03e2d;">SUM
+                        function</span> and the other field product<span style="color: #e03e2d;"> is not part of
+                        SUM</span>, we must use in the GROUP BY clause on them .</span></strong></li>
+    </ul>
+
+    <hr>
+    <div class="row">
+        <div class="col-lg-6">
+            <table style="border-collapse: collapse; width: 26.117%; height: 220px;" border="1">
+                <tbody>
+                    <tr style="height: 22px; background: black; color: white;">
+                        <td style="width: 4.36612%; height: 22px;"><strong>Id</strong></td>
+                        <td style="width: 4.36612%; height: 22px;"><strong>memberid</strong></td>
+                        <td style="width: 8.20036%; height: 22px;"><strong>loan</strong></td>
+                        <td style="width: 9.19762%; height: 22px;"><strong>fiscalyear</strong></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 4.36612%; height: 22px;">1</td>
+                        <td style="width: 4.36612%; height: 22px;">25</td>
+                        <td style="width: 8.20036%; height: 22px;"><span style="color: #2dc26b;">2500</span></td>
+                        <td style="width: 9.19762%; height: 22px;"><span style="color: #2dc26b;">FY18</span></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 4.36612%; height: 22px;">2</td>
+                        <td style="width: 4.36612%; height: 22px;">25</td>
+                        <td style="width: 8.20036%; height: 22px;"><span style="color: #2dc26b;">1200</span></td>
+                        <td style="width: 9.19762%; height: 22px;"><span style="color: #2dc26b;">FY18</span></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 4.36612%; height: 22px;">3</td>
+                        <td style="width: 4.36612%; height: 22px;">25</td>
+                        <td style="width: 8.20036%; height: 22px;">2300</td>
+                        <td style="width: 9.19762%; height: 22px;">FY19</td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 4.36612%; height: 22px;">4</td>
+                        <td style="width: 4.36612%; height: 22px;">26</td>
+                        <td style="width: 8.20036%; height: 22px;"><span style="color: #e03e2d;">7000</span></td>
+                        <td style="width: 9.19762%; height: 22px;"><span style="color: #e03e2d;">FY18</span></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 4.36612%; height: 22px;">5</td>
+                        <td style="width: 4.36612%; height: 22px;">26</td>
+                        <td style="width: 8.20036%; height: 22px;"><span style="color: #e03e2d;">1000</span></td>
+                        <td style="width: 9.19762%; height: 22px;"><span style="color: #e03e2d;">FY18</span></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 4.36612%; height: 22px;">6</td>
+                        <td style="width: 4.36612%; height: 22px;">26</td>
+                        <td style="width: 8.20036%; height: 22px;"><span style="color: #e03e2d;">1300</span></td>
+                        <td style="width: 9.19762%; height: 22px;"><span style="color: #e03e2d;">FY18</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-lg-6">
+            <pre>
+                <code class="language-sql">
+                    select 
+                    te.memberid,
+                    SUM(CASE WHEN fiscalyear = 'FY18'  THEN te.loan ELSE 0 END) AS loan_fy_18,
+                    SUM(CASE WHEN fiscalyear = 'FY19'  THEN te.loan ELSE 0 END) AS loan_fy_19,
+                    SUM(CASE WHEN fiscalyear = 'FY20'  THEN te.loan ELSE 0 END) AS loan_fy_20
+                    from test te
+                    GROUP  BY te.memberid;
+                </code>
+            </pre>
+
+            <table style="border-collapse: collapse; width: 30.4255%;" border="1">
+                <tbody>
+                    <tr style="background: black; color: white;">
+                        <td style="width: 7.91223%;">memberid</td>
+                        <td style="width: 8.77663%;">loan_fy_18</td>
+                        <td style="width: 6.84843%;">loan_fy_19</td>
+                        <td style="width: 6.91493%;">loan_fy_20</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 7.91223%;">26</td>
+                        <td style="width: 8.77663%;">9300</td>
+                        <td style="width: 6.84843%;">0</td>
+                        <td style="width: 6.91493%;">0</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 7.91223%;">25</td>
+                        <td style="width: 8.77663%;">3700</td>
+                        <td style="width: 6.84843%;">2300</td>
+                        <td style="width: 6.91493%;">0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+
+    <hr>
+    <pre><code><br /><br /><br /> <strong><span style="color: #000000;">id |     date    | temperature
+        ----+----------------+---------
+          1 | <span style="color: #e03e2d;">2010</span>-01-01  |           0
+          2 | <span style="color: #e03e2d;">2010</span>-02-01  |           1
+          3 | <span style="color: #e03e2d;">2010</span>-03-01  |           2
+          4 | <span style="color: #e03e2d;">2010</span>-04-01  |           3
+          5 | <span style="color: #e03e2d;">2010</span>-05-01  |           4
+          6 | <span style="color: #e03e2d;">2010</span>-06-01  |           5
+          7 | <span style="color: #e03e2d;">2010</span>-07-01  |           6
+          8 | <span style="color: #e03e2d;">2010</span>-08-01  |           7
+          9 | <span style="color: #e03e2d;">2010</span>-09-01  |           8
+         10 | <span style="color: #e03e2d;">2010</span>-10-01  |           9
+         11 | <span style="color: #e03e2d;">2010</span>-11-01  |          10
+         12 | <span style="color: #e03e2d;">2010</span>-12-01  |          11
+         13 | 2011-01-01  |           0
+         14 | 2011-02-01  |           1
+         15 | 2011-03-01  |           2
+         16 | 2011-04-01  |           3
+         17 | 2011-05-01  |           4
+         18 | 2011-06-01  |           5
+         19 | 2011-07-01  |           6
+         20 | 2011-08-01  |           7
+         21 | 2011-09-01  |           8
+         22 | 2011-10-01  |           9
+         23 | 2011-11-01  |          10
+         24 | 2011-12-01  |          11  </span></strong><br /><br /></code><strong><span style="font-size: 18pt;">Result needed<br /></span></strong></pre>
+    <pre><code> year | jan | feb | mar | apr | may | jun | jul | aug | sep | oct | nov | dec | total
+        ------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-------
+         2010 |   0 |   2 |   4 |   6 |   8 |  10 |  12 |  14 |  16 |  18 |  20 |  22 |   132
+         2011 |   0 |   2 |   4 |   6 |   8 |  10 |  12 |  14 |  16 |  18 |  20 |  22 |   132</code></pre>
+    <pre><strong><span style="font-size: 18pt;">Query:<br /><br /></span></strong></pre>
+
+    <pre>
+        <code class="language-sql">
+            SELECT to_char(date, 'yyyy') AS year, 
+            SUM(CASE WHEN to_char(date, 'mm') = '01' THEN temperature ELSE 0 END) AS JAN,
+            SUM(CASE WHEN to_char(date, 'mm') = '02' THEN temperature ELSE 0 END) AS FEB,
+            SUM(CASE WHEN to_char(date, 'mm') = '03' THEN temperature ELSE 0 END) AS MAR,
+            SUM(CASE WHEN to_char(date, 'mm') = '04' THEN temperature ELSE 0 END) AS APR,
+            SUM(CASE WHEN to_char(date, 'mm') = '05' THEN temperature ELSE 0 END) AS MAY,
+            SUM(CASE WHEN to_char(date, 'mm') = '06' THEN temperature ELSE 0 END) AS JUN,
+            SUM(CASE WHEN to_char(date, 'mm') = '07' THEN temperature ELSE 0 END) AS JUL,
+            SUM(CASE WHEN to_char(date, 'mm') = '08' THEN temperature ELSE 0 END) AS AUG,
+            SUM(CASE WHEN to_char(date, 'mm') = '09' THEN temperature ELSE 0 END) AS SEP,
+            SUM(CASE WHEN to_char(date, 'mm') = '10' THEN temperature ELSE 0 END) AS OCT,
+            SUM(CASE WHEN to_char(date, 'mm') = '11' THEN temperature ELSE 0 END) AS NOV,
+            SUM(CASE WHEN to_char(date, 'mm') = '12' THEN temperature ELSE 0 END) AS DEC,
+            SUM(temperature) AS Total
+            FROM   temperature
+            WHERE date>= '2010-01-01' AND date<= '2012-12-31' 
+            GROUP  BY 1;
+        </code>
+    </pre>
+
+    <hr>
+
+    <h2>Partition Concept</h2>
+    <div class="row">
+        <div class="col-lg-6">
+            <table style="border-collapse: collapse; width: 21.383%; height: 224px;" border="1">
+                <tbody>
+                    <tr style="height: 16px; background: black; color: white;">
+                        <td style="width: 7.46894%; height: 16px;">item_group</td>
+                        <td style="width: 8.46632%; height: 16px;">item_name</td>
+                        <td style="width: 5.47427%; height: 16px;">price</td>
+                    </tr>
+                    <tr style="height: 10px;">
+                        <td style="width: 7.46894%; height: 10px;">Fruit</td>
+                        <td style="width: 8.46632%; height: 10px;">Apple</td>
+                        <td style="width: 5.47427%; height: 10px;">100</td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Fruit</td>
+                        <td style="width: 8.46632%; height: 22px;">Banana</td>
+                        <td style="width: 5.47427%; height: 22px;">80</td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Fruit</td>
+                        <td style="width: 8.46632%; height: 22px;">Orange</td>
+                        <td style="width: 5.47427%; height: 22px;">80</td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Fruit</td>
+                        <td style="width: 8.46632%; height: 22px;">Mango</td>
+                        <td style="width: 5.47427%; height: 22px;">90</td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Vegetable</td>
+                        <td style="width: 8.46632%; height: 22px;">Carrot</td>
+                        <td style="width: 5.47427%; height: 22px;">70</td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Vegetable</td>
+                        <td style="width: 8.46632%; height: 22px;">Potato</td>
+                        <td style="width: 5.47427%; height: 22px;">60</td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Vegetable</td>
+                        <td style="width: 8.46632%; height: 22px;">Brinjal</td>
+                        <td style="width: 5.47427%; height: 22px;">70</td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Diary</td>
+                        <td style="width: 8.46632%; height: 22px;">Milk</td>
+                        <td style="width: 5.47427%; height: 22px;">40</td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Diary</td>
+                        <td style="width: 8.46632%; height: 22px;">Crud</td>
+                        <td style="width: 5.47427%; height: 22px;">40</td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Diary</td>
+                        <td style="width: 8.46632%; height: 22px;">Cheese</td>
+                        <td style="width: 5.47427%; height: 22px;">50</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-lg-6">
+            <table style="border-collapse: collapse; width: 100%;" border="1">
+                <tbody>
+                    <tr>
+                        <td style="width: 9.9734%;"><span style="color: #e03e2d;"><strong>ROW_NUMBER:</strong> </span>
+                        </td>
+                        <td style="width: 90.0266%;">
+                            <p>&nbsp;Returns the sequence and unique number for each group based on the fields applied
+                                in <strong><span style="color: #e03e2d;">PARTITION BY</span></strong> clause.</p>
+                            <ul>
+                                <li><strong><span style="color: #2dc26b;">If PARTITION BY is not
+                                            specified</span></strong>, the function treats all rows of the query result
+                                    set as a single group.</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 9.9734%;"><strong><span style="color: #e03e2d;">RANK</span>:&nbsp; </strong>
+                        </td>
+                        <td style="width: 90.0266%;">RANK in postresql assigns the rank for each group. If value remains
+                            same then both the number will get the<strong><span style="color: #2dc26b;"> same
+                                    rank</span></strong> and the <strong><span style="color: #2dc26b;">next rank will be
+                                    skipped. </span></strong></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 9.9734%;"><strong><span style="color: #e03e2d;">DENSE_RANK</span>:&nbsp;
+                            </strong></td>
+                        <td style="width: 90.0266%;">DENSE_RANK in PostgreSQL assigns the rank for each group. Ranks are
+                            assigned without a gap so t<strong><span style="color: #2dc26b;">he ranking will not be
+                                    skipped. </span></strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <h2>ROW Number in Postgresql</h2>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <pre>
+                <code class="language-sql">
+                        select *, 
+                        ROW_NUMBER () OVER (
+                            PARTITION BY item_group
+                            ORDER BY
+                            price
+                            ) from Basket;
+                </code>
+            </pre>
+        </div>
+
+        <div class="col-lg-6">
+            <table style="border-collapse: collapse; width: 21.383%; height: 224px;" border="1">
+                <tbody>
+                    <tr style="height: 16px; background: black; color: white;">
+                        <td style="width: 7.46894%; height: 16px;">item_group</td>
+                        <td style="width: 8.46632%; height: 16px;">item_name</td>
+                        <td style="width: 2.86533%; height: 16px;">price</td>
+                        <td style="width: 2.86533%; height: 16px;">row_number</td>
+                    </tr>
+                    <tr style="height: 10px;">
+                        <td style="width: 7.46894%; height: 10px;">Diary</td>
+                        <td style="width: 8.46632%; height: 10px;">Milk</td>
+                        <td style="width: 2.86533%; height: 10px;">40</td>
+                        <td style="width: 2.86533%; height: 10px;"><span style="color: #e03e2d;">1</span></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Diary</td>
+                        <td style="width: 8.46632%; height: 22px;">Curd</td>
+                        <td style="width: 2.86533%; height: 22px;">40</td>
+                        <td style="width: 2.86533%; height: 22px;"><span style="color: #e03e2d;">2</span></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Diary</td>
+                        <td style="width: 8.46632%; height: 22px;">Cheese</td>
+                        <td style="width: 2.86533%; height: 22px;">50</td>
+                        <td style="width: 2.86533%; height: 22px;"><span style="color: #e03e2d;">3</span></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Fruit</td>
+                        <td style="width: 8.46632%; height: 22px;">Banana</td>
+                        <td style="width: 2.86533%; height: 22px;">80</td>
+                        <td style="width: 2.86533%; height: 22px;"><strong><span
+                                    style="color: #f1c40f;">1</span></strong></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Fruit</td>
+                        <td style="width: 8.46632%; height: 22px;">Orange</td>
+                        <td style="width: 2.86533%; height: 22px;">80</td>
+                        <td style="width: 2.86533%; height: 22px;"><strong><span
+                                    style="color: #f1c40f;">2</span></strong></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Fruit</td>
+                        <td style="width: 8.46632%; height: 22px;">Mango</td>
+                        <td style="width: 2.86533%; height: 22px;">90</td>
+                        <td style="width: 2.86533%; height: 22px;"><strong><span
+                                    style="color: #f1c40f;">3</span></strong></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Fruit</td>
+                        <td style="width: 8.46632%; height: 22px;">Apple</td>
+                        <td style="width: 2.86533%; height: 22px;">100</td>
+                        <td style="width: 2.86533%; height: 22px;"><strong><span
+                                    style="color: #f1c40f;">4</span></strong></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Vegetable</td>
+                        <td style="width: 8.46632%; height: 22px;">Potato</td>
+                        <td style="width: 2.86533%; height: 22px;">60</td>
+                        <td style="width: 2.86533%; height: 22px;"><span style="color: #2dc26b;">1</span></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Vegetable</td>
+                        <td style="width: 8.46632%; height: 22px;">Brinjal</td>
+                        <td style="width: 2.86533%; height: 22px;">70</td>
+                        <td style="width: 2.86533%; height: 22px;"><span style="color: #2dc26b;">2</span></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Vegetable</td>
+                        <td style="width: 8.46632%; height: 22px;">Carrot</td>
+                        <td style="width: 2.86533%; height: 22px;">70</td>
+                        <td style="width: 2.86533%; height: 22px;"><span style="color: #2dc26b;">3</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <hr>
+    <h2> Rank</h2>
+    <div class="row">
+        <div class="col-lg-6">
+            <pre>
+                    <code class="language-sql">
+                            select *, RANK () OVER (
+                            PARTITION BY item_group
+                            ORDER BY
+                            price
+                            ) from Basket;
+                    </code>
+                </pre>
+        </div>
+
+        <div class="col-lg-6">
+            <table style="border-collapse: collapse; width: 21.383%; height: 224px;" border="1">
+                <tbody>
+                    <tr style="height: 16px; background: black; color: white;">
+                        <td style="width: 7.46894%; height: 16px;">item_group</td>
+                        <td style="width: 8.46632%; height: 16px;">item_name</td>
+                        <td style="width: 2.86533%; height: 16px;">price</td>
+                        <td style="width: 2.86533%; height: 16px;">row_number</td>
+                    </tr>
+                    <tr style="height: 10px;">
+                        <td style="width: 7.46894%; height: 10px;">Diary</td>
+                        <td style="width: 8.46632%; height: 10px;">Milk</td>
+                        <td style="width: 2.86533%; height: 10px;"><span style="color: #2dc26b;">40</span></td>
+                        <td style="width: 2.86533%; height: 10px;"><span style="color: #2dc26b;">1</span></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Diary</td>
+                        <td style="width: 8.46632%; height: 22px;">Curd</td>
+                        <td style="width: 2.86533%; height: 22px;"><span style="color: #2dc26b;">40</span></td>
+                        <td style="width: 2.86533%; height: 22px;"><span style="color: #2dc26b;">1</span></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Diary</td>
+                        <td style="width: 8.46632%; height: 22px;">Cheese</td>
+                        <td style="width: 2.86533%; height: 22px;">50</td>
+                        <td style="width: 2.86533%; height: 22px;"><span style="color: #e03e2d;">3</span></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Fruit</td>
+                        <td style="width: 8.46632%; height: 22px;">Banana</td>
+                        <td style="width: 2.86533%; height: 22px;"><span style="color: #f1c40f;">80</span></td>
+                        <td style="width: 2.86533%; height: 22px;"><span
+                                style="color: #f1c40f;"><strong>1</strong></span></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Fruit</td>
+                        <td style="width: 8.46632%; height: 22px;">Orange</td>
+                        <td style="width: 2.86533%; height: 22px;"><span style="color: #f1c40f;">80</span></td>
+                        <td style="width: 2.86533%; height: 22px;"><span
+                                style="color: #f1c40f;"><strong>1</strong></span></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Fruit</td>
+                        <td style="width: 8.46632%; height: 22px;">Mango</td>
+                        <td style="width: 2.86533%; height: 22px;">90</td>
+                        <td style="width: 2.86533%; height: 22px;"><strong><span
+                                    style="color: #f1c40f;">3</span></strong></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Fruit</td>
+                        <td style="width: 8.46632%; height: 22px;">Apple</td>
+                        <td style="width: 2.86533%; height: 22px;">100</td>
+                        <td style="width: 2.86533%; height: 22px;"><strong><span
+                                    style="color: #f1c40f;">4</span></strong></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Vegetable</td>
+                        <td style="width: 8.46632%; height: 22px;">Potato</td>
+                        <td style="width: 2.86533%; height: 22px;">60</td>
+                        <td style="width: 2.86533%; height: 22px;"><span style="color: #2dc26b;">1</span></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Vegetable</td>
+                        <td style="width: 8.46632%; height: 22px;">Brinjal</td>
+                        <td style="width: 2.86533%; height: 22px;"><span style="color: #2dc26b;">70</span></td>
+                        <td style="width: 2.86533%; height: 22px;"><span style="color: #2dc26b;">2</span></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Vegetable</td>
+                        <td style="width: 8.46632%; height: 22px;">Carrot</td>
+                        <td style="width: 2.86533%; height: 22px;"><span style="color: #2dc26b;">70</span></td>
+                        <td style="width: 2.86533%; height: 22px;"><span style="color: #2dc26b;">2</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+    <hr>
+    <h2>DENSE Rank</h2>
+    <div class="row">
+        <div class="col-lg-6">
+            <pre>
+                    <code class="language-sql">
+                            select *, DENSE_RANK () OVER (
+                            PARTITION BY item_group
+                            ORDER BY
+                            price
+                            ) from Basket;
+                    </code>
+                </pre>
+        </div>
+
+        <div class="col-lg-6">
+            <table style="border-collapse: collapse; width: 21.383%; height: 224px;" border="1">
+                <tbody>
+                    <tr style="height: 16px; background: black; color: white;">
+                        <td style="width: 7.46894%; height: 16px;">item_group</td>
+                        <td style="width: 8.46632%; height: 16px;">item_name</td>
+                        <td style="width: 2.86533%; height: 16px;">price</td>
+                        <td style="width: 2.86533%; height: 16px;">row_number</td>
+                    </tr>
+                    <tr style="height: 10px;">
+                        <td style="width: 7.46894%; height: 10px;">Diary</td>
+                        <td style="width: 8.46632%; height: 10px;">Milk</td>
+                        <td style="width: 2.86533%; height: 10px;"><span style="color: #2dc26b;">40</span></td>
+                        <td style="width: 2.86533%; height: 10px;"><span style="color: #2dc26b;">1</span></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Diary</td>
+                        <td style="width: 8.46632%; height: 22px;">Curd</td>
+                        <td style="width: 2.86533%; height: 22px;"><span style="color: #2dc26b;">40</span></td>
+                        <td style="width: 2.86533%; height: 22px;"><span style="color: #2dc26b;">1</span></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Diary</td>
+                        <td style="width: 8.46632%; height: 22px;">Cheese</td>
+                        <td style="width: 2.86533%; height: 22px;">50</td>
+                        <td style="width: 2.86533%; height: 22px;"><span style="color: #e03e2d;">2</span></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Fruit</td>
+                        <td style="width: 8.46632%; height: 22px;">Banana</td>
+                        <td style="width: 2.86533%; height: 22px;"><span style="color: #f1c40f;">80</span></td>
+                        <td style="width: 2.86533%; height: 22px;"><span
+                                style="color: #f1c40f;"><strong>1</strong></span></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Fruit</td>
+                        <td style="width: 8.46632%; height: 22px;">Orange</td>
+                        <td style="width: 2.86533%; height: 22px;"><span style="color: #f1c40f;">80</span></td>
+                        <td style="width: 2.86533%; height: 22px;"><span
+                                style="color: #f1c40f;"><strong>1</strong></span></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Fruit</td>
+                        <td style="width: 8.46632%; height: 22px;">Mango</td>
+                        <td style="width: 2.86533%; height: 22px;">90</td>
+                        <td style="width: 2.86533%; height: 22px;"><strong><span
+                                    style="color: #f1c40f;">2</span></strong></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Fruit</td>
+                        <td style="width: 8.46632%; height: 22px;">Apple</td>
+                        <td style="width: 2.86533%; height: 22px;">100</td>
+                        <td style="width: 2.86533%; height: 22px;"><strong><span
+                                    style="color: #f1c40f;">3</span></strong></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Vegetable</td>
+                        <td style="width: 8.46632%; height: 22px;">Potato</td>
+                        <td style="width: 2.86533%; height: 22px;">60</td>
+                        <td style="width: 2.86533%; height: 22px;"><span style="color: #2dc26b;">1</span></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Vegetable</td>
+                        <td style="width: 8.46632%; height: 22px;">Brinjal</td>
+                        <td style="width: 2.86533%; height: 22px;"><span style="color: #2dc26b;">70</span></td>
+                        <td style="width: 2.86533%; height: 22px;"><span style="color: #2dc26b;">2</span></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 7.46894%; height: 22px;">Vegetable</td>
+                        <td style="width: 8.46632%; height: 22px;">Carrot</td>
+                        <td style="width: 2.86533%; height: 22px;"><span style="color: #2dc26b;">70</span></td>
+                        <td style="width: 2.86533%; height: 22px;"><span style="color: #2dc26b;">2</span></td>
+                    </tr>
+                </tbody>
+            </table>s
+        </div>
+    </div>
+    <script src="../Ef/js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+    </script>
+</body>
+
+</html>

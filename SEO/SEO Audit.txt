@@ -1,0 +1,52 @@
+Use Reporting Tools ( Google analytics, Google Tag Manager, Google Search Console)
+Sitemaps
+Redirects ( 301 Redirects , 302 Redirects)
+ContactUs page
+Https 
+Be Responsive and Mobile Friendly
+Speed
+Custom Error 404 Page
+
+
+======
+ON page SEO
+-Url Structure
+- Title Unique and Relavant
+- Meta Description
+- h1 - h6
+- Schema Markup
+- Body Text with keyword
+- Image Alt Tags
+
+
+Look at CSS Sprites ( Download many images into one shot )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

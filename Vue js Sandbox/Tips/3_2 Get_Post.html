@@ -1,0 +1,198 @@
+<html>
+<head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+    font-size:12pt;
+    font-family:monospace;
+
+}
+</style>
+ 
+</head>
+<body>
+
+<!--########################Main Code######################################-->
+
+
+<!--##############################################################-->
+
+
+<!--|#########################DISPLAY############################################-->
+
+
+
+<div><span style="font-size: 18pt; color: #0000ff;">Route : /bims/report/api/</span></div>
+<p style="text-align: center;"><span style="text-decoration: underline;"><em><strong><span style="font-size: 14pt; color: #ff0000; text-decoration: underline;">Get</span></strong></em></span></p>
+
+<xmp class="prettyprint"
+   >
+
+ [Route("getStudents/course/{courseId}/batch/{batchId}")]
+ [HttpGet]
+ public IHttpActionResult GetStudents(int courseId,int batchId)
+ {
+
+ }
+</xmp>
+
+
+<p style="text-align: center;"><span style="text-decoration: underline;"><em><strong><span style="font-size: 14pt; color: #ff0000; text-decoration: underline;">Get In View</span></strong></em></span></p>
+<?prettify linenums=1?>
+<xmp class="prettyprint"
+   >
+    axios.get("/bims/report/api/getstudents/course/"+vm.courseId+"/batch/"+vm.batchId)
+</xmp>
+========================================================================================
+<xmp class="prettyprint">
+<a href="@String.Format("/finance/fees/collection/individual/{0}/receipt/{1}", Model.Student.Id, receipt.x.Id)" class="btn btn-primary btn-xs">View</a>
+</xmp>   
+
+<xmp class="prettyprint">
+[Route("fees/collection/individual/{studentId}/bill/{id}/")]
+public ActionResult BillDetail(int? studentId, int? id)
+{
+    ...
+}
+</xmp> 
+
+
+
+
+=========================================================================================
+<xmp class="prettyprint">
+return "/finance/fees/collection/advance/" + id;
+
+[Route("fees/collection/advance/{id}")]
+        public ActionResult AdvanceCollectionManagement(int? id)
+</xmp>    
+
+==================================
+
+<xmp class="prettyprint">
+window.location.href = `/finance/report/feebook/excel?fromDate=${fromDate}&toDate=${toDate}`;
+
+[Route("report/feebook/excel")]
+        [ValidateMenuAccess(MenuCode = 105)]
+        public void FeebookExcel(string fromDate, string toDate)
+        {
+
+</xmp>    
+====================================================
+<p style="text-align: center;"><span style="text-decoration: underline;"><em><strong><span style="font-size: 14pt; color: #ff0000; text-decoration: underline;">Vue Caste Model</span></strong></em></span></p>
+<xmp class="prettyprint">
+    data: {
+        caste: {
+            Name: '',
+            Id:0
+        },
+</xmp>
+
+<p style="text-align: center;"><span style="text-decoration: underline;"><em><strong><span style="font-size: 14pt; color: #ff0000; text-decoration: underline;">GetAll</span></strong></em></span></p>
+
+<xmp class="prettyprint"
+   >
+    axios.get("/bims/setting/api/caste/getAll")
+</xmp>
+
+<p style="text-align: center;"><span style="text-decoration: underline;"><em><strong><span style="font-size: 14pt; color: #ff0000; text-decoration: underline;">GetAll In View</span></strong></em></span></p>
+
+<xmp class="prettyprint"
+   >
+    [Route("caste/getAll")]
+    [HttpGet]
+    public IHttpActionResult GetCastes()
+    {
+
+</xmp>
+
+Model of Caste
+<xmp class="prettyprint">
+        data: {
+            caste: {
+                Name: '',
+                Id:0
+            },
+    </xmp>
+
+<p style="text-align: center;"><span style="text-decoration: underline;"><em><strong><span style="font-size: 14pt; color: #ff0000; text-decoration: underline;">Post In View</span></strong></em></span></p>
+
+
+
+<div class="row">
+<div class="col-xs-7">
+    Method1<br>
+    My passing parameter of model
+<xmp class="prettyprint"
+   >
+    axios.post('/bims/setting/api/caste/edit',{'Name':vm.caste.Name,"Id":vm.caste.Id})
+      
+</xmp>
+
+<p style="text-align: center;"><span style="text-decoration: underline;"><em><strong><span style="font-size: 14pt; color: #ff0000; text-decoration: underline;">Post</span></strong></em></span></p>
+<?prettify linenums=1?>
+<xmp class="prettyprint"
+   >
+    [Route("caste/edit")]
+    [HttpPost]
+    public IHttpActionResult EditCaste(Caste obj)
+    {
+
+    }
+</xmp>
+</div>
+
+<div class="col-xs-5">
+    Method2<br>
+By Passing Model(caste) directly
+
+
+<xmp class="prettyprint">
+    axios.post("/bims/misc/api/caste/edit", vm.caste)
+</xmp>
+
+
+<xmp class="prettyprint">
+    [Route("caste/edit")]
+    [HttpPost]
+    public IHttpActionResult EditCaste(Caste obj)
+    {
+
+    }
+</xmp>
+</div>
+</div>
+=================================================================================
+
+<div class="row">
+    <div class="col-lg-6">
+        editCategory(id) {
+                let vm = this;
+                alert("edit");
+                window.location.href = "/admin/category/edit/"+id;
+            }
+    </div>
+    Note we need {id}
+    <div class="col-lg-6">
+
+        [Route("category/edit/{id}")]
+        [HttpGet]
+        public ActionResult Edit(int id)
+        {
+
+    </div>    
+</div>    
+
+
+
+<!--####################################################-->
+
+
+    </body>
+
+</html>

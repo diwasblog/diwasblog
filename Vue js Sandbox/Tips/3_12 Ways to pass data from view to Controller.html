@@ -1,0 +1,296 @@
+<html>
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+
+<!--Explaination-->
+
+<!--########################Main Code######################################-->
+
+<!--##############################################################-->
+
+<!--|#########################DISPLAY############################################-->
+
+
+
+<p style="text-align: center;"><span style="font-family: 'comic sans ms', sans-serif; color: #ff00ff; font-size: 14pt;"><strong>Using general Form Concept</strong></span></p>
+<div class="row">
+
+<div class=" col-sm-7 ">
+<xmp class="prettyprint">
+    <form method="post" action="/bims/misc/notice/add" id="noticeForm" >
+
+      <input type="text" name="Title" v-validate="'required'" v-model="notice.title" data-vv-as="Notice Title" class="form-control" placeholder="Notice Title" />
+      <span v-show="errors.has('Title')" class="text-danger">{{ errors.first('Title') }}</span>
+
+      <textarea  v-model="notice.fullContent" id="summernote" name="FullContent" class="form-control"></textarea>
+      
+       <input type="button" value="Add" @@click="submitNotice" class="btn btn-default" />
+  </form>
+
+</xmp>
+</div>
+
+
+<div class="col-sm-5">
+<xmp class="prettyprint">
+    submitNotice: function () {
+      let vm = this;
+      this.$validator.validateAll().then((result) => {
+
+        if (vm.notice.fullContent.length == "") {
+          result = false;
+          //if length is null then result is false and below if willnot execute
+        }
+
+          if (result) {
+              document.querySelector('#noticeForm').submit();
+          }
+      }).catch(() => {
+          
+      });
+  }
+</xmp>
+</div>
+</div>
+
+
+
+<div class="row">
+
+        <div class=" col-sm-7 ">
+        <xmp class="prettyprint">
+            <form method="post" action="/bims/misc/notice/add" id="noticeForm" v-on:submit.prevent="submitNotice">
+        
+              <input type="text" name="Title" v-validate="'required'" v-model="notice.title" data-vv-as="Notice Title" class="form-control" placeholder="Notice Title" />
+              <span v-show="errors.has('Title')" class="text-danger">{{ errors.first('Title') }}</span>
+        
+              <textarea  v-model="notice.fullContent" id="summernote" name="FullContent" class="form-control"></textarea>
+              
+               <input type="button" value="Add"  class="btn btn-default" />
+          </form>
+        
+        </xmp>
+        </div>
+        
+        
+        <div class="col-sm-5">
+        <xmp class="prettyprint">
+            submitNotice: function (e) {
+              let vm = this;
+              this.$validator.validateAll().then((result) => {
+        
+                if (vm.notice.fullContent.length == "") {
+                  result = false;
+                  //if length is null then result is false and below if willnot execute
+                }
+        
+                  if (result) {
+                      document.querySelector('#noticeForm').submit();
+                  }
+              }).catch(() => {
+                  e.preventDefault();
+              });
+          }
+        </xmp>
+        </div>
+        </div>
+
+<p style="text-align: center;"><span style="font-family: 'comic sans ms', sans-serif; color: #ff00ff; font-size: 14pt;"><strong>Using Json in Controller</strong></span></p>
+
+<br>
+<div class="row">
+
+  <div class="col-sm-6">
+    //In View
+<xmp class="prettyprint">
+
+    addNotice: function () {
+      let vm = this;
+      axios.post("/bims/misc/notice/add", vm.notice)
+          .then(function (response) {
+              //will get 1 if add is successful
+              //else return 0 or negative
+          }).catch(function (error) {
+             
+              alert(error);
+          });
+  },
+</xmp>
+</div>
+
+<div class="col-sm-6">
+// Controller<br>
+<xmp class="prettyprint">
+    public JsonResult Add(Notice obj)
+    {
+      var response = _noticeService.Add(GetInstitutionId());
+        return Json(response, JsonRequestBehavior.AllowGet); 
+    }
+
+</xmp>
+</div>
+</div>
+
+<div class="row">
+  <div class="col-sm-6">
+      <xmp class="prettyprint">
+          loadNoticeData: function () {
+            let vm = this;
+            axios.get("/bims/misc/notice/getallnotices")
+                .then(function (response) {
+                    console.log(response);
+                    if (response.data) {
+                        vm.noticeData = [];
+                        vm.noticeData = response.data;
+                        console.log(vm.noticeData);
+                    }
+                })
+        }
+      </xmp>
+      
+  </div>
+    
+    
+    <div class="col-sm-6">
+        <xmp class="prettyprint">
+            [Route("/bims/misc/notice/getallnotices")]
+              public JsonResult GetAllNotice()
+              {
+                  var list = _noticeService.GetAll(GetInstitutionId());
+                  return Json(list, JsonRequestBehavior.AllowGet);
+              }
+          </xmp>
+    </div>
+    
+</div>
+
+
+<p style="text-align: center;"><span style="font-family: 'comic sans ms', sans-serif; color: #ff00ff; font-size: 14pt;"><strong>Using API Controller</strong></span></p>
+
+<div class="row">
+
+    <div class="col-sm-6">
+      //In View
+  <xmp class="prettyprint">
+      addNotice: function () {
+        let vm = this;
+        axios.post("/bims/misc/api/notice/add", vm.notice)
+            .then(function (response) {
+                //will get 1 if add is successful
+                //else return 0 or negative
+            }).catch(function (error) {
+                vm.welcomeMessageError = false;
+                alert(error);
+            });
+    },
+  </xmp>
+  </div>
+
+  <div class="col-sm-6">
+      // Controller<br>
+      <xmp class="prettyprint">
+        [Route("/bims/misc/api/notice/add")]
+        [HttpPost]
+        public IHttpActionResult Add(Notice obj)
+        {
+            try
+            {
+                obj.InstitutionId = GetInstitutionId();
+                _noticeService.Add(obj);
+                _apiResponse.Result = string.Format("Found and Activate");
+                _apiResponse.StatusCode = (int)HttpStatusCode.OK;
+                return Ok(_apiResponse);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+      
+      </xmp>
+      </div>
+      </div>
+
+
+      <div class="row">
+
+          <div class="col-sm-6">
+            //In View
+        <xmp class="prettyprint">
+
+            loadNotice: function () {
+              let vm = this;
+              axios.get("/bims/misc/api/notice/get")
+                  .then(function (response) {
+                      console.log(response);
+                      if (response.data) {
+                        vm.noticeData = [];
+                        vm.noticeData = response.data;
+                         
+                      }
+                  }).catch(function (error) {
+                   
+                      alert(error);
+                  });
+          },
+
+          
+        </xmp>
+        </div>
+
+        <div class="col-sm-6">
+            //In Controller
+            <xmp class="prettyprint">
+                [Route("/bims/misc/api/notice/get")]
+                public IHttpActionResult GetNotice()
+            {
+                ApiResponse response;
+                try
+                {
+                    response = new ApiResponse(HttpStatusCode.OK,
+                        _noticeService.Get(GetInstitutionId()));
+                    return Ok(response);
+                }
+                catch (Exception ex)
+                {
+                    response = new ApiResponse(HttpStatusCode.BadRequest, null, ex.Message);
+                    return Ok(response);
+                }
+            }
+        </xmp>
+        </div>
+        </div>
+
+
+<xmp class="prettyprint">
+    axios.get(url)
+    .then(response => {
+    })
+    .catch(error => {
+    })
+</xmp>
+
+<!--####################################################-->
+
+
+
+
+    </body>
+
+</html>

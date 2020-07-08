@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+==========================================================================================================
+<p>tblPerson</p>
+<table style="border-collapse: collapse; width: 13.6606%;" border="1">
+<tbody>
+<tr>
+<td style="width: 4.72602%; background-color: gray; color: white;">Id</td>
+<td style="width: 1.58928%; background-color: gray; color: white;">Name</td>
+<td style="width: 1.25471%; background-color: gray; color: white;">Age</td>
+</tr>
+<tr>
+<td style="width: 4.72602%;">1</td>
+<td style="width: 1.58928%;">Diwas</td>
+<td style="width: 1.25471%;">23</td>
+</tr>
+<tr>
+<td style="width: 4.72602%;">2</td>
+<td style="width: 1.58928%;">Dipesh</td>
+<td style="width: 1.25471%;">20</td>
+</tr>
+<tr>
+<td style="width: 4.72602%;">3</td>
+<td style="width: 1.58928%;">Hari</td>
+<td style="width: 1.25471%;">40</td>
+</tr>
+<tr>
+<td style="width: 4.72602%;">4</td>
+<td style="width: 1.58928%;">Saroj</td>
+<td style="width: 1.25471%;">25</td>
+</tr>
+<tr>
+<td style="width: 4.72602%;">5</td>
+<td style="width: 1.58928%;">Yogesh</td>
+<td style="width: 1.25471%;">42</td>
+</tr>
+</tbody>
+</table>
+  <div class='row'>
+
+      <div class='col-lg-3' style="margin-right:1px;margin-left:0px;padding:1px">
+          <pre>
+            <code class='language-csharp'>
+                public class Person
+                {
+                  public int Id{get;set;}
+                  public string Name{get;set;}
+                  public int Age{get;set;}	
+                }
+            </code>
+          </pre>
+        </div>
+
+
+    <div class='col-lg-4'  style="margin:1px;padding:1px">
+      <pre>
+        <code class='language-clike' >
+            public ActionResult GetAll()
+            {
+              IEnumerable&lt;Person> person=_personService.GetAll();
+              return View(person);	
+            }
+        </code>
+      </pre>
+    </div>
+
+    <div class='col-lg-4' >
+        <pre>
+          <code class='language-csharp'>
+              @model IEnumerable<MyProject.Model.Person>  
+	
+                  @foreach(var item in Model)
+                  {
+                   @item.Age;
+                   @item.Name;
+                  }	
+          </code>
+        </pre>
+      </div>
+
+      
+  </div>
+
+  <h2>Output:</h2>
+
+  23 Diwas <br>
+  20 Dipesh<br>
+  40  Hari<br>
+  25  Saroj<br>
+  42 Yogesh<br>
+==========================================================================================
+<h2>If created object we have to instantaite it otherwise we get object reference not found</h2>
+<pre>
+  <code class="language-csharp">
+    public class VendorAddEditPageVM
+    {
+        public VendorAddEditPageVM()
+        {
+            Vendor = new Vendor(); //instantiating Vender object inside VendorAddEditPageVM class
+        }
+        public Vendor Vendor { get; set; }
+        public bool HasError { get; set; }
+    }
+  </code>
+</pre>
+
+<script src="js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

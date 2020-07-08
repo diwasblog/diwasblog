@@ -1,0 +1,720 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+    font-size:12pt;
+    font-family:monospace;
+
+}
+</style>
+ 
+</head>
+<body>
+<br>
+=======================================================================================================
+<br>
+<h2>Multiple SQL statements in one roundtrip using Dapper.NET</h2>
+<p><span style="font-size: 14pt;">Yes, the Dapper&nbsp;<span style="color: #ff00ff;"><code>QueryMultiple</code>&nbsp;</span>extension can do that:</span></p>
+
+<xmp class="prettyprint">
+string query = @"SELECT COUNT(*) FROM TABLEA; SELECT COUNT(*) FROM TABLEB";
+using (var multi = connection.QueryMultiple(query, null))
+{
+int countA = multi.Read<int>().Single();
+int countB = multi.Read<int>().Single();
+}  
+</xmp>
+
+
+<br>
+==========================================================================================================
+<xmp class="prettyprint">
+
+    namespace FINANCE.Repositories
+    {
+        public class StudentRepository
+        {
+            private ConnectionFactory _connectionFactory;
+    
+            public StudentRepository()
+            {
+                _connectionFactory = new ConnectionFactory();
+            }
+
+    
+            public Student GetStudentById (int studentId, int institutionId)
+            {
+                var conn = _connectionFactory.GetConnection;
+                var query = "usp_student_selectbyid";
+                var param = new DynamicParameters();
+                param.Add("@StudentId", studentId);
+                param.Add("@InstitutionId", institutionId);
+                var student = conn.Query<Student>(query, param, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                conn.Close();
+                return student;
+            }
+    
+            public IEnumerable<StudentDueReportModel> GetStudentDueReport(int institutionId, int courseId, int batchId, double balance)
+            {
+                using (var conn = _connectionFactory.GetConnection)
+                {
+                    var query = "usp_report_finance_feedue";
+                    var param = new DynamicParameters();
+                    param.Add("@InstitutionId", institutionId);
+                    param.Add("@CourseId", courseId);
+                    param.Add("@BatchId", batchId);
+                    param.Add("@Balance", balance);
+                    var list = conn.Query<StudentDueReportModel>(query, param, commandType: CommandType.StoredProcedure);
+                    conn.Close();
+                    return list;
+                }
+            }
+
+            public void Insert(Expense expense)
+            {
+                using (var conn = _connectionFactory.GetConnection)
+                {
+                    var query = "usp_finance_insertexpense";
+                    var param = new DynamicParameters();
+                    param.Add("@InstitutionId", expense.InstitutionId);
+                    param.Add("@VendorId", expense.Vendor.Id);
+                    param.Add("@AccountHead", expense.BillAccountHead.AsTableValuedParameter());
+                    param.Add("@Description", expense.Description);
+                    param.Add("@AdminName", expense.AdminName);
+                    var list = conn.Query(query, param, commandType: CommandType.StoredProcedure);
+                }
+            }
+
+            //return Multiple Table
+            public Receipt GetReceiptDetails(int receiptId, int institutionId)
+            {
+                var conn = _connectionFactory.GetConnection;
+                var query = "usp_finance_selectreceiptdetails";
+                var param = new DynamicParameters();
+                param.Add("@InstitutionId", institutionId);
+                param.Add("@ReceiptId", receiptId);
+    
+                Receipt rec = new Receipt();
+    
+                using (var multi = conn.QueryMultiple(query, param, commandType: CommandType.StoredProcedure))
+                {
+                    rec = multi.Read<Receipt, Bill, Receipt>((receipt, bill) =>
+                    {
+                        receipt.Bill = bill;
+                        return receipt;
+                    }).FirstOrDefault();
+                    rec.Bill.Particulars = multi.Read<BillParticulars>();
+                    rec.Bill.DiscountParticulars = multi.Read<BillParticulars>();
+                    rec.Bill.FineParticulars = multi.Read<BillParticulars>();
+                }
+                conn.Close();
+                return rec;
+            }
+
+            //Just join two table and return result in Receipt table
+            public IEnumerable<Receipt> GetAll(int institutionId)
+                {
+                    using (var conn = _connectionFactory.GetConnection)
+                    {
+                        var query = "usp_finance_selectreceiptlist";
+                        var param = new DynamicParameters();
+                        param.Add("@InstitutionId", institutionId);
+                        var list = conn.Query<Receipt, Student, Receipt>(query, (receipt, student) =>
+                        {
+                            receipt.Student = student;
+                            return receipt;
+                        }, param, commandType: CommandType.StoredProcedure);
+                        return list;
+                    }
+                }
+
+
+        }
+    }
+</xmp>
+
+<div class="row">
+  <div class="col-lg-6">
+<xmp class="prettyprint">
+    public class Receipt
+    {
+    public Receipt()
+    {
+        Bill = new Bill();
+        Student = new Student();
+        Institution = new Institution();
+    }
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public Bill Bill { get; set; }
+    public Student Student { get; set; }
+    public Institution Institution{get;set;}
+  }
+}
+</xmp>
+</div>
+
+<div class="col-lg-6">
+    <xmp class="prettyprint">
+        public class Student
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public int BatchId { get; set; }
+            public string Batch { get; set; }
+            public string Course { get; set; }
+            public string RollNo { get; set; }
+            public int AdmissionNumber { get; set; }
+        }
+      </xmp>
+      </div>
+
+</div>
+====================================================================================================
+Service
+<xmp class="prettyprint">
+namespace FINANCE.Services
+{
+    public class ReceiptService
+    {
+        UnitOfWork.UnitOfWork _unitOfWork;
+
+        public ReceiptService()
+        {
+            _unitOfWork = new UnitOfWork.UnitOfWork();
+        }
+
+        public IEnumerable<Receipt> GetReceiptsByTransactionId(int transactionId, int institutionId)
+        {
+            return _unitOfWork.ReceiptRepository.GetReceiptsByTransactionId(transactionId, institutionId);
+        }
+
+        public Receipt GetReceiptDetails(int receiptId, int institutionId)
+        {
+            return _unitOfWork.ReceiptRepository.GetReceiptDetails(receiptId, institutionId);
+        }
+
+        public void Cancel(Receipt receipt)
+        {
+            _unitOfWork.ReceiptRepository.Cancel(receipt);
+        }
+
+        public IEnumerable<Receipt> GetAll(int institutionId)
+        {
+            return _unitOfWork.ReceiptRepository.GetAll(institutionId);
+        }
+    }
+  </xmp>
+    ==============================================================================================
+    API
+<xmp class="prettyprint">
+    namespace FINANCE.Controllers
+{
+    [RoutePrefix("finance")]
+    public class SettingApiController : ApiController
+    {
+        private readonly AccountHeadService _accountHeadService;
+        UtilitiesService _utilitiesService;
+        ApiResponse _apiResponse;
+        VendorService _vendorService;
+        BillTitleService _billTitleService;
+
+        public SettingApiController()
+        {
+            _apiResponse = new ApiResponse(HttpStatusCode.BadRequest, null, null);
+            _accountHeadService = new AccountHeadService();
+            _utilitiesService = new UtilitiesService();
+            _vendorService = new VendorService();
+            _billTitleService = new BillTitleService();
+        }
+
+        private int GetInstitutionId()
+        {
+            ClaimsIdentity ident = (ClaimsIdentity)User.Identity;
+            return Convert.ToInt32(ident.FindFirst(x => x.Type == "InstitutionId").Value);
+        }
+
+        private string GetDatePreference()
+        {
+            ClaimsIdentity ident = (ClaimsIdentity)User.Identity;
+            return ident.FindFirst(x => x.Type == "DatePreference").Value;
+        }
+
+        #region AccountHead
+
+        [ValidateApiAccess(MenuCode = 37)]
+        [HttpPost]
+        [Route("setting/api/accounthead/insert")]
+        public IHttpActionResult InsertAccountHead(AccountHead accountHead)
+        {
+            ResponseMessage response = new ResponseMessage();
+            try
+            {
+                accountHead.AdminName = User.Identity.Name;
+                accountHead.InstitutionId = GetInstitutionId();
+                _accountHeadService.InsertAccountHead(accountHead);
+                response.Result = true;
+                response.Message = "Successful";
+                return Ok(response);
+            }
+            catch (Exception Ex)
+            {
+                response.Result = false;
+                response.Message = Ex.Message;
+                return Ok(response);
+            }
+        }
+
+        [ValidateApiAccess(MenuCode = 37)]
+        [Route("setting/api/accountheads")]
+        [HttpGet]
+        public IHttpActionResult GetAccountHeads()
+        {
+            try
+            {
+                return Ok(_accountHeadService.GetAccountHeads(GetInstitutionId()));
+            }
+            catch (Exception Ex)
+            {
+                return BadRequest(Ex.Message);
+            }
+        }
+
+        [ValidateApiAccess(MenuCode = 37)]
+        [Route("setting/api/eligibleaccountheads/{id}")]
+        [HttpGet]
+        public IHttpActionResult GetExcludingAccountHeads(int? id)
+        {
+            try
+            {
+                if (id == null)
+                {
+                    return BadRequest("The URL is not properly formed!");
+                }
+                return Ok(_accountHeadService.GetEligibleAccountHeads(GetInstitutionId(), id.Value));
+            }
+            catch (Exception Ex)
+            {
+                return BadRequest(Ex.Message);
+            }
+        }
+
+        [ValidateApiAccess(MenuCode = 37)]
+        [HttpPost]
+        [Route("setting/api/accounthead/edit")]
+        public IHttpActionResult EditAccountHead(AccountHead accountHead)
+        {
+            ResponseMessage response = new ResponseMessage();
+            try
+            {
+                accountHead.AdminName = User.Identity.Name;
+                _accountHeadService.EditAccountHead(accountHead);
+                response.Result = true;
+                response.Message = "Successful";
+                return Ok(response);
+            }
+            catch (Exception Ex)
+            {
+                response.Result = false;
+                response.Message = Ex.Message;
+                return Ok(response);
+            }
+        }
+
+        [ValidateApiAccess(MenuCode = 37)]
+        [HttpGet]
+        [Route("setting/api/accounthead/delete")]
+        public IHttpActionResult DeleteAccountHead(int id)
+        {
+            ResponseMessage response = new ResponseMessage();
+            try
+            {
+                _accountHeadService.DeleteAccountHead(GetInstitutionId(), id);
+                response.Result = true;
+                response.Message = "Successful";
+                return Ok(response);
+            }
+            catch (Exception Ex)
+            {
+                response.Result = false;
+                response.Message = Ex.Message;
+                return Ok(response);
+            }
+        }
+
+        [ValidateApiAccess(MenuCode = 117)]
+        [Route("setting/api/accountheads/course/{courseId}/billTitle/{billTitleId}")]
+        [HttpGet]
+        public IHttpActionResult GetAccountHeadsByCourseAndBillTitle(int courseId, int billTitleId)
+        {
+            try
+            {
+                _apiResponse.StatusCode = (int)HttpStatusCode.OK;
+                _apiResponse.Result = _accountHeadService.GetAccountHeadsByCourseBillTitle(GetInstitutionId(), courseId, billTitleId);
+                return Ok(_apiResponse);
+            }
+            catch (Exception ex)
+            {
+                _apiResponse.ErrorMessage = ex.Message;
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [ValidateApiAccess(MenuCode = 117)]
+        [HttpPost]
+        [Route("setting/api/accounthead/inserbilltitleassociation")]
+        public IHttpActionResult InsertBillTitleAccountHeadAssociation(AccountHeadBillTitleAssociationInsertModel obj)
+        {
+            try
+            {
+                obj.AdminName = User.Identity.Name;
+                obj.InstitutionId = GetInstitutionId();
+                _accountHeadService.InsertAccountHeadBillTitleAssociation(obj);
+                _apiResponse.Result = string.Format("The data has been sent!");
+                _apiResponse.StatusCode = (int)HttpStatusCode.OK;
+                return Ok(_apiResponse);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        #endregion
+
+        #region Vendor Management Related
+
+        [ValidateApiAccess(MenuCode = 108)]
+        [Route("setting/api/vendors")]
+        [HttpGet]
+        public IHttpActionResult GetAllVendors()
+        {
+            try
+            {
+                _apiResponse.StatusCode = (int)HttpStatusCode.OK;
+                _apiResponse.Result = _vendorService.GetAll(GetInstitutionId());
+                return Ok(_apiResponse);
+            }
+            catch (Exception ex)
+            {
+                _apiResponse.ErrorMessage = ex.Message;
+                return BadRequest(ex.Message);
+            }
+        }
+
+        #endregion
+
+        #region Account Sub Types Related
+
+        [ValidateApiAccess(MenuCode = 37)]
+        [Route("setting/api/getaccountsubtypes/{id}")]
+        [HttpGet]
+        public IHttpActionResult GetAccountSubTypes(int id)
+        {
+            try
+            {
+                _apiResponse.StatusCode = (int)HttpStatusCode.OK;
+                _apiResponse.Result = _utilitiesService.GetAccountSubTypesByAccountType(id);
+                return Ok(_apiResponse);
+            }
+            catch (Exception ex)
+            {
+                _apiResponse.ErrorMessage = ex.Message;
+                return BadRequest(ex.Message);
+            }
+        }
+
+        #endregion
+
+        #region Bill Title Related
+
+        [ValidateApiAccess(MenuCode = 115)]
+        [HttpPost]
+        [Route("setting/api/billtitle/insert")]
+        public IHttpActionResult InsertBillTitle(BillTitle billTitle)
+        {
+            try
+            {
+                billTitle.AdminName = User.Identity.Name;
+                billTitle.InstitutionId = GetInstitutionId();
+                _billTitleService.Insert(billTitle);
+                _apiResponse.Result = string.Format("The Bill Title {0} has been inserted.", billTitle.Name);
+                _apiResponse.StatusCode = (int)HttpStatusCode.OK;
+                return Ok(_apiResponse);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [ValidateApiAccess(MenuCode = 56)]
+        [Route("setting/api/billtitles")]
+        public IHttpActionResult GetAllBillTitles()
+        {
+            try
+            {
+                _apiResponse.StatusCode = (int)HttpStatusCode.OK;
+                _apiResponse.Result = _billTitleService.GetAll(GetInstitutionId());
+                return Ok(_apiResponse);
+            }
+            catch (Exception ex)
+            {
+                _apiResponse.ErrorMessage = ex.Message;
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [ValidateApiAccess(MenuCode = 56)]
+        [HttpPost]
+        [Route("setting/api/billtitle/edit")]
+        public IHttpActionResult EditBillTitle(BillTitle billTitle)
+        {
+            try
+            {
+                billTitle.AdminName = User.Identity.Name;
+                billTitle.InstitutionId = GetInstitutionId();
+                _billTitleService.Edit(billTitle);
+                _apiResponse.Result = string.Format("The Bill Title {0} has been updated.", billTitle.Name);
+                _apiResponse.StatusCode = (int)HttpStatusCode.OK;
+                return Ok(_apiResponse);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        
+
+        #endregion
+    }
+}
+</xmp>
+<br>
+==================================================================================
+<br>
+<h2>Multiple Table select in one Queries</h2>
+<h2>Use mostly when you want to get listofdata from one table  and single object type of data</h2>
+<xmp class="prettyprint">
+    CREATE OR ALTER PROCEDURE usp_Inventory_SelectOrderById
+    (
+        @InstitutionId int,
+        @OrderId int
+    )
+    AS
+    BEGIN
+        SELECT o.VendorId,o.BillNo,convert(varchar, o.PurchasedDateAD, 126) as PurchasedDateAD FROM [dbo].[Inventory.Order] o
+        WHERE  o.Id=@OrderId AND o.InstitutionId=@InstitutionId;
+        
+        SELECT oi.Id,oi.InstitutionId,oi.OrderId,oi.ItemId,oi.Location FROM [dbo].[Inventory.Order.ItemAssociation] oi
+        INNER JOIN [dbo].[Inventory.Item] i
+        ON i.Id=oi.ItemId
+        WHERE oi.OrderId=@OrderId AND oi.InstitutionId=@InstitutionId;
+    END  
+</xmp>
+
+<xmp class="prettyprint">
+    // In repository
+        public InventoryItemEditVM GetAllOrderByOrderId(int institutionId,int orderId)
+        {
+            var conn = _connectionFactory.GetConnection;
+            var query = "usp_Inventory_SelectOrderById";
+            var param = new DynamicParameters();
+            param.Add("@InstitutionId", institutionId);
+            param.Add("@OrderId",orderId);
+
+            InventoryItemEditVM obj = new InventoryItemEditVM();
+
+            using (var multi = conn.QueryMultiple(query, param, commandType: CommandType.StoredProcedure))
+            {
+                //very very important
+                //order of selection must match
+                //First select must match with first multiread
+                //Second Select must match with second multiread otherwise error 
+                obj.InventoryItemOrder = multi.Read<InventoryItemOrder>().FirstOrDefault();  //getting single object data (so firstordefault)
+                obj.InventoryItemDataModel = multi.Read<InventoryItemDataModel>();    //list
+            }
+            return obj;
+        }
+</xmp>
+
+
+<xmp class="prettyprint">
+    public class InventoryItemEditVM
+    {
+        public InventoryItemEditVM()
+        {
+            InventoryItemOrder=new InventoryItemOrder();
+            //no need to create object of IEnumerable of InventoryItemDataModel
+        }
+
+        public InventoryItemOrder InventoryItemOrder{get;set;}
+        public IEnumerable<InventoryItemDataModel> InventoryItemDataModel{get;set;}
+    }
+</xmp>
+
+
+<xmp class="prettyprint">
+        public class InventoryItemOrder
+        {
+            public int Id { get; set; }
+            public int InstitutionId { get; set; }
+            public int VendorId { get; set; }
+            public int BillNo { get; set; } 
+            public string PurchasedDateBS { get; set; } 
+            public string Data { get; set; }
+            public string AdminName { get; set; } 
+            public string PurchasedDateAD { get; set; }
+            public string VendorName { get; set; }
+        }
+    
+    public class InventoryItemDataModel
+        {
+            public int Id { get; set; }
+            public int Quantity { get; set; }
+            public int RemainingQuantity { get; set; }
+            public decimal PurchaseUnitPrice { get; set; } 
+            public decimal SellingUnitPrice { get; set; }
+            public string Location { get; set; } 
+            public int ItemId { get; set; }
+            public string ItemName { get; set; }
+            public int OrderId { get; set; }
+            public int InstitutionId { get; set; }
+            public string AdminName { get; set; } 
+        }
+</xmp>
+==============================================================================================================
+<div class="row">
+    <div class="col-8">
+        <xmp class="prettyprint">
+            public Student GetById(int institutionId, int studentId)
+            {
+                using (var conn = _connectionFactory.GetConnection)
+                {
+                    var proc = "usp_Eapi_Student_SelectById";
+                    var param = new DynamicParameters();
+                    param.Add("@InstitutionId", institutionId);
+                    param.Add("@StudentId", studentId);
+                    Student s = new Student();
+    
+                    using (var multi = conn.QueryMultiple(proc, param, commandType: CommandType.StoredProcedure))
+                    {
+                        s = multi.Read<Student, Course, Batch, Student>((student, course, batch) =>
+                          {
+                              s.Course = course;
+                              s.Batch = batch;
+                              return student;
+                          }).FirstOrDefault();
+    
+                        s.Guardian = multi.Read<Guardian>();
+                        
+                        s.Documents= multi.Read<Document, DocumentType, Document>((document, documentType) =>
+                        {
+                            document.DocType = documentType;
+                            return document;
+                        });
+                    }
+                    return s;
+                }
+            }
+        </xmp>
+    </div>
+
+    <div class="col-8">
+        <xmp class="prettyprint">
+public class Student
+{
+    public Student()
+    {
+        Course = new Course();
+        Batch = new Batch();
+    }
+
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public int RollNumber { get; set; }
+    public string AdmissionNumber { get; set; }
+    public string Email { get; set; }
+    public string BirthDate { get; set; }
+    public string Gender { get; set; }
+    public string CountryName { get; set; }
+    public string BloodGroup { get; set; }
+    public string MaritalStatus { get; set; }
+    public string Religion { get; set; }
+    public string Caste { get; set; }
+    public string Disability { get; set; }
+    public string MotherTongue { get; set; }
+    public string PhotoName { get; set; }
+    public string AdmissionDate { get; set; }
+    public string MedicalInformation { get; set; }
+    public string MedicationAllergy { get; set; }
+    public string FoodAllergy { get; set; }
+    public string OtherAllergy { get; set; }
+    public Course Course { get; set; }
+    public Batch Batch { get; set; }
+    public IEnumerable<Guardian> Guardian { get; set; }
+    public IEnumerable<Document> Documents { get; set; }
+}
+
+public class Guardian
+    {
+        public string Name { get; set; }
+        public string Relation { get; set; }
+        public string Number { get; set; }  
+    }
+
+    =============================================
+
+    public class Document
+    {
+        public Document()
+        {
+            DocType = new DocumentType();
+        }
+
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string Extension { get; set; }
+        public string DocumentType { get; set; }
+        public int OrderId { get; set; }
+        public string Title { get; set; }
+
+        public DocumentType DocType { get; set; }
+    }
+
+    public class DocumentType
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } 
+    }
+
+}
+        </xmp>
+    </div>
+</div>
+
+<script src="js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

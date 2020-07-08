@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+  <link rel="stylesheet" href="../Ef/css/bootstrap.css">
+  <link rel="stylesheet" href="../Ef/css/bootstrap-grid.css">
+  <link rel="stylesheet" href="../Ef/css/bootstrap-reboot.css">
+  <link rel="stylesheet" href="../Ef/css/dracula.css">
+  <link rel="stylesheet" href="../Ef/css/dracula-prism.css">
+  <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+  <h2 style="text-align: center;"><strong><span style="color: #000000;">Integer Data Types</span></strong></h2>
+  <table
+    style="border-collapse: collapse; width: 100%; height: 322px; background-color: #ecf0f1; border-color: #e03e2d; float: left;"
+    border="1">
+    <tbody>
+      <tr style="height: 46px;">
+        <td style="width: 25%; height: 46px;">
+          <p><span style="color: #000000;"><strong><span style="font-size: 18pt;">Name&nbsp;</span></strong></span></p>
+        </td>
+        <td style="width: 25%; height: 46px;"><span style="color: #000000;"><strong><span
+                style="font-size: 18pt;">Storage Size&nbsp;</span></strong></span></td>
+        <td style="width: 25%; height: 46px;"><span style="color: #000000;"><strong><span
+                style="font-size: 18pt;">Description&nbsp;</span></strong></span></td>
+        <td style="width: 25%; height: 46px;"><span style="color: #000000;"><strong><span
+                style="font-size: 18pt;">Range</span></strong></span></td>
+      </tr>
+      <tr style="height: 46px;">
+        <td style="width: 25%; height: 46px;"><strong><span style="color: #000000;">smallint</span></strong></td>
+        <td style="width: 25%; height: 46px;">2 bytes</td>
+        <td style="width: 25%; height: 46px;">Small range integer</td>
+        <td style="width: 25%; height: 46px;">-32768&nbsp; to 32768</td>
+      </tr>
+      <tr style="height: 46px;">
+        <td style="width: 25%; height: 46px;"><strong><span style="color: #000000;">integer</span></strong></td>
+        <td style="width: 25%; height: 46px;">4 bytes</td>
+        <td style="width: 25%; height: 46px;">Typical choice</td>
+        <td style="width: 25%; height: 46px;">-2147483648&nbsp; to +214783648</td>
+      </tr>
+      <tr style="height: 46px;">
+        <td style="width: 25%; height: 46px;"><strong><span style="color: #000000;">bigint</span></strong></td>
+        <td style="width: 25%; height: 46px;">8 bytes</td>
+        <td style="width: 25%; height: 46px;">Large range integer</td>
+        <td style="width: 25%; height: 46px;">2^64 rto -2^64</td>
+      </tr>
+      <tr style="height: 46px;">
+        <td style="width: 25%; height: 46px;"><strong><span style="color: #000000;">smallserial</span></strong></td>
+        <td style="width: 25%; height: 46px;">2 bytes</td>
+        <td style="width: 25%; height: 46px;">Small auto incrementing integer</td>
+        <td style="width: 25%; height: 46px;">1 to 32767</td>
+      </tr>
+      <tr style="height: 46px;">
+        <td style="width: 25%; height: 46px;"><strong><span style="color: #000000;">serial</span></strong></td>
+        <td style="width: 25%; height: 46px;">4 bytes</td>
+        <td style="width: 25%; height: 46px;">auto incrementing integer</td>
+        <td style="width: 25%; height: 46px;">1 to 2147483647</td>
+      </tr>
+      <tr style="height: 46px;">
+        <td style="width: 25%; height: 46px;"><strong><span style="color: #000000;">bigserial</span></strong></td>
+        <td style="width: 25%; height: 46px;">8 bytes</td>
+        <td style="width: 25%; height: 46px;">Large auto incrementing integer</td>
+        <td style="width: 25%; height: 46px;">1 to 2^64</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p style="text-align: center;">
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><strong><span
+        style="font-size: 24pt; color: #000000;">Arbitrary Precision Data Types</span></strong></p>
+  <hr />
+  <table
+    style="border-collapse: collapse; width: 101.226%; height: 102px; background-color: #ecf0f1; border-color: #e03e2d; float: left;"
+    border="1">
+    <tbody>
+      <tr style="height: 46px;">
+        <td style="width: 25%; height: 46px;"><span style="color: #000000;"><strong><span
+                style="font-size: 18pt;">Name&nbsp;</span></strong></span></td>
+        <td style="width: 25%; height: 46px;"><span style="color: #000000;"><strong><span
+                style="font-size: 18pt;">Storage Size&nbsp;</span></strong></span></td>
+        <td style="width: 25%; height: 46px;"><span style="color: #000000;"><strong><span
+                style="font-size: 18pt;">Description&nbsp;</span></strong></span></td>
+        <td style="width: 25%; height: 46px;"><span style="color: #000000;"><strong><span
+                style="font-size: 18pt;">Range</span></strong></span></td>
+      </tr>
+      <tr style="height: 46px;">
+        <td style="width: 25%; height: 46px;">decimal&nbsp;</td>
+        <td style="width: 25%; height: 46px;">variable</td>
+        <td style="width: 25%; height: 46px;">user-specified precision,exact</td>
+        <td style="width: 25%; height: 46px;">
+          <p>up to 131072 digit before the decimal point</p>
+          <p>upto 16383 digits after the decimal point</p>
+        </td>
+      </tr>
+      <tr style="height: 46px;">
+        <td style="width: 25%; height: 10px;">numeric</td>
+        <td style="width: 25%; height: 10px;">variable</td>
+        <td style="width: 25%; height: 10px;">user-specified precision, exact</td>
+        <td style="width: 25%; height: 10px;">
+          <p>up to 131072 digits before the decimal point</p>
+          <p>upto 16383 digits after the decimal point</p>
+          <p>&nbsp;</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p><strong><span style="font-size: 18pt; color: #000000;">numeric(<span
+          style="color: #e03e2d;">total_digit</span>,<span
+          style="color: #f1c40f;">total_digit_in_fraction</span>)</span></strong></p>
+  <p style="text-align: center;"><span style="color: #000000;"><strong><span style="font-size: 24pt;">Floating-point
+          data types</span></strong></span></p>
+  <p><span style="font-size: 12pt;">You can use floating-point datatypes if the number of rows cannot be handled by an
+      integer</span></p>
+  <table
+    style="border-collapse: collapse; width: 101.226%; height: 102px; background-color: #ecf0f1; border-color: #e03e2d; float: left;"
+    border="1">
+    <tbody>
+      <tr style="height: 46px;">
+        <td style="width: 25%; height: 46px;"><span style="color: #000000;"><strong><span
+                style="font-size: 18pt;">Name&nbsp;</span></strong></span></td>
+        <td style="width: 25%; height: 46px;"><span style="color: #000000;"><strong><span
+                style="font-size: 18pt;">Storage Size&nbsp;</span></strong></span></td>
+        <td style="width: 25%; height: 46px;"><span style="color: #000000;"><strong><span
+                style="font-size: 18pt;">Description&nbsp;</span></strong></span></td>
+        <td style="width: 25%; height: 46px;"><span style="color: #000000;"><strong><span
+                style="font-size: 18pt;">Range</span></strong></span></td>
+      </tr>
+      <tr style="height: 46px;">
+        <td style="width: 25%; height: 46px;">real</td>
+        <td style="width: 25%; height: 46px;">4 bytes</td>
+        <td style="width: 25%; height: 46px;">variable precision, inexact</td>
+        <td style="width: 25%; height: 46px;">
+          <p>6 decimal digits precision</p>
+        </td>
+      </tr>
+      <tr style="height: 46px;">
+        <td style="width: 25%; height: 10px;">double precision</td>
+        <td style="width: 25%; height: 10px;">8 bytes</td>
+        <td style="width: 25%; height: 10px;">variable precision, inexact</td>
+        <td style="width: 25%; height: 10px;">
+          <p>15 decimal digits precision</p>
+          <p>&nbsp;</p>
+        </td>
+      </tr>
+      <tr style="height: 46px;">
+        <td style="width: 25%; height: 10px;">Float</td>
+        <td style="width: 25%; height: 10px;">16 bytes</td>
+        <td style="width: 25%; height: 10px;"></td>
+        <td style="width: 25%; height: 10px;">
+          <p></p>
+          <p>&nbsp;</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <p>&nbsp;</p>
+  <p><br /><br /></p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p style="text-align: center;"><span style="color: #000000;"><strong><span style="font-size: 18pt;">Character Data
+          Types</span></strong></span></p>
+  <table
+    style="border-collapse: collapse; width: 101.226%; height: 102px; background-color: #ecf0f1; border-color: #e03e2d; float: left;"
+    border="1">
+    <tbody>
+      <tr style="height: 46px;">
+        <td style="width: 25%; height: 46px;"><span style="color: #000000;"><strong><span
+                style="font-size: 18pt;">Name&nbsp;</span></strong></span></td>
+        <td style="width: 25%; height: 46px;"><span style="color: #000000;"><strong><span
+                style="font-size: 18pt;">Storage Size&nbsp;</span></strong></span></td>
+      </tr>
+      <tr style="height: 46px;">
+        <td style="width: 25%; height: 46px;">character varying(n),varchar(n)</td>
+        <td style="width: 25%; height: 46px;">variable length with limit&nbsp;</td>
+      </tr>
+      <tr style="height: 46px;">
+        <td style="width: 25%; height: 10px;">character(n),char(n)</td>
+        <td style="width: 25%; height: 10px;">fixed length</td>
+      </tr>
+      <tr>
+        <td style="width: 25%;">text</td>
+        <td style="width: 25%;">&nbsp;</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+
+  <hr>
+  <p style="text-align: center;"><span style="color: #000000;"><strong><span style="font-size: 18pt;">Types of
+          Contraints</span></strong></span></p>
+  <table
+    style="border-collapse: collapse; width: 101.226%; height: 240px; background-color: #ecf0f1; border-color: #e03e2d; float: left;"
+    border="1">
+    <tbody>
+      <tr style="height: 46px;">
+        <td style="width: 25%; height: 46px;"><span style="color: #000000; font-size: 18pt;"><strong>NOT
+              NULL</strong></span></td>
+        <td style="width: 25%; height: 46px;"><span style="font-size: 18pt;">Field <span
+              style="color: #000000;"><strong>must have a value</strong></span></span></td>
+      </tr>
+      <tr style="height: 46px;">
+        <td style="width: 25%; height: 46px;"><span
+            style="color: #000000; font-size: 18pt;"><strong>UNIQUE</strong></span></td>
+        <td style="width: 25%; height: 46px;"><span style="font-size: 18pt;">Value <strong><span
+                style="color: #000000;">must not already be in table</span></strong>&nbsp;</span></td>
+      </tr>
+      <tr style="height: 46px;">
+        <td style="width: 25%; height: 10px;"><span style="color: #000000; font-size: 18pt;"><strong>PRIMARY
+              KEY</strong></span></td>
+        <td style="width: 25%; height: 10px;"><span style="font-size: 18pt;"><strong><span style="color: #000000;">Must
+                have value and be unique</span></strong> , used to identify record in a table</span></td>
+      </tr>
+      <tr style="height: 46px;">
+        <td style="width: 25%; height: 46px;"><span style="color: #000000; font-size: 18pt;"><strong>FOREIGN
+              KEY</strong></span></td>
+        <td style="width: 25%; height: 46px;"><span style="font-size: 18pt;">All values must exist in another
+            table.</span></td>
+      </tr>
+      <tr style="height: 46px;">
+        <td style="width: 25%; height: 46px;"><span
+            style="color: #000000; font-size: 18pt;"><strong>CHECK</strong></span></td>
+        <td style="width: 25%; height: 46px;"><span style="color: #000000;"><strong><span
+                style="font-size: 18pt;">Checks that all values meet condition</span></strong></span></td>
+      </tr>
+      <tr style="height: 46px;">
+        <td style="width: 25%; height: 46px;"><span
+            style="color: #000000; font-size: 18pt;"><strong>DEFAULT</strong></span></td>
+        <td style="width: 25%; height: 46px;"><span style="font-size: 18pt;">If no value provided, <strong><span
+                style="color: #000000;">value is set to the default.</span></strong></span></td>
+      </tr>
+    </tbody>
+  </table>
+  <pre>
+  <code class="language-sql">
+    //It is recommended that you use lower case names for the table and as well as all the columns.
+
+
+    CREATE TABLE IF NOT EXISTS employee ( 
+      id SERIAL PRIMARY KEY, //primary constraint     -- serial data type is auto incrementing four-byte integer
+      // id SERIAL BIGSERIAL 
+      name varchar(40) NOT NULL,
+      pass CHARACTER VARYING,
+      first_name CHARACTER varying(30),
+      COUNTRY_NAME varchar(40) NOT NULL,
+      username text,
+      age numeric ,
+      sex boolean Default FALSE,    // Oracle = boolean , sql server = bit
+      region_id decimal(10,0) NOT NULL,
+      SALARY decimal(8,2) DEFAULT NULL, 
+      mail character varying(255) NOT NULL default 'xyz@gmail.com'::character varying,
+      JOB_TITLE varchar(35) NOT NULL DEFAULT ' ',
+      min_salary decimal(6,0) DEFAULT 8000,  // default contraint
+      active boolean NOT NULL DEFAULT true,
+      country_id integer,
+      start_date TIMESTAMP WITHOUT TIME ZONE,   //without timezone acts like UTC time   
+      date_create timestamp with time zone DEFAULT now()
+      department_id integer,
+      created_on timestamp without time zone,
+      foreign key(country_id) REFERENCES  country(id),         //foreign key constraint
+      foreign key(department_id) REFERENCES  department(id),  //foreign key constraint
+
+      my_ip_vfour_address INET,                                 // 10.0.2.8/16
+      my_mac_address MACADDR,                                   //08:00:2b:01:02:03
+
+      cost integer default 50 constraint practices_cost CHECK (cost >= 0 AND cost <= 1000) //check and default constraint
+      UNIQUE(name,sex)
+      );
+    </code>
+</pre>
+  ======================================================================
+
+  <h2>For adding more field</h2>
+  <pre>
+  <code class="language-sql">
+    alter table employee
+    add column country text;
+  </code>
+</pre>
+  ====================================================================
+
+
+  <h2>For generating UUID </h2>
+
+  uuid_generate_v1() method call can be made automatically to generate a default value for any newly inserted row. When
+  defining the
+  column.This function generates a version 1 UUID. This involves the MAC address of the computer and a time stamp. Note
+  that UUIDs of this kind reveal the identity of the computer that created the identifier and the time at which it did
+  so, which might make it unsuitable for certain security-sensitive applications.
+  <br>
+  uuid uses 16 bytes per value, which is twice what is used by int8.
+  <h4>Step 1 : Create uuid_generate_v1() function</h4>
+  <div class="row">
+    <div class="col-lg-6">
+      <pre>
+          <code class="language-sql">
+              -- FUNCTION: public.uuid_generate_v4()
+      
+              -- DROP FUNCTION public.uuid_generate_v4();
+              
+              CREATE OR REPLACE FUNCTION public.uuid_generate_v4(
+                )
+                  RETURNS uuid
+                  LANGUAGE 'c'
+              
+                  COST 1
+                  VOLATILE STRICT 
+              AS '$libdir/uuid-ossp', 'uuid_generate_v4'
+              ;
+              
+              ALTER FUNCTION public.uuid_generate_v4()
+                  OWNER TO postgres;
+              
+          </code>
+        </pre>
+    </div>
+
+    <div class="col-lg-6">
+      <h4>Step 2 : Then create table with uuid column</h4>
+      <pre>
+            <code class="language-sql">
+              </code>
+              CREATE TABLE IF NOT EXISTS employee (
+
+                pkey UUID NOT NULL DEFAULT uuid_generate_v1(), 
+                CONSTRAINT pet_pkey_ PRIMARY KEY (pkey)
+                );
+              </pre>
+    </div>
+  </div>
+
+  ==========================================================================================================================================
+
+  <h2>Insert Time</h2>
+  <pre>
+  <code class="language-sql">
+    Insert into my_table(startdate,mydate) values('2016-10-16'::timestamp without time zone,'2017-02-01'::date)
+  </code>
+</pre>
+
+
+
+  <hr>
+  <pre>
+  <code class="language-sql">
+    SET TIMEZONE TO 'Japan';
+    SELECT '2011-01-01 00:00:00'::TIMESTAMP;    //  2011-01-01 00:00:00
+    SELECT '2011-01-01 00:00:00'::TIMESTAMP WITH TIME ZONE;   // 2011-01-01 00:00:00+09     where 9 is UTC OFFSER timezone , for Nepal : 05
+    SELECT '2011-01-01 00:00:00+03'::TIMESTAMP;               //   2011-01-01 00:00:00
+
+  </code>
+</pre>
+
+
+
+
+
+  <pre>
+  <code class="language-sql">
+    TIMESTAMP WITHOUT TIME ZONE   =====> NO UTC TIME
+    TIMESTAMP WITH TIME ZONE    =======> WITH UTC TIME
+  </code>
+</pre>
+
+
+  <hr />
+  <p style="text-align: center;"><span style="color: #000000;"><strong><span style="font-size: 18pt;">Network Adress
+          Types</span></strong></span></p>
+  <table
+    style="border-collapse: collapse; width: 100%; height: 322px; background-color: #ecf0f1; border-color: #e03e2d; float: left;"
+    border="1">
+    <tbody>
+      <tr style="height: 46px;">
+        <td style="width: 25%; height: 46px;">
+          <p><span style="color: #000000;"><strong><span style="font-size: 18pt;">Name&nbsp;</span></strong></span></p>
+        </td>
+        <td style="width: 25%; height: 46px;"><span style="color: #000000;"><strong><span
+                style="font-size: 18pt;">Storage Size&nbsp;</span></strong></span></td>
+        <td style="width: 25%; height: 46px;"><span style="color: #000000;"><strong><span
+                style="font-size: 18pt;">Description&nbsp;</span></strong></span></td>
+      </tr>
+      <tr style="height: 46px;">
+        <td style="width: 25%; height: 46px;"><strong><span style="color: #000000;">CIDR</span></strong></td>
+        <td style="width: 25%; height: 46px;">7 to 19 byte</td>
+        <td style="width: 25%; height: 46px;">&nbsp;IPv4 and IPv6 networks&nbsp;</td>
+      </tr>
+      <tr style="height: 46px;">
+        <td style="width: 25%; height: 46px;"><span style="color: #000000;"><strong>INET</strong></span></td>
+        <td style="width: 25%; height: 46px;">7 to 19 byte</td>
+        <td style="width: 25%; height: 46px;">&nbsp;IPv4 and IPv6 hosts and networks&nbsp;</td>
+      </tr>
+      <tr style="height: 46px;">
+        <td style="width: 25%; height: 46px;"><strong><span style="color: #000000;">macaddr</span></strong></td>
+        <td style="width: 25%; height: 46px;">6 btye</td>
+        <td style="width: 25%; height: 46px;">&nbsp;MAC addresses&nbsp;</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+
+  <hr>
+  <h2>Create Table with inheritance</h2>
+  <div class="row">
+    <div class="col-lg-6">
+      <pre>
+            <code class="language-sql">
+                CREATE TABLE users (username TEXT, email TEXT); 
+                CREATE TABLE simple_users () INHERITS (users); 
+                CREATE TABLE users_with_password (PASSWORD TEXT) INHERITS (users);
+            </code>
+          </pre>
+    </div>
+
+    <div class="col-lg-6">
+      <h4>Step 2 : Then create table with uuid column</h4>
+      <pre>
+              <code class="language-sql">
+                </code>
+                users 
+                  Column Type
+                    username text
+                    email text 
+                  
+                simple_users 
+                  Column Type 
+                     username text 
+                     email text 
+                     
+                users_with_password 
+                  Column Type 
+                     username text 
+                     email text
+                    password text
+                </pre>
+    </div>
+  </div>
+
+
+  <p><span style="color: #e03e2d;"><strong><span style="font-size: 14pt;">Why UUID is good as compared to auto-increment
+          Id?</span></strong> </span></p>
+  <ul>
+    <li><span style="color: #000000;"><strong><span style="font-size: 14pt;">At scale, when you have multiple databases
+            containing a segment (shard) of your data, for example, mobile and web save data to same table then using a
+            UUID mean that one ID is unique across <em>all</em> databases.</span></strong></span></li>
+    <li><span style="color: #000000;"><strong><span style="font-size: 14pt;">Also it is 16 bytes data which is globally
+            unique across all the databases, this makes moving of data safer.</span></strong></span></li>
+    <li><span style="color: #000000;"><strong><span style="font-size: 14pt;">UUIDs do not reveal information about your
+            data, so it would be safer to use in a URL, for example. If I am customer 12345678, it&rsquo;s easy to guess
+            that there are customers 12345677 and 1234569, and this makes for an attack vector.</span></strong></span>
+    </li>
+  </ul>
+  <p><span style="color: #e03e2d;"><strong><span style="font-size: 14pt;">Drawback of UUID</span></strong></span></p>
+  <ul>
+    <li><span style="color: #000000;"><strong><span style="font-size: 14pt;">Its size is larger(16 bytes) then general
+            auto-increment field like int,bigint, etc. Its sizer is largest in SQL server</span></strong></span></li>
+  </ul>
+  <p>&nbsp;</p>
+  <p><strong><span style="font-size: 18pt;">So use GUID only you need it.</span></strong></p>
+  <script src="../EF/js/prism.js"></script>
+  <script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+      {
+        'remove-trailing': true,
+        'remove-indent': true,
+        'left-trim': true,
+        'right-trim': true,
+        // 'break-lines': 10,
+        // 'indent': 2,
+        // 'remove-initial-line-feed': false,
+        // 'tabs-to-spaces': 4,
+        // 'spaces-to-tabs': 4
+      });
+  </script>
+</body>
+
+</html>

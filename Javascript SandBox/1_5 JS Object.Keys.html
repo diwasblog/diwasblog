@@ -1,0 +1,181 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+    font-size:12pt;
+    font-family:monospace;
+
+}
+</style>
+ 
+</head>
+<body>
+
+    <p><span style="font-size: 14pt;"><span style="color: #ff00ff;"><code>Object.keys()</code></span>&nbsp;<strong>extracts keys from a given object</strong></span></p>
+
+    ================================================================================================
+    <br>
+    <div class="row">
+        <div class="col-lg-6">
+                <xmp class="prettyprint">
+                        Input : var check = ['x', 'y', 'z'];
+                        console.log(Object.keys(check));
+                         Output : ['0', '1', '2']
+                </xmp>
+        </div>
+
+        <div class="col-lg-6">
+                <xmp class="prettyprint">
+                        Input : var check = ['x', 'y', 'z'];
+                        console.log(Object.values(check));
+                        Output : Array ["x", "y", "z"]
+                </xmp>
+        </div>
+    </div>
+
+    <br>
+    ==========================================================================================
+    <br>
+    ================================================================================================
+    <br>
+
+    <div class="row">
+            <div class="col-lg-6">
+                    <xmp class="prettyprint">
+                            var object = { 0: 'x', 1: 'y', 2: 'z' };
+                           console.log(Object.keys(object));
+                           Output : ['0', '1', '2']
+                       </xmp>
+            </div>
+    
+            <div class="col-lg-6">
+                    <xmp class="prettyprint">
+                            Input : var object = { 0: 'x', 1: 'y', 2: 'z' };
+                            console.log(Object.values(object));
+                    Output : Array ["x", "y", "z"]
+                    </xmp>
+            </div>
+        </div>
+  
+
+    <br>
+    ==========================================================================================
+    <br>
+
+    <div class="row">
+            <div class="col-lg-6">
+                    <xmp class="prettyprint">
+                            Input : var object = { 70: 'x', 21: 'y', 35: 'z' };
+                            console.log(Object.keys(object));
+                            Output : ['21', '35', '70']
+                       </xmp>
+                
+            </div>
+    
+            <div class="col-lg-6">
+                    <xmp class="prettyprint">
+                            Input : var object = { 70: 'x', 21: 'y', 35: 'z' };
+                            console.log(Object.values(object));
+                    Output : Array ["y", "z", "x"]
+                    </xmp>
+            </div>
+        </div>
+  
+
+    <br>
+    ======================================================================================
+    <xmp class='prettyprint'>
+        var nameObj = {first: "Diwas", last: "Poudel"};
+        console.log(Object.keys(nameObj));
+        // Outputs:
+        // ["first", "last"]
+    </xmp>
+
+
+    <h2>Object.Keys with foreach</h2>
+    <xmp class='prettyprint'>
+        var nameObj = {first: "Diwas", last: "Diwas"};
+
+        Object.keys(nameObj).forEach(function(key) {
+            console.log(key + ': ' + nameObj[key]);
+        });
+        
+        // Outputs:
+        // first: Diwas
+        // last: Poudel
+    </xmp>
+=====================================================================================================================
+    <h2>Object can be any type</h2>
+    <xmp class="prettyprint">
+        var o={a:1,b:2,c:[1,2,3],d:"webtricks",e:true,f:NaN,g:{x:1}}
+        Object.keys(o);
+        console.log(Object.keys(o));
+
+
+        //output: ['a','b','c','d','e','f','g']
+    </xmp>
+
+
+    =======================================================================================================================
+<xmp class="prettyprint">
+    // simple array
+    var arr = ['a', 'b', 'c'];
+    console.log(Object.keys(arr)); // console: ['0', '1', '2']
+    
+    // array like object
+    var obj = { 0: 'a', 1: 'b', 2: 'c' };
+    console.log(Object.keys(obj)); // console: ['0', '1', '2']
+    
+    // array like object with random key ordering
+    var anObj = { 100: 'a', 2: 'b', 7: 'c' };
+    console.log(Object.keys(anObj)); // console: ['2', '7', '100']
+    
+</xmp>
+
+
+<xmp class="prettyprint">
+    let experienceObject = {
+      name: 'Raymon',
+      title: 'Lead Frontend/JavaScript Developer',
+      yearsExperience: 8,
+      projects: [
+          {
+              name: 'Company A',
+              title: 'Senior JavaScript Developer',
+              techniques: ['Angular', 'ES6', 'Vanilla JavaScript', 'Less', 'CSS']
+          },
+          {
+              name: 'Company B',
+              title: 'Lead JavaScript Developer',
+              techniques: ['Angular 2', 'AngularJS', 'ES6', 'Vanilla JavaScript', 'Web Sockets', 'D3']
+          },
+          {
+              name: 'Company C',
+              title: 'Senior Frontend Developer',
+              techniques: ['Vanilla JavaScript', 'CSS', 'Responsive Webdesign']
+          }
+      ]
+  }
+  var objectKeys = Object.keys(experienceObject);
+  console.log('objectKeys: ', objectKeys);
+
+  //output: objectKeys:  Array(4)
+
+  Array(4) contains "name"
+  1
+  :
+  "title"
+  2
+  :
+  "yearsExperience"
+  3
+  :
+  "projects"
+</xmp>
+  </body>
+  </html>

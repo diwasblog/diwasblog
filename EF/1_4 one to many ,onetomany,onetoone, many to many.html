@@ -1,0 +1,817 @@
+<html>
+
+<head>
+
+    <script
+        src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+        integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+
+    <style>
+        xmp.prettyprint {
+            font-size: 12pt;
+            font-family: monospace;
+
+        }
+    </style>
+
+</head>
+
+<body>
+    <p><span style="color: #e03e2d;"><strong><span style="font-size: 18pt;">Entity Framework</span></strong></span></p>
+    <ul>
+        <li><span style="font-size: 14pt;"><strong>EF is ORM (Object Relational Mapping) enabling .net developer to work
+                    with a database using <span style="color: #e03e2d;">.NET objects</span>.</strong></span></li>
+        <li><span style="font-size: 14pt;"><strong>It represents a database field with .NET objects.</strong></span>
+        </li>
+    </ul>
+    <h2>Relationship Type Explain</h2>
+    <h3>One to One Relationship</h2>
+        <div class="row">
+
+            <div class="col-lg-3">
+                <h2>Person Table</h2>
+                <table style="border-collapse: collapse; width: 15.9043%;" border="1">
+                    <tbody>
+                        <tr style="background:black;color:white">
+                            <td style="width: 8.1117%;">Id</td>
+                            <td style="width: 2.85714%;">Name</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 8.1117%;">1</td>
+                            <td style="width: 2.85714%;">Diwas</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 8.1117%;">2</td>
+                            <td style="width: 2.85714%;">Ramesh</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-lg-3">
+                <h2>Skill Table</h2>
+                <table style="border-collapse: collapse; width: 19.4149%;" border="1">
+                    <tbody>
+                        <tr style="background:black;color:white">
+                            <td style="width: 3.45745%;">Id</td>
+                            <td style="width: 7.31388%;">PersonId</td>
+                            <td style="width: 8.64359%;">Skills</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 3.45745%;">1</td>
+                            <td style="width: 7.31388%;">1</td>
+                            <td style="width: 8.64359%;">Ef Core</td>
+                        </tr>
+                        <tr>
+                            <td style="width: 3.45745%;">2</td>
+                            <td style="width: 7.31388%;">2</td>
+                            <td style="width: 8.64359%;">Clean Code</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <p><span style="font-size: 18pt;"><span style="color: #e03e2d;"><strong>One Person</strong></span> has
+                <strong><span style="color: #2dc26b;">one skill</span></strong> only. </span></p>
+
+
+        <hr>
+        <h3>One to Many Relationship</h2>
+            <div class="row">
+
+                <div class="col-lg-3">
+                    <h2>Person Table</h2>
+                    <table style="border-collapse: collapse; width: 15.9043%;" border="1">
+                        <tbody>
+                            <tr style="background:black;color:white">
+                                <td style="width: 8.1117%;">Id</td>
+                                <td style="width: 2.85714%;">Name</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 8.1117%;">1</td>
+                                <td style="width: 2.85714%;">Diwas</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 8.1117%;">2</td>
+                                <td style="width: 2.85714%;">Ramesh</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-lg-3">
+                    <h2>Skill Table</h2>
+                    <table style="border-collapse: collapse; width: 19.4149%;" border="1">
+                        <tbody>
+                            <tr style="background:black;color:white">
+                                <td style="width: 3.45745%;">Id</td>
+                                <td style="width: 7.31388%;">PersonId</td>
+                                <td style="width: 8.64359%;">Skills</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 3.45745%;">1</td>
+                                <td style="width: 7.31388%;">1</td>
+                                <td style="width: 8.64359%;">Ef Core</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 3.45745%;">2</td>
+                                <td style="width: 7.31388%;">2</td>
+                                <td style="width: 8.64359%;">Clean Code</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 3.45745%;">3</td>
+                                <td style="width: 7.31388%;">2</td>
+                                <td style="width: 8.64359%;">VueJS</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <p><span style="font-size: 18pt;"><span style="color: #e03e2d;"><strong>One Person</strong></span> has
+                    <strong><span style="color: #2dc26b;">many skill</span></strong> only. </span></p>
+
+            <hr>
+
+            <h3>Many to Many Relationship</h2>
+                <div class="row">
+
+                    <div class="col-lg-3">
+                        <h2>Person Table</h2>
+                        <table style="border-collapse: collapse; width: 15.9043%;" border="1">
+                            <tbody>
+                                <tr style="background:black;color:white">
+                                    <td style="width: 8.1117%;">Id</td>
+                                    <td style="width: 2.85714%;">Name</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 8.1117%;">1</td>
+                                    <td style="width: 2.85714%;">Diwas</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 8.1117%;">2</td>
+                                    <td style="width: 2.85714%;">Ramesh</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <h2>Person_Skills</h2>
+                        <table style="border-collapse: collapse; width: 19.4149%;" border="1">
+                            <tbody>
+                                <tr style="background:black;color:white">
+                                    <td style="width: 3.45745%;">PersonId</td>
+
+                                    <td style="width: 8.64359%;">Skill_Id</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 3.45745%;">1</td>
+
+                                    <td style="width: 8.64359%;">1</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 3.45745%;">1</td>
+
+                                    <td style="width: 8.64359%;">2</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 3.45745%;">2</td>
+
+                                    <td style="width: 8.64359%;">1</td>
+                                </tr>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <h2>Skill Table</h2>
+                        <table style="border-collapse: collapse; width: 19.4149%;" border="1">
+                            <tbody>
+                                <tr style="background:black;color:white">
+                                    <td style="width: 3.45745%;">Id</td>
+
+                                    <td style="width: 8.64359%;">Skills</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 3.45745%;">1</td>
+
+                                    <td style="width: 8.64359%;">Ef Core</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 3.45745%;">2</td>
+
+                                    <td style="width: 8.64359%;">Clean Code</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 3.45745%;">3</td>
+
+                                    <td style="width: 8.64359%;">VueJS</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+                <p><span style="font-size: 18pt;"><span style="color: #e03e2d;"><strong>One Person</strong></span> has
+                        <strong><span style="color: #2dc26b;">many skill</span></strong> only. </span></p>
+                <p><span style="font-size: 18pt;"><span style="color: #e03e2d;"><strong>One Skill</strong></span> can
+                        have in
+                        <strong><span style="color: #2dc26b;">many Person</span></strong>. </span></p>
+                <hr>
+
+                <hr>
+                <h2>Mapping Those to .net Object</h2>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <xmp class="prettyprint">
+                            public class Person
+                            {
+                            public int Id {get;set;}
+                            public string Name {get;set;}
+                            }
+                        </xmp>
+
+                    </div>
+
+                    <div class="col-lg-6">
+                        <xmp class="prettyprint">
+                            public class Skill
+                            {
+                            public int Id {get;set;}
+                            public string Name {get;set;}
+                            }
+                        </xmp>
+
+                    </div>
+                </div>
+                <h2>One to One Relationship</h2>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <xmp class="prettyprint">
+                            public class Person
+                            {
+                            public int Id {get;set;}
+                            public string Name {get;set;}
+                            public Skill Skills {get;set;}
+                            }
+                        </xmp>
+
+                    </div>
+
+                    <div class="col-lg-6">
+                        <xmp class="prettyprint">
+                            public class Skill
+                            {
+                            public int Id {get;set;}
+                            public string Name {get;set;}
+                            }
+                        </xmp>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <xmp class="prettyprint">
+                            public class Person
+                            {
+                            public int Id {get;set;}
+                            public string Name {get;set;}
+
+                            }
+                        </xmp>
+
+                    </div>
+
+                    <div class="col-lg-6">
+                        <xmp class="prettyprint">
+                            public class Skill
+                            {
+                            public int Id {get;set;}
+                            public string Name {get;set;}
+                            public Person Persons {get;set;}
+                            }
+                        </xmp>
+
+                    </div>
+                </div>
+                <h2>Bi Directional One to one Relationship</h2>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <xmp class="prettyprint">
+                            public class Person
+                            {
+                            public int Id {get;set;}
+                            public string Name {get;set;}
+                            public Skill Skills {get;set;}
+                            }
+                        </xmp>
+
+                    </div>
+
+                    <div class="col-lg-6">
+                        <xmp class="prettyprint">
+                            public class Skill
+                            {
+                            public int Id {get;set;}
+                            public string Name {get;set;}
+                            public Person Persons {get;set;}
+                            }
+                        </xmp>
+
+                    </div>
+                </div>
+
+
+
+                <h2>One to Many Relationship</h2>
+                Showing One person has many Skills
+                <div class="row">
+                    <div class="col-lg-6">
+                        <xmp class="prettyprint">
+                            public class Person
+                            {
+                            public int Id {get;set;}
+                            public string Name {get;set;}
+                            public ICollection<Skill> Skills {get;set;} = new List<Skill>();
+                                    }
+                        </xmp>
+
+                    </div>
+
+                    <div class="col-lg-6">
+                        <xmp class="prettyprint">
+                            public class Skill
+                            {
+                            public int Id {get;set;}
+                            public string Name {get;set;}
+                            public Person Persons {get;set;} // optional
+                            }
+                        </xmp>
+
+                    </div>
+                </div>
+
+                <h2>Many to Many Relationship</h2>
+                Showing One person has many Skills
+                One Skill is hold by many Person
+                <div class="row">
+                    <div class="col-lg-6">
+                        <xmp class="prettyprint">
+                            public class Person
+                            {
+                            public int Id {get;set;}
+                            public string Name {get;set;}
+                            public ICollection<Skill> Skills {get;set;} = new List<Skill>();
+                                    }
+                        </xmp>
+
+                    </div>
+
+                    <div class="col-lg-6">
+                        <xmp class="prettyprint">
+                            public class Skill
+                            {
+                            public int Id {get;set;}
+                            public string Name {get;set;}
+                            public ICollection<Person> Persons {get;set;} = new List<Person>();
+                                    }
+                        </xmp>
+
+                    </div>
+                </div>
+                <h2>Insert</h2>
+                <xmp class="prettyprint">
+
+                    [HttpPost]
+                    [Route("repomethod/insert")]
+                    public async Task<IActionResult> InsertRepository(RepositoryMethod repoMethod)
+                        {
+                        try
+                        {
+                        repoMethod.Name = repoMethod.Name.TrimStart().TrimEnd();
+                        repoMethod.AdminName = User.Identity.Name.ToString();
+                        repoMethod.CreatedDate = DateTime.UtcNow.AddMinutes(345);
+                        _theContext.RepositoryMethod.Add(repoMethod);
+                        var result = await _theContext.SaveChangesAsync();
+                        if (result > 0)
+                        {
+                        return Ok("The Repository Method has been inserted!");
+                        }
+                        else
+                        {
+                        throw new Exception("Can't insert the Repository right now!");
+                        }
+                        }
+                        catch (Exception ex)
+                        {
+                        return BadRequest(ex.Message);
+                        }
+                        }
+
+                </xmp>
+
+                <h2>Getting List of Repository Method</h2>
+                <xmp class="prettyprint">
+                    [HttpGet]
+                    [Route("repomethod/area/{areaId}/repo/{repositoryId}")]
+                    public IActionResult RepositoryMethods(int areaId,int repositoryId)
+                    {
+                    try
+                    {
+                    var data = _theContext.RepositoryMethod.Where(m => m.AreaId == areaId && m.RepositoryId ==
+                    repositoryId).ToList();
+                    return Ok(data);
+                    }
+                    catch (Exception ex)
+                    {
+                    return BadRequest(ex.Message);
+                    }
+                    }
+                </xmp>
+
+                <h2>Delete Repository Method</h2>
+                <xmp class="prettyprint">
+                    [HttpPost]
+                    [Route("repomethod/delete")]
+                    public async Task<IActionResult> DeleteRepoMethod(Repository repo)
+                        {
+                        try
+                        {
+                        var toDeleteRepo = _theContext.RepositoryMethod.Where(r => r.Id == repo.Id).FirstOrDefault();
+                        _theContext.Remove(toDeleteRepo);
+                        var result = await _theContext.SaveChangesAsync();
+                        if (result > 0)
+                        {
+                        return Ok("Repository Method has been deleted!");
+                        }
+                        else
+                        {
+                        throw new Exception("Can't Delete the Method now!");
+                        }
+                        }
+                        catch (Exception ex)
+                        {
+                        return BadRequest(ex.Message);
+                        }
+                        }
+                </xmp>
+
+                ====================================================================
+                <h2>Inserting Service Method ( with comma separated servicerepository Method)</h2>
+                <xmp class="prettyprint">
+                    [HttpPost]
+                    [Route("servicemethod/insert")]
+                    public async Task<IActionResult> InsertService(ServiceMethod serviceMethod)
+                        {
+                        try
+                        {
+                        serviceMethod.Name = serviceMethod.Name.TrimStart().TrimEnd();
+                        serviceMethod.AdminName = User.Identity.Name.ToString();
+                        serviceMethod.CreatedDate = DateTime.UtcNow.AddMinutes(345);
+                        _theContext.ServiceMethod.Add(serviceMethod);
+                        await _theContext.SaveChangesAsync();
+
+                        var lst = GetRepositoryMethodsFromIds(serviceMethod.CommaSeparatedRepoMethodIds);
+                        foreach (var item in lst)
+                        {
+                        ServiceMethodRepositoryMethod obj = new ServiceMethodRepositoryMethod();
+                        obj.RepositoryMethodId = item.Id;
+                        obj.ServiceMethodId = serviceMethod.Id;
+                        _theContext.ServiceMethodRepositoryMethod.Add(obj);
+                        }
+                        var result = await _theContext.SaveChangesAsync();
+                        if (result > 0)
+                        {
+                        return Ok("The Service Method has been inserted!");
+                        }
+                        else
+                        {
+                        throw new Exception("Can't insert the Service Method right now!");
+                        }
+                        }
+                        catch (Exception ex)
+                        {
+                        return BadRequest(ex.Message);
+                        }
+                        }
+
+                        [NonAction]
+                        private List<RepositoryMethod> GetRepositoryMethodsFromIds(string ids)
+                            {
+                            List<RepositoryMethod> theList = new List<RepositoryMethod>();
+                                    string[] theArray = ids.Split(',');
+                                    for (int i = 0; i < theArray.Length - 1; i++) {
+                                        theList.Add(_theContext.RepositoryMethod.FirstOrDefault(x=> x.Id ==
+                                        Convert.ToInt32(theArray[i])));
+                                        }
+                                        return theList;
+                                        }
+
+
+
+                </xmp>
+
+
+
+                <h2>Update Service Related </h2>
+
+                <xmp class="prettyprint">
+                    [HttpPost]
+                    [Route("servicemethod/edit")]
+                    public async Task<IActionResult> EditService(ServiceMethod serviceMethod)
+                        {
+                        ServiceNewEditPageVM obj = new ServiceNewEditPageVM();
+                        try
+                        {
+                        var oldService = _theContext.ServiceMethod.FirstOrDefault(r => r.Id == serviceMethod.Id);
+                        oldService.Name = serviceMethod.Name.TrimStart().TrimEnd();
+                        oldService.AdminName = User.Identity.Name.ToString();
+                        oldService.ModifiedDate = DateTime.UtcNow.AddMinutes(345);
+                        oldService.IsActive = serviceMethod.IsActive;
+                        oldService.ParameterCount = serviceMethod.ParameterCount;
+                        oldService.AreaId = serviceMethod.AreaId;
+                        oldService.ServiceId = serviceMethod.ServiceId;
+                        await _theContext.SaveChangesAsync();
+
+                        var CommaSeparatedServiceRepoIds =
+                        GetRepositoryMethodsFromIds(serviceMethod.CommaSeparatedRepoMethodIds);
+
+                        var theObjects = _theContext.ServiceMethodRepositoryMethod.Include(x =>
+                        x.RepositoryMethod).Where(x
+                        =>
+                        x.ServiceMethod.Id == serviceMethod.Id);
+                        //deleting already existing ids of servicerepomethod
+                        foreach (var item in theObjects)
+                        {
+                        if (!CommaSeparatedServiceRepoIds.Any(x => x.Id == item.RepositoryMethod.Id))
+                        {
+                        _theContext.ServiceMethodRepositoryMethod.Remove(item);
+                        }
+                        }
+
+                        foreach (var item in CommaSeparatedServiceRepoIds)
+                        {
+                        if (!_theContext.ServiceMethodRepositoryMethod.Where(x => x.ServiceMethod.Id ==
+                        serviceMethod.Id).Any(x
+                        =>
+                        x.RepositoryMethod.Id == item.Id))
+                        {
+                        var _temp = new ServiceMethodRepositoryMethod()
+                        {
+                        ServiceMethod = serviceMethod,
+                        RepositoryMethod = item,
+                        };
+                        _theContext.ServiceMethodRepositoryMethod.Add(_temp);
+                        }
+                        else
+                        {
+                        var oldServiceRepoMethod = _theContext.ServiceMethodRepositoryMethod.Where(x =>
+                        x.ServiceMethod.Id
+                        ==
+                        serviceMethod.Id).Where(y => y.RepositoryMethod.Id == item.Id);
+                        }
+
+                        }
+                        await _theContext.SaveChangesAsync();
+                        return Ok("The Service Method has been Updated!");
+                        }
+                        catch (Exception ex)
+                        {
+                        return BadRequest(ex.Message);
+                        }
+                        }
+                </xmp>
+
+                <h2>Detele</h2>
+                <xmp class="prettyprint">
+
+                    [HttpPost]
+                    [Route("servicemethod/delete")]
+                    public async Task<IActionResult> DeleteServiceMethod(ServiceMethod serviceMethod)
+                        {
+                        try
+                        {
+                        var toDeleteServiceMethod = _theContext.ServiceMethod.Where(r => r.Id ==
+                        serviceMethod.Id).FirstOrDefault();
+                        var toDeleteServiceRepoMethod = _theContext.ServiceMethodRepositoryMethod.Where(r =>
+                        r.ServiceMethodId
+                        ==
+                        serviceMethod.Id).ToList();
+
+                        foreach (var item in toDeleteServiceRepoMethod)
+                        {
+                        _theContext.Remove(item);
+                        }
+
+                        _theContext.Remove(toDeleteServiceMethod);
+                        var result = await _theContext.SaveChangesAsync();
+                        if (result > 0)
+                        {
+                        return Ok("Repository Method has been deleted!");
+                        }
+                        else
+                        {
+                        throw new Exception("Can't Delete the Method now!");
+                        }
+                        }
+                        catch (Exception ex)
+                        {
+                        return BadRequest(ex.Message);
+                        }
+                        }
+
+                </xmp>
+
+                <h2>Repository Method Search</h2>
+                <xmp class="prettyprint">
+
+                    [HttpGet]
+                    [Route("repomethod/search")]
+                    public IActionResult RepositoryMethodSearch(string q)
+                    {
+                    try
+                    {
+                    var lst = _theContext.RepositoryMethod.Include("Repository").Where(x => x.Name.Contains(q));
+                    foreach (var item in lst)
+                    {
+                    item.Name += "(" + item.Repository.Name + ")";
+                    }
+                    return Ok(lst);
+                    }
+                    catch (Exception ex)
+                    {
+                    return BadRequest(ex.Message);
+                    }
+                    }
+
+                </xmp>
+
+
+                <h2>Insert Service Method</h2>
+                <xmp class="prettyprint">
+                    [HttpPost]
+                    [Route("servicemethod/insert")]
+                    public async Task<IActionResult> InsertService(ServiceMethod serviceMethod)
+                        {
+                        try
+                        {
+                        serviceMethod.Name = serviceMethod.Name.TrimStart().TrimEnd();
+                        serviceMethod.AdminName = User.Identity.Name.ToString();
+                        serviceMethod.CreatedDate = DateTime.UtcNow.AddMinutes(345);
+                        _theContext.ServiceMethod.Add(serviceMethod);
+                        await _theContext.SaveChangesAsync();
+
+                        var lst = GetRepositoryMethodsFromIds(serviceMethod.CommaSeparatedRepoMethodIds);
+                        foreach (var item in lst)
+                        {
+                        ServiceMethodRepositoryMethod obj = new ServiceMethodRepositoryMethod();
+                        obj.RepositoryMethodId = item.Id;
+                        obj.ServiceMethodId = serviceMethod.Id;
+                        _theContext.ServiceMethodRepositoryMethod.Add(obj);
+                        }
+                        var result = await _theContext.SaveChangesAsync();
+                        if (result > 0)
+                        {
+                        return Ok("The Service Method has been inserted!");
+                        }
+                        else
+                        {
+                        throw new Exception("Can't insert the Service Method right now!");
+                        }
+                        }
+                        catch (Exception ex)
+                        {
+                        return BadRequest(ex.Message);
+                        }
+                        }
+                </xmp>
+
+                <h2>Edit Service Method</h2>
+                <xmp class="prettyprint">
+                    [HttpPost]
+                    [Route("servicemethod/edit")]
+                    public async Task<IActionResult> EditService(ServiceMethod serviceMethod)
+                        {
+                        ServiceNewEditPageVM obj = new ServiceNewEditPageVM();
+                        try
+                        {
+                        var oldService = _theContext.ServiceMethod.FirstOrDefault(r => r.Id == serviceMethod.Id);
+                        oldService.Name = serviceMethod.Name.TrimStart().TrimEnd();
+                        oldService.AdminName = User.Identity.Name.ToString();
+                        oldService.ModifiedDate = DateTime.UtcNow.AddMinutes(345);
+                        oldService.IsActive = serviceMethod.IsActive;
+                        oldService.ParameterCount = serviceMethod.ParameterCount;
+                        oldService.AreaId = serviceMethod.AreaId;
+                        oldService.ServiceId = serviceMethod.ServiceId;
+                        await _theContext.SaveChangesAsync();
+
+                        var CommaSeparatedServiceRepoIds =
+                        GetRepositoryMethodsFromIds(serviceMethod.CommaSeparatedRepoMethodIds);
+
+                        var theObjects = _theContext.ServiceMethodRepositoryMethod.Include(x =>
+                        x.RepositoryMethod).Where(x
+                        =>
+                        x.ServiceMethod.Id == serviceMethod.Id);
+                        foreach (var item in theObjects)
+                        {
+                        if (!CommaSeparatedServiceRepoIds.Any(x => x.Id == item.RepositoryMethod.Id))
+                        {
+                        _theContext.ServiceMethodRepositoryMethod.Remove(item);
+                        }
+                        }
+
+                        foreach (var item in CommaSeparatedServiceRepoIds)
+                        {
+                        if (!_theContext.ServiceMethodRepositoryMethod.Where(x => x.ServiceMethod.Id ==
+                        serviceMethod.Id).Any(x
+                        =>
+                        x.RepositoryMethod.Id == item.Id))
+                        {
+                        var _temp = new ServiceMethodRepositoryMethod()
+                        {
+                        ServiceMethod = serviceMethod,
+                        RepositoryMethod = item,
+                        };
+                        _theContext.ServiceMethodRepositoryMethod.Add(_temp);
+                        }
+                        else
+                        {
+                        var oldServiceRepoMethod = _theContext.ServiceMethodRepositoryMethod.Where(x =>
+                        x.ServiceMethod.Id
+                        ==
+                        serviceMethod.Id).Where(y => y.RepositoryMethod.Id == item.Id);
+                        }
+
+                        }
+                        await _theContext.SaveChangesAsync();
+                        return Ok("The Service Method has been Updated!");
+                        }
+                        catch (Exception ex)
+                        {
+                        return BadRequest(ex.Message);
+                        }
+                        }
+                </xmp>
+
+                <h2>Delete Service Method</h2>
+                <xmp class="prettyprint">
+                    [HttpPost]
+                    [Route("servicemethod/delete")]
+                    public async Task<IActionResult> DeleteServiceMethod(ServiceMethod serviceMethod)
+                        {
+                        try
+                        {
+                        var toDeleteServiceMethod = _theContext.ServiceMethod.Where(r => r.Id ==
+                        serviceMethod.Id).FirstOrDefault();
+                        var toDeleteServiceRepoMethod = _theContext.ServiceMethodRepositoryMethod.Where(r =>
+                        r.ServiceMethodId
+                        ==
+                        serviceMethod.Id).ToList();
+
+                        foreach (var item in toDeleteServiceRepoMethod)
+                        {
+                        _theContext.Remove(item);
+                        }
+
+                        _theContext.Remove(toDeleteServiceMethod);
+                        var result = await _theContext.SaveChangesAsync();
+                        if (result > 0)
+                        {
+                        return Ok("Repository Method has been deleted!");
+                        }
+                        else
+                        {
+                        throw new Exception("Can't Delete the Method now!");
+                        }
+                        }
+                        catch (Exception ex)
+                        {
+                        return BadRequest(ex.Message);
+                        }
+                        }
+
+                </xmp>
+</body>
+
+</html>

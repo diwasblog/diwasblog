@@ -1,0 +1,420 @@
+<html>
+  <head>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+      crossorigin="anonymous"
+    />
+
+    <style>
+      xmp.prettyprint {
+        font-size: 12pt;
+        font-family: monospace;
+      }
+    </style>
+  </head>
+  <body>
+
+      <h1>Centering Element</h1>
+
+      <h1>Centering Element</h1>
+  
+      <h3>
+        Centering element like inline, inline-block , inline-table, inline-flex
+        (like text ,anchor, span, li, p) inside
+        <b style="color:red"> block level element like nav, header, p</b>
+      </h3>
+      <div class="row">
+  
+  
+      <script
+        async
+        src="http://jsfiddle.net/Diwas_Poudel/v0jufdpe/9/embed/result,html,css/dark/"
+      ></script>
+  
+      <br />
+      <hr />
+      <h2>Centering block level element like div</h2>
+      <b style="color:red"
+        >Note: for block element we have to set margin: auto and set width
+        otherwise it will take fullwidth</b
+      >
+      <script
+        async
+        src="http://jsfiddle.net/Diwas_Poudel/sgt3oy1v/1/embed/result,html,css/dark/"
+        style="height:200px"
+      ></script>
+      <br />
+      <hr />
+      <h2>Centering Multiple Block Element(horizontally in a row)</h2>
+  
+      <iframe
+        width="100%"
+        height="350"
+        src="http://jsfiddle.net/Diwas_Poudel/92y3esbq/2/embedded/result,html,css/dark/"
+        allowfullscreen="allowfullscreen"
+        allowpaymentrequest
+        frameborder="0"
+      ></iframe>
+  
+      <h2>
+        Centering Multiple Block Element using Flexbox (horizontally in a row)
+      </h2>
+      <iframe width="100%" height="300" src="http://jsfiddle.net/Diwas_Poudel/vebyt1ks/embedded/result,html,css/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+
+    <div>
+
+<center>
+  <h1>Vertical Centering</h1>
+
+  <h2>Centering Vertically using padding concept for single element inside block element</h2>
+  <iframe width="100%" height="350" src="//jsfiddle.net/Diwas_Poudel/hyzes2xo/6/embedded/result,html,css/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+</center>
+
+
+<h2>Vertical Centering using line height concept</h2>
+
+Here, lineheight = height
+
+<iframe width="100%" height="300" src="http://jsfiddle.net/Diwas_Poudel/0jckzmrt/2/embedded/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+      <strong
+        ><span style="font-size: 14pt;"
+          >CSS Div (division) is a container element and it is used to group
+          related items together.</span
+        ></strong
+      >
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <xmp class="prettyprint">
+        <div>
+          <h2>A simple Div</h2>
+      </div>
+      </xmp>
+      </div>
+
+      <div class="col-lg-6">
+        <div>
+          <h2>A simple Div</h2>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <strong
+        ><span style="font-size: 14pt;"
+          >You can see the Div place up and down because CSS Div is a block
+          element that forces a line break before and after the element.</span
+        ></strong
+      >
+    </div>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <xmp class="prettyprint">
+            <div>
+                <div>
+                  <h2>First Div</h2>
+                </div>
+    
+                <div>
+                  <h2>Second Div</h2>
+                </div>
+            </div>
+          </xmp>
+      </div>
+
+      <div class="col-lg-6">
+        <div>
+          <div>
+            <h2>First Div</h2>
+          </div>
+
+          <div>
+            <h2>Second Div</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    Place Div side by side
+    <div class="row">
+      <div class="col-lg-6">
+        <xmp class="prettyprint">
+          <div>
+              <div style="float:left">
+                <h2>First Div </h2>
+              </div>
+              <div style="float:left">
+                <h2> Second Div</h2>
+              </div>
+          </div>
+      </xmp>
+      </div>
+
+      <div class="col-lg-6">
+        <div>
+          <div style="float:left">
+            <h2>First Div</h2>
+          </div>
+          <div style="float:left">
+            <h2>Second Div</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    place these Divs left side and right side of your screen, you should specify
+    second Div float:right;
+    <div class="row">
+      <div class="col-lg-6">
+        <xmp class="prettyprint">
+          <div>
+              <div style="float:left">
+                <h2>First Div </h2>
+              </div>
+              <div style="float:right">
+                <h2> Second Div</h2>
+              </div>
+          </div>
+      </xmp>
+      </div>
+
+      <div class="col-lg-6">
+        <div>
+          <div style="float:left">
+            <h2>First Div</h2>
+          </div>
+          <div style="float:right">
+            <h2>Second Div</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p>
+      <span style="color: #ff00ff; font-size: 18pt;"
+        ><strong>Div position relative to parent</strong></span
+      >
+    </p>
+
+    <h3>
+      <span style="color: #00ff00;"
+        ><strong>1 .Center a Div within another Div</strong></span
+      >
+    </h3>
+    <div class="row">
+      <div class="col-lg-6">
+        <xmp class="prettyprint">
+          <style type="text/css">
+            #outer{
+              position:fixed;
+              top:0;
+              left:0;
+              width:100%;
+              height:100%;
+            }
+            #inner{
+              width: 50%;
+              height: 50%;
+              top: 25%;
+              margin: 0 auto;
+              position: relative;
+              background:orange;
+            }
+          </style>
+
+          <div id=outer>
+            <div id=inner>
+            </div>
+          </div>
+
+      </xmp>
+      </div>
+
+      <div class="col-lg-6">
+        <img src="img/div-center.png" />
+      </div>
+    </div>
+
+    Placing Top Center
+    <div class="row">
+      <div class="col-lg-6">
+        <xmp class="prettyprint">
+          <style type="text/css">
+            #outer{
+              position:fixed;
+              top:0;
+              left:0;
+              width:100%;
+              height:100%;
+            }
+            #inner{
+              width: 50%;
+              height: 50%;
+              margin: 0 auto;
+              position: relative;
+              background:orange;
+            }
+          </style>
+
+          <div id=outer>
+              <div id=inner>
+              </div>
+          </div>
+      </xmp>
+      </div>
+
+      <div class="col-lg-6">
+        <img src="img/top-center.png" />
+      </div>
+    </div>
+
+    One div inside another div at bottom center
+    <div class="row">
+      <div class="col-lg-6">
+        <xmp class="prettyprint">
+      <style type="text/css">
+        #outer{
+          position:fixed;
+          top:0;
+          left:0;
+          width:100%;
+          height:100%;
+        }
+        #inner{
+          width: 50%;
+          height: 50%;
+          top:50%;
+          margin: 0 auto;
+          position: relative;
+          background:orange;
+        }
+      </style>
+
+      <div id=outer>
+          <div id=inner>
+          </div>
+      </div>
+   </xmp>
+      </div>
+
+      <div class="col-lg-6">
+        <img src="img/bottom-center.png" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <xmp class="prettyprint">
+            <style type="text/css">
+              #outer{
+                position:fixed;
+                top:0;
+                left:0;
+                width:100%;
+                height:100%;
+              }
+              #inner{
+                width: 50%;
+                height: 50%;
+                left:50%;
+                position: relative;
+                background:orange;
+              }
+            </style>
+        </xmp>
+      </div>
+
+      <div class="col-lg-6">
+        <img src="img/div-top-right.png" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <xmp class="prettyprint">
+            <style type="text/css">
+              #outer{
+                position:fixed;
+                top:0;
+                left:0;
+                width:100%;
+                height:100%;
+              }
+              #inner{
+                width: 50%;
+                height: 50%;
+                position: relative;
+                background:orange;
+              }
+            </style>
+        </xmp>
+      </div>
+
+      <div class="col-lg-6">
+        <img src="img/div-top-left.png" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <xmp class="prettyprint">
+            <style type="text/css">
+              #outer{
+                position:fixed;
+                top:0;
+                left:0;
+                width:100%;
+                height:100%;
+              }
+              #inner{
+                width: 50%;
+                height: 50%;
+                top:50%;
+                left:50%;
+                position: relative;
+                background:orange;
+              }
+            </style>
+        </xmp>
+      </div>
+
+      <div class="col-lg-6">
+        <img src="img/div-bottom-right.png" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <xmp class="prettyprint">
+              <style type="text/css">
+                #outer{
+                  position:fixed;
+                  top:0;
+                  left:0;
+                  width:100%;
+                  height:100%;
+                }
+                #inner{
+                  width: 50%;
+                  height: 50%;
+                  top:50%;
+                  position: relative;
+                  background:orange;
+                }
+              </style>
+          </xmp>
+      </div>
+
+      <div class="col-lg-6">
+        <img src="img/div-bottom-right.png" />
+      </div>
+    </div>
+    <hr />
+    
+  </body>
+</html>

@@ -1,0 +1,8 @@
+INSERT INTO core.menus (menu_text,url,parent_menu_id)
+VALUES('GL Access Policy','~/ManagerialTools/GenAccessPolicy.aspx',(SELECT menu_id FROM core.menus where menu_text='Policies'));
+																	
+INSERT INTO core.menus (menu_text,url,parent_menu_id)
+VALUES('Login Access','~/ManagerialTools/GetLoginAccess.aspx',(SELECT menu_id FROM core.menus where menu_text='Policies'));
+
+INSERT INTO core.menus (menu_text,url,parent_menu_id)
+VALUES('Access Policy Report','~/Report/AccessPolicyReport.aspx',(SELECT menu_id FROM core.menus where menu_text='Reports'));

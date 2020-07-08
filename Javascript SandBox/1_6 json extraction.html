@@ -1,0 +1,418 @@
+
+
+<html>
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+      <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+  
+  <script src="https://unpkg.com/vue"></script>
+  
+  <style>
+  xmp.prettyprint{
+  
+      font-size:12pt;
+      font-family:"Consolas, 'Courier New', monospace";
+  
+  }
+  </style>
+   
+  </head>
+  <body>
+    Javascript Object Notation.
+    Light Weight data exchange format
+    For Storing and Exchanging data
+    Langauage Independent
+    Easy to read by human
+
+    <p><strong>In Javascript</strong></p>
+<blockquote>
+<p><span style="color: #000000;"><strong><span style="font-size: 14pt;">var obj={"name":"diwas"}&nbsp; (correct)</span></strong></span></p>
+<p><span style="color: #000000;"><strong><span style="font-size: 14pt;">var obj={name:"diwas"}&nbsp; &nbsp;(correct)</span></strong></span></p>
+</blockquote>
+<p><strong>In Json</strong></p>
+<blockquote>
+<p><strong><span style="font-size: 14pt; color: #000000;">var obj={"name":"diwas"}&nbsp; &nbsp; (correct)</span></strong></p>
+<p><span style="font-size: 14pt;"><strong><span style="color: #000000;">var obj={name:"diwas"}</span>&nbsp;</strong> &nbsp; &nbsp;<span style="color: #ff0000;">(not allowed in Json)</span></span></p>
+</blockquote>
+
+
+JSON.parse() takes a JSON string and transforms it into a JavaScript object.
+ JSON.stringify() takes a JavaScript object and transforms it into a JSON string.
+
+Json object is real world entity and it's an instance of the class.
+It contain name and value separated by colons and is enclosed by curly braces.Each pair separated by comma.
+
+
+
+Let's slowly fill a JSON object called :User
+<xmp class="prettyprint">
+var User={};
+</xmp>
+
+<div class="row">
+  <div class="col-lg-6">
+<xmp class="prettyprint">
+User.Age=15;
+User.Name="Diwas";
+User.IsUnderAge=true;
+</xmp>
+</div>
+
+<div class="col-lg-6">
+  <xmp class="prettyprint">
+var User={
+          Age:15,
+          Name:"Diwas",
+          IsUnderAge:true
+        }
+  </xmp>
+</div>
+</div>
+
+
+<h2>Json Object</h2>
+JSON objects are written inside curly braces.
+<xmp class="prettyprint">
+{"firstName":"John", "lastName":"Doe"}
+</xmp>
+
+<h2>JSON Arrays</h2>
+JSON arrays are written inside square brackets.
+<xmp class="prettyprint">
+  "employees":[
+  {"firstName":"John", "lastName":"Doe"}, 
+  {"firstName":"Anna", "lastName":"Smith"}, 
+  {"firstName":"Peter", "lastName":"Jones"}
+] 
+</xmp>
+=============================================================================================
+<div class='row'>
+    <div class='col-lg-6'>
+    <xmp class='prettyprint'>
+        var jsonData={"Name":"ABC","Dept":"Software"};// It is a JSON object
+        var jsonString=JSON.stringify(jsonData);// It is a string representation of the object
+        // jsonString === '{"Name":"ABC","Dept":"Software"}'; is true
+    </xmp>
+    </div>
+
+    <div class='col-lg-6'>
+    <xmp class='prettyprint'>
+        var arrayObject=["ABC","Software"];// It is array object
+        var arrString=JSON.stringify(array);// It is string representation of the array (object)
+        // arrString === '["ABC","Software"]'; is true   
+    </xmp>
+        </div>
+</div>
+
+
+
+
+
+===========================================================================================
+
+    <h2>Interpreting  array data </h2>
+    <xmp class="prettyprint">
+        <script>
+            var test={"success": true,"age":"45",
+            "counters": 
+            [{"name": "dsd", "type": "sds", "unit": "sds" }, 
+            { "name": "gdg", "type": "dfd", "unit": "ds" }, 
+            { "name": "sdsData", "type": "sds", "unit": " dd " }, 
+            { "name": "Stoc final", "type": "number ", "unit": "litri " }, 
+            { "name": "Consum GPL", "type": "number ", "unit": "litri " },
+            { "name": "sdg", "type": "dfg", "unit": "gfgd" }, 
+            { "name": "dfgd", "type": "fgf", "unit": "liggtggggri " },
+            { "name": "fgd", "type": "dfg", "unit": "kwfgf " },
+            { "name": "dfg", "type": "dfg", "unit": "dg" },
+            { "name": "gd", "type": "dfg", "unit": "dfg" } ] 
+            };
+            
+            var s = JSON.stringify(test); //converting object into string
+            console.log(s);
+            /*{"success":true,"age":45,"counters":[{"name":"dsd","type":"sds","unit":"sds"},{"name":"gdg","type":"dfd","unit":"ds"},{"name":"sdsData","type":"sds","unit":" dd "},
+            {"name":"Stoc final","type":"number ","unit":"litri "},{"name":"Consum GPL","type":"number ","unit":"litri "},{"name":"sdg","type":"dfg","unit":"gfgd"},
+            {"name":"dfgd","type":"fgf","unit":"liggtggggri "},{"name":"fgd","type":"dfg","unit":"kwfgf "},
+            {"name":"dfg","type":"dfg","unit":"dg"},{"name":"gd","type":"dfg","unit":"dfg"}]}
+            */
+
+
+            var jsonData =JSON.parse(s);   //converting string to json object and can acceess by using dot operator
+            console.log(jsonData);
+            /*{success: true, age: 45, counters: Array(10)}
+            You can expand this to look array
+            */
+            console
+            for (var i = 0; i < jsonData.counters.length; i++) {
+                var counter = jsonData.counters[i];
+                console.log(counter.name);
+            }
+            </script>
+    
+            //output : dsd  
+                       gdg
+                       sdsData
+                       Stoc final
+                       Consum
+                       sdg
+                       dfgd
+</xmp>
+
+
+<h3>Comma separated string to array</h3>
+<xmp class="prettyprint">
+  
+    var str = "January,February,March,April,May,June,July,August,September,October,November,December";
+    var array = string.split(',');  
+    console.log(array);  
+    //output : (12) ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+  
+</xmp>
+
+<xmp class="prettyprint">
+    var a = "";
+    var x = a.split(",");
+    alert(x.length);  // 1
+</xmp>
+
+=========================================================================================================
+<xmp class='prettyprint'>
+const myObj = {
+    name: 'Skip',
+    age: 2,
+    favoriteFood: 'Steak'
+    };
+    
+    const myObjStr = JSON.stringify(myObj);
+    
+    console.log(myObjStr);
+    // "{"name":"Skip","age":2,"favoriteFood":"Steak"}"
+    
+    console.log(JSON.parse(myObjStr));
+    // Object {name:"Skip",age:2,favoriteFood:"Steak"}"
+</xmp>
+
+=========================================================================================================
+And although the methods are usually used on objects, they can also be used on arrays:
+<xmp class="prettyprint">
+const myArr = ['bacon', 'letuce', 'tomatoes'];
+
+const myArrStr = JSON.stringify(myArr);
+
+console.log(myArrStr);
+// "["bacon","letuce","tomatoes"]"
+
+console.log(JSON.parse(myArrStr));
+// ["bacon","letuce","tomatoes"]  
+</xmp>
+
+=============================================================================================
+JSON.parse() can take an second argument for a reviver function that can transform the object values before they are returned. Here the object’s values are uppercased in the returned object of the parse method:
+
+<xmp class="prettyprint">
+const user = {
+    name: 'John',
+    email: 'john@awesome.com',
+    plan: 'Pro'
+    };
+    
+    const userStr = JSON.stringify(user);
+    
+    JSON.parse(userStr, (key, value) => {
+    if (typeof value === 'string') {
+        return value.toUpperCase();
+    }
+    return value;
+    });  
+</xmp>
+============================================================================================================
+JSON.stringify() can take two additional arguments, the first one being a replacer function and the second a String or Number value to use as a space in the returned string.
+
+The replacer function can be used to filter-out values because any value returned as undefined will be out of the returned string:
+<xmp clas="prettyprint">
+const user = {
+    id: 229,
+    name: 'John',
+    email: 'john@awesome.com'
+    };
+    
+    function replacer(key, value) {
+    console.log(typeof value);
+    if (key === 'email') {
+        return undefined;
+    }
+    return value;
+    }
+    
+    const userStr = JSON.stringify(user, replacer);
+    // "{"id":229,"name":"John"}"
+</xmp>
+
+<br>
+====================================================================================================================
+<div class="row">
+    <div class="col-lg-6">
+        <xmp class="prettyprint">
+                <script>
+                        /* Storing multi-line JSON string in a JS variable
+                        using the new ES6 template literals */
+                        var json = `{
+                            "book": {
+                                "name": "Harry Potter and the Goblet of Fire",
+                                "author": "J. K. Rowling",
+                                "year": 2000,
+                                "characters": ["Harry Potter", "Hermione Granger", "Ron Weasley"],
+                                "genre": "Fantasy Fiction",
+                                "price": {
+                                    "paperback": "$10.40", "hardcover": "$20.32", "kindle": "$4.11"
+                                }
+                            }
+                        }`;
+                        
+                        // Converting JSON object to JS object
+                        var obj = JSON.parse(json);
+                        
+                        // Define recursive function to print nested values
+                        function printValues(obj) {
+                            for(var k in obj) {
+                                if(obj[k] instanceof Object) {
+                                    printValues(obj[k]);
+                                } else {
+                                    document.write(obj[k] + "<br>");
+                                };
+                            }
+                        };
+                        
+                        // Printing all the values from the resulting object
+                        printValues(obj);
+                        
+                        document.write("<hr>");
+                        
+                        // Printing a single value
+                        document.write(obj["book"]["author"] + "<br>");  // Prints: J. K. Rowling
+                        document.write(obj["book"]["characters"][0] + "<br>");  // Prints: Harry Potter
+                        document.write(obj["book"]["price"]["hardcover"]);  // Prints: $20.32
+                        </script>
+        </xmp>
+    </div>
+
+    <div class="col-lg-6">
+        //Output:
+       <br>
+Harry Potter and the Goblet of Fire
+J. K. Rowling
+2000
+Harry Potter
+Hermione Granger
+Ron Weasley
+Fantasy Fiction
+$10.40
+$20.32
+$4.11
+J. K. Rowling
+Harry Potter
+$20.32 
+    </div>
+</div>
+
+<br>
+========================================================================================================
+<br>
+<xmp class="prettyprint">
+        var cars=[
+        {
+          make:'honda',
+          model:'civic',
+          year:2014,
+          color:'blue'
+        },
+        {
+          make:'toyota',
+          model:'camry',
+          year:2000,
+          color:'red'
+        },
+        {
+          make:'ford',
+          model:'civic',
+          year:2005,
+          color:'black'
+        }
+]
+document.write(cars[0].make+'<br>'); //honda
+
+for(i=0;i<cars.length;i++){
+    if(cars[i].year < 2010)
+   document.write(cars[i].make+ ","+cars[i].model);  //toyota,camryford,civic
+}      
+</xmp>
+
+============================================================
+<h2>Accesssing each and every key and value of array object</h2>
+<div class="row">
+    <div class="col-lg-6">
+        <xmp class="prettyprint">
+                var cars=[
+                {
+                  make:'honda',
+                  model:'civic',
+                  year:2014,
+                  color:'blue'
+                },
+                {
+                  make:'toyota',
+                  model:'camry',
+                  year:2000,
+                  color:'red'
+                },
+                {
+                  make:'ford',
+                  model:'civic',
+                  year:2005,
+                  color:'black'
+                }
+        ];
+        </xmp>
+    </div>
+
+    <div class="col-lg-6">
+            <xmp class="prettyprint">
+                    cars.forEach(function (item, index) {
+                        for (var key in item) {
+                              console.log(key);
+                              console.log(item[key]);
+                            }
+                      });
+            </xmp>
+        </div>
+</div>
+
+<br>
+=================================================================================
+<br>
+<h2>Looping through Object ( not array of object===> But Just object</h2>
+<div class="row">
+        <div class="col-lg-6">
+            <xmp class="prettyprint">
+                    var item = {a: 1, b: 2, c: 3};
+                    for (var i in item) { 
+                      console.log(i);	
+                      console.log(item[i]);
+                    }
+            </xmp>
+        </div>
+    
+        <div class="col-lg-6">
+                <xmp class="prettyprint">
+                       1 
+                       a
+                       2
+                       b
+                       3
+                       c
+                </xmp>
+            </div>
+    </div>
+</body>
+</html>  
+

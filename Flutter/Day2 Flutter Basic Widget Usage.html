@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+  <link rel="stylesheet" href="../SQL SandBox/css/bootstrap.css">
+  <link rel="stylesheet" href="../SQL SandBox/css/bootstrap-grid.css">
+  <link rel="stylesheet" href="../SQL SandBox/css/bootstrap-reboot.css">
+  <link rel="stylesheet" href="../SQL SandBox/css/dracula.css">
+  <link rel="stylesheet" href="../SQL SandBox/css/dracula-prism.css">
+  <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+  1) Create new flutter project and remove all the code then type below
+
+  <hr>
+  Step 1) Using Material App as Root Widgets and this widget property is home and has its value as Text widget with
+  text as "Hello Worlds"
+  <div class="row">
+    <div class="col-lg-6">
+      <pre>
+            <code class="language-dart">
+                import 'package:flutter/material.dart';
+
+                //Using MaterialApp as root Widgets
+                //Here home is property and this property has value as Text widgets
+
+                void main() => runApp(MaterialApp(
+                home: Text('Hello World'),
+                ));
+
+
+            </code>
+            </pre>
+    </div>
+
+    <div class="col-lg-6">
+      <img src="https://i.ibb.co/MMxVGJm/hellow-world.png" height="500px">
+    </div>
+  </div>
+  <hr>
+  Step 2) Using Scaffhold Widgets which acts like wrapper for titlebar , body and buttons
+  Here , Scaffold is wrapper of appBar
+  <div class="row">
+    <div class="col-lg-6">
+      <pre>
+            <code class="language-dart">
+
+                import 'package:flutter/material.dart';
+
+                void main() => runApp(MaterialApp(
+                  home: Scaffold(
+                    appBar: AppBar(
+                      title:Text("First Flutter Apps"),
+                      centerTitle: true,
+                    ),
+                  ),
+                ));
+                
+
+            </code>
+            </pre>
+    </div>
+
+    <div class="col-lg-6">
+      <img src="https://i.ibb.co/DYHnPh6/appbar.png" height="500px">
+    </div>
+  </div>
+
+  <hr>
+  Step 3) Using Scaffhold Widgets which acts like wrapper for titlebar , body and buttons
+  Here , Scaffold is wrapper of appBar and body
+  <div class="row">
+    <div class="col-lg-6">
+      <pre>
+            <code class="language-dart">
+
+                import 'package:flutter/material.dart';
+
+                void main() => runApp(MaterialApp(
+                  home: Scaffold(
+                    appBar: AppBar(
+                      title:Text("First Flutter Apps"),
+                      centerTitle: true,
+                    ),
+                    body:Text("This is body")
+                  ),
+                ));
+                
+                
+
+            </code>
+            </pre>
+    </div>
+
+    <div class="col-lg-6">
+      <img src="https://i.ibb.co/sKbXZxh/body.png" height="500px">
+    </div>
+  </div>
+
+
+  <hr>
+  Step 4) Using Scaffhold Widgets which acts like wrapper for titlebar , body and buttons
+  Here , Scaffold is wrapper of appBar and body
+  <div class="row">
+    <div class="col-lg-6">
+      <pre>
+            <code class="language-dart">
+
+                import 'package:flutter/material.dart';
+
+                void main() => runApp(MaterialApp(
+                  home: Scaffold(
+                    appBar: AppBar(
+                      title:Text("First Flutter Apps"),
+                      centerTitle: true,
+                    ),
+                    body:Center(
+                      child:Text("This is body"),
+                    )
+                  ),
+                ));
+                
+                
+
+            </code>
+            </pre>
+    </div>
+
+    <div class="col-lg-6">
+      <img src="https://i.ibb.co/3RRJD6H/body-with-center.png" height="500px">
+    </div>
+  </div>
+
+
+  <hr>
+  Step 5) Using Scaffhold Widgets which acts like wrapper for titlebar , body and buttons
+  Here , Scaffold is wrapper of appBar and body and floating button
+  <div class="row">
+    <div class="col-lg-6">
+      <pre>
+            <code class="language-dart">
+
+             
+            import 'package:flutter/material.dart';
+
+            void main() => runApp(MaterialApp(
+            home: Scaffold(
+                appBar: AppBar(
+                title:Text("First Flutter Apps"),
+                centerTitle: true,
+                ),
+                body:Center(
+                child:Text("This is body"),
+                ),
+                floatingActionButton: FloatingActionButton(
+                child: Text("Save")
+                ),
+            ),
+            ));
+
+
+                
+
+            </code>
+            </pre>
+    </div>
+
+    <div class="col-lg-6">
+      <img src="https://i.ibb.co/yYbW4WC/floating-button.png" height="500px">
+    </div>
+  </div>
+
+  <hr>
+  Step 6) Using Scaffhold Widgets which acts like wrapper for titlebar , body and buttons
+  Here , Scaffold is wrapper of appBar and body and floating button
+  <div class="row">
+    <div class="col-lg-6">
+      <pre>
+            <code class="language-dart">
+
+             
+            import 'package:flutter/material.dart';
+
+            void main() => runApp(MaterialApp(
+            home: Scaffold(
+                appBar: AppBar(
+                title:Text("First Flutter Apps"),
+                centerTitle: true,
+                ),
+                body:Center(
+                child:Text("This is body"),
+                ),
+                floatingActionButton: FloatingActionButton(
+                child: Text("Save")
+                ),
+            ),
+            ));
+
+
+                
+
+            </code>
+            </pre>
+    </div>
+
+    <div class="col-lg-6">
+      <img src="https://i.ibb.co/yYbW4WC/floating-button.png" height="500px">
+    </div>
+  </div>
+
+
+  <hr>
+  <h2>Applying Color And Fonts </h2>
+  Step 6 ) Applying color to appbar and button and font to body text
+  <div class="row">
+    <div class="col-lg-6">
+      <pre>
+            <code class="language-dart">
+
+             
+                import 'package:flutter/material.dart';
+
+                void main() => runApp(MaterialApp(
+                  home: Scaffold(
+                    appBar: AppBar(
+                      title:Text("First Flutter Apps"),
+                      centerTitle: true,
+                      backgroundColor: Colors.red[600],
+                    ),
+                    body:Center(
+                      child:Text(
+                        "This is body",
+                        style: TextStyle(
+                          fontSize:20.0,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 2.0,
+                          color:Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                    floatingActionButton: FloatingActionButton(
+                      child: Text("Save"),
+                      backgroundColor: Colors.red[600],
+                    ),
+                  ),
+                ));
+                
+                
+
+
+                
+
+            </code>
+            </pre>
+    </div>
+
+    <div class="col-lg-6">
+      <img src="https://i.ibb.co/C7cmccy/applying-font-and-color.png" height="500px">
+    </div>
+  </div>
+
+  <hr>
+  <h2>Applying Color To Body so need to wrap inside Material </h2>
+
+  <div class="row">
+    <div class="col-lg-6">
+      <pre>
+            <code class="language-dart">
+
+                import 'package:flutter/material.dart';
+
+                void main() => runApp(MaterialApp(
+                  home: Scaffold(
+                    appBar: AppBar(
+                      title:Text("First Flutter Apps"),
+                      centerTitle: true,
+                      backgroundColor: Colors.red[600],
+                    ),
+                    body:Material(
+                      color:Colors.lightBlueAccent,
+                      child:Center(
+                      child:Text(
+                        "This is body",
+                        style: TextStyle(
+                          fontSize:20.0,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 2.0,
+                          color:Colors.grey[600],
+                        ),
+                      ),
+                    ),
+                    ),
+                    floatingActionButton: FloatingActionButton(
+                      child: Text("Save"),
+                      backgroundColor: Colors.red[600],
+                    ),
+                  ),
+                ));
+                
+                
+                
+
+
+                
+
+            </code>
+            </pre>
+    </div>
+
+    <div class="col-lg-6">
+      <img src="https://i.ibb.co/t2JzqZp/backgroun-color-to-body.png" height="500px">
+    </div>
+  </div>
+
+
+  <script src="../SQL SandBox/js/prism.js"></script>
+  <script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+      {
+        'remove-trailing': true,
+        'remove-indent': true,
+        'left-trim': true,
+        'right-trim': true,
+        // 'break-lines': 10,
+        // 'indent': 2,
+        // 'remove-initial-line-feed': false,
+        // 'tabs-to-spaces': 4,
+        // 'spaces-to-tabs': 4
+      });
+  </script>
+</body>
+
+</html>

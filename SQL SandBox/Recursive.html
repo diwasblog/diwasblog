@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+
+    <div class="row">
+        <div class="col-lg-6">
+            <img
+                src="https://4.bp.blogspot.com/-6bLBP82dHvY/U3pr8Ycg8FI/AAAAAAAAI6k/QuXAq7xa6bo/s1600/SQL+query+to+get+organization+hierarchy.png">
+
+        </div>
+
+        <div class="col-lg-6">
+            <table style="border-collapse: collapse; width: 31.4894%;" border="1">
+                <tbody>
+                    <tr style="color: white; background: black;">
+                        <td style="width: 10.461%;">EmployeeId</td>
+                        <td style="width: 10.7269%;">EmployeeName</td>
+                        <td style="width: 10.328%;">ManagerId</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 10.461%;">1</td>
+                        <td style="width: 10.7269%;">John</td>
+                        <td style="width: 10.328%;">5</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 10.461%;">2</td>
+                        <td style="width: 10.7269%;">Mark</td>
+                        <td style="width: 10.328%;">8</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 10.461%;">3</td>
+                        <td style="width: 10.7269%;">Steve</td>
+                        <td style="width: 10.328%;">8</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 10.461%;">4</td>
+                        <td style="width: 10.7269%;">Tom</td>
+                        <td style="width: 10.328%;">3</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 10.461%;">5</td>
+                        <td style="width: 10.7269%;">Lara</td>
+                        <td style="width: 10.328%;">8</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 10.461%;">6</td>
+                        <td style="width: 10.7269%;">Simon</td>
+                        <td style="width: 10.328%;">2</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 10.461%;">7</td>
+                        <td style="width: 10.7269%;">David</td>
+                        <td style="width: 10.328%;">4</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 10.461%;">8</td>
+                        <td style="width: 10.7269%;">Ben</td>
+                        <td style="width: 10.328%;">NULL</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 10.461%;">9</td>
+                        <td style="width: 10.7269%;">Stacy</td>
+                        <td style="width: 10.328%;">2</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 10.461%;">10</td>
+                        <td style="width: 10.7269%;">Sam</td>
+                        <td style="width: 10.328%;">5</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <p><span style="font-size: 14pt;"><strong>Scenario 1:&nbsp;</strong>If we pass&nbsp;<strong><span
+                    style="color: #e03e2d;">David's EmployeeId</span>&nbsp;</strong>to the query, then it should display
+            the organization hierarchy as shown below.</span></p>
+    <p>&nbsp;</p>
+    <div class="row">
+        <div class="col-lg-6">
+            <pre>
+    <code class="language-sql">
+        Declare @ID int ;
+        Set @ID = 7;
+        WITH EmployeeCTE AS
+        (
+        Select EmployeeId, EmployeeName, ManagerID
+        From Employees
+        Where EmployeeId = @ID
+        
+        UNION ALL
+        
+        Select Employees.EmployeeId , Employees.EmployeeName,
+        Employees.ManagerID
+        From Employees
+        JOIN EmployeeCTE
+        ON Employees.EmployeeId = EmployeeCTE.ManagerID
+        )
+        --Select * From Employees EmployeeCTE
+        Select E1.EmployeeName, ISNULL(E2.EmployeeName, 'No Boss') as ManagerName,ROW_NUMBER()over (order by E1.EmployeeId) as LEVEL
+        From EmployeeCTE E1
+        LEFT Join EmployeeCTE E2
+        ON E1.ManagerID = E2.EmployeeId
+    </code>
+</pre>
+        </div>
+
+        <div class="col-lg-6">
+            <table style="border-collapse: collapse; width: 31.4894%; height: 120px;" border="1">
+                <tbody>
+                    <tr style="color: white; background: black;">
+                        <td style="width: 10.7269%; height: 22px;">EmployeeName</td>
+                        <td style="width: 10.328%; height: 22px;">ManagerName</td>
+                        <td style="width: 10.328%; height: 22px;">Level</td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 10.7269%; height: 22px;"><span
+                                style="color: #000000;"><strong>David</strong></span>
+                        </td>
+                        <td style="width: 10.328%; height: 22px;"><span
+                                style="color: #000000;"><strong>Tom</strong></span></td>
+                        <td style="width: 10.328%; height: 22px;"><span
+                                style="color: #000000;"><strong>1</strong></span></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 10.7269%; height: 22px;"><span
+                                style="color: #000000;"><strong>Tom</strong></span>
+                        </td>
+                        <td style="width: 10.328%; height: 22px;"><span
+                                style="color: #000000;"><strong>Steve</strong></span>
+                        </td>
+                        <td style="width: 10.328%; height: 22px;"><span
+                                style="color: #000000;"><strong>2</strong></span></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 10.7269%; height: 22px;"><span
+                                style="color: #000000;"><strong>Steve</strong></span>
+                        </td>
+                        <td style="width: 10.328%; height: 22px;"><span
+                                style="color: #000000;"><strong>Ben</strong></span></td>
+                        <td style="width: 10.328%; height: 22px;"><span
+                                style="color: #000000;"><strong>3</strong></span></td>
+                    </tr>
+                    <tr style="height: 32px;">
+                        <td style="width: 10.7269%; height: 32px;"><span
+                                style="color: #000000;"><strong>Ben</strong></span>
+                        </td>
+                        <td style="width: 10.328%; height: 32px;"><span style="color: #000000;"><strong>No
+                                    Boss</strong></span>
+                        </td>
+                        <td style="width: 10.328%; height: 22px;"><span
+                                style="color: #000000;"><strong>4</strong></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <br>
+    <p><span style="font-size: 18pt;"><strong>Scenario 2:</strong>&nbsp;If we pass&nbsp;<strong><span
+                    style="color: #e03e2d;">Lara's EmployeeId</span>&nbsp;</strong>to the query, then it should display
+            the organization hierarchy as shown below. </span></p>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <pre>
+            <code class="language-sql">
+                Declare @ID int ;
+                Set @ID = 5;
+                WITH EmployeeCTE AS
+                (
+                Select EmployeeId, EmployeeName, ManagerID
+                From Employees
+                Where EmployeeId = @ID
+                
+                UNION ALL
+                
+                Select Employees.EmployeeId , Employees.EmployeeName,
+                Employees.ManagerID
+                From Employees
+                JOIN EmployeeCTE
+                ON Employees.EmployeeId = EmployeeCTE.ManagerID
+                )
+                --Select * From Employees EmployeeCTE
+                Select E1.EmployeeName, ISNULL(E2.EmployeeName, 'No Boss') as ManagerName,ROW_NUMBER()over (order by E1.EmployeeId) as LEVEL
+                From EmployeeCTE E1
+                LEFT Join EmployeeCTE E2
+                ON E1.ManagerID = E2.EmployeeId
+            </code>
+        </pre>
+        </div>
+
+        <div class="col-lg-6">
+            <table style="border-collapse: collapse; width: 31.4894%; height: 120px;" border="1">
+                <tbody>
+                    <tr style="color: white; background: black;">
+                        <td style="width: 10.7269%; height: 22px;">EmployeeName</td>
+                        <td style="width: 10.328%; height: 22px;">ManagerName</td>
+                        <td style="width: 10.328%; height: 22px;">Level</td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 10.7269%; height: 22px;"><span
+                                style="color: #000000;"><strong>Lara</strong></span></td>
+                        <td style="width: 10.328%; height: 22px;"><span
+                                style="color: #000000;"><strong>Ben</strong></span></td>
+                        <td style="width: 10.328%; height: 22px;"><span
+                                style="color: #000000;"><strong>1</strong></span></td>
+                    </tr>
+                    <tr style="height: 22px;">
+                        <td style="width: 10.7269%; height: 22px;"><span
+                                style="color: #000000;"><strong>Ben</strong></span></td>
+                        <td style="width: 10.328%; height: 22px;"><span style="color: #000000;"><strong>No
+                                    Boss</strong></span></td>
+                        <td style="width: 10.328%; height: 22px;"><span
+                                style="color: #000000;"><strong>2</strong></span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+
+    <script src="js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,6 @@
+Reduce server response times (TTFB) : This should be low. And this is server response time and is happened when you buy hosting from cheap hoster.
+
+The optimal server response time is under 200ms.
+I am having 670 ms.
+
+Defer offset image : Lazy load image . Load image only when image is seen on screen.

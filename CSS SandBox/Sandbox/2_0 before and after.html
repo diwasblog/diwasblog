@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <title>Bootstrap Sandbox</title>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+
+
+<style>
+xmp.prettyprint{
+    font-size:12pt;
+    font-family:monospace;
+
+}
+</style>
+</head>
+<body>
+
+  <h2>Pseudo Element </h2>
+  <h2>Pseudoelement</h2>
+  <ol>
+  <li><span style="color: #000000; font-size: 18pt;">Pseudocode works only if tag has content. like <span style="color: #f1c40f;">&lt;label&gt;content&lt;/label&gt;</span> ,<span style="color: #e03e2d;"> &lt;button&gt;content&lt;/button&gt;</span>,<span style="color: #2dc26b;"> &lt;p&gt;content&lt;/p&gt;</span>&nbsp; &nbsp;but not for &lt;input ... &gt; , &lt;img ... &gt;&nbsp; because it doesnot have content.</span></li>
+  <li><span style="color: #000000; font-size: 18pt;">We must use content:'' properties in css.</span></li>
+  </ol>
+  <h2>Example :</h2>
+  <p>say: we have &lt;label&gt;content&lt;/label&gt; then the <strong><span style="color: #e03e2d;">content is added before and after the content of label</span> <span style="color: #f1c40f;">but not before and after labe</span></strong>l.</p>
+
+
+  <div class="row">
+    <div class="col-lg-6">
+      Adding dynamic content before 'p' tag and after 'h2' tag
+      <xmp class="prettyprint">
+          <p>First</p>
+          <h2>Diwas</h2>
+          <p> Second</p>
+
+          <style>
+            p::before{content:"Diwas  "}
+            h2::after{content:" after  "}
+
+          </style>
+      </xmp>
+    </div>
+
+    <div class="col-lg-6">
+       &nbsp;<br>
+       
+        <p data-height="265" data-theme-id="0" data-slug-hash="wYyKov" data-default-tab="html,result" data-user="DiwasPoudel" data-pen-title="wYyKov" class="codepen">See the Pen <a href="https://codepen.io/DiwasPoudel/pen/wYyKov/">wYyKov</a> by Diwas Poudel (<a href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+        <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+      </div>
+  </div>
+
+
+  <div class="row">
+      <div class="col-lg-6">
+        Adding open and close quote dynamically using before and after p tags
+        <xmp class="prettyprint">
+            
+          <p>Hello Diwas</p>
+            <style>
+            p::before{content:open-quote}
+            p::after{content:close-quote}
+            </style>
+        </xmp>
+      </div>
+  
+      <div class="col-lg-6">
+          <p data-height="265" data-theme-id="0" data-slug-hash="ReQWpd" data-default-tab="css,result" data-user="DiwasPoudel" data-pen-title="before and after in quotes" class="codepen">See the Pen <a href="https://codepen.io/DiwasPoudel/pen/ReQWpd/">before and after in quotes</a> by Diwas Poudel (<a href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+          <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+    </div>
+
+    <hr>
+    <p class="codepen" data-height="265" data-theme-id="default" data-default-tab="css,result" data-user="diwas777" data-slug-hash="WNbJOxB" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="pseudoelement">
+      <span>See the Pen <a href="https://codepen.io/diwas777/pen/WNbJOxB">
+      pseudoelement</a> by Diwas Poudel (<a href="https://codepen.io/diwas777">@diwas777</a>)
+      on <a href="https://codepen.io">CodePen</a>.</span>
+    </p>
+    <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+</body>
+</html>

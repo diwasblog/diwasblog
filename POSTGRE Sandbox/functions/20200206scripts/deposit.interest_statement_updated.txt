@@ -1,0 +1,82 @@
+-- Function: deposit.get_interest_statement(bigint, date, date)
+
+-- DROP FUNCTION deposit.get_interest_statement(bigint, date, date);
+
+CREATE OR REPLACE FUNCTION deposit.get_interest_statement(
+    IN account_number_id_ bigint,
+    IN from_ date,
+    IN to_ date)
+  RETURNS TABLE(tran_id bigint, tran_date character varying, statement_reference text, nominee_account character varying, interest_rate numeric, interest_dr money, interest_cr money, interest_balance money, tax_rate numeric, tax_dr money, tax_cr money, tax_balance money) AS
+$BODY$
+	DECLARE _opening_int money;
+	DECLARE _opening_tax money;
+BEGIN
+
+	CREATE TEMP TABLE _t(
+		id		serial,
+		tran_id		bigint,
+		tran_date	date,
+		statement_reference	text,
+		nominee_account		character varying(50),
+		interest_rate		numeric,
+		interest_dr		money,
+		interest_cr		money,
+		interest_balance	money,
+		tax_rate		numeric,
+		tax_dr			money,
+		tax_cr			money,
+		tax_balance		money
+	) ON COMMIT DROP;
+
+	SELECT SUM(COALESCE(t.interest_cr, '0')) - SUM(COALESCE(t.interest_dr, '0')), 
+		SUM(COALESCE(t.tax_cr, '0')) - SUM(COALESCE(t.tax_dr, '0'))
+		INTO _opening_int, _opening_tax
+	FROM deposit.interest_statement_view t
+	WHERE t.account_number_id = account_number_id_
+	AND t.value_date < from_;
+
+	IF(_opening_int <> '0') THEN
+	INSERT INTO _t(tran_id, tran_date, statement_reference, nominee_account, interest_rate, interest_dr, interest_cr, tax_rate, tax_dr, tax_cr)
+	SELECT NULL, from_, 'Balance B/d.', NULL, NULL, SUM(COALESCE(t.interest_dr, '0')), SUM(COALESCE(t.interest_cr, '0')), NULL, SUM(COALESCE(t.tax_dr, '0')), SUM(COALESCE(t.tax_cr, '0'))
+	FROM deposit.interest_statement_view t
+	WHERE t.account_number_id = account_number_id_
+	AND t.value_date < from_;	
+
+	END IF;
+
+	INSERT INTO _t(tran_id, tran_date, statement_reference, nominee_account, interest_rate, interest_dr, interest_cr, tax_rate, tax_dr, tax_cr)
+	SELECT 
+		t.tran_id, t.value_date, t.statement_reference, ac.account_number, t.interest_rate, t.interest_dr, t.interest_cr, t.tax_rate, t.tax_dr, t.tax_cr
+	FROM deposit.interest_statement_view t
+	LEFT JOIN deposit.account_holders ac
+		ON t.nominee_account_number_id = ac.account_number_id
+	WHERE t.account_number_id = account_number_id_
+	and t.value_date between $2 and $3
+	ORDER BY t.value_date, t.tran_id;
+
+	UPDATE _t SET interest_balance = child.interest, tax_balance = child.tax
+	FROM (
+	SELECT 
+		p.id,
+		SUM(COALESCE(c.interest_cr, '0') - COALESCE(c.interest_dr, '0')) AS interest,
+		SUM(COALESCE(c.tax_cr, '0') - COALESCE(c.tax_dr, '0')) AS tax
+	FROM _t p, _t c
+	WHERE c.id <= p.id
+	GROUP BY p.id
+	) child
+	WHERE _t.id = child.id;
+
+
+
+
+	RETURN QUERY(SELECT _t.tran_id, core.date_bs_from_ad(_t.tran_date), _t.statement_reference, _t.nominee_account, _t.interest_rate::numeric, 
+			_t.interest_dr, _t.interest_cr, _t.interest_balance, _t.tax_rate::numeric, _t.tax_dr, _t.tax_cr, _t.tax_balance
+			FROM _t);
+
+END
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100
+  ROWS 1000;
+ALTER FUNCTION deposit.get_interest_statement(bigint, date, date)
+  OWNER TO postgres;

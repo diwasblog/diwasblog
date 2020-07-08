@@ -1,0 +1,56 @@
+-- FUNCTION: transactions.get_share_deposit_info(character varying, boolean)
+
+-- DROP FUNCTION transactions.get_share_deposit_info(character varying, boolean);
+
+CREATE OR REPLACE FUNCTION transactions.get_share_deposit_info(
+	account_number_ character varying,
+	is_deposit_ boolean)
+    RETURNS TABLE(office_id integer, customer_id bigint, account_id bigint, account_number character varying, account_name text, address text, product character varying, gl_account_id bigint) 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+BEGIN
+
+IF is_deposit_=TRUE THEN
+    RETURN QUERY(
+        SELECT 
+		a.office_id,
+		a.customer_id,
+		a.account_number_id,
+		a.account_number,
+	    c.customer_name,
+		c.permanent_address,
+            p.deposit_product_name,
+			p.gl_account_id
+        FROM deposit.account_holders a 
+        JOIN core.customers_view  c ON a.customer_id = c.customer_id
+        JOIN core.deposit_products p ON a.deposit_product_id = p.deposit_product_id
+        WHERE a.account_number = $1
+    );
+ELSE
+
+    RETURN QUERY(
+        SELECT 
+		a.office_id,
+		a.customer_id,
+		a.share_account_id,
+		a.account_number,
+	    c.customer_name,
+		c.permanent_address,
+        p.share_product_name,
+		p.gl_account_id
+        FROM core.share_accounts a 
+        JOIN core.customers_view  c ON a.customer_id = c.customer_id
+        JOIN core.share_products p ON a.share_product_id = p.share_product_id
+        WHERE a.account_number = $1
+    );
+	
+	END IF;
+END
+$BODY$;
+
+ALTER FUNCTION transactions.get_share_deposit_info(character varying, boolean)
+    OWNER TO postgres;

@@ -1,0 +1,117 @@
+<html>
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+
+<!--Explaination-->
+
+<!--########################Main Code######################################-->
+
+<!--##############################################################-->
+<p><span style="font-size: 14pt;"><strong>I spents hours trying to figure out why data i post from Vuejs doesn’t get to my Controller action in asp.net core until i figured out that for this to work then i need to set [FromBody] attribute on my action.</strong></span></p>
+
+<!--|#########################DISPLAY############################################-->
+
+<xmp class="prettyprint">
+
+  <div id="app">
+   
+    <input name="firstName" v-model="firstName" placeholder="First Name"/>
+    <br/>
+    <input name="lastName" v-model="lastName" placeholder="Last Name"/>
+    <br/>
+    <button @click="sendToServer">Submit</button>
+
+  </div>
+      
+</xmp>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6">
+<xmp class="prettyprint">
+  new Vue({
+
+    el: "#app",
+    data: {
+        firstName: "",
+        lastName: ""
+    },
+    methods: {
+        sendToServer: function () {
+
+            axios({
+                    method: 'post',
+                    url: '/home/index',
+                    data: {
+                        "firstName": this.firstName,
+                        "lastName": this.lastName
+                    }
+                })
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+    }
+});
+
+</xmp>
+</div>
+
+<div class="col-lg-6">
+<xmp class="prettyprint">
+  public class HomeController : Controller
+    {
+        [HttpGet]
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Index([FromBody]User user)
+        {
+            return View();
+        }
+    }
+</xmp>
+</div>
+</div>
+</div>
+
+<xmp class="prettyprint">
+
+namespace VueJsToNetCore.ViewModel
+{
+    public class User
+    {
+        public string LastName { get; set; }
+        public string FirstName { get; set; }
+    }
+}
+  </xmp>
+
+
+<!--####################################################-->
+
+
+    </body>
+
+</html>

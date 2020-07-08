@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+    
+      <p><span style="font-size: 14pt;">In EF</span></p>
+      <p><span style="font-size: 14pt;">Yes,&nbsp;<span style="color: #ff00ff;"><strong><code>DbContext</code></strong></span>&nbsp;represents a <strong><span style="color: #ff00ff;">Unit of Work</span></strong> and&nbsp;<span style="color: #ff00ff;"><strong><code>DbSet</code></strong></span>&nbsp;represents a <span style="color: #ff00ff;"><strong>Repository,</strong></span> but some people will create a layer of abstraction over them. Here are some reasons people might do so:</span></p>
+      <ul>
+      <li><span style="font-size: 14pt;">Maybe they don't want their project tightly coupled to Entity Framework and its architecture. So, they hide Entity Framework behind those abstractions so they can substitute Entity Framework for any other ORM without any modification to the interface of the data access layer.</span></li>
+      <li><span style="font-size: 14pt;">=================================================================================</span></li>
+      </ul>
+      <p><span style="font-size: 14pt;"><span style="font-size: 18pt;"><strong><span style="color: #ff0000;">Repository Pattern</span> </strong></span></span></p>
+      <p><span style="font-size: 14pt;">It is <strong>Patterns of Enterprise Application.</strong></span></p>
+      <p><span style="font-size: 14pt;"><strong>A repository</strong> is nothing but<span style="color: #ff0000;"> a class</span> defined for an <span style="color: #ff0000;">entity,</span> with all the operations possible on that specific entity. For example, a repository for an entity Customer, will have basic CRUD operations and any other possible operations related to it like:</span></p>
+      <p><strong><span style="font-size: 14pt; color: #008000;">Inside CustomerRepository</span></strong></p>
+      <p><span style="font-size: 14pt; color: #ff00ff;">insertCustomer(Customer customer)</span></p>
+      <p><span style="font-size: 14pt; color: #ff00ff;">updateCustomer(Customer customer)</span></p>
+      <p><span style="font-size: 14pt; color: #ff00ff;">deleteCustomer(int id)</span></p>
+      <p><span style="font-size: 14pt; color: #ff00ff;">getCustomer(int id) ==&gt;return Customer</span></p>
+      <p><span style="font-size: 14pt; color: #ff00ff;">getCustomers()==&gt;List of Customer</span></p>
+      <p><strong><span style="font-size: 14pt;">&nbsp;A Repository Pattern can be implemented in Following ways:</span></strong></p>
+      <ul>
+      <li><span style="font-size: 12pt;"><strong>One repository per entity (non-generic) :&nbsp;</strong>This type of implementation involves the use of one repository class for each entity. For example, if you have two entities Order and Customer, each entity will have its own repository. like this:</span></li>
+      </ul>
+      <p><span style="font-size: 12pt;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: #ff0000;"> OrderRepository</span> and <span style="color: #ff0000;">CustomerRepository</span></span></p>
+      <ul>
+      <li><span style="font-size: 12pt;"><strong>Generic repository :</strong>&nbsp;A generic repository is the one that can be used for all the entities, in other words it can be either used for Order or Customer or any other entity.</span></li>
+      </ul>
+      <p>&nbsp;</p>
+
+      <p class=""><strong><span style="font-size: 18pt; color: #ff0000;">If no Repository used or Direct Access to Database</span></strong></p>
+<p class=""><span style="font-size: 12pt;">Directly accessing the data&nbsp; can result in the following:</span></p>
+<ul>
+<li><strong><span style="font-size: 12pt;">Duplicated code</span></strong></li>
+<li><strong><span style="font-size: 12pt;">A higher potential for programming errors</span></strong></li>
+<li><strong><span style="font-size: 12pt;">Weak typing of the business data</span></strong></li>
+<li><strong><span style="font-size: 12pt;">Difficulty in centralizing data-related policies such as caching</span></strong></li>
+<li><strong><span style="font-size: 12pt;">An inability to easily test the business logic in isolation from external dependencies</span></strong></li>
+</ul>
+<p>&nbsp;</p>
+<p>Unit Of Work in Repository Pattern</p>
+<p>. Suppose you have two Repository like Customer and Order .The unit of work class coordinates the work of multiple repositories like both Customer and Order&nbsp; by creating a single database context class shared by all of them.&nbsp;</p>
+      <p><span style="font-size: 14pt;">It separate the business logic from the interactions with the underlying data source (ie. database,sharepoint or webservice).</span></p>
+      <p>&nbsp;</p>
+
+      <p class=""><span style="color: #ff0000;"><span style="font-size: 24px;"><strong>Why UOW ?</strong></span></span></p>
+      <p class=""><span style="color: #000000;"><span style="font-size: 24px;"><strong>Suppose you have two or more repository based on Entity .Suppose my Entity as&nbsp; Customer and Order .Then say Repository will be Customer Repository and Order Repository.&nbsp;</strong></span></span></p>
+      <p class=""><span style="color: #000000;"><span style="font-size: 24px;"><strong>In these case, both repositories will generate and maintain their own instance of the DbContext. This may lead to issues in the future, since each DbContext will have its own in-memory list of changes of the records, of the entities, that are being added/updated/modified, in a single transaction/operation. In such a case, if the SaveChanges of one of the repository fails and other one succeeds, it will result in database in-consistency. Also multiple DbContext will call multiple times in database.</strong></span><span style="font-size: 24px;"><strong>This is where the concept of UnitOfWork is relevant.</strong></span></span></p>
+      <p class="">&nbsp;</p>
+      <p class=""><span style="color: #000000;"><span style="font-size: 24px;"><strong>To avoid this, we will add another layer or intermediate between the controller and the Customer repository. This layer will act as a centralized store for all the repositories to receive the instance of the DbContext. This will ensure that, for a unit of transaction, that spans across multiple repositories, should either complete for all entities or should fail entirely, as all of them will share the same instance of the DbContext. In our above example, while adding data for the Order and Customer entities, in a single transaction, both will use the same DbContext instance.&nbsp;</strong></span></span></p>
+      <p class=""><span style="color: #000000;"><span style="font-size: 24px;"><strong>Here both Customer and Order Repository Share same dbContext.&nbsp;This will ensure that even if one of them breaks, the other one is also not saved, thus maintaining the database consistency.</strong></span></span></p>
+      <p class="">&nbsp;</p>
+      <p class=""><span style="color: #000000;"><span style="font-size: 24px;"><strong>Here, both the Order and Customer repository use the same instance of DbContext and we are executing the save changes using the instance unit of work class. So the changes of a single transaction are either done for both or none.&nbsp;</strong></span></span></p>
+      <p class="">&nbsp;</p>
+      <p class=""><em><span style="text-decoration: underline;"><span style="color: #ff0000; text-decoration: underline;"><span style="color: #ff0000; text-decoration: underline;"><span style="font-size: 24px;"><strong>Points:</strong></span></span></span></span></em></p>
+      <p class=""><span style="font-family: 'comic sans ms', sans-serif;"><span style="color: #ff0000;"><span style="font-size: 24px;">You can change the database with each change to your object model, but this can lead to lots of very small database calls, which ends up being very slow. Furthermore,it requires you to have a transaction open for the whole interaction,which is impractical if you have a business transaction that spans mulitple requests</span></span></span></p>
+      <p class=""><span style="color: #ff0000;"><span style="font-size: 24px;"><strong>updatePersonInfo()</strong></span></span></p>
+      <p class=""><span style="color: #ff0000;"><span style="font-size: 24px;"><strong>{</strong></span></span></p>
+      <p class="">&nbsp;</p>
+      <p class=""><span style="color: #ff0000;"><span style="font-size: 24px;"><strong>}</strong></span></span></p>  
+
+    <script src="js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

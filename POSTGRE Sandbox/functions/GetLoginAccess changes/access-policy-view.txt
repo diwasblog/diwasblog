@@ -1,0 +1,30 @@
+-- View: policies.access_policy_view
+
+-- DROP VIEW policies.access_policy_view;
+
+CREATE OR REPLACE VIEW policies.access_policy_view AS
+ SELECT p.policy_id,
+    u.user_id,
+    u.full_name AS user_name,
+    p.ac_type,
+    p.account_number_id AS account_id,
+    a.account_number,
+    a.customer_name
+   FROM policies.access_policy p
+     JOIN deposit.account_holders_view a ON p.account_number_id = a.account_number_id
+     JOIN office.users u ON p.user_id = u.user_id
+UNION ALL
+ SELECT p.policy_id,
+    u.user_id,
+    u.full_name AS user_name,
+    p.ac_type,
+    p.loan_id AS account_id,
+    a.loan_account_number AS account_number,
+    a.customer_name
+   FROM policies.access_policy p
+     JOIN loan.loan_grant_view a ON p.loan_id = a.loan_id
+     JOIN office.users u ON p.user_id = u.user_id;
+
+ALTER TABLE policies.access_policy_view
+    OWNER TO postgres;
+

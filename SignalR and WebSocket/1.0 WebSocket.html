@@ -1,0 +1,278 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+
+
+   <div class="row">
+   //Createing SocketClient Api Controller
+     <div class="col-lg-12">
+        <pre>
+            <code class="language-csharp">
+			using Microsoft.ServiceModel.WebSockets;
+			using Microsoft.Web.WebSockets;
+			using System;
+			using System.Collections.Generic;
+			using System.Linq;
+			using System.Net;
+			using System.Net.Http;
+			using System.Web;
+			using System.Web.Http;
+
+			namespace WebSocket.Controllers
+			{
+			public class SocketClientController : ApiController
+			{
+				public HttpResponseMessage Get()
+				{
+					HttpContext.Current.AcceptWebSocketRequest(new ChatWebSocketHandler());
+					return Request.CreateResponse(HttpStatusCode.SwitchingProtocols);
+				}
+
+				class ChatWebSocketHandler : Microsoft.Web.WebSockets.WebSocketHandler
+				{
+					private static WebSocketCollection _chatClients = new WebSocketCollection();
+					private string name;
+
+					public override void OnOpen()
+					{
+						name = this.WebSocketContext.QueryString["chatName"];
+						_chatClients.Add(this);
+						_chatClients.Broadcast(name + " has connected");
+					}
+
+					public override void OnMessage(string recordType)
+					{
+
+						for (int i = 0; i < 10; i++)
+						{
+							_chatClients.Broadcast(i.ToString());
+							System.Threading.Thread.Sleep(1000);
+						}
+					}
+
+					public override void OnClose()
+					{
+						_chatClients.Remove(this);
+					}
+				}
+			}
+			}
+
+			</code>
+		</pre>
+</div>
+
+     
+</div>
+
+
+<pre>
+//Index.html   ==> HomeController/Index
+<code class="language-csharp">
+&lt;html>
+&lt;head>
+
+&lt;/head>
+
+&lt;body>
+	&lt;div id="messages">&lt;/div>
+</body>
+</html>
+
+
+&lt;script src="~/Scripts/jquery-1.10.2.min.js">&lt;/script>
+&lt;script>
+	$(document).ready(function () {
+		var uri = "ws://localhost:64285/api/SocketClient?chatName=diwas";
+
+		//Initialize socket
+		websocket = new WebSocket(uri);
+
+		//Open socket and send message
+		websocket.onopen = function () {
+			$('#messages').prepend('<div>Connected to server.</div>');
+		
+			websocket.send("Hello!");
+			console.log(userID);
+		};
+
+		
+
+		//Socket error handler
+		websocket.onerror = function (event) {
+			$('#messages').prepend('<div>Ooooops! Some error occured</div>');
+			console.log("alert");
+		};
+
+		//Socket message handler
+		websocket.onmessage = function (event) {
+			$('#messages').prepend('<div>' + event.data + '</div>');
+			console.log("success");
+		};
+	});  
+&lt;/script>
+</code>
+
+</pre>
+
+
+<pre>
+//About.html  ==> HomeController/About
+<code class="language-csharp">
+&lt;html>
+&lt;head>
+
+&lt;/head>
+
+&lt;body>
+	&lt;div id="messages">&lt;/div>
+</body>
+</html>
+
+
+&lt;script src="~/Scripts/jquery-1.10.2.min.js">&lt;/script>
+&lt;script>
+	$(document).ready(function () {
+		var uri = "ws://localhost:64285/api/SocketClient?chatName=diwas";
+
+		//Initialize socket
+		websocket = new WebSocket(uri);
+
+		//Open socket and send message
+		websocket.onopen = function () {
+			$('#messages').prepend('<div>Connected to server.</div>');
+		
+			websocket.send("Hello!");
+			console.log(userID);
+		};
+
+		
+
+		//Socket error handler
+		websocket.onerror = function (event) {
+			$('#messages').prepend('<div>Ooooops! Some error occured</div>');
+			console.log("alert");
+		};
+
+		//Socket message handler
+		websocket.onmessage = function (event) {
+			$('#messages').prepend('<div>' + event.data + '</div>');
+			console.log("success");
+		};
+	});  
+&lt;/script>
+</code>
+
+</pre>
+
+Now when you call index method via browser then it will hit on api and automatically gets data.
+
+==============================================================================================================
+<br>
+==============================================================================================================================================
+
+<h2>Client communication with another client </h2>
+Just you have to make change on Controller as below:
+
+<pre>
+<code class="prettyprint">
+
+using Microsoft.Web.WebSockets;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web;
+using System.Web.Http;
+
+namespace WebSocket.Controllers
+{
+    public class SocketClientController : ApiController
+    {
+		public HttpResponseMessage Get()
+		{
+			HttpContext.Current.AcceptWebSocketRequest(new ChatWebSocketHandler());
+			return Request.CreateResponse(HttpStatusCode.SwitchingProtocols);
+		}
+
+		class ChatWebSocketHandler : WebSocketHandler
+		{
+			private static WebSocketCollection _chatClients = new WebSocketCollection();
+			private string name;
+			private int id;
+
+			public void ProcessRequest(HttpContext context)
+			{
+				if (context.IsWebSocketRequest)
+				{
+					context.AcceptWebSocketRequest(new ChatWebSocketHandler());
+				}
+			}
+
+
+			public override void OnOpen()
+			{
+				name = this.WebSocketContext.QueryString["chatName"];
+				// _chatClients.SingleOrDefault(r => ((ChatWebSocketHandler)r).name != "diwass" ).Send("Hey 1156!")
+				_chatClients.Add(this);
+				_chatClients.Broadcast(name + " has connected");
+			}
+
+			public override void OnMessage(string recordType)
+			{
+
+				// this "hey RAM" information will get only my user whose name is "ram"
+				_chatClients.SingleOrDefault(r => ((ChatWebSocketHandler)r).name == "ram").Send("Hey RAM !");
+				//for (int i = 0; i < 10; i++)
+				//{
+				//	_chatClients.Broadcast(i.ToString());
+				//	System.Threading.Thread.Sleep(1000);
+				//}
+			}
+
+			public override void OnClose()
+			{
+				_chatClients.Remove(this);
+			}
+		}
+	}
+}
+
+</code>
+
+
+</pre>
+<br>
+    <script src="js/prism.js"></script>
+
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

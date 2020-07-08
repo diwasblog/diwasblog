@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <title>Bootstrap Sandbox</title>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+    <style>
+        xmp.prettyprint{
+            font-size:12pt;
+            font-family:monospace;
+        
+        }
+        </style>
+         
+</head>
+<body>
+<div class="row">
+  <div class="col-lg-6">
+    
+  </div>
+  <div class="col-lg-6">
+      <iframe width="100%" height="600" src="https://jsfiddle.net/Diwas_Poudel/fnwuzLv9/embedded/js,html,css,result/dark/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+    </div>
+</div>
+============================================================================================================
+<br>
+
+<div class="row">
+  <div class="col-lg-6">
+      <xmp class="prettyprint">
+          <div class="wrap">
+              <div class="main-content">
+              
+              </div>
+              <div class="sidebar"></div>
+              </div>
+
+              .wrap{
+                border:5px solid red;
+                 
+               }
+               
+               .main-content{
+                 background:blue;
+               height:50px;
+               }
+               
+               .sidebar{
+                 background:green;
+                 height:50px;
+               }
+      </xmp>	
+  </div>
+ 
+  <div class="col-lg-6">
+      <iframe width="100%" height="300" src="https://jsfiddle.net/Diwas_Poudel/6smnroat/embedded/result/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+  </div>
+</div>
+==============================================================================================
+<br>
+
+<h2>Making Horizontal content - main and sidebar</h2>
+<div class="row">
+  <div class="col-lg-4">
+      <xmp class="prettyprint">
+          <div class="wrap">
+              <div class="main-content"></div>
+              <div class="sidebar"></div>
+            </div>
+            .wrap{
+              border:5px solid red;
+               padding:10px;
+             }
+             
+             .main-content{
+               background:blue;
+               width:65%;
+               float:left;
+             height:50px;
+             }
+             
+             .sidebar{
+               background:green;
+                width:25%;
+               height:50px;
+               float:right;
+             }
+      </xmp>	
+  </div>
+ 
+  <div class="col-lg-8">
+      <iframe width="80%" height="300" src="https://jsfiddle.net/Diwas_Poudel/oudnhpr3/embedded/result/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+  </div>
+</div>
+============================================================================================================
+<br>
+<h2>Hacks to solve above problem using clear fix</h2>
+<div class="row">
+  <div class="col-lg-6">
+      <xmp class="prettyprint">
+      <div class="wrap">
+          <div class="main-content"></div>
+          <div class="sidebar"></div>
+        </div>
+
+        .wrap{
+          border:5px solid red;
+           padding:10px;
+         }
+         
+         .main-content{
+           background:blue;
+           width:65%;
+           float:left;
+         height:50px;
+         }
+         
+         .sidebar{
+           background:green;
+            width:25%;
+           height:50px;
+           float:right;
+         }
+
+         <!-- used clear fix on wrap after (adding content blank at last of wrap) -->
+          
+         .wrap:after{
+          content:"";
+          display:table;
+          clear:both;
+        }
+         </xmp>
+  </div>
+  <div class="col-lg-6">
+      <iframe width="100%" height="300" src="https://jsfiddle.net/Diwas_Poudel/ufyh3vz7/embedded/result/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+  </div>
+</div>
+</body>
+</html>

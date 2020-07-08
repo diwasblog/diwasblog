@@ -1,0 +1,202 @@
+-- FUNCTION: core.get_gl_interest(integer, integer, date, date, integer)
+
+-- DROP FUNCTION core.get_ibt_gl_interest(integer, date,numeric,numeric);
+
+CREATE OR REPLACE FUNCTION core.get_ibt_gl_interest(
+	office_id_ integer,
+	end_ date,
+	rec_rate_ numeric,
+	p_rate_ numeric)
+    RETURNS TABLE(sn int, office_id int, value_date date,rec_rate numeric, p_rate numeric, lcl_rec_gl int, rem_p_gl	int, lcl_p_gl int, rem_r_gl	int, r_balance money,p_balance money,r_interest money,p_interest money) 
+    LANGUAGE 'plpgsql'
+
+    COST 100 
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+
+BEGIN
+
+DROP TABLE IF EXISTS _gi;
+CREATE TEMP TABLE _gi(
+	sn serial , 
+	office_id int,
+	value_date date,
+	rec_rate numeric,
+	p_rate	 numeric,
+	lcl_rec_gl int, 
+	rem_p_gl	int,
+	lcl_p_gl 	int,
+	rem_r_gl	int,
+	r_balance money,
+	p_balance money,
+	r_interest money,
+	p_interest money) ON COMMIT DROP;
+		--INSERT INTO _gt(value_date) SELECT generate_series(from_, to_, '1 day')::date;
+
+INSERT INTO _gi(office_id)
+SELECT offices.office_id FROM office.offices WHERE offices.office_id<>office_id_ ORDER BY offices.office_id;
+	
+	UPDATE _gi SET rec_rate=rec_rate_, p_rate=p_rate_;
+
+
+--LOCAL RECEIVABLE GL UPDATE
+UPDATE _gi SET lcl_rec_gl =( SELECT local_receivable_gl_account_id FROM core.ibt_setup 
+							WHERE local_office_id =_gi.office_id
+							AND remote_office_id = office_id_ );
+
+UPDATE _gi SET lcl_rec_gl =( SELECT remote_receivable_gl_account_id FROM core.ibt_setup 
+							WHERE local_office_id = office_id_ AND remote_office_id = _gi.office_id ) 
+							WHERE _gi.lcl_rec_gl IS NULL;
+
+--LOCAL PAYABLE GL
+
+UPDATE _gi SET lcl_p_gl =( SELECT local_payable_gl_account_id FROM core.ibt_setup 
+							WHERE local_office_id =_gi.office_id
+							AND remote_office_id = office_id_ );
+
+
+UPDATE _gi SET lcl_p_gl =( SELECT remote_payable_gl_account_id FROM core.ibt_setup 
+							WHERE local_office_id = office_id_ AND remote_office_id = _gi.office_id ) 
+							WHERE _gi.lcl_p_gl IS NULL;	
+							
+--REMOTE 
+
+UPDATE _gi SET rem_p_gl= 4782;
+UPDATE _gi SET rem_r_gl= 4798;
+
+	UPDATE _gi SET rec_rate = rec_rate_;
+	UPDATE _gi SET p_rate = p_rate_;	
+	UPDATE _gi SET value_date = end_;
+	
+
+UPDATE _gi SET r_balance=tr.bal
+FROM(SELECT t.office_id, t.gl_account_id,SUM(COALESCE(t.debit,'0'))-SUM(COALESCE(t.credit,'0')) bal FROM temp_transactions_view_for_ibt t
+	WHERE tran_date<=end_ GROUP BY t.office_id, t.gl_account_id)tr
+WHERE _gi.lcl_rec_gl = tr.gl_account_id
+AND office_id_=tr.office_id;
+
+--update payable balance
+																		
+UPDATE _gi SET p_balance=tr.bal
+FROM(SELECT t.office_id, t.gl_account_id,SUM(COALESCE(t.credit,'0'))-SUM(COALESCE(t.debit,'0')) bal FROM temp_transactions_view_for_ibt t
+	WHERE tran_date<=end_ GROUP BY t.office_id, t.gl_account_id)tr
+WHERE _gi.lcl_p_gl = tr.gl_account_id
+AND office_id_=tr.office_id;											
+																		
+--SELECT * FROM core.get_ibt_gl_interest(99,'2019-04-23',5,7) 
+
+UPDATE _gi SET r_interest = ((COALESCE(_gi.r_balance,'0') * _gi.rec_rate)/36500);
+UPDATE _gi SET p_interest = ((COALESCE(_gi.p_balance,'0') * _gi.p_rate)/36500);
+											 
+	
+
+	RETURN QUERY(
+	SELECT _gi.sn , _gi.office_id , _gi.value_date ,_gi.rec_rate , _gi.p_rate, _gi.lcl_rec_gl, _gi.rem_p_gl, _gi.lcl_p_gl, _gi.rem_r_gl, _gi.r_balance,_gi.p_balance,_gi.r_interest,_gi.p_interest
+	FROM _gi ORDER BY office_id);
+
+END
+
+$BODY$;
+
+ALTER FUNCTION core.get_ibt_gl_interest(integer, date,numeric,numeric)
+    OWNER TO postgres;
+
+
+
+
+---duration interest
+
+
+
+-- DROP FUNCTION core.calculate_gl_int_duration( date, date, integer, numeric, numeric);
+
+
+CREATE OR REPLACE FUNCTION core.calculate_gl_int_duration(
+	start_ date,
+	end_ date,
+	office_id_ integer,
+	rec_rate_ numeric,
+	p_rate_ numeric)
+	
+    RETURNS TABLE (office_id int, rec_rate numeric, p_rate numeric, rec_gl character varying,lcl_rec_gl int, rem_p_name character varying,  rem_p_gl int, lcl_pay character varying,lcl_p_gl int, rem_gl_name character varying,rem_r_gl int,r_interest money,p_interest money)
+    LANGUAGE 'plpgsql'
+    COST 100 
+    VOLATILE 
+    ROWS 1000
+	
+AS $BODY$
+
+
+
+DECLARE _counter date := $1;
+
+BEGIN
+	DELETE FROM temp_transactions_view_for_ibt;
+	DELETE FROM temp_gl_int;
+	
+	INSERT INTO temp_transactions_view_for_ibt(tran_id, office_id, tran_date, gl_account_id, debit, credit)
+	SELECT t.tran_id, t.office_id, t.tran_date, t.gl_account_id, t.debit, t.credit FROM transactions.transactions_view_for_ibt t
+	WHERE tran_date<=end_;
+
+
+--SELECT * FROM core.calculate_gl_int_duration('2019-04-01','2019-04-05',99,5,7)
+
+
+LOOP
+
+
+INSERT INTO temp_gl_int(office_id , value_date ,rec_rate , p_rate, lcl_rec_gl, rem_p_gl, lcl_p_gl, rem_r_gl, r_balance, p_balance, r_interest, p_interest)
+SELECT  ti.office_id , _counter ,ti.rec_rate , ti.p_rate, ti.lcl_rec_gl, ti.rem_p_gl, ti.lcl_p_gl, ti.rem_r_gl, ti.r_balance, ti.p_balance, ti.r_interest, ti.p_interest FROM core.get_ibt_gl_interest(office_id_,_counter,rec_rate_,p_rate_)ti;     
+
+    _counter := _counter + 1;
+
+    EXIT WHEN _counter > $2;
+END LOOP;
+CREATE TEMP  TABLE _gl_int(
+	office_id int,
+	rec_rate numeric,
+	p_rate	 numeric,
+	rec_ac character varying,
+	lcl_rec_gl int,
+	rem_p_name character varying,
+	rem_p_gl	int,
+	lcl_pay_name character varying,
+	lcl_p_gl 	int,
+	rem_r_gl_name character varying,	
+	rem_r_gl	int,
+	r_interest money,
+	p_interest money) ON COMMIT DROP;
+	
+	INSERT INTO _gl_int(office_id, rec_rate, p_rate,lcl_rec_gl, rem_p_gl, lcl_p_gl, rem_r_gl, r_interest, p_interest)
+	SELECT  ti.office_id , ti.rec_rate , ti.p_rate, ti.lcl_rec_gl, ti.rem_p_gl,ti.lcl_p_gl, ti.rem_r_gl, SUM(ti.r_interest) ,SUM(ti.p_interest) 
+			FROM temp_gl_int ti GROUP BY
+ti.office_id ,ti.rec_rate , ti.p_rate, ti.lcl_rec_gl, ti.rem_p_gl, ti.lcl_p_gl, ti.rem_r_gl;
+
+UPDATE 	_gl_int SET rec_ac = g.account_name
+FROM core.gl_accounts g 
+WHERE _gl_int.lcl_rec_gl = g.gl_account_id;
+
+UPDATE 	_gl_int SET rem_p_name = g.account_name
+FROM core.gl_accounts g 
+WHERE _gl_int.rem_p_gl = g.gl_account_id;
+
+---payable name
+UPDATE 	_gl_int SET lcl_pay_name = g.account_name
+FROM core.gl_accounts g 
+WHERE _gl_int.lcl_p_gl = g.gl_account_id;
+
+UPDATE 	_gl_int SET rem_r_gl_name = g.account_name
+FROM core.gl_accounts g 
+WHERE _gl_int.rem_r_gl = g.gl_account_id;
+
+
+
+RETURN QUERY(SELECT  i.office_id ,  i.rec_rate , i.p_rate,  i.rec_ac,i.lcl_rec_gl, i.rem_p_name,i.rem_p_gl, i.lcl_pay_name, i.lcl_p_gl, i.rem_r_gl_name, i.rem_r_gl, i.r_interest ,i.p_interest 
+			FROM _gl_int i ORDER BY i.office_id);
+END
+
+$BODY$;
+
+ALTER FUNCTION core.calculate_gl_int_duration( date, date, integer, numeric, numeric)
+    OWNER TO postgres;

@@ -1,0 +1,62 @@
+<html>
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+    <script>
+        function validateForm() {
+            if (document.getElementById('fname').value.trim()=="")
+        {
+          alert("Empty");
+          document.getElementById('fname').focus();
+            return false;
+        }
+        }
+    </script>
+
+<form name="myForm" 
+onsubmit="return validateForm()" action="www.google.com" method="post">
+Name: <input type="text" id="fname" name="fname">
+<input type="submit" value="Submit">
+</form>
+
+Script
+<xmp class="prettyprint">
+    <script>
+        function validateForm() {
+            if (document.getElementById('fname').value.trim()=="")
+        {
+          alert("Empty");
+          document.getElementById('fname').focus();
+            return false;
+        }
+        }
+    </script>
+
+</xmp>
+
+<xmp class="prettyprint">
+    <form name="myForm"  onsubmit="return validateForm()" action="/bims/misc/sliderphoto/edit" method="post">
+    Name: <input type="text" id="fname" name="fname">
+    <input type="submit" value="Submit">
+    </form>
+</xmp>
+
+
+If text field is empty then always return false and form willnot we submitted else will be submitted
+</body>
+</html>

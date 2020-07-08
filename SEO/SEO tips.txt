@@ -1,0 +1,8 @@
+Google doesnot show ads based on keyword of the post but shows on the basis of user browser history.
+
+
+Google keyword planner is for advertisor actcally because CPC shown there are for advertiser.If keyword difficulty is high then it is difficult for advertiser to show their ads on websites.
+
+
+
+Search any things : Then you will get result and now type &gl=us    ----- at last of url and click enter. 

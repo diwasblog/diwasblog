@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
+<body>
+    <p><span style="font-size: 24pt; color: #000000;">Logical Core vs Physical Core</span></p>
+    <p><span style="font-size: 18pt;">CPU in a CPU socket may have many physical cores.</span></p>
+    <p><span style="font-size: 18pt; color: #000000;">If a CPU processor has 2 physical core then it is called a
+            dual-core.</span></p>
+    <p><span style="font-size: 18pt; color: #000000;">If a CPU processor has 4 physical core then it is called 4
+            core.</span></p>
+    <p>&nbsp;</p>
+    <p><span style="font-size: 18pt;"><span style="color: #f1c40f;">Logical Cores</span> =<span
+                style="color: #000000;"><strong> # of Physical Core *&nbsp; Thread on each core&nbsp;
+                    &nbsp;</strong></span></span></p>
+    <p><span style="font-size: 18pt;">&nbsp;If I have a computer that has a 4-core processor, runs two threads per core,
+            then&nbsp;</span></p>
+    <p><span style="font-size: 18pt;">Logical Processor = 4 * 2 = 8 Logical Processor, </span></p>
+    <p><span style="font-size: 18pt;">This concept of behaving 1&nbsp; processor (physical processor) as 2 processor
+            (logical processor) is hyperthreading. Hyperthreading makes a Physical Processor to behave like it has two
+            Physical Processors, which are called Logical Processor. </span></p>
+    <p><img src="https://i.ibb.co/njFw9bf/logical-processor.jpg" /></p>
+    <p><span style="font-size: 18pt;">This above hardware has a processor with 4 core (obtained called as 4 physical
+            processor units) and has 2 thread in each core so altogether this processor has (4*2) =8 logical
+            processor(as shown right of the figure).</span></p>
+    <p><span style="font-size: 18pt;">Each physical core has its own circuitry and its own L1 (and usually L2) cache can
+            read and execute instructions separately (for the most part) from the other physical cores on the
+            chip.</span></p>
+    <p>&nbsp;</p>
+    <p><span style="font-size: 18pt;">A quad-(physical) core i7 processor will have eight logical cores. However, the
+            two logical cores within one physical core cannot truly operate in parallel with respect to each other. But
+            works interleaving or concurrency so that one logical processor does half of the task on one work and
+            another logical processor does half on other work and soon and continuously interleaved.</span></p>
+    <p><span style="font-size: 18pt;">N ote one thing that : Core and Core works parallelly and donot interleave, each
+            core has its own read and execute instruction. And Thread in a same core works by interleaving.</span></p>
+    <p><span style="font-size: 18pt;"><img src="https://i.ibb.co/sHXXnDt/taskmgr.jpg" /></span></p>
+    <p><span style="font-size: 24pt;">Concurrency vs Parallelism</span></p>
+    <p>Concurrency : Example : Eat and speak are two task , we cannot do both at same time but we interleaved. When
+        eating stop talking and vice versa.</p>
+    <p>Parallism : Example: Singing and Dancing are two task and can be done <span
+            style="font-size: 18pt;">parallelly/<span style="color: #f1c40f;">simultaneously</span></span>. No switching
+        over the task.</p>
+    <table style="border-collapse: collapse; width: 100%; height: 92px;" border="1">
+        <tbody>
+            <tr style="height: 46px;">
+                <td style="width: 50%; height: 46px;">Concurrency</td>
+                <td style="width: 50%; height: 46px;">Parallelism</td>
+            </tr>
+            <tr style="height: 46px;">
+                <td style="width: 50%; height: 46px;">Illusion of Parallelism where only one task is performed at a
+                    time.</td>
+                <td style="width: 50%; height: 46px;">Quality of occuring at a same time.</td>
+            </tr>
+            <tr>
+                <td style="width: 50%;">Achieved through interleaving</td>
+                <td style="width: 50%;">
+                    <p>Achieved through multi processor.</p>
+                    <p>Achieved through core of CPU. One core works parallel to other and donot interleave&nbsp;</p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 50%;">No of processing unit required : 1</td>
+                <td style="width: 50%;">No of processing unit required : mulitple&nbsp;</td>
+            </tr>
+        </tbody>
+    </table>
+    <p>&nbsp;</p>
+</body>
+
+</html>

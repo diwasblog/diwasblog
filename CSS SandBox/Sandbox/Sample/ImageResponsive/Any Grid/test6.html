@@ -1,0 +1,50 @@
+<html>
+  <head>
+    <style>
+    .outer-div
+{
+     position: relative;
+     height: 300px;
+     overflow: hidden; 
+}
+.inner-div
+{
+     height: 100%;
+     width: 100%;
+     background-size: cover;
+     background-position: center;
+     transition: all 0.7s ease;
+     background-image: url('smoke.jpg');
+}
+.inner-div:hover
+{
+     transform: scale(1.3) rotate(3deg);
+}
+.layer
+{
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100%;
+     background: rgba(0, 0, 0, 0.4);
+     padding: 20px 23px;
+     font: 14px/1.3 'Source Code Pro', monospace;
+     text-transform: uppercase;
+     letter-spacing: 1px; 
+     color: #fff;
+     border-radius: 1px 1px 0 0;
+     z-index: 100;     
+}
+
+    </style>
+  </head>
+
+  <body>
+      <div class="outer-div">
+          <div class="layer">Taper, Red, Orange, Smoke</div>
+          <div class="inner-div">
+              <img  class="ratio" src="https://image.ibb.co/dNGazm/diwaspoudel.jpg">
+          </div>
+          </div>
+  </body>
+</html>

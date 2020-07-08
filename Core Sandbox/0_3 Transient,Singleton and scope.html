@@ -1,0 +1,27 @@
+<h2><strong><span style="color: #ff0000;">Service lifetime</span></strong></h2>
+<p><span style="font-size: 12pt;">Before we can talk about how injection is done in practice, it is&nbsp;<em>critical</em>&nbsp;to understand what is&nbsp;<strong>service lifetime</strong>. When a component requests another component through dependency injection, whether the instance it receives is unique to that instance of the component or not depends on the lifetime. Setting the lifetime thus decides how many times a component is instantiated, and if a component is shared.</span></p>
+<p><span style="font-size: 14pt;">We have 3 options for this:</span></p>
+<ol>
+<li><span style="font-size: 14pt;">Singleton</span></li>
+<li><span style="font-size: 14pt;">Scoped</span></li>
+<li><span style="font-size: 14pt;">Transient</span></li>
+</ol>
+<p><span style="font-size: 14pt;"><span style="color: #ff0000;"><strong>Transient</strong>&nbsp;</span>&ndash;<span style="color: #ff00ff;"> Created every time they are requested</span></span></p>
+<p><span style="font-size: 14pt;"><span style="color: #ff0000;"><strong>Scoped</strong>&nbsp;</span>&ndash; <span style="color: #ff00ff;">Created once per scope. Most of the time, scope refers to a web request. But this can also be used for any unit of work, such as the execution of an Azure Function.</span></span></p>
+<p><span style="font-size: 14pt;"><span style="color: #ff0000;"><strong>Singleton</strong>&nbsp;</span>&ndash; <span style="color: #ff00ff;">Created only for the first request. If a particular instance is specified at registration time, this instance will be provided to all consumers of the registration type.</span></span></p>
+
+<p><span style="font-size: 14pt;">&nbsp;The first screenshot is when we first load the page.</span></p>
+
+<img src="img/di-lifetimes-demo-first.png">
+
+
+<p><span style="font-size: 14pt;">The second screenshot is of the same page after doing a refresh:</span></p>
+<img src="img/di-lifetimes-demo-second.png">
+<ul>
+<li><strong><span style="font-size: 12pt; color: #000000;">Each time it shows up, the<span style="color: #ff0000;"> Transient Guid is different.</span></span></strong></li>
+<li><strong><span style="font-size: 12pt; color: #000000;">The <span style="color: #ff0000;">Scoped Guids are the same for both calls in a single screenshot, but not in each screenshot.</span></span></strong></li>
+<li><strong><span style="font-size: 12pt; color: #000000;">The S<span style="color: #ff0000;">ingleton Guids are the same all four times they are called.</span></span></strong></li>
+<li><strong><span style="font-size: 12pt; color: #000000;">The<span style="color: #ff0000;"> Singleton Instance Guids (as expected) are always 0s.</span></span></strong></li>
+</ul>
+
+<img src="img/dependency-injection-example.gif">

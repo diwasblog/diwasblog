@@ -1,0 +1,55 @@
+
+-- DROP FUNCTION sms.get_setup_summery(integer, date, date, character varying);
+
+CREATE OR REPLACE FUNCTION sms.get_setup_summery(
+	office_id_ integer,
+	from_ date,
+	to_ date,
+	type_ character varying)
+    RETURNS TABLE(office_id integer,  account_type character varying, total int) 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+
+--SELECT * FROM sms.get_setup_summery(0, '2018-10-15','2019-07-15','')
+
+DECLARE _type	character varying(50);
+DECLARE _office character varying(50);
+DECLARE _return_query text;
+DECLARE _group character varying(100);
+
+
+BEGIN
+IF office_id_ > 0 THEN
+ _office:= ' AND office_id= '||office_id_||'';
+ELSE 
+  _office:='';
+END IF;
+
+IF type_ = 'Loan' THEN
+ _type:=' AND account_type=''Loan''';
+ELSEIF type_ = 'Deposit' THEN
+ _type:= ' AND account_type=''Deposit''';
+ELSE 
+ _type:=' ';
+END IF;
+
+_group:=' Group By office_id, account_type ORDER BY office_id';
+
+
+
+	_return_query:='SELECT office_id,account_type, COUNT(*)::int FROM sms.customer_sms
+		where start_date BETWEEN ''' || from_ ||''' AND ''' || to_  ||''''|| _type || _office || _group;
+
+	RETURN QUERY EXECUTE _return_query;
+END
+
+$BODY$;
+
+ALTER FUNCTION sms.get_setup_summery(integer, date, date, character varying)
+    OWNER TO postgres;
+
+

@@ -1,0 +1,106 @@
+<html>
+  <head>
+    <style>
+      .fade-in {
+        animation-name: fadeIn;
+        animation-duration: 1.3s;
+        animation-timing-function: cubic-bezier(0, 0, 0.4, 1);
+        animation-fill-mode: forwards;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .js-lazy-image {
+        display: block;
+        height: 650px; /* needed because otherwise all images are "rendered" in viewport on page load */
+        margin: 0 auto 50px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <img class="js-lazy-image" data-src="https://placeimg.com/200/200/tech" />
+
+    <img class="js-lazy-image" data-src="https://placeimg.com/200/200/nature" />
+
+    <img class="js-lazy-image" data-src="https://placeimg.com/200/200/people" />
+
+    <img class="js-lazy-image" data-src="https://via.placeholder.com/350x250" />
+
+    <img class="js-lazy-image" data-src="https://via.placeholder.com/350x150" />
+
+    <img class="js-lazy-image" data-src="https://via.placeholder.com/950x250" />
+
+    <img class="js-lazy-image" data-src="https://via.placeholder.com/950x250" />
+
+    <img class="js-lazy-image" data-src="https://via.placeholder.com/900x250" />
+
+    <img class="js-lazy-image" data-src="https://via.placeholder.com/990x250" />
+
+    <img
+      class="js-lazy-image"
+      data-src="https://via.placeholder.com/1290x250"
+    />
+    <img
+      class="js-lazy-image"
+      data-src="https://i1.wp.com/katiparcha.com/wp-content/uploads/2019/10/Galaxy-Fold-Price-In-Nepal.jpg?w=600&ssl=1"
+    />
+
+    <img
+      data-src="https://via.placeholder.com/95
+  30x250"
+    />
+
+    <img data-src="https://via.placeholder.com/990x250" />
+
+    <img data-src="https://via.placeholder.com/1490x250" />
+
+    <img data-src="https://via.placeholder.com/1090x250" />
+
+    <script>
+      const images = document.querySelectorAll(".js-lazy-image");
+      const config = {
+        // if the image gets within 50px in the Y axis, start the download.
+        rootMargin: "50px 0px",
+        threshold: 0.01
+      };
+
+      if (!("IntersectionObserver" in window)) {
+        // no support for intersection observer, load the images immediately
+        Array.from(images).forEach(image => loadImage(image));
+      } else {
+        // observer for the images on the page
+        var observer = new IntersectionObserver(onIntersection, config);
+        images.forEach(image => {
+          observer.observe(image);
+        });
+      }
+
+      function onIntersection(entries) {
+        // loop through the entries
+        entries.forEach(entry => {
+          // are we in viewport?
+          if (entry.intersectionRatio > 0) {
+            // stop watching
+            observer.unobserve(entry.target);
+
+            // load image
+            loadImage(entry.target);
+          }
+        });
+      }
+
+      function loadImage(e) {
+        e.src = e.dataset.src;
+        e.classList.add("fade-in");
+      }
+    </script>
+  </body>
+</html>

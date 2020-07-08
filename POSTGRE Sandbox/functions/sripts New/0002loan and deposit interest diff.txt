@@ -1,0 +1,137 @@
+-- FUNCTION: transactions.get_loan_dep_int_diff(integer, date, date, character varying)
+
+-- DROP FUNCTION transactions.get_loan_dep_int_diff(integer, date, date, character varying);
+
+CREATE OR REPLACE FUNCTION transactions.get_loan_dep_int_diff(
+	office_id_ integer,
+	from_ date,
+	to_ date,
+	deposit_product_ character varying)
+    RETURNS TABLE(office_id integer, customer_id bigint, name character varying, address character varying, loan_account character varying, loan_int money, saving_account character varying, saving_int money, interest_diff money, postac character varying) 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+
+DECLARE _product_id bigint;
+BEGIN
+
+--SELECT * FROM transactions.get_loan_dep_int_diff(1,'2018-07-17','2019-07-16','Normal Current A/C')
+
+CREATE TEMP TABLE t_(
+	office_id			integer,
+	customer_id			bigint,
+	name				character varying(1000),
+	address				character varying(1000),
+	loan_account		character varying(1000),
+	loan_int			money,
+	saving_account		character varying(1000),
+	saving_int			money,
+	interest_diff 		money,
+	postac				character varying(50),
+	post_ac_id			bigint
+)ON COMMIT DROP;
+
+	INSERT INTO t_(customer_id, Name, Address)
+	SELECT distinct(c.customer_id), c.customer_name, c.permanent_address
+	FROM core.customers_view c;
+
+	SELECT deposit_product_id INTO _product_id
+	FROM core.deposit_products where deposit_product_name=deposit_product_;
+
+	UPDATE t_ SET postac = t.account_number FROM (
+	select a.customer_id, a.account_number
+	from deposit.account_holders a
+	WHERE a.deposit_product_id=_product_id
+	--AND a.office_id=office_id_
+	AND a.status=true
+	) t WHERE t_.customer_id = t.customer_id;
+
+	UPDATE t_ SET office_id= a.office_id
+	FROM deposit.account_holders a 
+	WHERE t_.postac=a.account_number;
+
+	UPDATE t_ SET post_ac_id=a.account_number_id
+	FROM deposit.account_holders a
+	WHERE t_.postac=a.account_number;
+
+	CREATE TEMP TABLE r_(
+	customer_id				bigint,
+	loan_account			character varying(1000))ON COMMIT DROP;
+
+		INSERT INTO r_(customer_id, loan_account)
+		SELECT gr.customer_id,gr.loan_account_number
+	FROM (select a.customer_id,a.loan_account_number
+		FROM loan.loan_grant_view  a, loan.loan_receipts_view r WHERE a.loan_id = r.loan_id
+		AND r.tran_date BETWEEN from_ AND to_
+		GROUP BY a.customer_id, a.loan_account_number)gr;
+
+	UPDATE t_ SET loan_account = t.loan_account FROM (
+	select r_.customer_id,string_agg(r_.loan_account, ',') as loan_account
+	from r_
+	group by r_.customer_id
+	) t WHERE t_.customer_id = t.customer_id;
+
+		UPDATE t_ SET loan_int = t.intr 
+		FROM (
+			SELECT 
+				a.customer_id, SUM(COALESCE(r.interest,'0')) - 
+				SUM(COALESCE(idiscount, '0')) - SUM(COALESCE(pdiscount, '0')) intr, 
+				SUM(COALESCE(r.fine, '0')) + SUM(COALESCE(r.penalty, '0')) fp
+			FROM loan.loan_receipts_view r, loan.loan_grant a
+			WHERE r.loan_id = a.loan_id
+			AND r.tran_date BETWEEN from_ AND to_ 
+			GROUP BY a.customer_id
+		)t WHERE t.customer_id = t_.customer_id;-- AND COALESCE(t.fp, '0') = '0';
+
+	------deposit start
+												 
+
+	CREATE TEMP TABLE d_(
+	customer_id				bigint,
+	deposit_account				character varying(1000))ON COMMIT DROP;
+
+	
+	
+	INSERT INTO d_(customer_id, deposit_account)
+		SELECT gr.customer_id, gr.account_number
+	FROM (select a.customer_id,a.account_number
+		FROM deposit.account_holders  a, deposit.interest_transfer r WHERE a.account_number_id = r.account_number_id
+		AND r.value_date BETWEEN from_ AND to_
+		GROUP BY a.customer_id, a.account_number_id)gr;
+
+	UPDATE t_ SET saving_account = t.deposit_account FROM (
+	select d_.customer_id,string_agg(d_.deposit_account, ',') as deposit_account
+	from d_
+	group by d_.customer_id
+	) t WHERE t_.customer_id = t.customer_id;
+
+	
+
+		UPDATE t_ SET saving_int = t.intr 
+		FROM (
+			SELECT 
+				a.customer_id, SUM(COALESCE(r.interest,'0')) - 	SUM(COALESCE(tax, '0')) intr
+			FROM deposit.interest_transfer_view r, deposit.account_holders a
+			WHERE r.account_number_id = a.account_number_id
+			AND r.value_date BETWEEN from_ AND to_ GROUP BY a.customer_id
+		)t WHERE t.customer_id = t_.customer_id;
+	
+
+	 UPDATE t_ SET saving_int='0' WHERE COALESCE(t_.saving_int, '0') < '0';
+	
+	UPDATE t_ SET interest_diff = COALESCE(t_.loan_int,'0') - COALESCE(t_.saving_int,'0');
+													 
+	DELETE FROM t_ WHERE t_.loan_account IS NULL AND t_.saving_account IS NULL;												 
+												 
+
+		RETURN QUERY(SELECT 0, t_.customer_id, t_.Name,t_.Address,t_.loan_account, t_.loan_int, t_.saving_account,t_.saving_int, t_.interest_diff, t_.postac   FROM t_ ORDER BY t_.customer_id);
+	
+END
+
+$BODY$;
+
+ALTER FUNCTION transactions.get_loan_dep_int_diff(integer, date, date, character varying)
+    OWNER TO postgres;

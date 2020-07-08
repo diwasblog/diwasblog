@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+
+  <body>
+
+
+
+==================================================================================================
+
+<h2>Simple While Loop</h2>
+<pre class="limit-15">
+  <code class='language-sql'>
+      DECLARE @Counter INT
+
+      SET @Counter=1
+      
+      WHILE @Counter<=10
+        BEGIN
+          PRINT	@Counter
+          SET @Counter =@Counter +1
+        END
+  </code>
+  </pre>
+
+  Output
+  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+  10
+  <br>
+=================================================================================================
+
+<div class="row">
+  <div class="col-lg-6">
+    <pre class="limit-15">
+  <code class='language-sql'>
+      DECLARE @Counter INT
+
+      SET @Counter=1
+      
+      WHILE @Counter<=10
+        BEGIN
+          PRINT @Counter
+          SET @Counter =@Counter +1
+        END
+  </code>
+  </pre>
+
+  <br>
+  1 2  3 4 5 6 7 8 9 10
+  </div>  
+    <div class="col-lg-6">
+    <pre>
+      <code class="language-sql">
+        DECLARE @intFlag INT
+    SET @intFlag = 1
+    WHILE (@intFlag <=5)
+    BEGIN
+    PRINT @intFlag
+    SET @intFlag = @intFlag + 1
+    CONTINUE;
+    IF @intFlag = 4 -- This will never executed
+    BREAK;
+    END
+    GO
+      </code>
+    </pre>
+
+    <h2>Output</h2>
+    1 2 3 4 5 
+  </div> 
+ </div> 
+
+
+
+
+
+=====================================================
+<pre class="limit-15">
+    <code class='language-sql'>
+DECLARE	@Counter INT
+DECLARE @MaxOscars INT
+DECLARE @NumFilms INT
+
+SET @MaxOscars=(Select MAX(OscarWins) from Film)
+SET @Counter=0
+
+WHILE @Counter <=@MaxOscars
+	BEGIN
+		SET @NumFilms=(Select Count(*) from Film where OscarWins=@Counter)
+
+		If @NumFilms=0 BREAK;
+		
+		PRINT CAST(@NumFilms AS VARCHAR(3)) +' films have won' +
+			 CAST(@Counter AS VARCHAR(2))+'Oscars'
+			 
+		SET @Counter=@Counter+1
+	END
+    </code>
+    </pre>
+
+Output: 
+<br>
+946 films have won0Oscars
+109 films have won1Oscars
+50 films have won2Oscars
+25 films have won3Oscars
+24 films have won4Oscars
+19 films have won5Oscars
+5 films have won6Oscars
+10 films have won7Oscars
+7 films have won8Oscars
+1 films have won9Oscars
+1 films have won10Oscars
+3 films have won11Oscars
+
+===============================================================
+    <script src="js/prism.js"></script>
+    <script type="text/javascript">
+      Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+          'remove-trailing': true,
+          'remove-indent': true,
+          'left-trim': true,
+          'right-trim': true,
+          // 'break-lines': 10,
+          // 'indent': 2,
+          // 'remove-initial-line-feed': false,
+          // 'tabs-to-spaces': 4,
+          // 'spaces-to-tabs': 4
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,39 @@
+<h3><span style="color: #ff0000;"><strong>Cross-Origin Resource Sharing (CORS)</strong></span></h3>
+<p><span style="color: #ff0000;"><strong>First lets understand&nbsp;</strong></span></p>
+<p><span style="color: #ff0000;"><strong>What is same origin policy ?</strong></span></p>
+<p><span style="font-size: 12pt;"><span style="color: #333333;">Browser allow a web page to make AJAX requests only with in the same domain. Browser security </span><span style="color: #333333;">prevents a web page from making AJAX requests to another domain. This is called <span style="color: #ff0000;"><strong>S</strong></span></span><span style="color: #ff0000;"><strong>ame Origin Policy.</strong></span></span></p>
+<p><span style="color: #ff0000;"><strong>Urls have the same origin</strong></span></p>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<td style="width: 100%;">http://localhost:1234/api/employees</td>
+</tr>
+<tr>
+<td style="width: 100%;">http://localhost:1234/api/employees/id</td>
+</tr>
+</tbody>
+</table>
+<p><span style="color: #ff0000;"><strong>Different origin : Because they have different port numbers</strong></span></p>
+<table style="border-collapse: collapse; width: 100%; height: 98px;" border="1">
+<tbody>
+<tr style="height: 49px;">
+<td style="width: 100%; height: 49px;">http://localhost:<span style="color: #ff0000;"><strong>1234</strong></span>/api/employees</td>
+</tr>
+<tr style="height: 49px;">
+<td style="width: 100%; height: 49px;">http://localhost:<span style="color: #ff0000;"><strong>4528</strong></span>/api/employees.html</td>
+</tr>
+</tbody>
+</table>
+<p><span style="color: #ff0000;"><strong>Different origin : Because they have different domains (.com vs .net)&nbsp;</strong></span></p>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<td style="width: 100%;">http://<span style="color: #ff0000;"><strong>ourtechroom</strong></span>.com/api/employees</td>
+</tr>
+<tr>
+<td style="width: 100%;"><a href="http://everestparked">http://<span style="color: #ff0000;"><strong>everestparked</strong></span>.com/api/employees</a></td>
+</tr>
+</tbody>
+</table>
+<p><span style="font-size: 12pt;">By enabling CORS we are able to access resource from mulitple resources.</span></p>
+<p><span style="font-size: 12pt;">Suppose you have created separate project like&nbsp; 1) for web api 2) for SPA then we have two domain so to share data between them we must enable CORS.</span></p>

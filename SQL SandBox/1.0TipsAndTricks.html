@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/bootstrap-grid.css">
+  <link rel="stylesheet" href="css/bootstrap-reboot.css">
+  <link rel="stylesheet" href="css/dracula.css">
+  <link rel="stylesheet" href="css/dracula-prism.css">
+  <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+
+  <h2>Check your sql version</h2>
+  <pre>
+       <code class='langauge-html'>
+         //Method1
+      SELECT @@version
+
+      //Method2
+     Another option is to right click on the SQL Server instance name in SSMS and select Properties
+     
+
+     Output
+     SQL Server 2000
+     Microsoft SQL Server 2000 - 8.00.760 (Intel X86) 
+     Dec 17 2002 14:22:05 
+     Copyright (c) 1988-2003 Microsoft Corporation
+     Developer Edition on Windows NT 5.1 (Build 2600: Service Pack 2)
+
+       </code>
+     </pre>
+
+
+  <h2>To show intellisense in SQL Server</h2>
+  <pre>
+  <code class="language-html">
+    Edit>>Intellisense>>Refresh Load Cache  or Ctrl+Shift+R
+  </code>  
+</pre>
+
+  ======================================================================
+
+  <h2>Save (Not Permitted) dialog box warns you that saving changes is not permitted because the changes you have made
+    require the listed tables to be dropped and re-created.</h2>
+  <pre>
+  <code class="language-html">
+    Tools >> Options >> Designers and uncheck “Prevent Saving changes that require table re-creation”
+  </code>  
+</pre>
+
+  ===========================================================================
+
+  <h2 class="entry-title"><span style="color: #ff00ff;"><strong><a style="color: #ff00ff;"
+          href="http://sqlhints.com/2013/12/28/why-the-prefix-n-is-used-for-literal-strings-in-sql-server/"
+          rel="bookmark">Prefix N i in Sql Server</a></strong></span></h2>
+  <p><span style="color: #000000; font-size: 12pt;"><strong>While storing Unicode (i.e. Japanese, Korean, Chinese,Nepal
+        etc) Characters in NChar, NVarchar or NText columns or variables we need to prefix the literal strings by letter
+        N.</strong></span></p>
+
+  <div class="row">
+    <div class="col-lg-6">
+      Without 'N'
+      <pre>
+      <code class="language-sql">
+        SELECT 'नेपाल ' AS 'Name'
+      </code>
+    </pre>
+
+      Output:
+      <table style="border-collapse: collapse; width: 100%;" border="1">
+        <tbody>
+          <tr>
+            <td style="width: 100%;">Name</td>
+          </tr>
+          <tr>
+            <td style="width: 100%;">?????</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-lg-6">
+      With 'N'
+      <pre>
+      <code class="language-sql">
+        SELECT N'नेपाल ' AS 'Name'
+      </code>
+    </pre>
+
+      Output:
+      <table style="border-collapse: collapse; width: 100%;" border="1">
+        <tbody>
+          <tr>
+            <td style="width: 100%;">Name</td>
+          </tr>
+          <tr>
+            <td style="width: 100%;">नेपाल</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  =====================================================================
+  <h2>Like </h2>
+  <pre>
+  <code class="language-sql">
+    SELECT * FROM [Schema].[Table] WHERE [Column] LIKE '%' + @Parameter + '%'
+  </code>
+</pre>
+
+
+  ======================================================================
+  <br>
+  <h2>Concat</h2>
+  <pre>
+  <code class="language-sql">
+    SELECT CONCAT(c.FIRSTNAME, ',', c.LASTNAME) AS FIRSTNAME FROM   Customer c;
+    Diwas,Poudel
+  </code>
+</pre>
+
+  <pre>
+  <code class="language-sql">
+    SELECT CONCAT(c.FIRSTNAME, '(', c.LASTNAME,')') AS FIRSTNAME FROM   Customer c;
+    //Diwas(Poudel)
+  </code>
+</pre>
+
+  ======================================================================
+  <h2>Upper case SQL keyword</h2>
+
+  <pre>
+  <code class="language-sql">
+      select the word and hit CTRL+SHIFT+U
+  </code>
+</pre>
+
+  ========================================================================================================================
+  <p><span style="color: #ff00ff;"><strong><span style="font-size: 18pt;">Improves Store Procedure
+          Performance</span></strong></span></p>
+  <p><span style="font-size: 14pt; color: #ff0000;">1)<strong>Include SET NOCOUNT ON statement:</strong></span><span
+      style="font-size: 12pt;">Stops the message that shows the count of the number of rows affected by a Transact-SQL
+      statement or stored procedure from being returned as part of the result set.</span></p>
+
+  TRY TO ON
+  <div class="row">
+    <div class="col">
+      <pre>
+          <code class="language-sql">
+              
+          </code>
+        </pre>
+    </div>
+
+    <div class="col">
+      <pre>
+          <code class="language-sql">
+              //look at msg of sql Server you will get:
+              Command Completed Successfully
+          </code>
+        </pre>
+
+    </div>
+  </div>
+
+
+  TRY TO OFF
+
+  <div class="row">
+    <div class="col">
+      <pre>
+            <code class="language-sql">
+                SET NOCOUNT OFF
+                SELECT * FROM TestTable
+            </code>
+          </pre>
+    </div>
+
+    <div class="col">
+      <pre>
+            <code class="language-html">
+                //look at msg of sql Server you will get:
+                3 row(s) affected
+            </code>
+          </pre>
+
+    </div>
+  </div>
+
+  Note :SET NOCOUNT ON only saves 9-bytes per query I used to think that 123 row(s) affected was returned from server in
+  plain text in a separate network packet but that's not the case. It's in fact a small structure called DONE_IN_PROC
+  embedded in the response. It's not a separate network packet so no roundtrips are wasted.
+
+  <h2>Practical Use: Use it before DML query Started</h2>
+  <pre>
+    <code class="language-sql">
+        CREATE PROC dbo.ProcName
+        AS
+        BEGIN
+        SET NOCOUNT ON;
+        --Procedure code here
+        SELECT column1 FROM dbo.TblTable1
+        -- Reset SET NOCOUNT to OFF
+        SET NOCOUNT OFF;
+        GO
+    </code>
+  </pre>
+
+  <p><span style="font-size: 12pt;">Now, is&nbsp;<code>set nocount off</code>&nbsp;necessary? No, as any new commands
+      executed will be in a different scope, and by default&nbsp;<code>set nocount off</code>&nbsp;is always in effect.
+      But as stated above in comments, it's considered a good practice, just to explicitly indicate that this setting
+      will return to normal when the proc is finished executing.</span></p>
+
+  <ul>
+    <li><span style="font-size: 12pt;">If your stored procedure only performs a single quick operation with no returned
+        results, setting NOCOUNT ON will yield around a <strong><span style="color: #ff0000;">3% performance
+            boost</span>.</strong>&nbsp;&nbsp;This would be consistent with a typical insert or update procedure.</span>
+    </li>
+    <li><span style="font-size: 12pt;">If your stored procedure uses a cursor to perform a lot of very quick operations
+        with no returned results, having NOCOUNT OFF can take roughly 10 times as long as having it ON.&nbsp;This is the
+        worst-case scenario.</span></li>
+    <li><span style="font-size: 12pt;">if your devs ever use the "<span style="color: #ff0000;">RecordsAffected</span>"
+        being returned by <strong><span style="color: #ff0000;">ADO.NET'</span></strong>s&nbsp;<span
+          style="color: #ff0000;"><strong><code>ExecuteNonQuery&nbsp;</code></strong></span>method call, you're in
+        trouble if everyone uses&nbsp;<span
+          style="color: #ff0000;"><strong><code>SET NOCOUNT ON</code>&nbsp;</strong></span>since in this case,
+        <strong>ExecuteNonQuery will always return 0.</strong></span></li>
+    <li><span style="font-size: 12pt;"><strong><span style="color: #ff0000;"><code>SET NOCOUNT ON.</code></span>This one
+          line of code, put at the top of a stored procedure turns off the messages that SQL Server sends back to the
+          client after each T-SQL statement is executed.</strong></span></li>
+  </ul>
+
+
+  <p><span style="font-size: 14pt;"><span style="color: #ff0000;"><strong>2) Use schema name with object
+          name:</strong></span>&nbsp;</span><span style="font-size: 12pt;">The <span style="color: #ff0000;">object
+        name</span> is qualified if used with<span style="color: #ff0000;"> <strong>schema name</strong></span>. <span
+        style="color: #ff0000;">Schema nam</span>e should be used with the stored procedure name and with all objects
+      referenced inside the stored procedure. T<strong>his help in directly finding the complied plan instead of
+        searching the objects in other possible schema before finally deciding to use a cached plan, if
+        available.</strong> This process of searching and deciding a schema for an object leads to COMPILE lock on
+      stored procedure and decreases the stored procedure&rsquo;s performance. Therefore, always refer the objects with
+      qualified name in the stored procedure like:</span></p>
+  <p><span style="font-size: 12pt;">Here :schema is dbo</span></p>
+
+  <pre>
+  <code class="language-sql">
+SELECT * FROM dbo.MyTable -- Preferred method
+-- Instead of
+SELECT * FROM MyTable -- Avoid this method
+--And finally call the stored procedure with qualified name like:
+EXEC dbo.MyProc -- Preferred method
+--Instead of
+EXEC MyProc -- Avoid this method
+  </code>
+</pre>
+
+  <h1><span style="color: #ff00ff;"><strong>Why you should always use schema name in queries ?</strong></span></h1>
+  <div class="article__content">
+    <p>There is a very important reason to always use the schema name in the queries. For example, the following sintax
+      can be a problem:</p>
+    <p>&nbsp;</p>
+    <div id="crayon-5c0bf9deb437a780711718"
+      class="crayon-syntax crayon-theme-vs2012-simpletalk crayon-font-courier-new crayon-os-pc print-yes notranslate"
+      data-settings=" minimize scroll-always">
+      <div class="crayon-plain-wrap">&nbsp;</div>
+      <div class="crayon-main">
+        <table class="crayon-table">
+          <tbody>
+            <tr class="crayon-row">
+              <td class="crayon-nums " data-settings="hide">
+                <div class="crayon-nums-content">
+                  <div class="crayon-num" data-line="crayon-5c0bf9deb437a780711718-1">&nbsp;</div>
+                </div>
+              </td>
+              <td class="crayon-code">
+                <div class="crayon-pre">
+                  <div id="crayon-5c0bf9deb437a780711718-1" class="crayon-line"><span class="crayon-k">select</span>
+                    <span class="crayon-o">*</span> <span class="crayon-k">from</span> <span
+                      class="crayon-i">customers</span></div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p>&nbsp;</p>
+    <p>The solution is to use the schema name in the query:</p>
+    <div id="crayon-5c0bf9deb4380343700991"
+      class="crayon-syntax crayon-theme-vs2012-simpletalk crayon-font-courier-new crayon-os-pc print-yes notranslate"
+      data-settings=" minimize scroll-always">
+      <div class="crayon-main">
+        <table class="crayon-table">
+          <tbody>
+            <tr class="crayon-row">
+              <td class="crayon-nums " data-settings="hide">
+                <div class="crayon-nums-content">
+                  <div class="crayon-num" data-line="crayon-5c0bf9deb4380343700991-1">&nbsp;</div>
+                </div>
+              </td>
+              <td class="crayon-code">
+                <div class="crayon-pre">
+                  <div id="crayon-5c0bf9deb4380343700991-1" class="crayon-line"><span class="crayon-k">select</span>
+                    <span class="crayon-o">*</span> <span class="crayon-k">from</span> <span
+                      class="crayon-i">dbo</span><span class="crayon-sy">.</span><span class="crayon-i">customers</span>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p><span style="font-size: 12pt;"><span style="background-color: #ffffff; color: #ff00ff;"><strong>The reason is
+            simple:</strong> </span>SQL Server does cache the query plan for ad-hoc queries, but if the schema name
+        isn&rsquo;t present in the query the cache can&rsquo;t be re-used for other users, only for the same
+        user.</span></p>
+    <p><span style="font-size: 12pt;">This happens because the same database can <span
+          style="background-color: #ffffff;">have</span> tables with the same name and different schemas. For example,
+        we could have a table Customers in schema Sales and another table Customers in schema Marketing.</span></p>
+    <p><span style="font-size: 12pt;">If jonh uses Sales as default schema and Mark uses Marketing as default schema,
+        the same query has different meaning for each use. Because this possibility SQL Server will not re-use plan
+        caches for different users unless the schema is specified in the query.</span></p>
+    <p><span style="font-size: 12pt;">Even if this situation couldn&rsquo;t happen in your database, even if you
+        don&rsquo;t have tables with the same name, SQL Server can&rsquo;t take this risk.</span></p>
+  </div>
+
+  ====================================================================================================
+  <br>
+  <p><span style="font-size: 14pt;"><span style="color: #ff0000;"><strong>3)Do not use the prefix &ldquo;sp_&rdquo; in
+          the stored procedure name</strong>:</span> If a stored procedure name begins with &ldquo;SP_,&rdquo; then SQL
+      server first searches in the master database and then in the current session database. Searching in the master
+      database causes extra overhead and even a wrong result if another stored procedure with the same name is found in
+      master database.</span></p>
+
+  ==========================================================================================================================
+  <p><span style="font-size: 14pt;"><strong><span style="color: #ff0000;">4)Use IF EXISTS (SELECT 1) instead of (SELECT
+          *):</span></strong>&nbsp;To check the existence of a record in another table, we uses the IF EXISTS clause.
+      The IF EXISTS clause returns True if any value is returned from an internal statement, either a single value
+      &ldquo;1&rdquo; or all columns of a record or complete recordset. The output of the internal statement is not
+      used. Hence, to minimize the data for processing and network transferring, we should use &ldquo;1&rdquo; in the
+      SELECT clause of an internal statement, as shown below:</span></p>
+
+  <pre>
+  <code class="language-sql">
+    IF EXISTS (SELECT 1 FROM sysobjects
+    WHERE name = 'MyTable' AND type = 'U')
+  </code>
+</pre>
+  ======================================================================================================================================
+  <br>
+  <p><span style="font-size: 14pt;"><span style="color: #ff0000;"><strong>5)Try to avoid using SQL Server cursors
+          whenever possible:</strong></span>&nbsp;Cursor uses a lot of resources for overhead processing to maintain
+      current record position in a recordset and this decreases the performance. If we need to process records
+      one-by-one in a loop, then we should use the WHILE clause. Wherever possible, we should replace the cursor-based
+      approach with SET-based approach. Because the SQL Server engine is designed and optimized to perform SET-based
+      operation very fast. Again, please note cursor is also a kind of WHILE Loop.</span></p>
+
+  ===============================================================================================================
+  <h2>Username and Password while acccessing SQL Server</h2>
+  <p><span style="color: #ff0000;"><strong><span style="font-size: 18pt;">Steps</span></strong></span></p>
+  <ol>
+    <li><strong>Security</strong>(Left Side)&gt; <strong>login</strong> &gt;<strong>New login</strong></li>
+    <li>Check on <strong>SQL Authentication</strong> and provide&nbsp;</li>
+  </ol>
+  <p><strong>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; loginname</strong> :OurTechRoom</p>
+  <p><strong>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Password</strong>:Diwas@123</p>
+  <p>3. Then we have to change<strong> authentication mode</strong> from windows to sql authentication as below</p>
+  <p>&nbsp; &nbsp; &nbsp; &nbsp;Right click on .\SQLExpress&gt;&gt; properties&gt;&gt;Security&gt;&gt; Then tick on SQL
+    and Windows Authentication</p>
+  <p>4. Then restart sql server from services</p>
+  ==========================================================================================================
+  <h2>What is FileZilla</h2>
+
+  <p>Generally, <strong>FileZilla</strong> is one of the most popular<strong> FTP clients.</strong></p>
+  <p><span style="text-decoration: underline;"><span style="font-size: 14pt; color: #ff0000;"><strong>Purpose of
+          FileZilla</strong></span></span></p>
+  <p><strong>1)Upload file to your web hosting server.</strong></p>
+  <p><strong>2)Download file from our web hosting server</strong></p>
+  <p><strong>3)We &nbsp;can also edit the files and save changes without the need of manually downloading and
+      uploading.</strong></p>
+  <p><span style="font-size: 18pt;"><strong>&nbsp;<span style="text-decoration: underline;"><span
+            style="color: #ff0000; text-decoration: underline;">FileZilla Client and FileZilla
+            Server</span></span></strong></span></p>
+  <p><span style="font-size: 12pt;">As we already know <strong>filezilla client</strong> but we can also have
+      <strong>FileZilla Server</strong>. If we have main computer in LAN and other local computer in LAN then we can
+      install FileZilla Server there and FileZilla Client in local computer and we can upload and download file from/to
+      FileZilla Server.</span></p>
+  <p>&nbsp;</p>
+  ==================================================================================================================
+  <h2>Htdocs (HyperTextDocuments)</h2>
+  <p><span style="font-size: 18pt; color: #ff00ff;">htdocs(or www)</span></p>
+  <ol>
+    <li class="ui_qtext_para"><span style="font-size: 12pt;">htdocs (or www) is the directory that the Apache web server
+        looks for files to serve on your domain by default.</span></li>
+  </ol>
+  <p><span style="font-size: 12pt;">&nbsp; &nbsp; &nbsp;<span style="font-family: 'comic sans ms', sans-serif;"> If file
+        kept inside htdocs then web server will automatically looks for files to serve on your ourtechroom.com domain by
+        default.</span></span></p>
+  <p><span style="font-size: 12pt;">2.This location can be changed to whatever value you want. All you have to do is
+      point the Document Root to a different folder in your .conf file.</span></p>
+  ================================================================================================================
+  <h2>Useful Sites for web developer</h2>
+  <a href="https://gist.github.com/bradtraversy/61171a9b81586f5bc4c0ca1e2beb59ab/revisions">popular brad site</a>
+  ===============================================================================================================
+  <h2> Is your database in Windows or mixed mode authentication? To login using a user id and password the server needs
+    to be in mixed mode authentication.
+  </h2>
+  <pre>
+  <code class="language-sql">
+
+    To check this, in Management Studio:
+    
+    1. Right click the server name in the Object Explorer tree on the left and select Properties.
+     2. Click Security.
+     3. Under Server authentication select SQl Server and Windows Authentication Mode.
+     4. Click OK
+     5. You need to restart SQL Server, so right click the server name again and select Restart.
+    
+  </code>
+</pre>
+
+  Then restart sql server from services.msc
+
+  ===================================================================================
+  <script src="js/prism.js"></script>
+  <script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+      {
+        'remove-trailing': true,
+        'remove-indent': true,
+        'left-trim': true,
+        'right-trim': true,
+        // 'break-lines': 10,
+        // 'indent': 2,
+        // 'remove-initial-line-feed': false,
+        // 'tabs-to-spaces': 4,
+        // 'spaces-to-tabs': 4
+      });
+  </script>
+</body>
+
+</html>

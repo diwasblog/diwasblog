@@ -1,0 +1,135 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+
+  <div class='row'>
+    <div class='col-lg-6'>
+      <xmp class='prettyprint'>
+          <div class="container">
+              <div class="row">
+                <div class="col-sm-4 my-fixed">
+                  Fixed 1
+                </div>
+                <div class="col-sm-4 my-fixed">
+                 Fixed 2
+                </div>
+                <div class="col-sm-4 my-fixed">
+                  Fixed 3
+                </div>
+              </div>
+            </div>
+      </xmp>
+    </div>
+
+    <div class='col-lg-6'>
+      <xmp class='prettyprint'>
+          <div class="container-fluid">
+              <div class="row">
+                <div class="col-sm-4 my-fluid2">
+                  Fluid 1
+                </div>
+                <div class="col-sm-4 my-fluid2">
+                 Fluid 2
+                </div>
+                <div class="col-sm-4 my-fluid2">
+                  Fluid 3
+                </div>
+              </div>
+            </div>
+      </xmp>
+      </div>
+
+      <br>
+      <div class="row">
+        <div class="col-lg-12">
+            <p data-height="265" data-theme-id="dark" data-slug-hash="GBVbeX" data-default-tab="html,result" data-user="DiwasPoudel" data-pen-title="different between container ,container-fuild and .container-fuild" class="codepen">See the Pen <a href="https://codepen.io/DiwasPoudel/pen/GBVbeX/">different between container ,container-fuild and .container-fuild</a> by Diwas Poudel (<a href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+            <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+        </div>
+      </div>
+
+
+
+
+<br>
+<p><span style="color: #ff00ff; font-size: 18pt;"><strong>Note</strong></span></p>
+<p><span style="font-size: 14pt;">Container has <span style="color: #ff0000;">15 px padding</span> on both side.</span></p>
+<p><span style="font-size: 14pt;">Row has <span style="color: #ff0000;">negative margin of 15px</span> ie. equal to padding of container.</span></p>
+<div>
+<div><span style="font-size: 14pt;">Column has<span style="color: #ff0000;"> padding of 15px.</span></span></div>
+</div>
+
+<img src="../img/container.jpg">
+<img src="../img/row inside container.png">
+<img src="../img/containerinsiderowinsidecol.png">
+
+
+More.... 
+
+We can nest column,we can nest row but never nest container.
+
+Extra Small: (Only Mobile Resolution)
+Small: 768px (Tablets)
+Medium: 992px (Laptops)
+Large: 1200px (Laptops/Desktops)
+
+<p><span style="font-size: 14pt;">The&nbsp;<strong>.container class</strong>&nbsp;is the fixed width container. That does not mean it is not responsive. It is responsive; however, it is fixed based on screen size. The screen sizes include:</span></p>
+<ul>
+<li><span style="font-size: 14pt;">xs for extra small devices (<span style="color: #ff0000;">used for less than 768 e.g smart phones, mobile etc</span>.)</span></li>
+<li><span style="font-size: 14pt;">sm for small screens (<span style="color: #ff0000;">From 768 pixels and up e.g. tablets</span>)</span></li>
+<li><span style="font-size: 14pt;">md for the&nbsp;medium screen (<span style="color: #ff0000;">&gt;= 992 pixels. Desktops/Laptops</span>)</span></li>
+<li><span style="font-size: 14pt;">lg for large screens <span style="color: #ff0000;">(&gt;= 1200. Pixels e.g. large desktops</span>)</span></li>
+</ul>
+<p><span style="font-family: 'comic sans ms', sans-serif; font-size: 14pt;">If you use the <span style="color: #ff0000;">container class</span> and check the webpage in a browser, it will adjust according to the screen and browser size. For example, if your current browser width is more than 1200, it will adjust to the 1170px wide. If you resize the browser to small size, it will remain same until it reaches 992px. At this point, the container class will adjust to 970px wide.</span></p>
+<p><span style="font-family: 'comic sans ms', sans-serif; font-size: 14pt;">On the other hand, the <span style="color: #ff0000;">container-fluid class</span>&nbsp;will take the full width of the&nbsp;viewport. If you use the container-fluid and resize the browser, you may notice the content inside it will adjust with every pixel to take the full available width.</span></p>
+
+==============================================================================
+<h2>Example </h2>
+
+<div style="max-width:1200px;background-color:gray;margin:0 auto">
+    <div class="container">
+      Fixed Container
+      <ul>
+        
+  <li>Has a fixed width,which changes at certain breakpoint<li>
+  <li>Has a built-in padding of 15px all the way around</li>
+      </ul>
+    </div>
+  </div>
+  
+  <div style="background:red;margin:0 auto">
+    <div class="container-fluid">
+      Fluid Container
+      <ul>
+        
+  <li>Has a fluid width, which stretches to 100% of its parent element all the time.</li>
+  <li>Donot have 15px padding</li>
+  
+      </ul>
+    </div>
+  </div>
+==============================================================================================
+<br>
+Note that :
+Div without class row or column also  take 15px padding or margin
+<div style="background-color:red;width:100%;">
+  Simply div donot take any padding or  margin
+  </div>
+
+</body>
+</html>

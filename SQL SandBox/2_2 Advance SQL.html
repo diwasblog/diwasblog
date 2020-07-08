@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+
+  <body>
+
+
+<h2>Insert </h2>h2>
+    <pre>
+    <code class='language-sql'>
+
+ CREATE PROCEDURE [dbo].[usp_Person_InsertCaste]
+(
+  @Name nvarchar(50),
+  @AdminName nvarchar(50)
+)
+As
+Begin
+If Exists (Select pc.Name from [Person.Caste] pc where pc.Name = @Name)
+  THROW 5000001, 'The Name already exists', 501;
+DECLARE @Date datetime = DATEADD(MINUTE, 345, GETUTCDATE());
+If NOT Exists (Select pc.Name from [Person.Caste] pc where pc.Name = @Name)
+Begin 
+Insert into [dbo].[Person.Caste]
+(
+  Name,
+  AdminName,
+  ModifiedDate
+)
+values (
+  @Name,
+  @AdminName,
+  @Date
+)
+End
+End
+
+   </code>
+   </pre> 
+
+
+<h2>Select </h2>h2>
+    <pre>
+    <code class='language-sql'>
+
+
+CREATE Procedure [dbo].[usp_Person_SelectCaste]
+AS Begin
+Select * from [Person.Caste] 
+End
+
+   </code>
+   </pre> 
+
+
+<h2>Update </h2>h2>
+    <pre>
+    <code class='language-sql'>
+
+CREATE Procedure [dbo].[usp_Person_UpdateCaste]
+@Id int,
+@Name nvarchar(50),
+@AdminName nvarchar(50)
+AS Begin
+If Exists (Select pc.Name from [Person.Caste] pc where pc.Name = @Name And pc.Id != @Id)
+  THROW 5000001, 'The Name already exists', 501;
+If Not Exists (Select pc.Name from [Person.Caste] pc where pc.Name = @Name)
+DECLARE @Date datetime = DATEADD(MINUTE, 345, GETUTCDATE());
+Begin 
+UPDATE       [Person.Caste]
+SET                Name = @Name, AdminName = @AdminName, ModifiedDate = @Date
+WHERE        (Id = @Id)
+End
+End
+
+   </code>
+   </pre> 
+
+
+<h2>Delete </h2>h2>
+    <pre>
+    <code class='language-sql'>
+
+
+CREATE OR ALTER Procedure [dbo].[usp_Person_DeleteCaste]
+(
+@Id int
+)
+As Begin
+IF EXISTS(SELECT * FROM dbo.Student s WHERE s.CasteId = @Id)
+    THROW 5000001, 'Caste is associated with student, Remove the association first', 501;
+        Delete From [dbo].[Person.Caste] where Id = @Id
+End
+
+   </code>
+   </pre> 
+
+
+
+
+  <script src="js/prism.js"></script>
+    <script type="text/javascript">
+      Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+          'remove-trailing': true,
+          'remove-indent': true,
+          'left-trim': true,
+          'right-trim': true,
+          // 'break-lines': 10,
+          // 'indent': 2,
+          // 'remove-initial-line-feed': false,
+          // 'tabs-to-spaces': 4,
+          // 'spaces-to-tabs': 4
+        });
+    </script>
+  </body>
+</html>

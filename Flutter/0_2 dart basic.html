@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../SQL SandBox/css/bootstrap.css">
+    <link rel="stylesheet" href="../SQL SandBox/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../SQL SandBox/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../SQL SandBox/css/dracula.css">
+    <link rel="stylesheet" href="../SQL SandBox/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+    <pre>
+        <code class="language-dart">
+            void main() {
+                print("Hello, World");
+                
+                int age = 30;
+                print(age);
+                
+                String name = "diwas";
+                print(name);
+                
+                bool isNight = false;
+                print(isNight);
+              }
+              
+        </code>
+    </pre>
+
+    <h2>Dart Function</h2>
+    <pre>
+    <code class="language-dart">
+        void main() {
+            int result = add(10,50);
+            print(result);      //60
+          }
+          
+          int add(int a, int b){
+            return a+ b;
+          }
+          
+    </code>
+</pre>
+
+    <h2>Dart List</h2>
+    <pre>
+        <code class="language-dart">
+        List names = ["Diwas","Yogesh","Dipesh"];
+        print(names);            //  [Diwas,Yogesh,Dipesh];
+        
+        names.add("Hari");       // [Diwas,Yogesh,Dipesh,Hari];
+        print(names);
+
+        names.add(30);
+        print(names);           // [Diwas,Yogesh,Dipesh,Hari,30];
+        Here, we can see List is accepting any types of variables.
+        </code>
+    </pre>
+
+    <h2>Dart List Accepting only string type</h2>
+    <pre>
+        <code class="language-dart">
+            List<String> names = ["Diwa","Yogesh","Dipesh"];
+            print(names);
+            
+            names.add("Hari");
+            print(names);
+            //This accept only String and gives error if passed wrong datatype
+        </code>
+    </pre>
+
+    <h2>Class in Dart</h2>
+    <pre>
+        <code class="language-dart">
+            void main() {
+ 
+                User userOne = User();
+                  print(userOne.username);   // mario
+                  userOne.login();           // User is loggedIn
+                }
+                
+                class User{
+                  
+                  String username = "mario";
+                  
+                  int age = 25;
+                  
+                  void login(){
+                    print("User is loggedIn");
+                  }
+                  
+                }
+                
+                
+        </code>
+    </pre>
+</body>
+
+</html>

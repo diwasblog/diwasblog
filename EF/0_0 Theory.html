@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+
+  <body>
+
+
+==================================================================================================
+<h2>Entity Framework Core only Support Eager Loading only</h2>
+
+<h2><span style="font-size: 12pt; font-family: 'book antiqua', palatino, serif;"><span style="color: #ff00ff; font-size: 14pt;"><strong>Eager Loading</strong></span><br />Eager Loading helps you to load all your needed entities at once; i.e., all your child entities will be loaded at single database call. This can be achieved, using the Include method, which returs the related entities as a part of the query and a large amount of data is loaded at once.</span></h2>
+
+<pre>
+  <code class="language-csharp">
+      User usr = dbContext.Users.Include(a => a.UserDetails).FirstOrDefault(a => a.UserId == userId); 
+  </code>
+</pre>
+
+If you have multiple level of child entities, then you can load, using the query given below. 
+<pre>
+    <code class="language-csharp">
+        User usr = dbContext.Users.Include(a => a.UserDetails.Select(ud => ud.Address)).FirstOrDefault(a => a.UserId == userId); 
+
+    </code>
+  </pre>
+<br>
+============================================================================================================================
+<br>
+<p><span style="font-size: 12pt; font-family: 'book antiqua', palatino, serif;"><strong><span style="font-size: 14pt; color: #ff00ff;">Lazy Loading</span><br /></strong><br />It is the default behavior of an Entity Framework, where a child entity is loaded only when it is accessed for the first time. It simply delays the loading of the related data, until you ask for it.</span></p>
+
+<p><span style="font-size: 12pt;">For example, when we run the query given below, UserDetails table will not be loaded along with the User table.&nbsp;</span></p>
+
+
+<pre>
+    <code class="language-csharp">
+        User usr = dbContext.Users.FirstOrDefault(a => a.UserId == userId);   
+    </code>
+  </pre>
+  
+  It will only be loaded when you explicitly call for it, as shown below. 
+  <pre>
+      <code class="language-csharp">
+          UserDeatils ud = usr.UserDetails; // UserDetails are loaded here   
+      </code>
+    </pre>
+  <br>
+  So we call database twice here.
+
+
+
+  =========================================================================================================
+
+  <br>
+
+  <img src="Img/blogpost.PNG"><br>
+  Eager loading is achieved by use of the Include method. For example, the queries below will load blogs and all the posts related to each blog.
+
+  <pre>
+    <code class="language-csharp">
+        using (var context = new BloggingContext())
+        {
+            // Load all blogs and related posts
+            var blogs1 = context.Blogs
+                                .Include(b => b.Posts)
+                                .ToList();
+        
+            // Load one blogs and its related posts
+            var blog1 = context.Blogs
+                               .Where(b => b.Name == "ADO.NET Blog")
+                               .Include(b => b.Posts)
+                               .FirstOrDefault();
+        
+            // Load all blogs and related posts  
+            // using a string to specify the relationship
+            var blogs2 = context.Blogs
+                                .Include("Posts")
+                                .ToList();
+        
+            // Load one blog and its related posts  
+            // using a string to specify the relationship
+            var blog2 = context.Blogs
+                               .Where(b => b.Name == "ADO.NET Blog")
+                               .Include("Posts")
+                               .FirstOrDefault();
+        }
+    </code>
+  </pre>
+
+  <h2>Eagerly loading multiple levels</h2>
+  <pre>
+    <code class="language-csharp">
+        using (var context = new BloggingContext())
+        {
+            // Load all blogs, all related posts, and all related comments
+            var blogs1 = context.Blogs
+                                .Include(b => b.Posts.Select(p => p.Comments))
+                                .ToList();
+        
+            // Load all users, their related profiles, and related avatar
+            var users1 = context.Users
+                                .Include(u => u.Profile.Avatar)
+                                .ToList();
+        
+            // Load all blogs, all related posts, and all related comments  
+            // using a string to specify the relationships
+            var blogs2 = context.Blogs
+                                .Include("Posts.Comments")
+                                .ToList();
+        
+            // Load all users, their related profiles, and related avatar  
+            // using a string to specify the relationships
+            var users2 = context.Users
+                                .Include("Profile.Avatar")
+                                .ToList();
+        }
+    </code>
+  </pre>
+  =====================================================================================================
+<h2><span style="color: #ff0000;"><strong>Summary</strong></span></h2>
+<p><span style="font-size: 14pt;"><strong>Avoid using lazy loading in your web applications</strong>. Disable it by default, since otherwise it can be difficult to detect. <strong>Avoid using virtual navigation properties in web application models</strong>, too, since typically this is only done to facilitate lazy loading. You should only go this route if you&rsquo;re sharing your model between a non-web application and a web application (which should be rare &ndash; ideally each application should have its own bounded context and model).</span></p>
+
+<h2><span style="color: #ff0000;"><strong>Summary</strong></span></h2>
+<p><span style="font-size: 12pt;">Lazy loading in Entity Framework is the default phenomenon that happens for loading and accessing the related entities. However, eager loading is referred to the practice of force-loading all these relations.</span></p>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<td style="width: 50%;"><span style="font-size: 14pt;">Lazy Loading</span></td>
+<td style="width: 50%;"><span style="font-size: 14pt;">Eager Loading</span></td>
+</tr>
+<tr>
+<td style="width: 50%;"><span style="font-size: 12pt;">It is the default phenomenon that happens for loading and accessing the related entities.</span></td>
+<td style="width: 50%;"><span style="font-size: 12pt;">It is referred to the practice of force-loading all these relations.</span></td>
+</tr>
+<tr>
+<td style="width: 50%;"><span style="font-size: 12pt;">lazy loading increases the number of requests to the actual database and call database more than once in most case.<br /></span></td>
+<td style="width: 50%;"><span style="font-size: 12pt;">The&nbsp;<code>Inlcude</code>&nbsp;method to force-loading all relations and call database only once.</span></td>
+</tr>
+<tr>
+<td style="width: 50%;"><span style="font-size: 12pt;">&nbsp;In case of lazy loading, related objects (child objects) are not loaded automatically with its parent object until they are requested. By default LINQ supports lazy loading.</span></td>
+<td style="width: 50%;"><span style="font-size: 12pt;">Eager Loading helps you to load all your needed entities at once. i.e. related objects (child objects) are loaded automatically with its parent object.</span></td>
+</tr>
+<tr>
+<td style="width: 50%;">
+<p><span style="font-size: 12pt;">Use Lazy Loading when you are using one-to-many collections.</span></p>
+</td>
+<td style="width: 50%;"><span style="font-size: 12pt;">Use Eager Loading when the relations are not too much</span></td>
+</tr>
+</tbody>
+</table>
+<p><span style="font-size: 12pt;">&nbsp;When using the Visual Studio auto-scaffolding in MVC 5, the Index method that is automatically created in the controller always uses Eager Loading, and I've always had the question of why Microsoft uses Eager Loading by default in that case.</span></p>
+   
+
+<h2><span style="color: #ff00ff;"><strong>POCO Entities (Plain Old CLR Object)</strong></span></h2>
+<p><span style="font-size: 12pt;">A POCO entity is a class that doesn't depend on any framework-specific base class. Those Class where property are defined by our self manaully and isnot generated by EF or anything else.</span></p>
+<h1><span style="color: #ff00ff;"><strong>Eager Loading</strong></span></h1>
+<p><span style="font-size: 12pt;"><span style="color: #ff0000;">Eager loading</span> is the process whereby a query for one type of entity also loads related entities as part of the query, so that we don't need to execute a separate query for related entities. Eager loading is achieved using the&nbsp;<strong>Include()</strong>&nbsp;method.</span></p>
+<p>&nbsp;</p>
+
+
+<pre>
+  <code class="language-csharp">
+    using (var context = new SchoolDBEntities())
+{
+    var stud1 = (from s in context.Students.Include("Standard")
+                where s.StudentName == "Bill"
+                select s).FirstOrDefault&lt;Student>();
+}
+  </code></pre>
+<pre class="csharpcode"><br /><br /><strong><span style="font-size: 14pt; color: #ff0000;">Will call Student and Standard Table at one call to database</span></strong><br /><br /></pre>
+<h1><strong><span style="color: #ff00ff;">=====================================================================</span></strong></h1>
+
+<h1><strong><span style="color: #ff00ff;">Lazy Loading&nbsp;</span></strong></h1>
+<p>La<span style="font-size: 12pt;">zy loading is delaying the loading of related data, until you specifically request for it. It is the opposite of&nbsp;<a href="http://www.entityframeworktutorial.net/eager-loading-in-entity-framework.aspx" target="_blank" rel="noopener">eager loading</a>. For example, the&nbsp;<span style="color: #ff00ff;"><strong><code>Student</code></strong></span>&nbsp;entity contains the<strong>&nbsp;<span style="color: #ff00ff;"><code>StudentAddress</code></span></strong>&nbsp;entity. In the lazy loading, the context first loads the<strong>&nbsp;</strong><span style="color: #ff00ff;"><strong><code>Student</code></strong>&nbsp;</span>entity data from the database, then it will load the&nbsp;<strong><span style="color: #ff00ff;"><code>StudentAddress</code></span></strong>&nbsp;entity when we access the&nbsp;<code>StudentAddress</code>&nbsp;property</span></p>
+<pre>
+  <code class="language-csharp">
+    using (var ctx = new SchoolDBEntities())
+    {
+        //Loading students only
+        IList&lt;Student> studList = ctx.Students.ToList&lt;Student>();
+    
+        Student std = studList[0];
+    
+        //Loads Student address for particular Student only (seperate SQL query)
+        StudentAddress add = std.StudentAddress;
+    }
+ 
+  </code>
+</pre>
+<p><strong><span style="font-size: 14pt; color: #ff0000;">Two call to database . One call to Student Table and Next Call to Standard Table of Particular Student.&nbsp;</span></strong></p>
+
+
+=======================================================================================================================
+<br>
+
+
+
+
+
+
+
+<script src="js/prism.js"></script>
+    <script type="text/javascript">
+      Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+          'remove-trailing': true,
+          'remove-indent': true,
+          'left-trim': true,
+          'right-trim': true,
+          // 'break-lines': 10,
+          // 'indent': 2,
+          // 'remove-initial-line-feed': false,
+          // 'tabs-to-spaces': 4,
+          // 'spaces-to-tabs': 4
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+<img src="https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/filters/_static/filter-pipeline-2.png?view=aspnetcore-2.2">
+
+<h3 id="filter-types"><strong><span style="color: #fb0000;">Filter types</span></strong></h3>
+<p>Each filter type is executed at a different stage in the filter pipeline:</p>
+<ul>
+<li style="list-style-type: disc;">
+<p><strong><a href="https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/filters?view=aspnetcore-2.2#authorization-filters" data-linktype="self-bookmark">Authorization filters</a>&nbsp;</strong>run first and are used to determine whether the user is authorized for the request. Authorization filters short-circuit the pipeline if the request is unauthorized.</p>
+</li>
+<li style="list-style-type: disc;">
+<p><a href="https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/filters?view=aspnetcore-2.2#resource-filters" data-linktype="self-bookmark"><strong>Resource filters</strong></a>:</p>
+<ul>
+<li style="list-style-type: circle;">Run after authorization.</li>
+<li style="list-style-type: circle;"><a href="https://docs.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.filters.iresourcefilter.onresourceexecuting" data-linktype="external"><strong>OnResourceExecuting</strong></a>&nbsp;can run code before the rest of the filter pipeline. For example,&nbsp;<code>OnResourceExecuting</code>&nbsp;can run code before model binding.</li>
+<li style="list-style-type: circle;"><strong><a href="https://docs.microsoft.com/dotnet/api/microsoft.aspnetcore.mvc.filters.iresourcefilter.onresourceexecuted" data-linktype="external">OnResourceExecuted</a>&nbsp;</strong>can run code after the rest of the pipeline has completed.</li>
+</ul>
+</li>
+<li style="list-style-type: disc;">
+<p><a href="https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/filters?view=aspnetcore-2.2#action-filters" data-linktype="self-bookmark"><strong>Action filters</strong></a>&nbsp;can run code immediately before and after an individual action method is called. They can be used to manipulate the arguments passed into an action and the result returned from the action. Action filters are&nbsp;not&nbsp;supported in Razor Pages.</p>
+</li>
+<li style="list-style-type: disc;">
+<p><a href="https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/filters?view=aspnetcore-2.2#exception-filters" data-linktype="self-bookmark"><strong>Exception filters</strong></a><strong>&nbsp;</strong>are used to apply global policies to unhandled exceptions that occur before anything has been written to the response body.</p>
+</li>
+<li style="list-style-type: disc;">
+<p><a href="https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/filters?view=aspnetcore-2.2#result-filters" data-linktype="self-bookmark"><strong>Result filters</strong></a>&nbsp;can run code immediately before and after the execution of individual action results. They run only when the action method has executed successfully. They are useful for logic that must surround view or formatter execution.</p>
+</li>
+</ul>

@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+    <h2>Count</h2>
+<pre>
+  <code class="langauge-sql">
+CREATE OR ALTER PROCEDURE usp_Report_Inventory_SelectOrder
+(
+	@InstitutionId int
+)
+WITH ENCRYPTION
+AS
+BEGIN
+	SELECT COUNT(oa.OrderId) as Item,o.BillNo,convert(varchar, o.PurchasedDateAD, 23) as PurchasedDateAD,o.PurchasedDateBS FROM [Inventory.Order.ItemAssociation] oa 
+	INNER JOIN [Inventory.Order] o ON oa.OrderId=o.Id
+	WHERE o.InstitutionId=@InstitutionId
+	GROUP BY oa.OrderId,o.BillNo,v.Name,o.PurchasedDateAD,o.PurchasedDateBS
+	ORDER BY o.PurchasedDateBS DESC
+END
+GO
+usp_Report_Inventory_SelectOrder 1
+  </code>
+</pre>
+<br>
+==========================================================================================================
+<br>
+<p><span style="color: #ff00ff;"><strong><span style="font-size: 14pt;">Coalesce SQL :</span></strong></span><span style="font-size: 12pt;">It return first non value.</span></p>
+<br>
+<h2>Example</h2>
+
+<pre>
+  <code class="language-sql">
+    SELECT COALESCE (NULL,'A','B')
+    SELECT COALESCE (NULL,100,20,30,40)
+    SELECT COALESCE (NULL,NULL,20,NULL,NULL)
+    SELECT COALESCE (NULL,NULL,NULL,NULL,NULL,'Diwas')
+    SELECT COALESCE (NULL,NULL,NULL,NULL,1,'Diwas')
+    SELECT COALESCE (NULL,NULL,NULL,NULL,NULL,'Diwas',1)
+  </code>
+</pre>
+Run it in sql server and you will get like this
+<pre>
+  <code class="language-sql">
+    A 
+    100
+    20
+    Diwas
+    1
+    Conversion failed when converting the varchar value 'Diwas' to data type int.
+  </code>
+</pre>
+
+Here, we get error for last coalesce statement because <p><strong><span style="color: #ff0000;">Always evaluates for an integer first, an integer followed by character expression yields integer as an output.</span></strong></p>
+<br>
+================================================================================
+<br>
+<h2><span style="color: #ff00ff;"><strong>Coalesce in a string concatenation operation</strong></span></h2>
+
+SQL server simply returns NULL whenever it encounters NULL value. The result is not a combination of the firstname, null, and last name.
+
+<div class="row">
+  <div class="col">
+    <h2>Student Table</h2>
+    <table style="border-collapse: collapse; width: 100%;" border="1">
+      <tbody>
+      <tr style="background: gray; color: white;">
+      <td style="width: 33.3333%;">FirstName</td>
+      <td style="width: 33.3333%;">MiddleName</td>
+      <td style="width: 33.3333%;">LastName</td>
+      </tr>
+      <tr>
+      <td style="width: 33.3333%;">Diwas</td>
+      <td style="width: 33.3333%;">Raj</td>
+      <td style="width: 33.3333%;">Poudel</td>
+      </tr>
+      <tr>
+      <td style="width: 33.3333%;">Hari</td>
+      <td style="width: 33.3333%;">Prasad</td>
+      <td style="width: 33.3333%;">Null</td>
+      </tr>
+      <tr>
+      <td style="width: 33.3333%;">Gopal</td>
+      <td style="width: 33.3333%;">Null</td>
+      <td style="width: 33.3333%;">Basnet</td>
+      </tr>
+      </tbody>
+      </table>
+  </div>
+
+  <div class="col">
+     <pre>
+       <code class="language-csharp">
+        SELECT firstName +' '+MiddleName+' '+ LastName FullName FROM Student;
+
+        Output:
+        Diwas Raj Poudel
+        NULL
+        Null
+       </code>
+     </pre>
+  </div>
+</div>
+So to solve this problem we use Coalesce Function sothat if Null is encounter then Null will be replace by '' (space) as shown below.
+here below if MiddleName is null then name will be displayed with space for middlename as below
+<h2>Solution</h2>
+
+<div class="row">
+    <div class="col">
+     <pre>
+       <code class="language-sql">
+          SELECT  FirstName + ' ' +COALESCE(MiddleName,'')+ ' ' +COALESCE(LastName,'')
+       </code>
+     </pre>
+     
+    </div>
+  
+    <div class="col">
+       <pre>
+         <code class="language-csharp">
+          Output:
+          Diwas Raj Poudel
+          Hari Prasad
+          Gopal Basnet
+         </code>
+       </pre>
+    </div>
+  </div><br>
+  ======================================================================================
+  <br>
+  <h2>Emergency Contact</h2>
+  <table style="border-collapse: collapse; width: 69.5792%;" border="1">
+      <tbody>
+      <tr style="background: gray; color: white;">
+      <td style="width: 14.2857%;">FirstName</td>
+      <td style="width: 14.2857%;">LastName</td>
+      <td style="width: 14.2857%;">WorkPhone</td>
+      <td style="width: 14.2857%;">PersonalPhone</td>
+      <td style="width: 14.2857%;">HomePhone</td>
+      </tr>
+      <tr>
+      <td style="width: 14.2857%;">Diwas</td>
+      <td style="width: 14.2857%;">Poudel</td>
+      <td style="width: 14.2857%;">98627</td>
+      <td style="width: 14.2857%;">11111</td>
+      <td style="width: 14.2857%;">Null</td>
+      </tr>
+      <tr>
+      <td style="width: 14.2857%;">Hari</td>
+      <td style="width: 14.2857%;">Aryal</td>
+      <td style="width: 14.2857%;">Null</td>
+      <td style="width: 14.2857%;">568654</td>
+      <td style="width: 14.2857%;">9862751087</td>
+      </tr>
+      <tr>
+      <td style="width: 14.2857%;">Ramesh</td>
+      <td style="width: 14.2857%;">Gautam</td>
+      <td style="width: 14.2857%;">Null</td>
+      <td style="width: 14.2857%;">Null</td>
+      <td style="width: 14.2857%;">Null</td>
+      </tr>
+      </tbody>
+      </table>
+<br>
+<br>
+SQL Coalesce function is used to select the columns homephone, workphone, and cellphone. In case of NULL values, the value ‘NA’ 
+      <div class="row">
+        <div class="col">
+     <pre>
+       <code class="language-sql">
+    SELECT firstname+''+lastname fullname,
+		 COALESCE(homephone, workphone, cellphone, 'NA') phone
+		 FROM
+		dbo.EmergencyContact
+       </code>
+     </pre>
+        </div>
+
+        <div class="col">
+            <table style="border-collapse: collapse; width: 100%;" border="1">
+                <tbody>
+                <tr style="background: gray; color: white;">
+                <td style="width: 50%;">FullName</td>
+                <td style="width: 50%;">Phone</td>
+                </tr>
+                <tr>
+                <td style="width: 50%;">Diwas Poudel</td>
+                <td style="width: 50%;">98627</td>
+                </tr>
+                <tr>
+                <td style="width: 50%;">Hari Aryal</td>
+                <td style="width: 50%;">
+                <div>
+                <div>568654</div>
+                </div>
+                </td>
+                </tr>
+                <tr>
+                <td style="width: 50%;">Ramesh Gautam</td>
+                <td style="width: 50%;">
+                <div>
+                <div>NA</div>
+                </div>
+                </td>
+                </tr>
+                </tbody>
+                </table>
+          </div>
+      </div>
+
+<h2>Equivalent of Coalesce is Case Statement</h2>
+
+<pre>
+  <code class="language-sql">
+      SELECT
+      firstname+''+lastname fullname,
+      CASE 
+      WHEN workphone is NOT NULL Then workphone
+      WHEN personalphone is NOT NULL Then personalphone
+      WHEN homephone is NOT NULL Then homephone
+       ELSE 'NA'
+       END
+       Phone
+    FROM
+      dbo.EmergencyContact
+  </code>
+</pre>
+      ======================================================================================================
+
+<h2>Having vs Where Clause</h2>
+<p><span style="font-size: 14pt; font-family: 'courier new', courier, monospace;"><strong><span style="color: #ff0000;">Where clause</span> cannot be used with aggregates where as HAVING can. This means Where clause is used for filtering individual rows where as HAVING clause is used to filter groups.</strong></span></p>
+<p><span style="font-size: 14pt;"><span style="color: #ff0000;">WHERE comes before GROUP BY.</span> This mean&nbsp; WHERE clause filters rows before aggregate calculations are performed. HAVING comes after GROUP BY.This means HAVING clause filters rows after aggregate calculations are performed . So from a <span style="color: #ff0000;">performance standpoint</span>, HAVING is slower than WHERE and should be avoided when possible.</span></p>
+<table style="border-collapse: collapse; width: 16.5422%;" border="1">
+  <tbody>
+  <tr style="background: black; color: white;">
+  <td style="width: 9.12088%;">Product</td>
+  <td style="width: 7.42126%;">Amount</td>
+  </tr>
+  <tr>
+  <td style="width: 9.12088%;">IPhone</td>
+  <td style="width: 7.42126%;">5000</td>
+  </tr>
+  <tr>
+  <td style="width: 9.12088%;">Laptop</td>
+  <td style="width: 7.42126%;">800</td>
+  </tr>
+  <tr>
+  <td style="width: 9.12088%;">IPhone</td>
+  <td style="width: 7.42126%;">1000</td>
+  </tr>
+  <tr>
+  <td style="width: 9.12088%;">Speakers</td>
+  <td style="width: 7.42126%;">400</td>
+  </tr>
+  <tr>
+  <td style="width: 9.12088%;">Laptop</td>
+  <td style="width: 7.42126%;">600</td>
+  </tr>
+  </tbody>
+  </table>
+
+  <h2>Question :Calculating total sales by product</h2>
+<div class="row">
+  <div class="col">
+    <pre>
+      <code class="language-sql">
+        SELECT Product, SUM(Amount) AS TotalSales
+        FROM Sales
+        GROUP BY Product
+      </code>
+    </pre>
+  </div>
+
+  <div class="col">
+    <table style="border-collapse: collapse; width: 16.873%;" border="1">
+      <tbody>
+      <tr style="background: black; color: white;">
+      <td style="width: 9.12088%;">Product</td>
+      <td style="width: 7.42126%;">Amount</td>
+      </tr>
+      <tr>
+      <td style="width: 9.12088%;">IPhone</td>
+      <td style="width: 7.42126%;">1500</td>
+      </tr>
+      <tr>
+      <td style="width: 9.12088%;">Laptop</td>
+      <td style="width: 7.42126%;">1400</td>
+      </tr>
+      <tr>
+      <td style="width: 9.12088%;">Speakers</td>
+      <td style="width: 7.42126%;">400</td>
+      </tr>
+      </tbody>
+      </table>
+  </div>
+</div>
+
+
+===============================================================================================
+<br>
+<div class="row">
+  <div class="col">
+    <pre>
+      <code class="language-sql">
+        SELECT Product, SUM(Amount) AS TotalSales
+        FROM Sales
+        GROUP BY Product
+        HAVING SUM(Amount) > 1000
+      </code>
+    </pre>
+  </div>
+
+  <div class="col">
+    <table style="border-collapse: collapse; width: 16.873%;" border="1">
+      <tbody>
+      <tr style="background: black; color: white;">
+      <td style="width: 9.12088%;">Product</td>
+      <td style="width: 7.42126%;">Amount</td>
+      </tr>
+      <tr>
+      <td style="width: 9.12088%;">IPhone</td>
+      <td style="width: 7.42126%;">1500</td>
+      </tr>
+      <tr>
+      <td style="width: 9.12088%;">Laptop</td>
+      <td style="width: 7.42126%;">1400</td>
+      </tr>
+      </tbody>
+      </table>
+  </div>
+</div>
+===========================================================================================================================
+<br>
+<h2>Error while using where after group by</h2>
+<div class="row">
+  <div class="col">
+    <pre>
+      <code class="language-sql">
+        SELECT Product, SUM(Amount) AS TotalSales
+        FROM Sales
+        GROUP BY Product
+        WHERE SUM(Amount) > 1000
+      </code>
+    </pre>
+    <p><span style="color: #ff0000;"><strong>WHERE clause cannot be used with aggregates where as HAVING can.</strong>&nbsp;</span></p>
+  </div>
+=============================================================================================================================================
+<h2>Find  Largest Salary</h2>
+<div class="row">
+  <div class="col">
+    <pre>
+      <code class="language-sql">
+        SELECT name, MAX(salary) as salary FROM employee 
+      </code>
+    </pre>
+    </div>
+    </div>
+    =============================================================================================================
+    <h2>Second Largest Salary</h2>
+    <div class="row">
+      <div class="col">
+        <pre>
+          <code class="language-sql">
+            SELECT name, MAX(salary) AS salary
+            FROM employee
+          WHERE salary < (SELECT MAX(salary)
+                          FROM employee); 
+          </code>
+        </pre>
+        </div>
+
+        <div class="col">
+          <pre>
+            <code class="language-sql">
+              SELECT name, MAX(salary) AS salary 
+              FROM employee 
+              WHERE salary IN
+              (SELECT salary FROM employee MINUS SELECT MAX(salary) 
+              FROM employee); 
+            </code>
+          </pre>
+          </div>
+        </div>
+
+        ================================================================================
+        <br>
+        <h2>Find nth largest Salary</h2>
+        <pre>
+          <code class="language-sql">
+            select salary from employee order by salary desc limit n-1,1;
+            Or
+            Select name,salary from employee A where n-1 = (Select count(1) from employee B where B.salary>A.salary)
+          </code>
+        </pre>
+
+        <br>
+        ==============================================================================================================================
+        <br>
+        <h2>Find Duplicate value(here :email ie one column duplicate finding) in sql</h2>
+        <br>
+
+        <div class="row">
+          <div class="col-lg-12">
+            <table style="border-collapse: collapse; width: 23.159%;" border="1">
+              <tbody>
+              <tr style="background: black; color: white;">
+              <td style="width: 4.73138%;">ID</td>
+              <td style="width: 6.65238%;">Name</td>
+              <td style="width: 11.7751%;">Email</td>
+              </tr>
+              <tr>
+              <td style="width: 4.73138%;">1</td>
+              <td style="width: 6.65238%;">John</td>
+              <td style="width: 11.7751%;">asd@asd.com</td>
+              </tr>
+              <tr>
+              <td style="width: 4.73138%;">2</td>
+              <td style="width: 6.65238%;">Sam</td>
+              <td style="width: 11.7751%;">asd@asd.com</td>
+              </tr>
+              <tr>
+              <td style="width: 4.73138%;">3</td>
+              <td style="width: 6.65238%;">Tom</td>
+              <td style="width: 11.7751%;">asd@asd.com</td>
+              </tr>
+              <tr>
+              <td style="width: 4.73138%;">4</td>
+              <td style="width: 6.65238%;">Bob</td>
+              <td style="width: 11.7751%;">bob@asd.com</td>
+              </tr>
+              <tr>
+              <td style="width: 4.73138%;">5</td>
+              <td style="width: 6.65238%;">Tom</td>
+              <td style="width: 11.7751%;">asd@asd.com</td>
+              </tr>
+              </tbody>
+              </table>
+          </div></div>
+
+            <div class="row">
+              <div class="col">
+                <pre>
+                  <code class="language-sql">
+                    SELECT name, COUNT(email) 
+                    FROM users
+                    GROUP BY email
+                    HAVING COUNT(email) > 1
+                  </code>
+                </pre>
+                </div>
+            </div>
+    =====================================================================================================
+    <br>
+    <h2>Finding duplicate row in table</h2>
+    <br>
+    Simply group on all column
+ 
+    <div class="row">
+      <div class="col">
+        <pre>
+          <code class="language-sql">
+            SELECT
+                name, email, COUNT(*)
+            FROM
+                users
+            GROUP BY
+                name, email
+            HAVING 
+                COUNT(*) > 1
+          </code>
+        </pre>
+        </div>
+
+        <div class="row">
+          <div class="col">
+
+          </div>
+        </div>
+    </div>
+    =================================================================================================
+    <br>
+    <h2>Union vs Union ALL</h2>
+    <br>
+    <p><span style="font-size: 18pt;"><strong><em>A UNION statement effectively does a <span style="color: #ff0000;">SELECT DISTINCT</span> on the results set. If you know that all the records returned are unique from your union, use UNION ALL instead, <span style="color: #ff0000;">it gives faster results.</span></em></strong></span></p>
+    <br>
+    <div class="row">
+      
+      <div class="col">
+          <h4>Table1</h4>
+          <table style="border-collapse: collapse; width: 5.13841%; height: 196px;" border="1">
+              <tbody>
+              <tr style="height: 49px;">
+              <td style="width: 100%; background: black; color: white; height: 49px;">ColumnDetail1</td>
+              </tr>
+              <tr style="height: 49px;">
+              <td style="width: 100%; height: 49px;">First</td>
+              </tr>
+              <tr style="height: 49px;">
+              <td style="width: 100%; height: 49px;">Second</td>
+              </tr>
+              <tr style="height: 49px;">
+              <td style="width: 100%; height: 49px;">Third</td>
+              </tr>
+              <tr style="height: 49px;">
+              <td style="width: 100%; height: 49px;">Fourth</td>
+              </tr>
+              <tr style="height: 10px;">
+              <td style="width: 100%; height: 10px;">Fifth</td>
+              </tr>
+              </tbody>
+          </table>
+      </div>
+
+      <div class="col">
+          <h4>Table2</h4>
+          <table style="border-collapse: collapse; width: 5.13841%; height: 196px;" border="1">
+              <tbody>
+              <tr style="height: 49px;">
+              <td style="width: 100%; background: black; color: white; height: 49px;">ColumnDetail2</td>
+              </tr>
+              <tr style="height: 49px;">
+              <td style="width: 100%; height: 49px;">First</td>
+              </tr>
+              <tr style="height: 49px;">
+              <td style="width: 100%; height: 49px;">Third</td>
+              </tr>
+              <tr style="height: 49px;">
+                  <td style="width: 100%; height: 49px;">Fifth</td>
+                  </tr>
+              <tr style="height: 49px;">
+              <td style="width: 100%; height: 49px;">Sixth</td>
+              </tr>
+              </tbody>
+            </table>
+      </div>
+     </div> 
+     <br>
+==================================================================================================
+<br>
+     <div class="row">
+        <div class="col">
+            <pre>
+                <code class="language-sql">
+                  SELECT ColumnDetail1 FROM Table1
+                  UNION ALL
+                  SELECT ColumnDetail2 FROM Table2
+                </code>
+              </pre>
+        </div>
+
+        <div class="col">
+            <table style="border-collapse: collapse; width: 5.13841%; height: 196px;" border="1">
+                <tbody>
+                <tr style="height: 49px;">
+                <td style="width: 100%; background: black; color: white; height: 49px;">ColumnDetail1</td>
+                </tr>
+                <tr style="height: 49px;">
+                <td style="width: 100%; height: 49px;">First</td>
+                </tr>
+                <tr style="height: 49px;">
+                <td style="width: 100%; height: 49px;">Second</td>
+                </tr>
+                <tr style="height: 49px;">
+                <td style="width: 100%; height: 49px;">Third</td>
+                </tr>
+                <tr style="height: 49px;">
+                <td style="width: 100%; height: 49px;">Fourth</td>
+                </tr>
+                <tr style="height: 10px;">
+                <td style="width: 100%; height: 10px;">Fifth</td>
+                </tr>
+                <tr style="height: 10px;">
+                    <td style="width: 100%; height: 10px;">First</td>
+                    </tr>
+                    <tr style="height: 10px;">
+                        <td style="width: 100%; height: 10px;">Third</td>
+                        </tr>
+                <tr style="height: 10px;">
+                    <td style="width: 100%; height: 10px;">Sixth</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+      </div>
+
+     <div class="row">
+        <div class="col">
+            <pre>
+                <code class="language-sql">
+                  SELECT ColumnDetail1 FROM Table1
+                  UNION 
+                  SELECT ColumnDetail2 FROM Table2
+                </code>
+              </pre>
+        </div>
+
+        <div class="col">
+            <table style="border-collapse: collapse; width: 5.13841%; height: 196px;" border="1">
+                <tbody>
+                <tr style="height: 49px;">
+                <td style="width: 100%; background: black; color: white; height: 49px;">ColumnDetail1</td>
+                </tr>
+                <tr style="height: 49px;">
+                <td style="width: 100%; height: 49px;">First</td>
+                </tr>
+                <tr style="height: 49px;">
+                <td style="width: 100%; height: 49px;">Second</td>
+                </tr>
+                <tr style="height: 49px;">
+                <td style="width: 100%; height: 49px;">Third</td>
+                </tr>
+                <tr style="height: 49px;">
+                <td style="width: 100%; height: 49px;">Fourth</td>
+                </tr>
+                <tr style="height: 10px;">
+                <td style="width: 100%; height: 10px;">Fifth</td>
+                </tr>
+                <tr style="height: 10px;">
+                    <td style="width: 100%; height: 10px;">sIxth</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+      </div>
+
+<br>
+        
+
+===========================================================================================================
+<br>
+<p><span style="font-size: 18pt; color: #ff0000;">Convert Male to Female and Female to Male</span></p>
+<br>
+<h2>Staff:</h2>
+<br>
+<table style="border-collapse: collapse; width: 100%; height: 294px;" >
+<tbody>
+<tr style="height: 49px;">
+<td style="width: 33.3333%; background: black; color: white; height: 49px;">Id</td>
+<td style="width: 33.3333%; background: black; color: white; height: 49px;">Name</td>
+<td style="width: 33.3333%; background: black; color: white; height: 49px;">Gender</td>
+</tr>
+<tr style="height: 49px;">
+<td style="width: 33.3333%; height: 49px;">1</td>
+<td style="width: 33.3333%; height: 49px;">Diwas</td>
+<td style="width: 33.3333%; height: 49px;">Female</td>
+</tr>
+<tr style="height: 49px;">
+<td style="width: 33.3333%; height: 49px;">2</td>
+<td style="width: 33.3333%; height: 49px;">Sunita</td>
+<td style="width: 33.3333%; height: 49px;">Male</td>
+</tr>
+<tr style="height: 49px;">
+<td style="width: 33.3333%; height: 49px;">3</td>
+<td style="width: 33.3333%; height: 49px;">Dikshya</td>
+<td style="width: 33.3333%; height: 49px;">Male</td>
+</tr>
+<tr style="height: 49px;">
+<td style="width: 33.3333%; height: 49px;">4</td>
+<td style="width: 33.3333%; height: 49px;">Yogesh</td>
+<td style="width: 33.3333%; height: 49px;">Male</td>
+</tr>
+<tr style="height: 49px;">
+<td style="width: 33.3333%; height: 49px;">5</td>
+<td style="width: 33.3333%; height: 49px;">Supriya</td>
+<td style="width: 33.3333%; height: 49px;">Male</td>
+</tr>
+</tbody>
+</table>
+
+<h2>Solution</h2>
+<br>
+<pre>
+  <code class="language-sql">
+      UPDATE Staff SET Gender = (CASE WHEN Gender = 'Male' THEN 'Female' ELSE 'Male' END)
+  </code>
+</pre>
+<br>
+================================================================================================================
+<br>
+<h2>Truncate Vs Delete</h2>
+<br>
+<img src="img/truncate vs delete.jpg">
+
+<br>
+
+<p><span style="color: #ff0000;"><strong><span style="font-size: 18pt;">What can cause SQL Injection ?</span></strong></span></p>
+<p><span style="font-size: 12pt;">Building SQL Statements dynamically, by concatenating strings can cause SQL injection.</span></p>
+
+<pre>
+  <code class="language-sql">
+    string cs = ConfigurationManager.ConnectionString["DbConnectionString"].connecitonString;
+    SqlConnection con = new SqlConnection(cs);
+    SqlCommand cmd = new SqlCommand("select * from tblProduct where Name='"+ TextBox1.Text + "'",conn);
+    con.open();
+    ...
+    con.close();
+  </code>
+</pre>
+
+
+<p><span style="color: #ff0000;"><strong><span style="font-size: 14pt;">How to avoid SQL Injection ?</span></strong></span></p>
+<p>Ways 1)</p>
+<p>Use Parameterized Queries</p>
+<pre>
+    <code class="language-sql">
+      string cs = ConfigurationManager.ConnectionString["DbConnectionString"].connecitonString;
+      SqlConnection con = new SqlConnection(cs);
+      SqlCommand cmd = new SqlCommand("select * from tblProduct where Name=@Name",conn);
+      cmd.Parameters.Add("@Name",TextBox1.Text);
+      con.open();
+      ...
+      con.close();
+    </code>
+  </pre>
+  <p><span style="font-size: 12pt;">The way parameterized queries work, is that <strong>the SQL query is sent as a query, and the database knows exactly what this query will do, and only then will it insert the username and passwords merely as values</strong>. This means they cannot affect the query, because the database already knows what the query will do. So in this case it would look for a username of&nbsp;<span style="color: #ff00ff;"><strong><code>Nobody OR 1=1'--</code></strong></span>&nbsp;and a blank password, which should come up false.</span></p>
+
+<p>Ways 2)</p>
+<p>Use Stored Procedures</p>
+<pre>
+    <code class="language-sql">
+      string cs = ConfigurationManager.ConnectionString["DbConnectionString"].connecitonString;
+      SqlConnection con = new SqlConnection(cs);
+      SqlCommand cmd = new SqlCommand("spGetProductByName",conn);  //storeprocedure here
+      cmd.CommandType = CommandType.StoredProcedure;
+      cmd.Parameters.Add("@Name",TextBox1.Text);
+      con.open();
+      ...
+      con.close();
+    </code>
+  </pre>
+<script src="js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

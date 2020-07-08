@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+
+  <body>
+
+    ================================================================================================================
+    <p><span style="color: #ff0000;"><strong><span style="font-size: 18pt;">Positioning</span></strong></span></p>
+    <p><strong><span style="color: #339966;">Static&nbsp;</span></strong></p>
+    <p><strong><span style="color: #339966;">Absolute</span></strong></p>
+    <p><strong><span style="color: #339966;">Relative</span></strong></p>
+    <p><strong><span style="color: #339966;">Fixed</span></strong></p>
+    <p><strong><span style="color: #339966;">Initial</span></strong></p>
+    
+    Static
+<div class="row">
+  <div class="col-lg-6">
+    <pre>
+      <code class="language-html">
+          &lt;div class='first common'>First&lt;/div>
+          &lt;div class='second common'>Second&lt;/div>
+          &lt;div class='third common'>Third&lt;/div>
+      </code>
+    </pre>  
+  </div>
+
+  <div class="col-lg-6">
+    <pre>
+      <code class="language-css">
+          .common{
+            font-size:30px;
+            color:white;
+          }
+          
+          .first{
+            background-color:red;
+          }
+          
+          .second{
+            background-color:green;
+            height:60px;
+          }
+          
+          .third{
+            background-color:blue;
+          }
+      </code>
+    </pre> 
+  </div>
+</div>
+
+Output: 
+<iframe width="100%" height="300" src="http://jsfiddle.net/Diwas_Poudel/p48Lc96o/9/embedded/result/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+===========================================================================================================
+
+<div>
+    <div><span style="font-size: 18pt; color: #ff00ff;">Relative</span></div>
+    <br />
+    <div><span style="font-size: 14pt;">Just adding relative to element nothing change happens.</span></div>
+    <div>&nbsp;</div>
+    <ul>
+    <li><span style="font-size: 14pt;">Here we have added relative to second element</span></li>
+    </ul>
+    </div>
+<div class="row">
+    <div class="col-lg-6">
+      <pre>
+        <code class="language-html">
+            &lt;div class='first common'>First&lt;/div>
+            &lt;div class='second common'>Second&lt;/div>
+            &lt;div class='third common'>Third&lt;/div>
+        </code>
+      </pre>  
+    </div>
+  
+    <div class="col-lg-6">
+      <pre>
+        <code class="language-css">
+            .common{
+              font-size:30px;
+              color:white;
+            }
+            
+            .first{
+              background-color:red;
+            }
+            
+            .second{
+              background-color:green;
+              height:60px;
+              position:relative;
+            }
+            
+            .third{
+              background-color:blue;
+            }
+        </code>
+      </pre> 
+    </div>
+  </div>
+  
+  Output: 
+  <iframe width="100%" height="300" src="http://jsfiddle.net/Diwas_Poudel/p48Lc96o/9/embedded/result/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+
+|<br>
+  Note:<img src="img/origin.png">
+  ========================================================================================================================<br>
+
+
+<div><span style="font-size: 18pt;">On changing element to relative we have activate 4 term:</span></div>
+<div><span style="font-size: 18pt;">top</span></div>
+<div><span style="font-size: 18pt;">left</span></div>
+<div><span style="font-size: 18pt;">right</span></div>
+<div><span style="font-size: 18pt;">left</span></div>
+</div>
+
+
+<div class="row">
+    <div class="col-lg-6">
+      <pre>
+        <code class="language-html">
+            &lt;div class='first common'>First&lt;/div>
+            &lt;div class='second common'>Second&lt;/div>
+            &lt;div class='third common'>Third&lt;/div>
+        </code>
+      </pre>  
+    </div>
+  
+    <div class="col-lg-6">
+      <pre>
+        <code class="language-css">
+            .common{
+              font-size:30px;
+              color:white;
+            }
+            
+            .first{
+              background-color:red;
+            }
+            
+            .second{
+              background-color:green;
+              height:60px;
+              position:relative;
+              top:10px;
+              left:20px;
+            }
+            
+            .third{
+              background-color:blue;
+            }
+        </code>
+      </pre> 
+    </div>
+  </div>
+  
+  Output: 
+  <iframe width="100%" height="300" src="http://jsfiddle.net/Diwas_Poudel/mz9o5ceg/3/embedded/result/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+
+  <div><span style="font-size: 18pt; color: #ff0000;"><strong>We have notice that only second element moves with respect to its origin and does no change on first and third.</strong></span></div>
+
+ <h2 style="color:#ff0000"> Here we have move second element relative to its origin.</h2>
+
+==========================================================================================================
+<h2>Absolute ===>Distrubing environment case</h2>
+Because absolute element by default referencing to its parent element. Here parent element is body tag
+<div class="row">
+    <div class="col-lg-6">
+      <pre>
+        <code class="language-html">
+            &lt;div class='first common'>First&lt;/div>
+            &lt;div class='second common'>Second&lt;/div>
+            &lt;div class='third common'>Third&lt;/div>
+        </code>
+      </pre>  
+    </div>
+  
+    <div class="col-lg-6">
+      <pre>
+        <code class="language-css">
+            .common{
+              font-size:30px;
+              color:white;
+            }
+            
+            .first{
+              background-color:red;
+            }
+            
+            .second{
+              background-color:green;
+              height:60px;
+              position:absolute; //latest
+            }
+            
+            .third{
+              background-color:blue;
+            }
+        </code>
+      </pre> 
+    </div>
+  </div>
+  
+  Output: 
+  <iframe width="100%" height="300" src="http://jsfiddle.net/Diwas_Poudel/n7xmtz0y/embedded/result/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+  <div><span style="font-size: 18pt; color: #ff0000;"><strong>We have notice that on changing  second element to absolute does disturb  on after element of its(ie. third element).</strong></span></div>
+
+
+
+========================================================================================================================
+
+Creating own parent element and setting parent element to relative
+<div class="row">
+    <div class="col-lg-6">
+      <pre>
+        <code class="language-html">
+          &lt;div class="parent">
+            &lt;div class='first common'>First&lt;/div>
+            &lt;div class='second common'>Second&lt;/div>
+            &lt;div class='third common'>Third&lt;/div>
+            &lt;div>
+        </code>
+      </pre>  
+    </div>
+  
+    <div class="col-lg-6">
+      <pre>
+        <code class="language-css">
+            .common{
+              font-size:30px;
+              color:white;
+            }
+            
+            
+            .parent{
+              position:relative;
+            }
+            
+            .first{
+              background-color:red;
+            }
+            
+            .second{
+              background-color:green;
+              height:60px;
+              position:absolute;
+              top:60px;
+            }
+            
+            .third{
+              background-color:blue;
+            }
+        </code>
+      </pre> 
+    </div>
+  </div>
+  
+ Here we are referencing second element on the basis of parent class. So parent div element is origin of its child element like first,second and third
+
+  <iframe width="100%" height="300" src="http://jsfiddle.net/Diwas_Poudel/mjgrc2kv/12/embedded/result/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+  
+
+============================================================================================================================
+
+<h2>Position Fixed</h2>
+div class="row">
+    <div class="col-lg-6">
+      <pre>
+        <code class="language-html">
+            <div class="parent">
+                <div class='first common'>First</div>
+                <div class='second common'>Second</div>
+                <div class='third common'>Third</div>
+                <div class="third common">
+                Other
+                </div>
+                <div class="third common">
+                Other
+                </div>
+                <div class="third common">
+                Other
+                </div><div class="third common">
+                Other
+                </div><div class="third common">
+                Other
+                </div><div class="third common">
+                Other
+                </div><div class="third common">
+                Other
+                </div><div class="third common">
+                Other
+                </div><div class="third common">
+                Other
+                </div><div class="third common">
+                Other
+                </div><div class="third common">
+                Other
+                </div><div class="third common">
+                Other
+                </div><div class="third common">
+                Other
+                </div><div class="third common">
+                Other
+                </div>
+                </div>
+        </code>
+      </pre>  
+    </div>
+  
+    <div class="col-lg-6">
+      <pre>
+        <code class="language-css">
+            .common{
+              font-size:30px;
+              color:white;
+            }
+            
+            .first{
+              background-color:red;
+            }
+            
+            .second{
+              background-color:green;
+              height:60px;
+              position:fixed;
+            }
+            
+            .third{
+              background-color:blue;
+            }
+        </code>
+      </pre> 
+    </div>
+  </div>
+  
+ Here we are referencing second element on the basis of parent class. So parent div element is origin of its child element like first,second and third
+
+  
+ <iframe width="100%" height="300" src="http://jsfiddle.net/Diwas_Poudel/3xo68zer/2/embedded/result/" allowfullscreen="allowfullscreen" allowpaymentrequest frameborder="0"></iframe>
+
+====================================================================================
+    <script src="js/prism.js"></script>
+    <script type="text/javascript">
+      Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+          'remove-trailing': true,
+          'remove-indent': true,
+          'left-trim': true,
+          'right-trim': true,
+          // 'break-lines': 10,
+          // 'indent': 2,
+          // 'remove-initial-line-feed': false,
+          // 'tabs-to-spaces': 4,
+          // 'spaces-to-tabs': 4
+        });
+    </script>
+  </body>
+</html>

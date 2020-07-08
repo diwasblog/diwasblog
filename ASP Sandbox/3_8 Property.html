@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+    <div class="row">
+      <div class="col">  
+        <pre>
+          <code class="language-csharp">
+              public class TestCircle
+              {
+                public static void Main()
+                {
+                  Circle c=new Circle();
+                  c.getRadius();
+                  c.setRadius(75.0);
+                }	
+              }
+          </code>
+        </pre>
+      </div>
+
+      <div class="col">
+          <pre>
+            <code class="language-csharp">
+                public class Circle
+                { 
+                  double radius=7;
+                  
+                  public double getRadius(){  //allow to readonly or read access only
+                    return radius;
+                  }
+                  
+                  public void setRadius(double radius){  //allow to set the radius
+                    this.radius=radius;
+                  }
+                }
+            </code>
+          </pre>
+      </div>
+    </div>
+========================================================================================================================
+<h2>Allow Get Property Only</h2>
+
+<div class="row">
+    <div class="col">  
+      <pre>
+        <code class="language-csharp">
+            public class TestCircle
+            {
+              public static void Main()
+              {
+                Circle c=new Circle();
+                c.getRadius();
+              }	
+            }
+        </code>
+      </pre>
+    </div>
+
+    <div class="col">
+        <pre>
+          <code class="language-csharp">
+              public class Circle
+              { 
+                double radius=7;
+                
+                public double getRadius(){  //allow to readonly or read access
+                  return radius;
+                }
+
+              }
+          </code>
+        </pre>
+    </div>
+  </div>
+==================================================================================================
+<br>
+<h2>Set Property only</h2>
+<div class="row">
+    <div class="col">  
+      <pre>
+        <code class="language-csharp">
+            public class TestCircle
+            {
+              public static void Main()
+              {
+                Circle c=new Circle();
+                c.setRadius(75.0);
+              }	
+            }
+        </code>
+      </pre>
+    </div>
+
+    <div class="col">
+        <pre>
+          <code class="language-csharp">
+              public class Circle
+              { 
+                double radius=7;
+                
+                public void setRadius(double radius){  //allow to set access the radius
+                  this.radius=radius;
+                }
+              }
+          </code>
+        </pre>
+    </div>
+  </div>
+
+  <br>
+  ======================================================================================================
+  <br>
+  <h2>Using Property Concepts(Both Get and Set)</h2>
+  <div class="row">
+      <div class="col">  
+        <pre>
+          <code class="language-csharp">
+              public class TestCircle
+                {
+                  public static void Main()
+                  {
+                    Circle c=new Circle();
+                    double a= c.Radius; //setting the value 
+                    c.Radius=c.Radius;  //getting the value
+                  }	
+                }
+          </code>
+        </pre>
+      </div>
+  
+      <div class="col">
+          <pre>
+            <code class="language-csharp">
+                public class Circle
+                { 
+                  double _radius=7;
+                  
+                  public double Radius
+                  {
+                    get {return _radius;}
+                    set{_radius=value;}
+                  }
+                }
+            </code>
+          </pre>
+      </div>
+    </div>
+<br>
+=======================================================================================================
+<br>
+<h2>Auto Property(Without body)</h2>
+Below is auto property (without body of property)
+<pre>
+  <code class="language-csharp">
+      public class Genre
+      {
+          public string Name { get; set; }
+      }
+  </code>
+</pre>
+<div class="row">
+    <div class="col">  
+      Internally compiler converts to below and again it gets converted to method that we describe at first
+      <pre>
+        <code class="language-csharp">
+            private string name;
+            public string Name
+            {
+                get
+                {
+                    return this.name;
+                }
+                set
+                {
+                    this.name = value;
+                }
+            }
+        </code>
+      </pre>
+    </div>
+
+  
+  </div>
+
+  Properties are just syntactic sugar for getter and setter methods. 
+  Ie.above property gets converted as below methods and only local variable name get occupy space
+
+ <pre>
+   <code class="language-csharp">
+  private string _radius;
+  public double getRadius(){  //allow to readonly or read access only
+    return radius;
+  }
+  
+  public void setRadius(double radius){  //allow to set the radius
+    this.radius=radius;
+  }
+
+   </code>
+ </pre>
+    <script src="js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

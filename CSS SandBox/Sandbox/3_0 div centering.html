@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+        integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <title>Bootstrap Sandbox</title>
+
+    <script
+        src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+
+    <style>
+        xmp.prettyprint {
+            font-size: 12pt;
+            font-family: monospace;
+
+        }
+    </style>
+</head>
+
+
+
+<body>
+    <h2>
+        <center>
+            Horizontally Centering
+        </center><br><br>
+    </h2>
+
+    <h2>Text-Align Method ===> Block Level Element like div , nav,h,p</h2>
+    <ol style="list-style-type: none;">
+        <li id="7914" style="list-style-type: decimal;" data-selectable-paragraph=""><span
+                style="color: #000000;"><strong><span style="font-size: 14pt;">enclose the <span
+                            style="color: #e03e2d;">div</span> that you want to center with a </span><span
+                        style="font-size: 14pt; color: #e03e2d;">parent element</span><span style="font-size: 14pt;">
+                        (commonly known as a wrapper or container).</span></strong></span></li>
+        <li id="f533" style="list-style-type: decimal;" data-selectable-paragraph=""><span
+                style="color: #000000;"><strong><span style="font-size: 14pt;">set&nbsp;<span
+                            style="color: #169179;"><code>text-align: center</code></span> to the parent
+                        element.</span></strong></span></li>
+        <li id="c649" style="list-style-type: decimal;" data-selectable-paragraph=""><span
+                style="color: #000000;"><strong><span style="font-size: 14pt;">then set the inside div
+                        to&nbsp;</span></strong><span style="font-size: 14pt;"><span
+                        style="color: #169179;"><code>display: inline-block</code></span></span></span></li>
+    </ol>
+    <div class="row">
+        <div class="col-lg-6">
+            <xmp class="prettyprint">
+
+                <div class="container">
+                    <div class="square"></div>
+                </div>
+
+
+                .container {
+                text-align: center;
+                }
+
+                .square {
+                background-color: #0074D9;
+                width: 100px;
+                height: 100px;
+                display: inline-block;
+                }
+
+            </xmp>
+        </div>
+
+        <div class="col-lg-6">
+            <iframe height="265" style="width: 100%;" scrolling="no" title="xxZPQLo"
+                src="https://codepen.io/diwas777/embed/xxZPQLo?height=265&theme-id=light&default-tab=result"
+                frameborder="no" allowtransparency="true" allowfullscreen="true">
+                See the Pen <a href='https://codepen.io/diwas777/pen/xxZPQLo'>xxZPQLo</a> by Diwas Poudel
+                (<a href='https://codepen.io/diwas777'>@diwas777</a>) on <a href='https://codepen.io'>CodePen</a>.
+            </iframe>
+        </div>
+    </div>
+
+    <p><span style="font-size: 14pt; font-family: 'comic sans ms', sans-serif;">Here parent div has <span
+                style="color: #169179;"><strong>container </strong></span>class and I want to center div with
+            <strong><span style="color: #169179;">square </span></strong>class. Here apply text-align center to
+            container and display inline to the square.</span><span
+            style="font-size: 14pt; font-family: 'comic sans ms', sans-serif;">This is because div is <strong><span
+                    style="color: #169179;">block-level</span></strong> element and <strong><span
+                    style="color: #169179;">takes the whole width of div</span></strong>. By setting the display
+            property of my blue square to<span style="color: #169179;"><strong> inline-block</strong></span>, we ensure
+            that the blue square will only span the width that I have set, which is <span
+                style="color: #169179;"><strong>100px. </strong></span></span></p>
+
+
+    <p><span style="font-size: 14pt;"><strong>Adding multiple child elements within the parent element (blue squares in
+                this example), <span style="color: #169179;">will center all of them.</span></strong><span
+                style="color: #169179;"> </span></span></p>
+
+    <hr>
+    <h2>Margin Auto Method ===> For Block Level Element like Div only</h2>
+    <p><span style="font-size: 18pt; font-family: 'comic sans ms', sans-serif;">For this, <strong><span
+                    style="color: #169179;">we don't need a parent</span></strong>. We can simply apply <strong><span
+                    style="color: #169179;"><code>margin: 0 auto</code></span></strong> to our yellow box, as long with
+            a defined width.</span></p>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <xmp class="prettyprint">
+
+                <div class="yellow-square"></div>
+
+                .yellow-square {
+                background-color: #FFDC00;
+                width: 100px;
+                height: 100px;
+                margin: 0 auto;
+                }
+            </xmp>
+        </div>
+        <div class="col-lg-6">
+            <p class="codepen" data-height="265" data-theme-id="light" data-default-tab="result" data-user="diwas777"
+                data-slug-hash="OJMOaoj"
+                style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;"
+                data-pen-title="OJMOaoj">
+                <span>See the Pen <a href="https://codepen.io/diwas777/pen/OJMOaoj">
+                        OJMOaoj</a> by Diwas Poudel (<a href="https://codepen.io/diwas777">@diwas777</a>)
+                    on <a href="https://codepen.io">CodePen</a>.</span>
+            </p>
+            <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+        </div>
+    </div>
+
+
+    <br>
+    <br>
+    <h3>Centering Two or more block level element</h3>
+
+    <p class="codepen" data-height="265" data-theme-id="light" data-default-tab="html,result" data-user="chriscoyier"
+        data-slug-hash="ebing"
+        style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;"
+        data-pen-title="Centering Row of Blocks">
+        <span>See the Pen <a href="https://codepen.io/chriscoyier/pen/ebing">
+                Centering Row of Blocks</a> by Chris Coyier (<a href="https://codepen.io/chriscoyier">@chriscoyier</a>)
+            on <a href="https://codepen.io">CodePen</a>.</span>
+    </p>
+    <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+    <hr>
+    <hr>
+
+    <h3>Horizontal Centering Inline or Inline-flex, Inline-table,inline-block Element like text ,anchor, span, li, p
+        inside block level element</h3>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <xmp class="prettyprint">
+                .center-children {
+                text-align: center;
+                }
+            </xmp>
+        </div>
+
+        <div class="col-lg-6">
+            <p class="codepen" data-height="265" data-theme-id="light" data-default-tab="css,result"
+                data-user="chriscoyier" data-slug-hash="HulzB"
+                style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;"
+                data-pen-title="Centering Inline Elements">
+                <span>See the Pen <a href="https://codepen.io/chriscoyier/pen/HulzB">
+                        Centering Inline Elements</a> by Chris Coyier (<a
+                        href="https://codepen.io/chriscoyier">@chriscoyier</a>)
+                    on <a href="https://codepen.io">CodePen</a>.</span>
+            </p>
+            <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+        </div>
+    </div>
+    </h3>
+</body>
+
+</html>

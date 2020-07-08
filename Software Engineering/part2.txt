@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<p>Extreme Programming :</p>
+<p>It is a lightweight , efficient, low risk, flexible, predictable way to develop software.</p>
+<p>It is agile process of developing software where there may occur rapidly changing requirements of the client.</p>
+<p>The five values of XP are communication, simplicity, feedback, courage, and respect.</p>
+<p>&nbsp;</p>
+<p>System Interaction and Interface</p>
+<p>Human-Computer Interaction</p>
+<p>Human has short term memory, can have high error rates, frustration,less productivity</p>
+<p>&nbsp;</p>
+<p>Interface and Interaction</p>
+<p>Two system elements interact with each other through interface connecting them.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;Behavioural Interaction Design</p>
+<p>Constructional Softwere Design:</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>Interfaces:</p>
+<p>Sees how system interacts with environment.</p>
+</body>
+</html>

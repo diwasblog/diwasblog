@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/bootstrap-grid.css">
+  <link rel="stylesheet" href="css/bootstrap-reboot.css">
+  <link rel="stylesheet" href="css/dracula.css">
+  <link rel="stylesheet" href="css/dracula-prism.css">
+  <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+
+  ========================================================================================
+  1. GO Statement the Batch Separator example
+  <img src="img/go.jpg">
+
+  ==========================================================================================
+  <h3><strong>2. Execute batch of T-Sql statements multiple times in SSMS</strong></h3>
+  <p><span style="font-size: 14pt;">GO statement also has an integer optional parameter, this parameter value signals
+      Sql Server to execute the batch of T-Sql Statement prior to the GO statement to be executed for the specified
+      number of times. Let us understand this with following example:</span></p>
+  <div>
+
+    <pre>
+<code class="language-sql">
+PRINT 'Hello'
+GO 5
+ </code> 
+ </pre>
+
+    Output:
+    <pre>
+<code class="language-sql">
+Beginning execution loop
+Hello
+Hello
+Hello
+Hello
+Hello
+Batch execution completed 5 times.
+
+ </code> 
+ </pre>
+
+    =====================================================================
+    <h3><span style="color: #ff00ff;"><strong>3.T-Sql statements shouldn&rsquo;t be on the same line as that of the GO
+          Statement</strong></span></h3>
+
+    <pre>
+<code class="language-sql">
+GO SELECT 'Basavaraj Biradar'
+ </code> 
+ </pre>
+
+
+    <p><strong>RESULT:</strong></p>
+    <p><span style="color: #ff0000;">A fatal scripting error occurred.</span><br /><span
+        style="color: #ff0000;">Incorrect syntax was encountered while parsing GO.</span></p>
+    <p>To avoid this issue, we can re-write the above example as below:</p>
+    <div>
+
+      <pre>
+<code class="language-sql">
+GO
+SELECT 'Basavaraj Biradar'
+ </code> 
+ </pre>
+
+
+      ==========================================
+      <h3><span style="color: #ff00ff;"><strong>4.GO statement can&rsquo;t be part of the definition of the Stored
+            Procedure, Function, View etc</strong></span></h3>
+      <p><span style="font-size: 14pt;">We can&rsquo;t add a GO statement in the definition of the Stored
+          Procedure/Function/View etc</span></p>
+      <div>&nbsp;</div>
+
+
+      <div class="row">
+        <div class="col-lg-6">
+          <h2>Error Code</h2>h2>
+
+          <pre>
+<code class="language-sql">
+CREATE PROCEDURE GOStatementDemo
+AS
+BEGIN
+    SELECT 'Basavaraj Biradar'
+    GO  
+    SELECT 'Shreeganesh Biradar'
+END
+ </code> 
+ </pre>
+
+          <p><span style="color: #ff0000;">Msg 102, Level 15, State 1, Procedure GOStatementDemo, Line 4 [Batch Start
+              Line 0]</span><br /><span style="color: #ff0000;">Incorrect syntax near &lsquo;Basavaraj
+              Biradar&rsquo;.</span><br /><span style="color: #ff0000;">Msg 102, Level 15, State 1, Line
+              7</span><br /><span style="color: #ff0000;">Incorrect syntax near &lsquo;END&rsquo;.</span></p>
+        </div>
+
+        <div class="col-lg-6">
+          <h2>Solution Code</h2>h2>
+
+          <pre>
+<code class="language-sql">
+CREATE PROCEDURE GOStatementDemo
+AS
+BEGIN
+    SELECT 'Basavaraj Biradar'
+
+    SELECT 'Shreeganesh Biradar'
+END
+    GO  
+ </code> 
+ </pre>
+        </div>
+      </div>
+      ====================================================================================
+      <pre
+        class="prettyprint lang-sql prettyprinted"><span class="kwd"><br /><strong><span style="font-size: 18pt; color: #ff00ff;">Use Of Split</span></strong><br /><br />SELECT</span><span class="pln"> * </span><span class="kwd">FROM</span><span class="pln"> STRING_SPLIT</span><span class="pun">(</span><span class="str">'John,Jeremy,Jack'</span><span class="pun">,</span><span class="str">','</span><span class="pun">)</span></pre>
+
+
+      <pre>
+<code class="language-sql">
+STRING_SPLIT ( string , separator )  
+ </code> 
+ </pre>
+
+      string is an expression of characters with char, nchar, varchar or nvarchar data types.
+      The separator is a single character that will be used to separate the concatenated input string, with char, nchar,
+      varchar or nvarchar data types.
+
+      To work with this split function we need SQL Server 2016 and above or should have database compatibility level is
+      130
+
+
+      <div class="row">
+        <div class="col-lg-6">
+          <pre>
+      <code class="language-sql">
+         SELECT * FROM STRING_SPLIT('Ramesh ,Shyam,Diwas',',')
+       </code> 
+       </pre>
+        </div>
+
+        <div class="col-lg-6">
+          <table style="height: 185px; width: 14.1935%; border-collapse: collapse;" border="1">
+            <tbody>
+              <tr style="height: 49px;">
+                <td style="width: 50%; height: 49px;">&nbsp;</td>
+                <td style="width: 50%; height: 49px;">value</td>
+              </tr>
+              <tr style="height: 49px;">
+                <td style="width: 50%; height: 49px;">1</td>
+                <td style="width: 50%; height: 49px;">Ramesh</td>
+              </tr>
+              <tr>
+                <td style="width: 50%;">2</td>
+                <td style="width: 50%;">Shyam</td>
+              </tr>
+              <tr style="height: 49px;">
+                <td style="width: 50%; height: 49px;">3</td>
+                <td style="width: 50%; height: 49px;">Diwas</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      =======================================================================
+      <h2><strong><span style="color: #ff00ff;">WHERE Clause with the STRING_SPLIT Function</span></strong></h2>
+      <div class="row">
+        <div class="col-lg-8">
+          <pre>
+      <code class="language-sql">
+         SELECT * FROM STRING_SPLIT('Ramesh ,Shyam,Diwas',',')   ORDER BY value asc
+       </code> 
+       </pre>
+        </div>
+
+        <div class="col-lg-4">
+          <table style="height: 185px; width: 14.1935%; border-collapse: collapse;" border="1">
+            <tbody>
+              <tr style="height: 49px;">
+                <td style="width: 50%; height: 49px;">&nbsp;</td>
+                <td style="width: 50%; height: 49px;">value</td>
+              </tr>
+              <tr style="height: 49px;">
+                <td style="width: 50%; height: 49px;">1</td>
+                <td style="width: 50%; height: 49px;">Ramesh</td>
+              </tr>
+              <tr>
+                <td style="width: 50%;">2</td>
+                <td style="width: 50%;">Shyam</td>
+              </tr>
+              <tr style="height: 49px;">
+                <td style="width: 50%; height: 49px;">3</td>
+                <td style="width: 50%; height: 49px;">Diwas</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      ====================================================
+
+
+      <h2><strong><span style="color: #ff00ff;">WHERE Clause with the STRING_SPLIT Function</span></strong></h2>
+
+
+      <div class="row">
+        <div class="col-lg-8">
+          <pre>
+      <code class="language-sql">
+        DECLARE @String VARCHAR(50) = 'Ramesh:Shyam:Diwas'
+        DECLARE  @Delimiter CHAR(1) =':' // Note only single character for separater
+        SELECT * FROM STRING_SPLIT(@String,@Delimiter)
+       </code> 
+       </pre>
+        </div>
+
+        <div class="col-lg-4">
+          <table style="height: 185px; width: 14.1935%; border-collapse: collapse;" border="1">
+            <tbody>
+              <tr style="height: 49px;">
+                <td style="width: 50%; height: 49px;">&nbsp;</td>
+                <td style="width: 50%; height: 49px;">value</td>
+              </tr>
+              <tr style="height: 49px;">
+                <td style="width: 50%; height: 49px;">1</td>
+                <td style="width: 50%; height: 49px;">Ramesh</td>
+              </tr>
+              <tr>
+                <td style="width: 50%;">2</td>
+                <td style="width: 50%;">Shyam</td>
+              </tr>
+              <tr style="height: 49px;">
+                <td style="width: 50%; height: 49px;">3</td>
+                <td style="width: 50%; height: 49px;">Diwas</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+      ====================================================
+
+      <h2><strong><span style="color: #ff00ff;">NULL Separator for STRING_SPLIT Function</span></strong></h2>
+
+
+      <div class="row">
+        <div class="col-lg-8">
+          <pre>
+      <code class="language-sql">
+        DECLARE @String VARCHAR(50) = 'Ramesh,Shyam,Diwas', @Delimiter CHAR(1) = NULL
+        SELECT * FROM STRING_SPLIT(@String,@Delimiter)
+       </code> 
+       </pre>
+        </div>
+
+        <div class="col-lg-4">
+          <h2><strong><span style="color: #ff0000; font-size: 12pt;">&nbsp;Separator cannot be null. Should be
+                nvarchar(1) and nchar(1)</span></strong></h2>
+        </div>
+      </div>
+
+
+
+      ======================================================================================
+      <h2><strong><span style="color: #ff00ff;">NULL String for STRING_SPLIT Function</span></strong></h2>
+
+
+      <div class="row">
+        <div class="col-lg-8">
+          <pre>
+      <code class="language-sql">
+        DECLARE @String VARCHAR(50) = NULL, @Delimiter CHAR(1) =','
+        SELECT * FROM STRING_SPLIT(@String,@Delimiter)
+       </code> 
+       </pre>
+        </div>
+
+        <div class="col-lg-4">
+          <table style="border-collapse: collapse; width: 11.3326%; height: 43px;" border="1">
+            <tbody>
+              <tr style="height: 33px;">
+                <td style="width: 50%; height: 33px;">&nbsp;</td>
+                <td style="width: 50%; height: 33px;">value</td>
+              </tr>
+              <tr style="height: 10px;">
+                <td style="width: 50%; height: 10px;">&nbsp;</td>
+                <td style="width: 50%; height: 10px;">&nbsp;</td>
+              </tr>
+            </tbody>
+          </table>
+          Empty
+        </div>
+      </div>
+
+      ====================================================================
+
+      <h2><strong><span style="color: #ff00ff;">If no value is specified after the delimiter </span></strong></h2>
+
+
+      <div class="row">
+        <div class="col-lg-8">
+          <pre>
+      <code class="language-sql">
+        DECLARE @String VARCHAR(50) = 'Ramesh,Diwas,', @Delimiter CHAR(1) =','
+        SELECT * FROM STRING_SPLIT(@String,@Delimiter)
+       </code> 
+       </pre>
+        </div>
+
+        <div class="col-lg-4">
+          <table style="border-collapse: collapse; width: 11.3326%; height: 43px;" border="1">
+            <tbody>
+              <tr style="height:5px;">
+                <td style="width: 50%; height: 33px;">&nbsp;</td>
+                <td style="width: 50%; height: 33px;">value</td>
+              </tr>
+              <tr style="height: 5px;">
+                <td style="width: 50%; height: 10px;">&nbsp;</td>
+                <td style="width: 50%; height: 10px;">Ramesh</td>
+              </tr>
+
+              <tr style="height: 5px;">
+                <td style="width: 50%; height: 10px;">&nbsp;</td>
+                <td style="width: 50%; height: 10px;">Diwas</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      =========================================================================
+
+      <h2>Join in Tag</h2>
+
+      <div class="row">
+
+        <div class="col-lg-6">
+          <h2>Post Table</h2>
+          <table>
+            <tbody>
+              <tr style="background-color: gray; color: white;">
+                <td>Id</td>
+                <td>Name</td>
+                <td>Description</td>
+                <td>Tag</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>Hacking</td>
+                <td>AAA</td>
+                <td>1,2</td>
+              </tr>
+              <tr style="height: 50px;">
+                <td style="height: 50px; width: 467px;">2</td>
+                <td style="height: 50px; width: 467px;">Programming</td>
+                <td style="height: 50px; width: 467px;">BBB</td>
+                <td style="height: 50px; width: 467px;">2,4</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-lg-6">
+          <h2>Tag Table</h2>
+          <table>
+            <tbody>
+              <tr style="background-color: gray; color: white;height:50px">
+                <td>Id</td>
+                <td>Name</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>A</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>B</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>C</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>D</td>
+              </tr>
+              <tr style="height: 50px;">
+                <td style="height: 50px; width: 467px;">5</td>
+                <td style="height: 50px; width: 468px;">E</td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+      Getting ID and name of tag of post id=1
+      <div class="row">
+        <div class="col-lg-6">
+          <pre>
+    <code class="language-sql">
+      SELECT t.Name,t.Id FROM dbo.post as p 
+      outer apply STRING_SPLIT(p.[Tag], ',') s
+      left join dbo.tag as t on t.Id=s.value
+      where p.Id=1
+    </code>
+  </pre>
+        </div>
+        <div class="col-lg-6">
+          <table border="1">
+            <tbody>
+              <tr style="background-color: gray; color: white;">
+                <td>Name</td>
+                <td>Id</td>
+              </tr>
+              <tr style="height: 49px;">
+                <td style="width: 50%; height: 49px;">A</td>
+                <td style="width: 50%; height: 49px;">1</td>
+              </tr>
+              <tr style="height: 49px;">
+                <td style="width: 50%; height: 49px;">B</td>
+                <td style="width: 50%; height: 49px;">2</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      ===================================================================
+      <h2>String_split doesnot work for single value</h2>
+      eg: a, b,c, d, === > will works
+      a === > won't work so use this:
+
+
+      <pre>
+        <code class="language-sql">
+          select value
+          from string_split('A,B,C,D,',',')
+          WHERE value <> ''
+        </code>
+      </pre>
+
+
+      <pre>
+        <code class="language-sql">
+          select value
+          from string_split('A',',')
+          WHERE value <> ''
+        </code>
+      </pre>
+      <script src="js/prism.js"></script>
+      <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+          {
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true,
+            // 'break-lines': 10,
+            // 'indent': 2,
+            // 'remove-initial-line-feed': false,
+            // 'tabs-to-spaces': 4,
+            // 'spaces-to-tabs': 4
+          });
+      </script>
+</body>
+
+</html>

@@ -1,0 +1,222 @@
+<html>
+<head>
+	<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+	<!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+  <script src="https://unpkg.com/vue"></script>
+</head>
+
+<body>
+	<ol>
+		<li>
+		<p><span style="color: #008000;"><strong>Component are <span style="color: #ff0000;">reusable Vue instances with a name.</span></strong></span></p>
+		</li>
+		<li><span style="color: #008000;"><strong>Since components are reusable Vue instances,they accept same options as new Vue such as <span style="color: #ff0000;">data, computed, methods and watch and lifecycle hook.</span></strong></span></li>
+		<br>
+		<li><span style="color: #ff0000;"><strong>Only component donot have is el element</strong></span></li>
+		</ol>
+
+
+		<p><span style="font-size: 18pt; color: #ff0000;"><strong>1 Use of Component</strong></span></p>
+	
+		<div id="components-demo">
+			<button-counter></button-counter>
+		</div>
+
+	</xmp>
+
+
+		<script>
+		Vue.component('button-counter', {
+			data: function () {
+				return {
+					count: 0
+				}
+			},
+			template: '<button v-on:click="count += 1">You clicked me {{ count }} times.</button>'
+		})
+		new Vue({ el: '#components-demo' })
+		</script>
+
+
+<xmp class="prettyprint">
+<div id="components-demo">
+	<button-counter></button-counter>
+</div>
+
+</xmp>
+
+<xmp class="prettyprint">
+<script>
+Vue.component('button-counter', {
+	data: function () {
+		return {
+			count: 0
+		}
+	},
+	template: '<button @click="count += 1">You clicked me {{ count }} times.</button>'
+})
+new Vue({ el: '#components-demo' })
+</script>
+</xmp>
+
+
+<p><span style="font-size: 18pt; color: #ff0000;"><strong>Reusable Component</strong></span></p>
+<p><span style="font-size: 12pt;"><strong><span style="color: #000000;">Notice that when clicking on the buttons, each one maintains its own, separate&nbsp;<code>count</code>. </span></strong></span></p>
+<p><span style="font-size: 12pt;"><strong><span style="color: #000000;">That&rsquo;s because each time you use a component, a new&nbsp;instance&nbsp;of it is created.</span></strong></span></p>
+
+<div id="components-demo2" >
+  <button-counter></button-counter>
+  <button-counter></button-counter>
+  <button-counter></button-counter>
+</div>
+<script>
+	Vue.component('button-counter', {
+	data: function () {
+		return {
+			count: 0
+		}
+	},
+	template: '<button @click="count += 1">You clicked me {{ count }} times.</button>'
+})
+new Vue({ el: '#components-demo2' })
+</script>
+
+
+<xmp class="prettyprint">
+		<div id="components-demo2" >
+		<button-counter></button-counter> <!--using component < button-counter >  =>new instance of its is created. so separate copy of count for this buttoncounter-->
+		<button-counter></button-counter> <!--using component < button-counter >  =>new instance of its is created. so separate copy of count for this buttoncounter-->
+		<button-counter></button-counter> <!--using component < button-counter >  =>new instance of its is created. so separate copy of count for this buttoncounter-->
+	</div>
+</xmp>
+
+<xmp class="prettyprint">
+		<script>
+				Vue.component('button-counter', {
+				data: function () {
+					return {
+						count: 0
+					}
+				},
+				template: '<button @click="count += 1">You clicked me {{ count }} times.</button>'
+			})
+			new Vue({ el: '#components-demo2' })
+			</script>
+</xmp>
+
+
+<p><span style="font-size: 18pt; color: #ff0000;"><strong>Data must be function </strong></span></p>
+
+Otherwise all of them uses same value .look as below
+
+<div id="components-demo3">
+  <button-counter2></button-counter2>  <!--uses same count -->
+  <button-counter2></button-counter2>    <!--uses same count -->
+  <button-counter2></button-counter2>    <!--uses same count -->
+</div>
+<script>
+var buttonCounter2Data = {   //global defining so all uses same count 
+  count: 0
+}
+Vue.component('button-counter2', {
+  data: function () {
+    return buttonCounter2Data
+  },
+  template: '<button @click="count++">You clicked me {{ count }} times.</button>'
+})
+new Vue({ el: '#components-demo3' })
+</script>
+
+
+
+<xmp class="prettyprint">
+		<div id="components-demo3">
+				<button-counter2></button-counter2>  <!--uses same count -->
+				<button-counter2></button-counter2>    <!--uses same count -->
+				<button-counter2></button-counter2>    <!--uses same count -->
+			</div>	
+</xmp>
+
+<xmp class="prettyprint">
+			<script>
+			var buttonCounter2Data = {   //global defining so all uses same count 
+				count: 0
+			}
+			Vue.component('button-counter2', {
+				data: function () {
+					return buttonCounter2Data
+				},
+				template: '<button @click="count++">You clicked me {{ count }} times.</button>'
+			})
+			new Vue({ el: '#components-demo3' })
+			</script>
+</xmp>
+
+<p><span style="font-size: 18pt; color: #ff0000;"><strong>Showing two vue instance create separate copy of component </strong></span></p>
+
+<div id="components-app1">
+	 <greeting></greeting>
+	</div>
+
+	<div id="components-app2">
+			<greeting></greeting>
+		 </div>
+	<script>
+	
+	Vue.component('greeting', {
+		data: function () {
+			return {name:'Diwas'}
+		},
+		methods:{
+			changeName:function()
+			{
+				this.name="Hari";
+			}
+		},
+		template: '<p>Hey there, I am {{name}} .<button @click="changeName">ChangeName</button></p>'
+	})
+
+	new Vue({ el: '#components-app1' })
+
+	new Vue({ el: '#components-app2' })
+	</script>
+
+
+
+<xmp class="prettyprint">
+		<div id="components-app1">
+				<greeting></greeting>
+		</div>
+		 
+		<div id="components-app2">
+				<greeting></greeting>
+		</div>
+</xmp>
+
+<xmp class="prettyprint">
+<script>
+	Vue.component('greeting', {
+			data: function() {
+					return {
+							name: 'Diwas'
+					}
+			},
+			methods: {
+					changeName: function() {
+							this.name = "Hari";
+					}
+			},
+			template: '<p>Hey there, I am {{name}} .<button @click="changeName">ChangeName</button></p>'
+	})
+
+	new Vue({
+			el: '#components-app1'
+	})
+
+	new Vue({
+			el: '#components-app2'
+	})
+</script>
+</xmp>
+</body>
+</html>

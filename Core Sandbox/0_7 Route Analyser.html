@@ -1,0 +1,51 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+
+  <h2>Install Route Analyser Via Nuget Package</h2>
+  ==================================================================================
+
+  <h2>Step2: Setup in Startup.cs Files as below</h2>
+
+  <xmp class="prettyprint">
+    public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddRouteAnalyzer();  //add here after mvc
+        }
+  </xmp>
+=====================================================================================
+  Step 3: In Configure Method At the top of all route setting add MapRouteAnalyser as below
+  <xmp class="prettyprint">
+    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+    {
+app.UseMvc(routes =>
+        {
+            routes.MapRouteAnalyzer("/routes"); // Add Here
+            routes.MapRoute(
+             name: "areaRoute",
+             template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+            routes.MapRoute(
+                name: "default",
+                template: "{controller=Home}/{action=Index}/{id?}");
+        });
+}
+  </xmp>
+</body>
+</html>

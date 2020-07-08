@@ -1,0 +1,117 @@
+-- FUNCTION: transactions.get_ibt_settlement(integer, date)
+
+-- DROP FUNCTION transactions.get_ibt_settlement(integer, date);
+
+CREATE OR REPLACE FUNCTION transactions.get_ibt_settlement(
+	office_id_ integer,
+	till_ date)
+    RETURNS TABLE(sn integer, local_oid integer, local_office character varying, remote_oid integer, remote_office character varying, local_receivable_gl bigint, local_receivable money, local_payable_gl bigint, local_payable money, remote_receivable_gl bigint, remote_receivable money, remote_payable_gl bigint, remote_payable money, diff money) 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+
+BEGIN
+    CREATE TEMP TABLE _ibt(
+        id                      SERIAL NOT NULL,
+        local_oid               int,
+        remote_oid              int,
+        local_office            character varying(100),
+        remote_office           character varying(100),
+        local_receivable_gl	bigint,
+        local_receivable        money,
+        local_payable_gl	bigint,
+        local_payable           money,
+        remote_receivable_gl	bigint,
+        remote_receivable       money,
+        remote_payable_gl	bigint,
+        remote_payable          money,
+        diff                    money
+    )ON COMMIT DROP;
+
+    INSERT INTO _ibt(local_oid, remote_oid, local_receivable_gl, local_payable_gl)
+    SELECT t.local_office_id, t.remote_office_id, t.remote_receivable_gl_account_id, t.remote_payable_gl_account_id
+    FROM core.ibt_setup t
+    WHERE t.local_office_id = $1 
+    UNION
+    SELECT t.remote_office_id, t.local_office_id, t.local_receivable_gl_account_id, t.local_payable_gl_account_id
+    FROM core.ibt_setup t
+    WHERE remote_office_id = $1;
+
+    UPDATE _ibt SET local_payable = t.bal
+    FROM 
+    (SELECT m.gl_account_id,SUM(COALESCE(m.credit,'0')) - SUM(COALESCE(m.debit,'0')) bal
+FROM transactions.transactions_view_for_ibt m
+WHERE m.office_id=$1
+AND m.tran_date<=till_	 
+GROUP BY gl_account_id)t
+WHERE _ibt.local_payable_gl = t.gl_account_id
+AND _ibt.local_oid=$1;
+
+    UPDATE _ibt SET local_receivable = t.bal
+    FROM 
+    (SELECT m.gl_account_id,SUM(COALESCE(m.debit,'0')) - SUM(COALESCE(m.credit,'0')) bal
+FROM transactions.transactions_view_for_ibt m
+WHERE m.office_id=$1
+AND m.tran_date<=till_	 
+GROUP BY gl_account_id)t
+WHERE _ibt.local_receivable_gl = t.gl_account_id
+AND _ibt.local_oid=$1;
+
+	UPDATE _ibt SET remote_receivable_gl = s.remote_receivable_gl_account_id
+	FROM core.ibt_setup s
+	WHERE remote_office_id = $1;
+
+	UPDATE _ibt SET remote_payable_gl = s.remote_payable_gl_account_id
+	FROM core.ibt_setup s
+	WHERE remote_office_id = $1;
+
+UPDATE _ibt SET remote_receivable = t.bal
+    FROM 
+    (SELECT m.office_id, m.gl_account_id, SUM(COALESCE(m.debit,'0')) - SUM(COALESCE(m.credit,'0')) bal
+FROM transactions.transactions_view_for_ibt m, _ibt
+WHERE m.office_id=_ibt.remote_oid
+AND m.tran_date<=till_	 
+GROUP BY gl_account_id, m.office_id) t
+WHERE _ibt.remote_receivable_gl = t.gl_account_id
+AND _ibt.remote_oid = t.office_id;
+
+UPDATE _ibt SET remote_payable = t.bal
+    FROM 
+    (SELECT m.office_id, m.gl_account_id, SUM(COALESCE(m.credit,'0')) - SUM(COALESCE(m.debit,'0')) bal
+FROM transactions.transactions_view_for_ibt m, _ibt
+WHERE m.office_id=_ibt.remote_oid
+AND m.tran_date<=till_
+GROUP BY gl_account_id, m.office_id) t
+WHERE _ibt.remote_payable_gl = t.gl_account_id
+AND _ibt.remote_oid = t.office_id;
+
+    
+
+    UPDATE _ibt SET diff = (_ibt.local_receivable - _ibt.remote_payable) - (_ibt.local_payable - _ibt.remote_receivable);
+
+    UPDATE _ibt SET remote_office = f.nick_name
+    FROM office.offices f WHERE _ibt.remote_oid = f.office_id;
+
+    UPDATE _ibt SET local_office = f.nick_name
+    FROM office.offices f WHERE _ibt.local_oid = f.office_id;
+    
+
+    INSERT INTO _ibt(remote_office, local_receivable, local_payable, remote_receivable, remote_payable, diff)
+    SELECT '    Total', SUM(COALESCE(_ibt.local_receivable,0::money)), SUM(COALESCE(_ibt.local_payable,0::money)), SUM(COALESCE(_ibt.remote_receivable,0::money)), 
+    SUM(COALESCE(_ibt.remote_payable,0::money)), SUM(COALESCE(_ibt.diff,0::money)) FROM _ibt;
+
+    
+    RETURN QUERY(
+        SELECT _ibt.id,_ibt.local_oid,_ibt.local_office,_ibt.remote_oid,_ibt.remote_office, _ibt.local_receivable_gl,_ibt.local_receivable, _ibt.local_payable_gl,_ibt.local_payable, _ibt.remote_receivable_gl,_ibt.remote_receivable, _ibt.remote_payable_gl,_ibt.remote_payable, 
+        _ibt.diff FROM _ibt ORDER BY _ibt.remote_oid
+    );
+    
+END
+
+$BODY$;
+
+ALTER FUNCTION transactions.get_ibt_settlement(integer, date)
+    OWNER TO postgres;

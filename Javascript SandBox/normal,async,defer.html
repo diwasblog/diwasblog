@@ -1,0 +1,65 @@
+<html>
+  <head> </head>
+  <body>
+    <img src="https://i.ibb.co/jMr7FCh/normal-defer-and-aysnc.jpg" />
+
+    <h2><strong>Normal</strong></h2>
+    <p>
+      <span style="font-size: 18pt;"
+        >The first document started to parse from HTML tag, go down serially and
+        when &lt;script&gt; tag is found then parsing gets stopped and js is
+        downloaded and then executed then parsing of HTML continues again.</span
+      >
+    </p>
+    <img src="https://i.ibb.co/r3kCBch/normal-execution.jpg" />
+    <hr />
+    <h2><strong>Async</strong></h2>
+    <p>
+      <span style="font-size: 18pt;"
+        ><span style="color: #e03e2d;"
+          ><strong
+            >When js is found parsing HTML will continue up to js
+            downloaded</strong
+          ></span
+        >
+        and then js is executed (other gets stopped), then again parsing of HTML
+        continued.</span
+      >
+    </p>
+    <img src="https://i.ibb.co/VBTcyjJ/async-execution1.jpg" />
+    <img src="https://i.ibb.co/QdBKj0t/async-execution-2.jpg" />
+    <hr />
+    <h2><strong>Defer</strong></h2>
+    <p>
+      <span style="font-size: 18pt;"
+        >When js is found, parsing and downloading of js continue and
+        <span style="color: #e03e2d;"
+          ><strong
+            >when all HTML is parsed completely then only the javascript gets
+            executed.</strong
+          ></span
+        ></span
+      >
+    </p>
+    <img src="https://i.ibb.co/991LpM4/defer-execution.jpg" />
+    <hr />
+    <h2>
+      Note here: In above example we are loading js at end of head section, and
+      defer works best for executing js after html parse, also if there are
+      numerous js then also it load js in order manner.
+    </h2>
+    <h3>
+      So, putting js with defer tag at head section is equivalent to loading js
+      at end of body tag because when js is put at end of body tag then all html
+      parsing will be completed then js gets executed .
+    </h3>
+
+    <p>
+      <strong
+        >Note that if we have an image on the page then parsing HTML has no
+        effect of the image, image download will follow own path and does no
+        effect on parsing of html.</strong
+      >
+    </p>
+  </body>
+</html>

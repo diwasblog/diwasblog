@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+
+  <body>
+
+Browser Have its own Style 
+
+All browsers basic styling to HTML  in Margin, Padding, Font size , underlining links. 
+
+
+============================================================================
+<pre class="">
+    <code class="language-css">
+        &lt;div class="module">
+            &lt;h2 class="module-header">
+            &lt;/h2>
+            &lt;div class="module-content">
+            &lt;/div>
+          &lt;/div>
+    </code>
+  </pre>  
+
+  ========================================================================
+<h2>Donot use camel case</h2>
+<pre class="">
+    <code class="language-css">
+        .navToOneModuleICreated { //avoid
+          font-size:2em;
+        }
+        /* versus */
+        .nav-to-one-module-i-created { //use
+          font-size:2em;
+        }
+    </code>
+  </pre> 
+
+ ==================================================================
+ <h3>Preferably use HTML tags to describe the content.</h3>
+
+<div class="row">
+  <div class="col">
+    Use it
+    <pre>
+        <code class="language-html">
+           &lt;h1 class="content-heading">I'm a heading&lt;/h1>
+        </code>
+      </pre>
+  </div>
+
+  <div class="col">
+    don't use
+     <pre>
+       <code class="language-html">
+          &lt;span class="content-heading">I'm a heading&lt;/span>
+       </code>
+     </pre>
+    </div>
+</div>
+=====================================================================================================================================
+
+<div class="row">
+    <div class="col">
+      Use it
+      <pre>
+          <code class="language-html">
+            //donot use
+              .redBox {
+                border: 1px solid red;
+              }
+          </code>
+        </pre>
+    </div>
+  
+    <div class="col">
+      don't use
+       <pre>
+         <code class="language-html">
+           //use
+            .red-Box {
+              border: 1px solid red;
+            }
+         </code>
+       </pre>
+      </div>
+  </div>
+
+    <script src="js/prism.js"></script>
+    <script type="text/javascript">
+      Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+          'remove-trailing': true,
+          'remove-indent': true,
+          'left-trim': true,
+          'right-trim': true,
+          // 'break-lines': 10,
+          // 'indent': 2,
+          // 'remove-initial-line-feed': false,
+          // 'tabs-to-spaces': 4,
+          // 'spaces-to-tabs': 4
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,221 @@
+-- FUNCTION: deposit.collector_account_op_count(date, date, integer)
+
+-- DROP FUNCTION deposit.collector_account_op_count(date, date, integer);
+
+
+
+CREATE OR REPLACE FUNCTION deposit.collector_account_op_count(
+	from_ date,
+	to_ date,
+	office_id_ integer)
+    --RETURNS TABLE(office_id integer, collector_id integer, collector_name character varying, rs_50_new_ac integer, rs_50_old_ac integer, rs_100_new_ac integer, rs_100_old_ac integer, fty_chargeble integer, hndrd_chargeble integer, total_ac_open  int) 
+	RETURNS TABLE(office_id integer, collector_id integer, collector_name character varying,  fty_chargeble integer, hndrd_chargeble integer, total_ac_open  int, total_commission numeric ) 
+    
+	LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+
+--SELECT * FROM deposit.collector_account_op_count('2019-01-01'::date, '2019-01-29'::date,0)
+
+BEGIN
+	CREATE TEMP TABLE _t(
+    id                  SERIAL,
+    office_id           int,
+    collector_id		int,
+    customer_id         bigint,
+	cust_entry_date		date,
+    ac_creation_date	date,		
+    account_number      character varying(50),
+    customer_name       text,
+    permanent_address   text,
+    contact_number      text,
+    collector_name      character varying(150),
+	deposit_product_id	int,
+    product_name        character varying(150),
+	fty_rs_new			int,
+	fty_rs_old			int,
+	hndrd_rs_new		int,
+	hndrd_rs_old		int,
+	fty_chargeble		boolean NOT NULL DEFAULT false,
+	hndrd_chargeble		boolean NOT NULL DEFAULT false,
+	new_ac				boolean NOT NULL DEFAULT false
+    ) ON COMMIT DROP;
+		
+	CREATE TEMP TABLE _r(office_id   int,
+						 collector_id int,
+						 collector_name character varying,
+						fty_rs_new	  int, 
+						fty_rs_old	  int,
+						hndrd_rs_new  int,
+						hndrd_rs_old   int,
+						fty_chargeble	int,
+						hndrd_chargeble	int,
+						total_ac_open	int,
+						total_commission numeric) ON COMMIT DROP;
+						
+	CREATE TEMP TABLE _a(collector_id int,
+						cust_id	  int,
+						fty_chargeble	int NOT NULL DEFAULT 0,
+						hndrd_chargeble	int NOT NULL DEFAULT 0) ON COMMIT DROP;
+						
+
+	IF office_id_>0 THEN
+	INSERT INTO _t(office_id, collector_id, cust_entry_date,ac_creation_date, customer_id, account_number , collector_name, deposit_product_id,product_name)
+	SELECT ac.office_id,
+	co.collector_id, 
+	c.date_of_application,
+	ac.account_open_date, 
+	ac.customer_id ,            
+	ac.account_number,   
+	co.collector_name,
+	p.deposit_product_id,
+	p.deposit_product_name 
+FROM deposit.account_holders ac INNER JOIN core.customers_view c ON ac.customer_id = c.customer_id               
+INNER JOIN core.deposit_products p ON ac.deposit_product_id = p.deposit_product_id                  
+JOIN office.collectors co ON ac.collector_id = co.collector_id
+WHERE ac.creation_date between from_ and to_
+--AND co.collector_id = collector_id_
+AND ac.office_id = office_id_ ;
+
+	UPDATE _t SET new_ac = true WHERE _t.cust_entry_date BETWEEN from_ AND to_;
+
+
+
+	INSERT INTO _r(office_id, collector_id, collector_name)
+	SELECT c.office_id, c.collector_id, c.collector_name FROM office.collectors c WHERE c.office_id = office_id_ ORDER BY c.collector_id;
+
+ELSE 
+	INSERT INTO _t(office_id, collector_id, cust_entry_date,ac_creation_date, customer_id, account_number , collector_name, deposit_product_id, product_name)
+	SELECT ac.office_id,
+	co.collector_id, 
+	c.date_of_application,
+	ac.account_open_date, 
+	ac.customer_id ,            
+	ac.account_number,   
+	co.collector_name,
+	p.deposit_product_id,
+	p.deposit_product_name 
+FROM deposit.account_holders ac INNER JOIN core.customers_view c ON ac.customer_id = c.customer_id               
+INNER JOIN core.deposit_products p ON ac.deposit_product_id = p.deposit_product_id                  
+JOIN office.collectors co ON ac.collector_id = co.collector_id
+WHERE ac.creation_date between from_ and to_ ;
+
+	INSERT INTO _r(office_id, collector_id, collector_name)
+	SELECT c.office_id, c.collector_id, c.collector_name FROM office.collectors c ORDER BY c.office_id, c.collector_id;
+
+END IF;
+
+	UPDATE _t SET new_ac = true WHERE _t.cust_entry_date BETWEEN from_ AND to_;
+
+	UPDATE _t SET hndrd_chargeble = true 
+	FROM core.deposit_products p
+	WHERE _t.deposit_product_id = p.deposit_product_id
+	AND p.ac_op_commission=100
+	AND _t.new_ac=true;
+
+	UPDATE _t SET fty_chargeble = true 
+	FROM core.deposit_products p
+	WHERE _t.deposit_product_id = p.deposit_product_id
+	AND p.ac_op_commission=50
+	AND _t.hndrd_chargeble=false
+	AND _t.new_ac=true;
+
+---50 RS
+
+	INSERT INTO _a(cust_id)
+	SELECT DISTINCT(customer_id) FROM _t WHERE _t.new_ac=true;
+	
+	UPDATE _a SET hndrd_chargeble=1
+		FROM (SELECT _t.customer_id, 1,count(*) tot from _t
+		WHERE _t.hndrd_chargeble = true AND _t.new_ac=true
+		GROUP BY _t.customer_id
+		HAVING count(*)>0)a
+WHERE a.customer_id=_a.cust_id;
+
+--50 count
+
+UPDATE _a SET fty_chargeble=1
+		FROM (SELECT _t.customer_id, 1,count(*) tot from _t
+		WHERE _t.fty_chargeble = true AND _t.new_ac=true
+		GROUP BY _t.customer_id
+		HAVING count(*)>0)a
+WHERE a.customer_id=_a.cust_id AND _a.hndrd_chargeble=0;
+
+UPDATE _a SET collector_id = _t.collector_id
+FROM _t
+WHERE _a.cust_id=_t.customer_id;
+
+--UPDATE _r TABLE
+		UPDATE _r SET hndrd_chargeble=r.tot
+		FROM(
+			SELECT _a.collector_id, COUNT(_a.collector_id)tot
+			FROM _a WHERE _a.hndrd_chargeble>0 GROUP by _a.collector_id 
+		)r
+	WHERE r.collector_id = _r.collector_id;
+	
+		UPDATE _r SET fty_chargeble=r.tot
+		FROM(
+			SELECT _a.collector_id, COUNT(_a.collector_id)tot
+			FROM _a WHERE _a.fty_chargeble>0 GROUP by _a.collector_id 
+		)r
+	WHERE r.collector_id = _r.collector_id;
+
+--
+UPDATE _r SET fty_rs_new=a.tot
+		FROM (SELECT _t.collector_id, count(*) tot from _t
+		INNER JOIN core.deposit_products p ON _t.product_name = p.deposit_product_name
+		WHERE p.ac_op_commission = 50
+		AND _t.cust_entry_date  BETWEEN from_ AND to_
+		GROUP BY _t.collector_id)a
+WHERE a.collector_id=_r.collector_id;
+
+
+UPDATE _r SET fty_rs_old=a.tot
+		FROM (SELECT _t.collector_id, count(*) tot from _t
+		INNER JOIN core.deposit_products p ON _t.product_name = p.deposit_product_name
+		WHERE p.ac_op_commission = '50'
+		AND _t.cust_entry_date < from_
+		GROUP BY _t.collector_id)a
+WHERE a.collector_id=_r.collector_id;
+
+
+--SELECT * FROM deposit.collector_account_op_count('2019-01-01'::date, '2019-01-29'::date,0)
+
+---100 RS----------
+	UPDATE _r SET hndrd_rs_new=a.tot
+		FROM (SELECT _t.collector_id, count(_t.collector_id) tot from _t
+		--INNER JOIN core.deposit_products p ON _t.product_name = p.deposit_product_name
+		--WHERE p.ac_op_commission = 100
+		WHERE  _t.new_ac=true--_t.cust_entry_date BETWEEN from_ AND to_ 
+			  AND _t.hndrd_chargeble=true
+		GROUP BY _t.collector_id)a
+	WHERE a.collector_id=_r.collector_id;
+
+	UPDATE _r SET hndrd_rs_old=a.tot
+		FROM (SELECT _t.collector_id, count(*) tot from _t
+		INNER JOIN core.deposit_products p ON _t.product_name = p.deposit_product_name
+		WHERE p.ac_op_commission = 100
+		AND _t.cust_entry_date < from_
+		GROUP BY _t.collector_id)a
+WHERE a.collector_id=_r.collector_id;
+
+UPDATE _r SET total_ac_open=t.tot
+ 		FROM (SELECT _t.collector_id,count(*)tot FROM _t GROUP BY _t.collector_id)t
+WHERE _r.collector_id=t.collector_id;
+DELETE FROM _r WHERE _r.fty_rs_new IS NULL AND _r.fty_rs_old IS NULL AND _r.hndrd_rs_new IS NULL AND _r.hndrd_rs_old IS NULL;
+
+UPDATE _r SET total_commission=( COALESCE(_r.fty_chargeble,0)*50 ) + (COALESCE(_r.hndrd_chargeble,0)*100);
+
+	--RETURN QUERY(SELECT _r.office_id, _r.collector_id,_r.collector_name, _r.fty_rs_new, _r.fty_rs_old, _r.hndrd_rs_new, _r.hndrd_rs_old, _r.fty_chargeble,_r.hndrd_chargeble, _r.total_ac_open FROM  _r ORDER BY _r.office_id, _r.collector_name);
+
+	RETURN QUERY(SELECT _r.office_id, _r.collector_id,_r.collector_name, _r.fty_chargeble,_r.hndrd_chargeble, _r.total_ac_open, _r.total_commission FROM  _r ORDER BY _r.office_id, _r.collector_name);
+
+END
+
+$BODY$;
+
+ALTER FUNCTION deposit.collector_account_op_count(date, date, integer)
+    OWNER TO postgres;

@@ -1,0 +1,35 @@
+
+-- DROP VIEW core.gl_accounts_view_all;
+
+
+CREATE OR REPLACE VIEW core.gl_accounts_view_all AS
+ SELECT a.gl_account_id,
+        CASE
+            WHEN NOT a.is_private THEN 0
+            ELSE a.office_id
+        END AS office_id,
+    a.opening_date::date AS opening_date,
+    a.account_code,
+    a.account_name,
+    a.parent_gl_account_id,
+    p.account_name AS parent_account,
+    a.status,
+    a.address,
+    a.contact,
+    a.gender_id,
+    g.gender_name,
+    a.is_cash,
+    a.is_system,
+    a.is_confidential,
+    a.is_bank_account,
+    a.interest_rate,
+    a.is_group,
+    a.audit_user_id
+   FROM core.gl_accounts a
+     LEFT JOIN core.gl_accounts p ON a.parent_gl_account_id = p.gl_account_id
+     LEFT JOIN core.genders g ON a.gender_id = g.gender_id
+  WHERE a.is_group=false;
+
+ALTER TABLE core.gl_accounts_view_all
+    OWNER TO postgres;
+

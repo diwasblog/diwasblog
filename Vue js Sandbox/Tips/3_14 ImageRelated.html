@@ -1,0 +1,252 @@
+<html>
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+Model
+  <xmp class="prettyprint">
+  
+  public class SliderPhoto{
+    public HttpPostedFileBase SlidePhotoFile{get;set;}
+    public string Name{get;set;}
+  }
+
+  </xmp>
+
+  <div class="row">
+      <div class="col-sm-6">
+            Add
+            <xmp class="prettyprint">
+                [ValidateAntiForgeryToken]
+                [ValidateMenuAccess(MenuCode = 148)]
+                [Route("misc/sliderphoto/add")]
+                [HttpPost]
+                public ActionResult SliderPhotoAdd(SliderPhoto obj)
+                {
+                    if (obj.SliderPhotoFile != null)
+                    {
+                        string ext = Path.GetExtension(obj.SliderPhotoFile.FileName).ToLowerInvariant();
+                        if (ext != ".jpg" && ext != ".png" && ext != ".jpeg" && ext != ".gif")
+                        {
+                            FlashMessage.Danger("The file you are trying to upload do not have valid extension.");
+                            return View(obj);
+                        }
+            
+                        if (obj.SliderPhotoFile.ContentLength > 2097152) //2MB
+                        {
+            
+                            FlashMessage.Danger("The file must be greater than 2MB.");
+                            return View(obj);
+                        }
+                       
+                        Random rand = new Random();
+                        int randNumber = rand.Next(9999, 1000000);
+                        obj.Name = randNumber.ToString() + obj.SliderPhotoFile.FileName.ToLower().Replace(' ', '_');
+                        string path = Server.MapPath("~/areas/bims/photos/slider/");
+                        obj.SliderPhotoFile.SaveAs(Path.Combine(path, obj.Name));
+            
+                        obj.AdminName = User.Identity.Name;
+                        obj.InstitutionId = GetInstitutionId();
+                        _sliderphotoService.Insert(obj);
+                        FlashMessage.Confirmation("The photo has been uploaded");
+                    }
+            
+                    return Redirect("/bims/misc/sliderphoto");
+                }
+            
+            
+            
+            </xmp>
+      </div>
+
+      <div class="col-sm-6">
+            //Edit
+            <xmp class="prettyprint">
+                    [HttpPost]
+                    [ValidateAntiForgeryToken]
+                    public ActionResult SliderPhotoEdit(SliderPhoto obj)
+                    {
+            
+                        var oldPhotoDetails = _sliderphotoService.GetById(obj.Id, GetInstitutionId());
+                        string oldPhotoPath = System.IO.Path.Combine(
+                                  Server.MapPath("~/areas/bims/photos/slider"), oldPhotoDetails.Name);
+                        if (obj.SliderPhotoFile != null)
+                        {
+            
+                            string ext = Path.GetExtension(obj.SliderPhotoFile.FileName).ToLowerInvariant();
+                            if (ext != ".jpg" && ext != ".png" && ext != ".jpeg" && ext != ".gif")
+                            {
+                                FlashMessage.Danger("The file you are trying to upload do not have valid extension.");
+                                return View(obj);
+                            }
+            
+                            if (obj.SliderPhotoFile.ContentLength > 2097152)
+                            {
+            
+                                FlashMessage.Danger("The file must be greater than 2MB.");
+                                return View(obj);
+                            }
+            
+                            if (oldPhotoDetails.Name != obj.SliderPhotoFile.FileName)
+                            {
+                                if (System.IO.File.Exists(oldPhotoPath))
+                                {
+                                    System.IO.File.Delete(oldPhotoPath);
+                                }
+                            }
+            
+                            Random rand = new Random();
+                            int randNumber = rand.Next(9999, 1000000);
+                            obj.Name = randNumber.ToString() + obj.SliderPhotoFile.FileName.ToLower().Replace(' ', '_');
+                            string path = Server.MapPath("~/areas/bims/photos/slider/");
+            
+                            obj.SliderPhotoFile.SaveAs(Path.Combine(path, obj.Name));
+                            
+                        }
+                        else
+                        {
+                            
+                            obj.Name = oldPhotoDetails.Name; 
+                        }
+                        
+                        obj.AdminName = User.Identity.Name;
+                        obj.InstitutionId = GetInstitutionId();
+                        _sliderphotoService.Edit(obj);
+                        FlashMessage.Confirmation("The photo has been Edited");
+                        return Redirect("/bims/misc/sliderphoto/edit/"+obj.Id);
+                    }
+            
+            </xmp>
+        </div>
+  </div>
+
+
+   
+
+
+
+
+//Delete
+<xmp class="prettyprint">
+        [ValidateMenuAccess(MenuCode = 148)]
+        [Route("misc/sliderphoto/delete/{id}")]
+        public ActionResult SliderPhotoDelete(int id)
+        {
+            try
+            {
+                //finding image
+                var oldPhotoDetails = _sliderphotoService.GetById(id, GetInstitutionId());
+                string path = System.IO.Path.Combine(
+                          Server.MapPath("~/areas/bims/photos/slider"), oldPhotoDetails.Name);
+
+                if (System.IO.File.Exists(path))
+                {
+                    System.IO.File.Delete(path);
+                }
+
+                _sliderphotoService.Delete(id, GetInstitutionId());
+                //FlashMessage.Confirmation("The Slider Photo has been Deleted.");
+                return Redirect("/bims/misc/sliderphoto");
+            }
+            catch (Exception ex)
+            {
+                FlashMessage.Danger(ex.Message);
+                return Redirect("/bims/misc/sliderphoto");
+            }
+        }
+</xmp>
+
+<center><h2>Random Number Generator</h2></center>
+<div clas="row">
+<div class="col-lg-6">
+<xmp class="prettyprint">
+Random rand = new Random();
+int randNumber = rand.Next(9999, 1000000);
+obj.Name = randNumber.ToString() + obj.SliderPhotoFile.FileName.ToLower().Replace(' ', '_');    
+</xmp>
+</div>
+====OR====
+<div class="col-lg-6">
+<xmp class="prettyprint">
+
+randomString = Guid.NewGuid().ToString();
+obj.Name=randomString+ obj.SliderPhotoFile.FileName.ToLower().Replace(' ', '_'); 
+</xmp>
+</div>
+</div>    
+
+
+====================================================================================
+<h2>Get File Length</h2>
+
+<xmp class="prettyprint">
+     string path = Server.MapPath("~/areas/bims/photos/slider/");
+       var _lengthOfFile = new FileInfo(path).Length;
+ </xmp>   
+
+
+================================================================================================
+<h2>Resizing Image</h2>
+<xmp class="prettyprint">
+     // resizing image
+MemoryStream ms = new MemoryStream();
+WebImage img = new WebImage(path);
+
+if (img.Width > 200)
+    img.Resize(200, 200);
+img.Save(path);
+        // end resize
+</xmp>   
+
+
+<p><span style="font-size: 18pt;">GUID</span></p>
+<p><span style="font-size: 14pt;">GUID stands for <span style="color: #ff00ff;">Global Unique Identifier.</span></span><br /><br /><span style="font-size: 14pt;">A GUID is a&nbsp;<a href="https://www.c-sharpcorner.com/UploadFile/prasoonk/guids-in-C-Sharp-and-net/FaqsAboutGUID.aspx" target="_blank" rel="noopener">128-bit</a>&nbsp;integer (16 bytesie. 2^128 unique identifier) that you can use across all computers and&nbsp;<a href="https://www.c-sharpcorner.com/UploadFile/prasoonk/guids-in-C-Sharp-and-net/FaqsAboutGUID.aspx" target="_blank" rel="noopener">networks</a>&nbsp;wherever a unique identifier is required.</span></p>
+<p><span style="font-size: 14pt;">We can generate GUID in&nbsp;<a href="https://www.c-sharpcorner.com/UploadFile/prasoonk/guids-in-C-Sharp-and-net/FaqsAboutGUID.aspx" target="_blank" rel="noopener">Sql Server</a>&nbsp;with the help of <span style="color: #ff00ff;">NEWID() function</span></span></p>
+
+
+<h2>Create File if not exists</h2>
+<xmp class="prettyprint">
+if (postedFile != null)
+{
+    string path = Server.MapPath("~/Uploads/");
+    if (!Directory.Exists(path))
+    {
+        Directory.CreateDirectory(path); // creating directory here
+    }
+
+    postedFile.SaveAs(path + Path.GetFileName(postedFile.FileName));
+    ViewBag.Message = "File uploaded successfully.";
+}
+</xmp>    
+
+
+<h2>Supported File </h2>
+<xmp class="prettyprint">
+var supportedTypes = new[] { "jpg", "jpeg", "png" };
+ 
+var fileExt = System.IO.Path.GetExtension(photo.FileName).Substring(1);
+
+if (!supportedTypes.Contains(fileExt))
+{
+    ModelState.AddModelError("photo", "Invalid type. Only the following types (jpg, jpeg, png) are supported.");
+    return View();
+}
+
+</xmp>    
+
+</body>
+</html>

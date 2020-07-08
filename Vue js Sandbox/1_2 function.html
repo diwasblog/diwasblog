@@ -1,0 +1,83 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+
+
+<style>
+xmp.prettyprint{
+    font-size:12pt;
+    font-family:monospace;
+
+}
+</style>
+ 
+</head>
+<body>
+
+<!--######################## Main Code ######################################-->
+<div id='app'>
+<h3>FirstName: {{firstname}} </h3>
+<h3>LastName: {{lastname}} </h3>
+<h2>{{mydetails()}}</h2>
+</div>
+
+<script src="https://unpkg.com/vue"></script>
+
+<script>
+const app=new Vue({
+    el:'#app',
+    data:{
+        firstname:'Diwas',
+        lastname:'Poudel'
+    },
+    methods:{
+      mydetails:function(){
+        return "I am"+ this.firstname+" "+this.lastname;
+      }
+    }
+})
+</script>
+<!--##############################################################-->
+
+
+<!--|#########################DISPLAY############################################-->
+<?prettify linenums=1?>
+<xmp class="prettyprint">
+   <html>
+      <head>
+         <title>Fibonacci number</title>
+      </head>
+      <body>
+         
+         <div id='app'>
+          <h3>FirstName: {{firstname}} </h3>
+          <h3>LastName: {{lastname}} </h3>
+          <h1>{{mydetails()}}</h1>
+        </div>
+        <script src="https://unpkg.com/vue"></script>
+        <script>
+          const app=new Vue({
+            el:'#app',
+            data:{
+              firstname:'Diwas',
+              lastname:'Poudel'
+             },
+          methods:{
+             mydetails:function(){
+              return "I am "+ this.firstname+" "+this.lastname;
+            }
+          }
+        })
+      </script>
+
+      </body>
+   </html>
+</xmp>
+<!--####################################################-->
+
+
+    </body>
+
+</html>

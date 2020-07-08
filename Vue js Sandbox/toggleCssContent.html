@@ -1,0 +1,41 @@
+
+<html>
+  <body>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet"  href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+  
+  .demo{
+    width:100px;
+    height:100px;
+    background-color:green;
+    display:inline-block;
+    margin:10px;
+      }
+
+      .red{
+        background-color:red;
+      }
+</style>
+
+    </head>
+    <body>
+<div id="app">
+<div class="demo" @click="attachRed=!attachRed" :class="{red:attachRed}"></div>
+</div>
+<script src="https://unpkg.com/vue"></script>
+
+<script>
+const app=new Vue({
+  el:'#app',
+  data:{
+    attachRed:false
+  }
+  
+})
+</script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+    font-size:12pt;
+    font-family:monospace;
+
+}
+</style>
+ 
+</head>
+<body>
+
+<p><span style="color: #008000;"><strong>===================================================================================================================</strong></span></p>
+
+<h2>USE OF QUERYSTRING</h2>
+
+<xmp class="prettyprint">
+    <a href='@string.Format("/hrms/report/attendance/employee/{0}?fromDate={1}&toDate={2}", @Model.Id, @Model.FromDate, @Model.ToDate)'>Click Here</a>
+</xmp>
+
+
+This above url will hit this below action 
+
+<xmp class="prettyprint">
+[Route("report/attendance/employee")]
+//or
+//[Route("report/attendance/employee/{fromDate}/{toDate}")]
+public ActionResult AttendaceEmployee(string? fromDate, string? toDate) //? indicate nullable is accepted else nothing
+{
+    .....
+    return View();
+}
+</xmp>
+   
+
+This action will have below view and this view will 
+
+<xmp class="prettyprint">
+@{
+    ViewBag.Title = "Employee Attendance Report";
+    string fromDate = "";
+    string toDate = "";
+
+
+    if(Request.QueryString["FromDate"] != null){
+        fromDate = Request.QueryString["FromDate"].ToString();
+    }
+
+    if (Request.QueryString["ToDate"] != null)
+    {
+        toDate = Request.QueryString["ToDate"].ToString();
+    }
+}
+
+  new Vue({
+      el:'',
+      data:{
+        startDate:'@fromDate',
+        endDate:'@toDate',
+      }
+  })
+</xmp>
+
+<p><span style="color: #008000;"><strong>==================================================================================================================================================</strong></span></p>
+
+
+<h2>QueryString vs RouteValue</h2>
+<p><span style="color: #ff00ff; font-size: 14pt;"><strong>RouteValues are gathered from querystring only if are defined in global.asax.</strong></span></p>
+
+<xmp class="prettyprint">
+routes.MapRoute(
+    "Example", // Route name
+    "{controller}/{action}/{id}/{inRouteValues}", // URL with parameters
+    new { controller = "Home", action = "Index" } // Parameter defaults
+    );
+</xmp>
+will catch inRouteValues from 
+<xmp class="prettyprint">
+    yourdomain/testController/testAction/14/myTestValue   
+</xmp>
+where
+<xmp class="prettyprint">
+ var a=RouteData.Values["inRouteValues"]  //myTestValue
+</xmp>
+But if you will build URL like
+<xmp class="prettyprint">
+ yourdomain/testController/testAction/14?inRouteValues=myTestValue
+</xmp>
+it won't get it
+    <div><span style="font-size: 14pt;"><strong><span style="color: #000000;">So difference is that RouteData.Values will get only values from URLs that match RouteCollectionfrom your global.asax and QueryString will catch every value from your querystring if it matches variable name.</span></strong></span></div>
+
+    <p><strong>In the View of MVC</strong><em><br /></em><em>ViewContext.RouteData.Values["Controller"]<br />ViewContext.RouteData.Values["Action"]</em></p>
+    <p><strong>In the Controller of MVC</strong><br /><em>ControllerContext.RouteData.Values["Controller"]<br />ControllerContext.RouteData.Values["Action"]</em></p>
+    <p><strong>From HttpContext</strong><br /><em>HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();<br />HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString();</em></p>
+
+
+    <hr>
+    <br>
+    ==================================================================================
+</br>
+ <h2>Best Use as</h2>
+
+We have list of data. When clicked on edit of first item of list we pass
+id so controller will receive it as:
+
+ 
+
+<xmp class="prettyprint">
+    [Route("/a/b/{id}")]   //url :localhost:1500/a/b/5
+    public ActionResult Edit(int id){
+    
+    }
+</xmp>
+
+
+ <xmp class="prettyprint">
+     //that id from url is received in view as below
+        @ViewContext.RouteData.Values["Id"]'
+    </xmp>
+
+    <br>
+    =============================================================================
+    <br>
+    <xmp class="prettyprint">
+        
+        [Route("{url}")]
+        public IActionResult GetPostByCategoryUrl(string url, int? page)
+        {
+
+        }
+
+
+        <li class="page-item"><a class="page-link" href="/@Model.PostCategory.FirstOrDefault().CategorySlugUrl?page=@(i+1)">@(i+1)</a></li>
+    </xmp>
+    </body>
+    |</html>

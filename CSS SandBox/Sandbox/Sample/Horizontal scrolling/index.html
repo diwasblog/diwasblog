@@ -1,0 +1,116 @@
+<html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+
+    <style>
+      .ratio-16-9 {
+        position: relative;
+        width: 100%;
+        padding-top: 56.25%;
+        overflow: hidden;
+      }
+
+      .ratio-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        text-align: center;
+        overflow: hidden;
+        background-size: cover;
+        background-position: center center;
+      }
+
+      /* Marquee */
+      .marquee-box {
+        position: relative;
+      }
+
+      .marquee-news {
+        overflow: hidden;
+        background-color: #f1f1f1;
+        padding: 8px;
+        height: 40px;
+      }
+
+      .marquee-title {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        padding: 8px;
+        background-color: #343a40;
+        color: white;
+        z-index: 3;
+      }
+
+      .marquee-title a {
+        color: white;
+        text-decoration: none;
+      }
+
+      .marquee-image {
+        width: 45px;
+        float: left;
+        margin-left: 8px;
+        margin-right: 8px;
+      }
+
+      .marquee .heading-small {
+        margin-right: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <section>
+      <div class="marquee-box">
+        <div class="d-inline marquee-title">
+          <i class="fa fa-cog fa-spin"></i> <a href="#">Trending</a>
+        </div>
+        <div class="d-inline">
+          <div class="marquee marquee-news">
+            <div class="d-inline-block">
+              <div class="marquee-image d-inline-block">
+                <div class="ratio-16-9">
+                  <div
+                    class="ratio-image"
+                    style="background-image: url('http://ourtechroom.com/images/451934nepal.jpg');"
+                  ></div>
+                </div>
+              </div>
+              <span class="tag">Technology</span>
+              <span class="heading-small">
+                <a href="#">Samsung Galaxy A9 : The first quad camera phone</a>
+              </span>
+            </div>
+            <div class="d-inline-block">
+              <div class="marquee-image d-inline-block">
+                <div class="ratio-16-9">
+                  <div
+                    class="ratio-image"
+                    style="background-image: url('http://ourtechroom.com/images/451934nepal.jpg');"
+                  ></div>
+                </div>
+              </div>
+              <span class="tag">Technology</span>
+              <span class="heading-small">
+                <a href="http://ourtechroom.com/images/451934nepal.jpg"
+                  >New Pixel Phones: and Yes, the notch is real (O_O)</a
+                >
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="hit.js"></script>
+  </body>
+</html>

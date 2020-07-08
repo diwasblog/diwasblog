@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <title>Bootstrap Sandbox</title>
+
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+
+
+<style>
+xmp.prettyprint{
+    font-size:12pt;
+    font-family:monospace;
+
+}
+</style>
+</head>
+<body>
+<h2>Simple Css Sliding Under Menu</h2>>
+
+<div class="row">
+  <div class="col-lg-6">
+    <xmp class="prettyprint">
+        <div class="container">
+            <ul>
+              <li class="one"><a href="#">Uno</a></li>
+              <li class="two"><a href="#">Dos</a></li>
+              <li class="three"><a href="#">Tres</a></li>
+              <li class="four"><a href="#">Quatro</a></li>
+              <hr />
+            </ul>
+          </div>
+    </xmp>
+
+
+<p data-height="265" data-theme-id="0" data-slug-hash="bmKRpj" data-default-tab="css,result" data-user="DiwasPoudel" data-pen-title="Simple CSS Sliding Underline Menu" class="codepen">See the Pen <a href="https://codepen.io/DiwasPoudel/pen/bmKRpj/">Simple CSS Sliding Underline Menu</a> by Diwas Poudel (<a href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+  </div>
+
+  <div class="col-lg-6">
+    <xmp class="prettyprint">
+        * {
+          box-sizing: border-box;
+        }
+        
+        body {
+          font: 300 100% 'Helvetica Neue', Helvetica, Arial;
+        }
+        
+        .container {
+          width: 50%;
+          margin: 0 auto;
+        }
+        
+        ul li {
+          display: inline;
+          text-align: center;
+        }
+        
+        a {
+          display: inline-block;
+          width: 25%;
+          padding: .75rem 0;
+          margin: 0;
+          text-decoration: none;
+          color: #333;
+        }
+        
+        .two:hover ~ hr {
+          margin-left: 25%;
+        }
+        
+        .three:hover ~ hr {
+          margin-left: 50%;
+        }
+        
+        .four:hover ~ hr {
+          margin-left: 75%;
+        }
+        
+        hr {
+          height: .25rem;
+          width: 25%;
+          margin: 0;
+          background: tomato;
+          border: none;
+          transition: .3s ease-in-out;
+        }
+    </xmp>
+  </div>
+</div>
+<br>
+=================================================================================================================
+<br>
+
+<div class="row">
+    <div class="col-lg-6">
+      <xmp class="prettyprint">
+          <ul>
+              <li><a href="#">Lorem</a>
+              <li><a href="#">Ipsum</a>
+              <li><a href="#">Dolor sit</a>
+              <li><a href="#">Amet</a></li>
+            </ul>
+      </xmp>
+  
+  
+      <p data-height="265" data-theme-id="0" data-slug-hash="pxKwZz" data-default-tab="css,result" data-user="DiwasPoudel" data-pen-title="Underline Hover Effect" class="codepen">See the Pen <a href="https://codepen.io/DiwasPoudel/pen/pxKwZz/">Underline Hover Effect</a> by Diwas Poudel (<a href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+      <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+    </div>
+  
+    <div class="col-lg-6">
+      <xmp class="prettyprint">
+          @import url(https://fonts.googleapis.com/css?family=Ubuntu:700);
+          body {
+            background-color: #f0f0f0;
+            font-family: 'Ubuntu', sans-serif;
+          }
+          ul {
+            list-style-type: none;
+            margin: 0;
+            text-align: center;
+            margin-top: 10%;
+          }
+          ul li {
+            display: inline-block;
+            margin: 0 20px;
+          }
+          a {
+            font-size: 20px;
+            color: #584e4a;
+            position: relative;
+            text-transform: uppercase;
+            text-decoration: none;
+            padding-bottom: 8px;
+          }
+          a:before, a:after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #f37272;
+          }
+          a:before {
+            opacity: 0;
+            transform: translateY(- 8px);
+            transition: transform 0s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0s;
+          }
+          a:after {
+            opacity: 0;
+            transform: translateY(4px);
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
+          }
+          a:hover:before, a:focus:before, a:hover:after, a:focus:after {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          a:hover:before, a:focus:before {
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
+          }
+          a:hover:after, a:focus:after {
+            transition: transform 0s 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0s 0.2s;
+          }
+          
+      </xmp>
+    </div>
+  </div>
+  
+
+  <br>
+  =========================================================================================================================================
+  <br>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <xmp class="prettyprint">
+          <script type="text/javascript">
+            var timestamp="Saturday, April 19, 2014";if(timestamp!=""){var timesplit=timestamp.split(",");var date_yyyy=timesplit[2];var timesplit=timesplit[1].split(" ");var date_dd=timesplit[2];var date_mmm=timesplit[1].substring(0,3)};</script>
+            
+            <div class="date_holder">
+            <span class="day"><script type="text/javascript">document.write(date_dd);</script></span>
+            <span class="month"><script type="text/javascript">document.write(date_mmm);</script></span>
+            </div>
+      </xmp>
+
+      <p data-height="265" data-theme-id="0" data-slug-hash="NOzvGK" data-default-tab="js,result" data-user="DiwasPoudel" data-pen-title="Date" class="codepen">See the Pen <a href="https://codepen.io/DiwasPoudel/pen/NOzvGK/">Date</a> by Diwas Poudel (<a href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+    </div>
+
+    <div class="col-lg-4">
+        <xmp class="prettyprint">
+            .date_holder {
+              float: left;
+              background: #0088ff;
+              color: #fff;
+              padding: 4px 12px 12px;
+              margin-right: 6px;
+              position: relative;
+              text-align: center;
+          }
+          
+          .date_holder:after {
+              content: "";
+              position: absolute;
+              bottom: 0px;
+              left: 0;
+              width: 1px;
+              height: 1px;
+              border: 24px solid transparent;
+              border-bottom: 8px solid #fff;
+              z-index: 0;
+          }
+          .date_holder .month {
+              display: block;
+              text-transform: uppercase;
+              font-size: 13px;
+              font-weight: 700;
+          }
+          
+          .date_holder .day {
+              display: block;
+              font-size: 20px;
+              margin-bottom: 2px;
+              font-weight: 700;
+          }
+        </xmp>
+      </div>
+  </div>
+<br>
+=========================================================================================================================
+<br>
+<div class="row">
+  <div class="col-lg-6">
+    <xmp class="prettyprint">
+        <div class="numberCircle">
+          <span class="day">19</span>
+          <span class="month">Apr</span>
+        </div>
+    </xmp>
+
+    <p data-height="265" data-theme-id="0" data-slug-hash="KGeXaZ" data-default-tab="css,result" data-user="DiwasPoudel" data-pen-title="date holder in circle" class="codepen">See the Pen <a href="https://codepen.io/DiwasPoudel/pen/KGeXaZ/">date holder in circle</a> by Diwas Poudel (<a href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+  </div>
+
+  <div class="col-lg-6">
+      <xmp class="prettyprint">
+          .numberCircle {
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            padding:8px; 
+            background: #04091e;
+            border: 2px solid #666;
+            color: #fff;
+            text-align: center;
+            font: 32px Arial, sans-serif;
+        }
+        
+        
+        .numberCircle .month {
+            display: block;
+            text-transform: uppercase;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        
+        .numberCircle .day {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 2px;
+            font-weight: 700;
+        }
+      </xmp>
+    </div>
+</div>
+
+<br>
+=============================================================================================================================
+<br>
+<h2>Return To Top</h2>
+<p data-height="265" data-theme-id="0" data-slug-hash="LgBOMW" data-default-tab="css,result" data-user="DiwasPoudel" data-pen-title="Return to Top Arrow" class="codepen">See the Pen <a href="https://codepen.io/DiwasPoudel/pen/LgBOMW/">Return to Top Arrow</a> by Diwas Poudel (<a href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+===========================================================================================================================
+<br>
+<h2>Loading before displaying body content</h2>
+<div class="row">
+  <div class="col-lg-8">
+    <xmp class="prettyprint">
+<html>
+<style>
+ .center-fixed{
+    position: fixed;
+    top: calc(50% - 25px);
+    left: calc(50% - 25px);
+}
+
+.loader {
+    border: 12px solid #eeeeee;
+    border-radius: 50%;
+    border-top: 12px solid #3498db;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+.hidden{
+	display: none;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>
+
+<body>
+  <div class="loader center-fixed">
+	</div>
+  
+ <div class="hidden body">
+  This contain will get display after loading circle
+ </div>
+
+ <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
+    </xmp>
+  </div>
+
+  <div class="col-lg-4">
+    <xmp class="prettyprint">
+      //main.js
+      $(document).ready(function(){
+        // Loading
+        $('.center-fixed').hide();
+        $('.body').show();
+      })
+    </xmp>
+
+    <p data-height="265" data-theme-id="0" data-slug-hash="ePjKbL" data-default-tab="html,result" data-user="DiwasPoudel" data-pen-title="ePjKbL" class="codepen">See the Pen <a href="https://codepen.io/DiwasPoudel/pen/ePjKbL/">ePjKbL</a> by Diwas Poudel (<a href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+  </div>
+</div>
+<br>
+
+================================================================================================================================
+<br>
+<h2>Trending</h2>
+
+<xmp class="prettyprint">
+    <html>
+        <head>
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        
+          <style>
+      
+      
+      .ratio-16-9{
+          position: relative;
+          width: 100%;
+          padding-top: 56.25%;
+          overflow: hidden;
+      }
+      
+      .ratio-image{
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        text-align: center;
+        overflow: hidden;
+        background-size: cover;
+        background-position: center center;
+      }
+      
+      
+           /* Marquee */
+      .marquee-box{
+          position: relative;
+      }
+      
+      .marquee-news {
+          overflow: hidden;
+          background-color: #f1f1f1;
+          padding: 8px;
+          height: 40px;
+      }
+      
+      .marquee-title{
+          position: absolute;
+          top: 0px;
+          left: 0px;
+          padding: 8px;
+          background-color: #343a40;
+          color: white;
+          z-index: 3;
+      }
+      
+      .marquee-title a{
+          color: white;
+          text-decoration: none;
+      }
+      
+      .marquee-image{
+          width: 45px; 
+          float: left; 
+          margin-left: 8px;
+          margin-right: 8px;
+      }
+      
+      .marquee .heading-small{
+          margin-right: 15px;
+      }
+       
+            
+      </style>
+        </head>
+        <body>
+            <section>
+                <div class="marquee-box">
+                  <div class="d-inline marquee-title">
+                    <i class="fa fa-cog fa-spin"></i> <a href="#">Trending</a>
+                  </div>
+                  <div class="d-inline">
+                    <div class="marquee marquee-news">
+            
+                      <div class="d-inline-block"> 
+                        <div class="marquee-image d-inline-block">
+                          <div class="ratio-16-9">
+                                    <div class="ratio-image" style="background-image: url('http://foodsense.is/uploads/slides/0219_foodsense.jpg');"></div>
+                                </div>
+                        </div>
+                        <span class="tag">Technology</span>
+                        <span class="heading-small">
+                          <a href="#">Samsung Galaxy A9 : The first quad camera phone</a>
+                        </span>
+                      </div>
+                       <div class="d-inline-block"> 
+                        <div class="marquee-image d-inline-block">
+                          <div class="ratio-16-9">
+                                    <div class="ratio-image" style="background-image: url('http://foodsense.is/uploads/slides/0219_foodsense.jpg');"></div>
+                                </div>
+                        </div>
+                        <span class="tag">Technology</span>
+                        <span class="heading-small">
+                          <a href="https://chiyaguff.com/article/new-pixel-phones-and-yes-the-notch-is-real-o-o">New Pixel Phones: and Yes, the notch is real (O_O)</a>
+                        </span>
+                      </div>
+                    
+                    </div>
+                  </div>
+                </div>
+              </section>
+      
+              
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+        <script type='text/javascript' src='https://cdn.jsdelivr.net/jquery.marquee/1.4.0/jquery.marquee.min.js'></script>
+      
+        <script src="main.js"></script>
+        </body>
+      </html>
+</xmp>
+
+<h2>Then main.js content is </h2>
+<xmp class="prettyprint">
+    // Jquery marquee
+    $('.marquee').marquee({
+		pauseOnHover: true,
+		speed: 15,
+	});
+
+</xmp>
+
+<br>
+============================================================================================================================
+  </body>
+  </html>
+
+  

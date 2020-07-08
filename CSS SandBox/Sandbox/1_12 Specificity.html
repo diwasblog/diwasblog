@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+
+  <body>
+================================================================================================================
+
+<h2>Specificity</h2>
+<p><span style="font-family: 'comic sans ms', sans-serif;"><span style="font-size: 14pt;">Specificity is&nbsp;<span style="color: #ff0000;"> a weight that is applied to a given CSS declaration</span>, determined&nbsp;</span><span style="font-size: 14pt;">by the number of each selector type in the matching selector. When multiple&nbsp;</span><span style="font-size: 14pt;">declarations have equal sepecificity , the last declaration found in the CSS</span><span style="font-size: 14pt;">is applied to the element. <span style="color: #ff0000;">Specificity only applies when the same element is&nbsp;</span></span><span style="font-size: 14pt;"><span style="color: #ff0000;">targeted by multiple declaration.</span> As per CSS rules, directly targeted elements</span><span style="font-size: 14pt;">will always take precedence over rules which as element inherits from its ancester.</span></span></p>
+<p><span style="font-size: 18pt; color: #ff0000;">---MDN</span></p>
+
+<h1>Specificity only applies when the same element is targeted by multiple declaration.</h1>
+
+<p><span style="font-size: 18pt;">Numerical Rules of specificity</span></p>
+<ul class="postList">
+<li id="3fef" class="graf graf--li graf-after--p"><span style="font-size: 14pt; font-family: 'comic sans ms', sans-serif;"><span style="color: #ff0000;">Elements and pseudo-elements</span> (`a, div&nbsp;, body,&nbsp;:before,&nbsp;:after`) get a score of&nbsp;<span style="color: #ff0000;"><strong class="markup--strong markup--li-strong">1</strong></span></span></li>
+<li id="d205" class="graf graf--li graf-after--li"><span style="font-size: 14pt; font-family: 'comic sans ms', sans-serif;"><span style="color: #ff0000;">Classes and attribute selectors and pseudo selector</span> (`.element, [type=&rdquo;text&rdquo;]`,:hover) get a score of&nbsp;<span style="color: #ff0000;"><strong class="markup--strong markup--li-strong">10</strong></span></span></li>
+<li id="54cb" class="graf graf--li graf-after--li"><span style="font-size: 14pt; font-family: 'comic sans ms', sans-serif;"><span style="color: #ff0000;">ID</span>s (`#header`) get a score of&nbsp;<span style="color: #ff0000;"><strong class="markup--strong markup--li-strong">100</strong></span></span></li>
+<li id="787b" class="graf graf--li graf-after--li"><span style="font-size: 14pt; font-family: 'comic sans ms', sans-serif;"><span style="color: #ff0000;">Inline styles</span> get a score of&nbsp;<span style="color: #ff0000;"><strong class="markup--strong markup--li-strong">1000</strong></span></span></li>
+<li id="7f71" class="graf graf--li graf-after--li"><span style="font-size: 14pt; font-family: 'comic sans ms', sans-serif;"><span style="color: #ff0000;">`!important`</span> gets a score of <span style="color: #ff0000;">NaN</span> (it&rsquo;s more &ldquo;specific&rdquo;/powerful than even inline styles, and can only be overridden by the cascade &mdash; writing rules later in the stylesheet)</span></li>
+</ul>
+
+
+
+<h2>Test</h2>
+<div class="language-html">
+    A: h1                                    //specificity: 0,0,0,1 =>0001
+    B:.test                           //specificity : 0,0,1,0       =>0010
+    C: #content h1                    //specificity:  0,1,0,1       =>0101
+    D: #content                       //specificity:  0,1,0,0       =>0100
+    <div id="content">
+      <h1 class="test" style="color: #fff">Headline</h1>
+    </div>
+</div>
+
+
+================================================================================
+<div class="row">
+    <div class="col-lg-6">
+       <pre>
+    <code class="language-html">
+        &lt;div id="content" >
+        &lt;h1 class="test" id="testing" style="color: #fff">Headline&lt;/h1>
+        &lt;/div>
+    </code>
+    
+       </pre>
+    
+    </div>
+    
+    
+    <div class="col-lg-6">
+      <pre>
+        <code class="language-css">
+            h1{background-color:green;}  /*--0001--*/
+
+              #content .test                /*--0110--*/
+              {
+              background-color:red;
+              }
+
+              .test{                       /*--0010--*/
+              background-color:yellow;
+              }
+
+              #testing {                     /*--0100--*/
+              background-color:blue;
+              }
+
+        </code>
+      </pre>
+    </div>
+    </div>
+According to general rules last rule related to h1 backgroundcolor should be applied but according to specificity 2nd one will wins and will be selected
+So 0100 wins so testing styles work.
+
+
+<p data-height="372" data-theme-id="dark" data-slug-hash="jpdzyw" data-default-tab="css,result" data-user="DiwasPoudel" data-pen-title="jpdzyw" class="codepen">See the Pen <a href="https://codepen.io/DiwasPoudel/pen/jpdzyw/">jpdzyw</a> by Diwas Poudel (<a href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+================================================================================
+<div class="row">
+    <div class="col-lg-8">
+       <pre>
+    <code class="language-html">
+        &lt;div id="content" >
+        &lt;h1 class="test" id="testing" style="color: pink">Headline&lt;/h1>   /*--1000--*/
+        &lt;/div>
+    </code>
+    
+       </pre>
+    
+    </div>
+    
+    
+    <div class="col-lg-4">
+      <pre>
+        <code class="language-css">
+            h1{
+              color:red;   /* 0001 */
+            }
+            
+            #testing{      /* 0100 */
+              color:blue;
+            }
+            
+            .test{          /* 0010 */
+              color:green
+            }
+            
+            #testing .test h1{    /* 0111 */
+              color:black;
+            }
+
+        </code>
+      </pre>
+    </div>
+    </div>
+So inline style of color with 1000 specificity always wins and inline css will work and other will be neglected
+
+
+<p data-height="265" data-theme-id="dark" data-slug-hash="jpdzox" data-default-tab="css,result" data-user="DiwasPoudel" data-pen-title="inline styles always win in specificity css" class="codepen">See the Pen <a href="https://codepen.io/DiwasPoudel/pen/jpdzox/">inline styles always win in specificity css</a> by Diwas Poudel (<a href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+
+===========================================================================================================================
+<div class="row">
+  <div class="col-lg-6">
+      <pre>
+        <code class="language-html">
+        &lt;html>
+        &lt;body>
+        &lt;h1>Here is a title!&lt;/h1>
+        &lt;/body>
+        &lt;/html>
+        </code>
+      </pre>
+  </div>
+
+  <div class="col-lg-6">
+      <pre>
+        <div class="language-css">
+            body h1 {
+              color: green;
+            }
+            html h1 {
+              color: red;
+            }
+          </div>
+      </pre>
+    </div>
+</div>
+
+
+<p data-height="265" data-theme-id="dark" data-slug-hash="WKPmJE" data-default-tab="html,result" data-user="DiwasPoudel" data-pen-title="Element Specificity" class="codepen">See the Pen <a href="https://codepen.io/DiwasPoudel/pen/WKPmJE/">Element Specificity</a> by Diwas Poudel (<a href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="http://static.codepen.io/assets/embed/ei.js"></script>
+
+
+This is because the two declarations have equal selector type counts, but the html h1 selector is declared last.
+=============================================================================================================
+
+<h2>Direct Target vs inheritly target</h2>
+<div class="row">
+    <div class="col-lg-6">
+        <pre>
+          <code class="language-html">
+          &lt;html>
+          &lt;body id="parent">
+          &lt;h1>Here is a title!&lt;/h1>
+          &lt;/body>
+          &lt;/html>
+          </code>
+        </pre>
+    </div>
+  
+    <div class="col-lg-6">
+        <pre>
+          <div class="language-css">
+              #parent {
+                color: green;
+              }
+              h1 {
+                color: purple;
+              }
+            </div>
+        </pre>
+      </div>
+  </div>
+  
+  <p data-height="174" data-theme-id="dark" data-slug-hash="ejxXKj" data-default-tab="html,result" data-user="DiwasPoudel" data-pen-title="Direct vs inherit specificity" class="codepen">See the Pen <a href="https://codepen.io/DiwasPoudel/pen/ejxXKj/">Direct vs inherit specificity</a> by Diwas Poudel (<a href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+  <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
+
+  <h3>This is because the h1 selector targets the element specifically, but the green selector is only inherited from its parent.</h3>
+==============================================================================================================
+
+
+
+
+<h2>Note : Test specificity with : Specificity Calculator------------------- G ooooooogle it</h2>
+
+<p><span style="font-size: 18pt;">&nbsp;How do pseudo-classes affect specificity? </span></p>
+<p><span style="font-size: 14pt;">They all have equal weight, as it turns out. So the following styles all have the same specificity:</span></p>
+<pre>  
+  <code class="language-css">
+  
+  A:link {color: blue;}        /* specificity = 1,1 */
+   A:active {color: red;}       /* specificity = 1,1 */
+   A:hover {color: magenta;}    /* specificity = 1,1 */
+   A:visited {color: purple;}   /* specificity = 1,1 */
+  </code>
+</pre>
+<h1>Use LVHA for link styling "link visited hover active</h1>
+<p><span style="font-size: 14pt;">All of them can apply to a hyperlink, and in some cases, more than one will apply. For example, an unvisited link can be hovered and active at the same time as it's an unvisited link. Since three of the above rules apply to the hyperlink, and the selectors all have the same specificity, then the last one listed wins. Therefore, the "active" style will never appear, because it will always be overridden by the "hover" style. Now consider a hyperlink which has been visited. It will always and forever be purple, because its "visited" style beats out any other state, including "active" and "hover."</span></p>
+<p><span style="font-size: 14pt;">This is why the recommended order in CSS1 goes like this:</span></p>
+<pre>  
+    <code class="language-css">
+  A:link
+   A:visited
+   A:hover
+   A:active
+   </code>
+</pre>
+<p><span style="font-size: 14pt;">The first two can be in either order, actually, because a link can't be both visited and unvisited at the same time. (<code>:link</code>&nbsp;means "unvisited"; and no, I don't know why they didn't call it that.)</span></p>
+<p><span style="font-size: 14pt;">This is also why CSS2 now allows the chaining of pseudo-classes. For example, you could write:</span></p>
+<pre>   A:visited:hover {color: maroon;} /* specificity = 2,1 */
+   A:link:hover {color: magenta;}   /* specificity = 2,1 */
+   A:hover:active {color: cyan;}    /* specificity = 2,1 */
+</pre>
+
+
+
+
+
+
+
+    <script src="js/prism.js"></script>
+    <script type="text/javascript">
+      Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+          'remove-trailing': true,
+          'remove-indent': true,
+          'left-trim': true,
+          'right-trim': true,
+        });
+    </script>
+  </body>
+</html>

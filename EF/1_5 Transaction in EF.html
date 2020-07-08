@@ -1,0 +1,220 @@
+<html>
+
+<head>
+
+	<script
+		src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+	<!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+		integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+		integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+		integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+		crossorigin="anonymous"></script>
+
+	<style>
+		xmp.prettyprint {
+			font-size: 12pt;
+			font-family: monospace;
+
+		}
+	</style>
+
+
+
+
+</head>
+
+
+<body>
+
+
+	<p>&nbsp;</p>
+	<p><span style="font-size: 18pt; font-family: verdana, geneva, sans-serif;"><strong>Transaction in Entity
+				Framework</strong></span></p>
+	<p style="text-align: justify;"><span style="font-size: 14pt;">Use of Transaction is a very helpful approach
+			particularly when the DB interaction involves inserting/updating/fetching data on <span
+				style="color: #ff0000;"><strong>more than one table structure.</strong></span> &nbsp;<span
+				style="color: #ff0000;"><strong>If all the tasks completed successfully</strong></span> then the <span
+				style="color: #ff0000;"><strong>transaction completes</strong></span> and if <span
+				style="color: #ff0000;"><strong>one of the tasks fail</strong></span>, then the <strong><span
+					style="color: #ff0000;">transaction rolls back</span></strong>.</span></p>
+	<p><span style="font-size: 14pt; font-family: verdana, geneva, sans-serif;">&nbsp;I have two entities, <span
+				style="color: #ff0000;"><strong>employee</strong> </span>and <span
+				style="color: #ff0000;"><strong>department</strong></span>, and I have added the employee and department
+			entities to the <strong><span style="color: #ff0000;">context</span> </strong>object and finally call the
+			SaveChanges() method. The Entity Framework creates a single transaction for these multiple inserts.</span>
+	</p>
+	<p>&nbsp;</p>
+	<div class="row">
+		<div class="col-lg-6">
+
+			<xmp class="prettyprint">
+				using (EntitiesContext context = new EntitiesContext())
+				{
+				try{
+
+				Department dept = new Department();
+				dept.Code = "DEP0001";
+				dept.Name = "Computer";
+				context.Departments.Add(dept);
+
+				Employee employee = new Employee();
+				employee.Code = "A0001";
+				employee.Name = "Diwas Poudel";
+				employee.DepartmentId = 1;
+				context.Employees.Add(employee);
+
+				context.SaveChanges(); // calling database one time and saving to db
+				//only one transaction
+				Console.ReadLine();
+				}
+				catch(Exception ex)
+				{
+				throw ex;
+				}
+				}
+
+			</xmp>
+		</div>
+
+		<div class="col-lg-6">
+			Multiple SaveChanges
+			Here, First SaveChanges() will save to database and Second SaveChanges() will again call to database and
+			save to database <br>
+			If first savechanges() success and second gets failed then Department still gets added to database because
+			each call to savechanges()
+			run in its own transaction <br>
+
+			Mainly done for getting dirty written id .
+			<xmp class="prettyprint">
+				using (EntitiesContext context = new EntitiesContext())
+				{
+				try{
+				Department dept = new Department();
+				dept.Code = "DEP0001";
+				dept.Name = "Computer";
+				context.Departments.Add(dept);
+				context.SaveChanges(); // first transaction
+
+				int latest departmentId = dept.DepartmentId;
+				//getting dirty id
+
+				Employee employee = new Employee();
+				employee.Code = "E1";
+				employee.Name = "Diwas Poudel";
+				employee.DepartmentId = departmentId;
+				context.Employees.Add(employee);
+				context.SaveChanges();
+
+
+
+				context.SaveChanges(); //second transaction
+				// calling database one time and saving to db
+				Console.ReadLine();
+				}
+				catch(Exception ex)
+				{
+				throw ex;
+				}
+				}
+
+			</xmp>
+		</div>
+	</div>
+
+	==============================================
+	<br>
+	Save to db twice but roll back when error occurs.
+	BeginTransaction() returns a DbContextTransaction object which is stored in a local variable.
+	This object is used to either commit or rollback the transaction later in the code.
+
+	Both the calls to SaveChanges() are treated as the part of this transaction.
+	If both the calls to SaveChanges() are successful we call Commit() method of DbContextTransaction object.
+	If any of them fails we call the Rollback() method of DbContextTransaction object.
+
+	<br>
+	Multiple operations can be executed against a single transaction so that changes can be rolled back if any of the
+	operations fail
+	<xmp class="prettyprint">
+		using (EntitiesContext context = new EntitiesContext())
+		{
+		using (var transaction = context.Database.BeginTransaction())
+		{
+		try
+		{
+		Employee employee = new Employee();
+		employee.Code = "E1";
+		employee.Name = "Hari Khatiwada";
+		employee.DepartmentId = 1;
+		context.Employees.Add(employee);
+		//OR context.Employees.Entry(employee).State = EntityState.Added;
+		context.SaveChanges();
+
+		Department dept = new Department);
+		dept.Code = "DEP0001";
+		dept.Name = "Department 1";
+
+		context.Departments.Add(dept);
+		//OR context.Departments.Entry(dept).State = EntityState.Added;
+
+		context.SaveChanges();
+
+
+		//Without this line, no changes will get applied to the database
+		transaction.Commit();
+		}
+		catch (Exception ex)
+		{
+		transaction.Rollback();
+		}
+		}
+		}
+	</xmp>
+	<p><span style="font-size: 18pt; font-family: verdana, geneva, sans-serif;">If Employee is successful but Department
+			is not , then transaction will roll back otherwise commit.This is the main work of Transaction</span></p>
+
+
+	<br>
+	In the above example, we throw an exception after the first SaveChanges() call. This will execute a catch block
+	where we call the RollBack() method to roll back whatever changes have been made to the database.
+
+
+
+	<br>
+	==============================================================================================
+	<br>
+	<h2>How to Preserve Insert Order? </h2>
+	The Entity Framework doesn't insert the records in the following order.
+	<xmp class="prettyprint">
+		dbContext.SomeTables1.Add(object1)
+		dbContext.SomeTables2.AddRange(objectArray2)
+		dbContext.SomeTables3.AddRange(objectArray3)
+		dbContext.SaveChanges();
+	</xmp>
+	<p style="text-align: justify;"><span style="font-size: 14pt;"><span style="color: #000000;"><strong>But it inserts
+					them in a random order</strong></span>. <strong><span style="color: #ff0000;">To insert them in the
+					same order</span></strong>, <span style="color: #000000;"><strong>I have to call SaveChanges() after
+					each addition.</strong></span> This is not an efficient solution and in my case, it is taking <span
+				style="color: #ff0000;">10 seconds</span> to do all my inserts, while the random order with one save
+			takes around<strong><span style="color: #ff0000;"> 3 seconds.</span></strong></span></p>
+
+	<p style="text-align: justify;"><span style="font-size: 14pt; font-family: 'times new roman', times, serif;">There
+			is no way you can specify a save order in EF6 or EF7. The issue is not resolved in EF7 since <strong><span
+					style="color: #ff0000;">this is not an issue.</span></strong></span></p>
+	<p><span style="font-size: 14pt; color: #ff0000;">If you are serious ... <img
+				src="https://cloud.tinymce.com/stable/plugins/emoticons/img/smiley-cool.gif" alt="cool" /></span></p>
+	<p><span style="font-size: 14pt;">Since it take you 3 seconds to perform your insert, I will assume you have
+			thousands of entities and performing bulk insert may improve your performance to reduce the 10 seconds to
+			less then maybe the intial 3 seconds!</span></p>
+
+</body>
+
+</html>

@@ -1,0 +1,153 @@
+<p><strong><span style="font-size: 18pt;">What is REST ?</span></strong></p>
+<p><span style="font-size: 12pt;">When you request the resource for server then server will return the data in json/xml or other format.</span></p>
+<p><span style="font-size: 12pt;">Mostly client for restful api happens to be browser .So, sending the data in JSON format to those http client will be&nbsp; easy to convert it to a <strong><span style="color: #ff0000;">javascript object</span></strong> .<span style="color: #000000;"><strong>So json is better.</strong></span></span></p>
+
+<img src="img/response.PNG">
+
+<p><span style="font-size: 12pt;">Mostly client for restful api happens to be browser .So, sending the data in JSON format to those http client will be&nbsp; easy to convert it to a javascript object .So json is better.</span></p>
+
+Response for the message looks like this:
+<br>
+<img src="img/representation.PNG">
+<br>
+======================================================================================
+<br>
+<p><span style="color: #000000;"><strong>T</strong><strong>his XML and JSON are the representation of resource present on server</strong>.</span> So, called <span style="color: #ff0000;"><strong>Representational</strong></span>.</p>
+<p><span style="font-size: 12pt;">When you make REST API calls you are sending or recieving representation of resources. Different representation has different formats even though underlying resources are same.</span></p>
+<p><span style="font-size: 12pt;">&nbsp;So , here we are transferring <span style="color: #ff0000;"><strong>representational state</strong></span> of resource present from server to client in JSON or XML format. So , REST is called as RepresentationalState Transfer. So ,we send or recieve the representation of resource .</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 12pt;">As server send data in Json / xml format but how the client knows which format in which data is send by server.</span></p>
+<p><span style="font-size: 12pt;">Suppose client ask for XML but say server only knows json so , Server send data in json format . Then how client knows that data is in JSON?</span></p>
+<p><span style="font-size: 12pt;">Actually this type of message information will be written in http header as content type. So client look at content type then found that server sends in JSON format. Then Client can parse the data accordingly.&nbsp;</span></p>
+<br>
+<img src="img/message information.PNG">
+<br>
+
+============================================================================================================
+<br>
+<p><span style="color: #ff0000;"><strong><span style="font-size: 18pt;">Class of Status Code</span></strong></span></p>
+<ul>
+<li><span style="color: #000000; font-size: 12pt;"><strong>1XX&nbsp; &nbsp;Informational</strong></span></li>
+<li><span style="color: #000000; font-size: 12pt;"><strong>2XX&nbsp; Success</strong></span></li>
+<li><span style="color: #000000; font-size: 12pt;"><strong>3XX Redirection</strong></span></li>
+<li><span style="color: #000000; font-size: 12pt;"><strong>4XX&nbsp; Client Error</strong></span></li>
+<li><span style="color: #000000; font-size: 12pt;"><strong>5XX&nbsp; Server Error</strong></span></li>
+</ul>
+
+<table style="border-collapse: collapse; width: 100%; height: 215px;" border="1">
+  <tbody>
+  <tr style="height: 49px;">
+  <td style="width: 15.1992%; height: 49px; background: black; color: white;">2XX</td>
+  <td style="width: 14.0985%; height: 49px; background: black; color: white;">Status</td>
+  <td style="width: 70.7023%; height: 49px; background: black; color: white;">Description</td>
+  </tr>
+  <tr style="height: 50px;">
+  <td style="width: 15.1992%; height: 50px;">200</td>
+  <td style="width: 14.0985%; height: 50px;">OK</td>
+  <td style="width: 70.7023%; height: 50px;">Successful Response&nbsp;</td>
+  </tr>
+  <tr style="height: 67px;">
+  <td style="width: 15.1992%; height: 67px;">201</td>
+  <td style="width: 14.0985%; height: 67px;">Created</td>
+  <td style="width: 70.7023%; height: 67px;">
+  <p>Created Successful resource creation.</p>
+  <p>Say using Post we have created a resource the 201 Request is received</p>
+  </td>
+  </tr>
+  <tr style="height: 49px;">
+  <td style="width: 15.1992%; height: 49px;">204</td>
+  <td style="width: 14.0985%; height: 49px;">No Content</td>
+  <td style="width: 70.7023%; height: 49px;">
+  <p>Use when you donot need to send content back.</p>
+  <p>When you send the delete request then you donot have any thing to send back so just send 204 status or empty message body</p>
+  </td>
+  </tr>
+  </tbody>
+  </table>
+<br>
+============================================================================================
+<br>
+<table style="border-collapse: collapse; width: 101.814%; height: 215px;" border="1">
+  <tbody>
+  <tr style="height: 49px;">
+  <td style="width: 15.1992%; height: 49px; background: black; color: white;">3XX</td>
+  <td style="width: 14.0985%; height: 49px; background: black; color: white;">Status</td>
+  <td style="width: 70.7023%; height: 49px; background: black; color: white;">Description (Send by server saying donot ask me ,just ask to other url because it is redirecting)</td>
+  </tr>
+  <tr style="height: 50px;">
+  <td style="width: 15.1992%; height: 50px;">304</td>
+  <td style="width: 14.0985%; height: 50px;">Not Modified</td>
+  <td style="width: 70.7023%; height: 50px;">
+  <ul>
+  <li>Error code that the server sends when it needs to tell the client that nothing has been modified.</li>
+  <li>Lets say Client sends request for the resource but it has already got the same resource before .So server just send 304 Not Modified</li>
+  </ul>
+  </td>
+  </tr>
+  </tbody>
+  </table>
+
+  <br>
+  ================================================================================
+  <br>
+
+  <table style="border-collapse: collapse; width: 101.814%; height: 215px;" border="1">
+    <tbody>
+    <tr style="height: 49px;">
+    <td style="width: 15.1992%; height: 49px; background: black; color: white;">5XX</td>
+    <td style="width: 16.1949%; height: 49px; background: black; color: white;">Status</td>
+    <td style="width: 68.6059%; height: 49px; background: black; color: white;">Description&nbsp;</td>
+    </tr>
+    <tr style="height: 50px;">
+    <td style="width: 15.1992%; height: 50px;">500</td>
+    <td style="width: 16.1949%; height: 50px;">Internal Server Error</td>
+    <td style="width: 68.6059%; height: 50px;">
+    <p>Suppose when you send a request and resource not found then we get 404 not found.<br />But When you have resource in server but something went wrong in processing then standard practice <br />is to send 500 error reponse along with error detail on the body of response</p>
+    </td>
+    </tr>
+    </tbody>
+    </table>
+    <br>
+    <img src="img/status code get and delete.PNG">
+    <br>
+    <img src="img/status code edit and create.PNG">
+    <br>
+    <table style="border-collapse: collapse; width: 101.814%; height: 215px;" border="1">
+      <tbody>
+      <tr style="height: 49px;">
+      <td style="width: 15.1992%; height: 49px; background: black; color: white;">4XX</td>
+      <td style="width: 16.1949%; height: 49px; background: black; color: white;">Status</td>
+      <td style="width: 68.6059%; height: 49px; background: black; color: white;">Description&nbsp;</td>
+      </tr>
+      <tr style="height: 50px;">
+      <td style="width: 15.1992%; height: 50px;">400</td>
+      <td style="width: 16.1949%; height: 50px;">Bad Request</td>
+      <td style="width: 68.6059%; height: 50px;">
+      <p>Server couldnot interprete and understand the request, probably syntax error in request message</p>
+      </td>
+      </tr>
+      <tr>
+      <td style="width: 15.1992%;">404</td>
+      <td style="width: 16.1949%;">Not Found</td>
+      <td style="width: 68.6059%;">This error most commonly occures when users manually enter an incorrect url into a browser or web server admisnistrator removes a file withour redirecting the address to a valid new location. Users must change thier URL to fix this problem.</td>
+      </tr>
+      <tr>
+      <td style="width: 15.1992%;">401</td>
+      <td style="width: 16.1949%;">UnAutherized</td>
+      <td style="width: 68.6059%;">This error happens when a website visitor tries to access a restricted web page but isn't authorized to do so,usually because of a failed login attempt.</td>
+      </tr>
+      <tr>
+      <td style="width: 15.1992%;">403</td>
+      <td style="width: 16.1949%;">Forbidden</td>
+      <td style="width: 68.6059%;">
+      <p>Similar to 401 error , but note the difference between unauthorized and forbidden.</p>
+      <p>In this case no login opportunity was available.&nbsp;</p>
+      <p>This can for example happen if you try to access a forbidden directory on a website.</p>
+      </td>
+      </tr>
+      </tbody>
+      </table>
+      <p><span style="font-size: 12pt;"><strong><span style="color: #ff0000;">Note:</span> </strong>We would like to point out that all the error messages above are errors reported by the web server back to visitor ( that is nature of HTTP errors, they came from the web server you are&nbsp; accessing).</span></p>
+      <p><span style="font-size: 12pt;">Needless to say , if you can't accesss a website at all, for eg. if its network (or yours ) is down, you won't get an HTTP error back . Your connection attempt with simply time out.</span></p>
+
+      

@@ -1,0 +1,87 @@
+-- FUNCTION: deposit.get_source_of_fund(integer, date, date, character varying)
+
+-- DROP FUNCTION deposit.get_source_of_fund(integer, date, date, character varying);
+
+CREATE OR REPLACE FUNCTION deposit.get_source_of_fund(
+	office_id_ integer,
+	from_ date,
+	to_ date,
+	source_detail_ character varying)
+    RETURNS TABLE(tran_id bigint, office_id integer, tran_date_bs character varying, customer_id bigint, name_address text, account_number character varying, nature_of_tran character varying, amount money, source_of_fund text, remarks text) 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+
+BEGIN
+	CREATE TEMP TABLE _t(
+	tran_id				bigint,
+	office_id			int,
+	tran_date			date,
+	tran_date_bs 		character varying (10),
+	customer_id			bigint,
+	account_number_id 	bigint,
+	account_number		character varying,
+	name_address		text,
+	nature_of_tran		character varying,
+	amount				money,
+	s_fund				text,
+	remarks 			text
+
+	) ON COMMIT DROP;
+
+--SELECT * FROM deposit.get_source_of_fund(1,'2018-07-15','2019-06-10','Business')
+--***For deposit source of fund NRB TTR REPORT Jeevan
+
+	IF office_id_ > 0 THEN
+	INSERT INTO _t(tran_id, office_id, tran_date, customer_id, account_number, name_address, nature_of_tran,  amount, s_fund, remarks)
+	SELECT 
+		s.tran_id,
+		s.office_id,
+		s.tran_date,
+		s.customer_id,
+		s.account_number,
+		s.customer_name ||'--'|| s.permanent_address as name_address,
+		s.book_name,
+		s.credit,
+		s.source_of_fund,
+		s.remarks		
+	FROM deposit.transaction_view_source s
+	WHERE s.office_id = office_id_;
+	ELSE
+		INSERT INTO _t(tran_id, office_id, tran_date, customer_id, account_number_id, account_number, name_address, nature_of_tran,  amount, s_fund, remarks)
+	SELECT 
+		s.tran_id,
+		s.office_id,
+		s.tran_date,
+		s.customer_id,
+		s.account_number_id,
+		s.account_number,
+		s.customer_name ||'--'|| s.permanent_address AS name_address,
+		s.book_name,
+		s.credit,
+		s.source_of_fund,
+		s.remarks		
+	FROM deposit.transaction_view_source s;
+		
+	END IF;
+
+	
+	IF source_detail_ <> '' THEN
+		DELETE FROM _t WHERE _t.s_fund <> source_detail_;
+	END IF;
+	
+	
+	UPDATE _t SET tran_date_bs= d.date_in_bs
+	FROM core.date_conversion d
+	WHERE _t.tran_date=d.date_in_ad;
+
+	RETURN QUERY(SELECT _t.tran_id, _t.office_id,_t.tran_date_bs,  _t.customer_id,  _t.name_address ,_t.account_number, _t.nature_of_tran,  _t.amount, _t.s_fund, _t.remarks  FROM _t ORDER BY _t.account_number);
+END
+
+$BODY$;
+
+ALTER FUNCTION deposit.get_source_of_fund(integer, date, date, character varying)
+    OWNER TO postgres;

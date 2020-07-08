@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../Ef/css/bootstrap.css">
+    <link rel="stylesheet" href="../Ef/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../Ef/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../Ef/css/dracula.css">
+    <link rel="stylesheet" href="../Ef/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+    <h2>Null</h2>
+
+    <p><span style="font-size: 18pt;">In PostgreSQL,</span></p>
+    <ul>
+        <li><span style="font-size: 18pt;"><span style="color: #000000;"><strong>Null </strong>means</span> <span
+                    style="color: #e03e2d;"><strong>no value</strong>.</span> <span style="color: #000000;">Null is not
+                    equal to an " or 0.</span></span></li>
+        <li><span style="font-size: 18pt; color: #000000;">A NULL value cannot be tested using any equality operator
+                like &ldquo;=&rdquo; &ldquo;!=&rdquo;.</span></li>
+        <li><span style="font-size: 18pt;"><span style="color: #000000;">You can use</span> <span
+                    style="color: #e03e2d;"><strong>is null</strong></span> or <strong><span style="color: #e03e2d;">is
+                        not null</span></strong> <span style="color: #000000;">operator</span></span></li>
+    </ul>
+
+    <div class="row">
+        <div class="col-lg-3">
+            <pre>
+            <code class="language-sql">
+                SELECT 1 = 1 result;
+            </code>
+            </pre>
+            <table style="border-collapse: collapse; width: 9.04255%;" border="1">
+                <tbody>
+                    <tr style="color: white; background: black;">
+                        <td style="width: 100%;">result</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 100%;">true</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>&nbsp;</p>
+        </div>
+
+        <div class="col-lg-3">
+            <pre>
+            <code class="language-sql">
+                SELECT 'foo' = 'foo' result;
+            </code>
+            </pre>
+            <table style="border-collapse: collapse; width: 9.04255%;" border="1">
+                <tbody>
+                    <tr style="color: white; background: black;">
+                        <td style="width: 100%;">result</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 100%;">true</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-lg-3">
+            <pre>
+            <code class="language-sql">
+                SELECT NULL = NULL result;
+            </code>
+            </pre>
+            <table style="border-collapse: collapse; width: 9.04255%;" border="1">
+                <tbody>
+                    <tr style="color: white; background: black;">
+                        <td style="width: 100%;">result</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 100%;">null</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-lg-3">
+            <pre>
+            <code class="language-sql">
+                SELECT NULL != NULL result;
+            </code>
+            </pre>
+            <table style="border-collapse: collapse; width: 9.04255%;" border="1">
+                <tbody>
+                    <tr style="color: white; background: black;">
+                        <td style="width: 100%;">result</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 100%;">null</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3">
+            <pre>
+            <code class="language-sql">
+                SELECT NULL is NULL result;
+            </code>
+            </pre>
+            <table style="border-collapse: collapse; width: 9.04255%;" border="1">
+                <tbody>
+                    <tr style="color: white; background: black;">
+                        <td style="width: 100%;">result</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 100%;">true</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-lg-3">
+            <pre>
+            <code class="language-sql">
+                SELECT NULL is not NULL result;
+            </code>
+            </pre>
+            <table style="border-collapse: collapse; width: 9.04255%;" border="1">
+                <tbody>
+                    <tr style="color: white; background: black;">
+                        <td style="width: 100%;">result</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 100%;">false</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <table style="border-collapse: collapse; width: 53.3512%;" border="1">
+        <tbody>
+            <tr style="color: white; background: black;">
+                <td style="width: 52.2129%;">Coalesce</td>
+                <td style="width: 122.647%;">Nullif</td>
+            </tr>
+            <tr>
+                <td style="width: 52.2129%;">It takes n number of arguments and returns the first, not null
+                    arguments.&nbsp;</td>
+                <td style="width: 122.647%;">It returns NULL if first and second arguments are equal, otherwise returns
+                    the first argument</td>
+            </tr>
+            <tr>
+                <td style="width: 52.2129%;">
+                    <p><span style="color: #169179;"><strong> SELECT COALESCE (NULL, 2 , 1) as&nbsp;
+                                result</strong></span></p>
+                    <table style="border-collapse: collapse; width: 22.0884%;" border="1">
+                        <tbody>
+                            <tr style="color: white; background: black;">
+                                <td style="width: 100%;">result</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 100%;">2</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+                <td style="width: 122.647%;">
+                    <p><span style="color: #169179;"><strong>SELECT NULLIF (100, 100) as result</strong></span></p>
+                    <table style="border-collapse: collapse; width: 30.1518%;" border="1">
+                        <tbody>
+                            <tr style="color: white; background: black;">
+                                <td style="width: 100%;">result</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 100%;">&nbsp;</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <hr />
+                    <p><strong><span style="color: #169179;">SELECT NULLIF (10, 100) as result</span></strong></p>
+                    <table style="border-collapse: collapse; width: 24.0781%;" border="1">
+                        <tbody>
+                            <tr style="color: white; background: black;">
+                                <td style="width: 100%;">result</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 100%;">10</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <h2>Coalesce</h2>
+    Coalesce returns the ﬁrst none null argument from a set of arguments. Only the ﬁrst non null argument is return, all
+    subsequent arguments are ignored. The function will evaluate to null if all arguments are null.
+    <pre>
+        <code class="language">
+                SELECT COALESCE(NULL, NULL, 'HELLO WORLD');
+                // HELLO WORLD
+
+                SELECT COALESCE(NULL, NULL, 'first non null', NULL, NULL, 'second non null');
+                // first non null
+
+                SELECT COALESCE(NULL, NULL, NULL);
+                // nothing
+
+                select coalesce(id,0) // if id = null then return first null value i.e 0 ; if id is not null then return id
+        </code>
+    </pre>
+
+    <h2>NULLIF</h2>
+    <h5>Used to return a null if two values are equal. Used to trigger a null in COALESCE so next value is used.</h5>
+
+    <pre>
+    <code class="language-sql">
+        NULLIF(field1,field2)
+    </code>
+</pre>
+
+    <h2>Example of IfNull</h2>
+    <div class="row">
+        <div class="col-lg-6">
+            <table style="border-collapse: collapse; width: 33.8298%;" border="1">
+                <tbody>
+                    <tr>
+                        <td style="width: 9.79607%;"><strong><span style="color: #000000;">customerId</span></strong>
+                        </td>
+                        <td style="width: 11.5912%;"><strong><span style="color: #000000;">comment</span></strong></td>
+                        <td style="width: 12.4557%;"><strong><span style="color: #000000;">shipper_id</span></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 9.79607%;">2</td>
+                        <td style="width: 11.5912%;">done it</td>
+                        <td style="width: 12.4557%;">1</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 9.79607%;">5</td>
+                        <td style="width: 11.5912%;">null</td>
+                        <td style="width: 12.4557%;">4</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 9.79607%;">8</td>
+                        <td style="width: 11.5912%;">null</td>
+                        <td style="width: 12.4557%;">null</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-lg-6">
+            <pre>
+    <code class="language-sql">
+        select customerId, nullif(shipper_id,'not assigned') from customers
+    </code>
+</pre>
+            <table style="border-collapse: collapse; width: 33.8298%;" border="1">
+                <tbody>
+                    <tr>
+                        <td style="width: 9.79607%;"><strong><span style="color: #000000;">customerId</span></strong>
+                        </td>
+                        <td style="width: 12.4557%;"><strong><span style="color: #000000;">shipper_id</span></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 9.79607%;">2</td>
+                        <td style="width: 12.4557%;">1</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 9.79607%;">5</td>
+                        <td style="width: 12.4557%;">4</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 9.79607%;">8</td>
+                        <td style="width: 12.4557%;">not assigned</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+
+    <h2>If homepage field is null then replace it with 'Need to call'</h2>
+    <pre>
+        <code class="language-sql">
+            
+            SELECT companyname,phone,
+            COALESCE(NULLIF(homepage,''),'Need to call')
+            FROM suppliers;
+        </code>
+    </pre>
+
+    <h2>If fax field is null then replace it with phone field</h2>
+    <pre>
+            <code class="language-sql">
+                    SELECT companyname,
+                    COALESCE(NULLIF(fax,''),phone) AS confirmation
+                    FROM customers;
+                    
+            </code>
+        </pre>
+
+    <h2>Here, if date_nepali field is Null then replace with '-'</h2>
+    <pre>
+            <code class="language-sql">
+                COALESCE(NULLIF(be.date_nepali,''),'-'),
+            </code>
+        </pre>
+
+
+    <br>
+    <h2>CONCAT</h2>
+    CONCAT is used to join string
+    <pre>
+        <code class="language-sql">
+            SELECT CONCAT ('Diwas','   ','Poudel') AS name;        // Diwas    Poudel
+
+            SELECT CONCAT ('Diwas','   ',NULL) AS name;           // Diwas                              CONCAT has NULL then it will return empty string for NULL part
+
+
+           select  concat('abcde', 2, NULL, 22)	=> abcde222
+
+           SELECT first_name || ' ' || last_name As full_name FROM customers;
+        </code>
+    </pre>
+
+    <hr>
+    <h2>Floor (gets the round down value)</h2>
+    <pre>
+    <code class="language-sql">
+            SELECT FLOOR(5.7) AS "Floor"; //5
+            SELECT FLOOR(-62.375) AS "Floor"; //-63
+            SELECT FLOOR(47.7) AS "Floor"; //47
+            SELECT FLOOR(-55.867) AS "Floor"; //-56
+            SELECT FLOOR(74.2) AS "Floor"; //74
+            SELECT FLOOR(-31.901) AS "Floor"; //-32
+    </code>
+</pre>
+
+    <hr>
+    <h2>CEIL (get round up value)</h2>
+
+    <pre>
+            <code class="language-sql">
+                    SELECT CEIL(5.7) AS "Ceil"; //6
+                    SELECT CEIL(-62.375) AS "Floor"; //-62
+                    SELECT CEIL(47.7) AS "Floor"; //48
+                    SELECT CEIL(-55.867) AS "Floor"; //-55
+                    SELECT CEIL(74.2) AS "Floor"; //75
+                    SELECT CEIL(-31.901) AS "Floor"; //-31
+            </code>
+        </pre>
+
+
+    <hr>
+    <h2>absolute value </h2>
+    <pre>
+            <code class="language-sql">
+                    SELECT ABS (-113.5)   // 113
+                    SELECT ABS (113.5)    // 113
+            </code>
+        </pre>
+    <script src="../Ef/js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+    </script>
+</body>
+
+</html>

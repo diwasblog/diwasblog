@@ -1,0 +1,224 @@
+<html>
+
+<head>
+    <script
+        src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <style>
+        xmp.prettyprint {
+            font-size: 12pt;
+            font-family: monospace;
+
+        }
+    </style>
+
+</head>
+
+<body>
+    We donot write code main method as sync so we call another function from main and make that function async
+    Async will not work on main
+
+    <xmp class="prettyprint">
+        class Program
+        {
+        static async void Main(string[] args)
+        {
+        //async task here
+
+        Console.ReadLine();
+        }
+        }
+    </xmp>
+
+    If we do so then task will not be asynchronously
+
+    The async keyword cannot be used on the Main method. So we create next method where we write async operation
+    To make task asynchronously we do this:
+    Many things happen at once in asynchronous task
+
+    <xmp class="prettyprint">
+        lass Program
+        {
+        static async void Main(string[] args)
+        {
+        await startAsyncTask();
+
+        Console.ReadLine();
+        }
+
+        static async Task startAsyncTask()
+        {
+        //now your sync task
+        }
+        }
+
+    </xmp>
+
+    =================================================================================================
+    <h2>HtmlAgility</h2>
+    <h4>It is a .NET code library that allows you to parse out of the web files (be it HTML, PHP or aspx).</h4>
+
+    ========================================================================================================
+    <br>
+    <h1>HttpClient</h1>
+    <p>HttpClient class provides a base class for sending/receiving the HTTP requests/responses from a URL.It is present
+        inside<strong> system.net.http</strong>&nbsp;</p>
+    <p>&nbsp;Consider a case where you have developed an ASP.NET Web API service to expose certain functionality. If you
+        wish to consume this functionality in a web application, you will typically use a client side script
+        (JavaScript, jQuery) to invoke GET, POST, PUT and DELETE operations. <strong>What if you wish to consume the
+            same Web API in a desktop application or a console application? That is where HttpClient comes into
+            picture.</strong></p>
+
+
+    <h3>Http Get using HttpClient in console app</h3>
+    <xmp class="prettyprint">
+        static void Main(string[] args)
+        {
+        CallWebAPIAsync()
+        .Wait();
+        }
+        static asyncTaskCallWebAPIAsync()
+        {
+        client.BaseAddress = newUri("http://localhost:55587/");
+        client.DefaultRequestHeaders.Accept.Clear();
+        client.DefaultRequestHeaders.Accept.Add(newMediaTypeWithQualityHeaderValue("application/json"));
+        //GET Method
+        HttpResponseMessage response = awaitclient.GetAsync("api/Department/1");
+        if (response.IsSuccessStatusCode)
+        {
+        Departmentdepartment = awaitresponse.Content.ReadAsAsync < Department> ();
+            Console.WriteLine("Id:{0}\tName:{1}", department.DepartmentId, department.DepartmentName);
+            Console.WriteLine("No of Employee in Department: {0}", department.Employees.Count);
+            }
+            else
+            {
+            Console.WriteLine("Internal server Error");
+            }
+            }
+
+    </xmp>
+    When the execution of this method is finished, it returns HttpResponseMessage, which contains HTTP response. If the
+    response contains success code as response, it means the response body contains the data in the form of JSON.
+    ReadAsAsync method is used to deserialize the JSON object.
+    HttpClient does not throw any error when HTTP response contains an error code, but it sets the IsSuccessStatusCode
+    property to false.
+
+
+    <br>
+    <h2>HttpPost</h2>
+    <xmp class="prettyprint">
+        var department = newDepartment() { DepartmentName = "Test Department" };
+        HttpResponseMessage response = awaitclient.PostAsJsonAsync("api/Department", department);
+
+        if (response.IsSuccessStatusCode)
+        {
+        // Get the URI of the created resource.
+        UrireturnUrl = response.Headers.Location;
+        Console.WriteLine(returnUrl);
+        }
+    </xmp>
+    In this code, PostAsJsonAsync method serializes the object into JSON format and sends this JSON object in POST
+    request. HttpClient has a built-in method "PostAsXmlAsync" to send XML in POST request. Also, we can use "PostAsync"
+    for any other formatter.
+    ==================================================================================
+    <br>
+    <h2>Why graphql</h2>
+    <p><strong>==============================================================</strong></p>
+    <p><strong>Graph QL</strong></p>
+    <blockquote class="s90z9tc-9 fSXGTv">
+        <p class="s90z9tc-10 fHRkcP">If you have, say, a "blog" model with 60 different properties, 10 different
+            relations, each relation with 2-3 more relations and so on, what would you do:</p>
+    </blockquote>
+    <p class="s90z9tc-10 fHRkcP">Personally, I would return the superset of all needs, so close to the first option. But
+        with GraphQL, are you not just kicking the can down the road?</p>
+    <p>&nbsp;</p>
+    ===============================================================================================
+    <br>
+    <h2>Some Useful dotnet command</h2>
+
+    <h4>Command <strong>dotnet --info</strong></h4>
+
+    <xmp class="prettyprint">
+        .NET Core SDK (reflecting any global.json)
+        Version: 2.1.403
+        Commit: 04e15494b6
+
+        Runtime Environment:
+        OS Name: Windows
+        OS Version: 10.0.17134
+        OS Platform: WindowsR
+        ID: win10-x64Base
+        Path: C:\Program Files\dotnet\sdk\2.1.403\
+
+        Host (useful for support):
+        Version: 2.1.5
+        Commit: 290303f510
+
+        .NET Core SDKs installed:2.1.202
+        [C:\Program Files\dotnet\sdk]2.1.400
+        [C:\Program Files\dotnet\sdk]
+        2.1.402 [C:\Program Files\dotnet\sdk]2.1.403
+        [C:\Program Files\dotnet\sdk]
+        and many more...
+    </xmp>
+    <br>
+    ==============================================================================================================
+    <p><span style="font-size: 18pt;">Controller vs ControllerBase&nbsp;</span></p>
+    <p><span style="font-size: 14pt;"><strong><span style="color: #000000;">Controller:</span></strong>A base class for
+            an MVC controller with <strong><span style="color: #ff0000;">view support.</span></strong></span></p>
+    <p><span style="font-size: 14pt;"><strong><span style="color: #000000;">ControllerBase :</span></strong> A base
+            class for an MVC controller <strong><span style="color: #ff0000;">without view
+                    support</span></strong></span></p>
+    ==================================================================================================================
+    <br>
+    <p><span style="color: #ff00ff;"><strong><span style="font-size: 14pt;">Global Validation</span></strong></span></p>
+    <p><span style="font-size: 14pt; color: #000000;">What we are doing write now is : in every controller we write
+            below code for model validation.</span></p>
+    <p><span style="font-size: 14pt; color: #000000;">The bad thing about is that <span style="color: #ff0000;">we
+                repeat this piece of code throughout a lot of our actions.</span></span></p>
+
+    <xmp class="prettyprint">
+        if (!ModelState.IsValid)
+        {
+        return BadRequest(ModelState);
+        }
+    </xmp>
+
+    <p><span style="color: #ff00ff;"><strong><span style="font-size: 14pt;">Solution:</span></strong></span><br /><span
+            style="font-size: 14pt;">We can make a<strong><span style="color: #ff00ff;"> global filter
+                    attribute</span></strong> to handle this for us when action is executing:</span></p>
+
+    <xmp class="prettyprint">
+        public class ValidateModelFilter : ActionFilterAttribute
+        {
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+        if (!context.ModelState.IsValid)
+        {
+        context.Result = new BadRequestObjectResult(context.ModelState);
+        }
+        }
+        }
+
+    </xmp>
+    <p><span style="font-size: 12pt;">And then we can<strong><span style="color: #000000;"> let MVC know that we want to
+                    use this filter</span></strong>, inside of our <strong><span
+                    style="color: #ff0000;">ConfigureServices </span></strong>in Startup class:</span></p>
+
+    <xmp class="prettyprint">
+        services.AddMvcCore(options =>
+        {
+        options.Filters.Add(typeof(ValidateModelFilter));
+        })
+
+    </xmp>
+
+    This much and now all things is done by .net core.
+
+
+</body>
+
+</html>

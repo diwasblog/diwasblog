@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+
+  <body>
+
+
+      <h1 class="w-blogpost-title entry-title"><span style="color: #ff00ff; font-size: 18pt;"><strong>DELETE From SELECT Statement &ndash; Using JOIN in DELETE Statement &ndash; Multiple Tables in DELETE Statement</strong></span></h1>
+
+      <img src="img/deletejoin.jpg">
+
+      <div class="row">
+        <div class="col">
+          <pre>
+            <code class="language-csharp">
+              //Deleting Data from table 1
+                DELETE Table1
+                FROM Table1 t1
+                INNER JOIN Table2 t2 ON t1.Col1 = t2.Col1
+                WHERE t2.Col3 IN ('Two-Three','Two-Four')
+                GO
+            </code>
+          </pre>
+        </div>
+
+        <div class="col">
+            <img src="img/deletejoin1.jpg">
+          </div>
+      </div>
+===================================================================================================================================
+<br>
+<h2>UPDATE From SELECT Statement – Using JOIN in UPDATE Statement – Multiple Tables in Update Statement</h2>
+<img src="img/updatejoin1.jpg">
+<div class="row">
+  <div class="col">
+    <pre>
+      <code class="language-sql">
+          UPDATE Table1
+          SET Col2 = t2.Col2,
+          Col3 = t2.Col3
+          FROM Table1 t1
+          INNER JOIN Table2 t2 ON t1.Col1 = t2.Col1
+          WHERE t1.Col1 IN (21, 31)
+      </code>
+    </pre>
+  </div>
+
+  <div class="col">
+    <img src="img/updatejoin2.jpg">
+  </div>
+</div>
+<script src="js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+    </body>
+  </html>
+  

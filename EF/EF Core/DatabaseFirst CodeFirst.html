@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+<link rel="stylesheet" href="../css/bootstrap.css">
+<link rel="stylesheet" href="../css/bootstrap-grid.css">
+<link rel="stylesheet" href="../css/bootstrap-reboot.css">
+<link rel="stylesheet" href="../css/dracula.css">
+<link rel="stylesheet" href="../css/dracula-prism.css">
+<link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+<body>
+
+    <div>
+        <div><strong><span style="font-size: 14pt; color: #ff00ff;">Create Database Table From Model(Code First Approach)</span></strong></div>
+        <br />
+        <div><span style="font-size: 12pt;">First we have to create <span style="color: #ff00ff;">context</span> like this: Here: <strong><span style="color: #000000;">BloggingDbContext</span></strong></span></div>
+    </div>
+===============================================================================================
+<h4>Step: 1 Data/BlogDbContext.cs</h3>
+<pre>
+    <code class="language-csharp">
+      public class BloggingContext : DbContext
+      {
+          public BloggingContext(DbContextOptions<BloggingContext> options)
+              : base(options)
+          { }
+      
+          public DbSet<Blog> Blogs { get; set; }
+          public DbSet<Post> Posts { get; set; }
+      }
+    </code>
+</pre>
+Should be only one DbContext otherwise will give error
+=========================================================================================
+<br>
+<h4>Step:2  Create Blog and Post cs file in Model folder</h4>
+<pre>
+    <code class="language-csharp">
+        Blog.cs
+        public class Blog
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+    
+            public ICollection<Post> Posts { get; set; }
+        }
+    
+        Post.cs
+        public class Post
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+    
+            public int BlogId { get; set; }
+            public Blog Blog { get; set; }
+        }
+    
+    </code>
+</pre>
+=========================================================================================
+<br>
+<h4>Step 3 : Create Connection String in appSetting.json</h4>
+<pre>
+    <code class="language-csharp">
+        {
+          "ConnectionStrings": {
+            "BlogConnection": "Server=.\\SQLEXPRESS;Database=Blog;Trusted_Connection=True;"
+          },
+          "Logging": {
+            "IncludeScopes": false,
+            "LogLevel": {
+              "Default": "Warning"
+            }
+          }
+        }
+    </code>
+</pre>
+=========================================================================================
+<h4>Step 4 : In ConfigureServices Method of startup.cs we add following</h4>
+
+<pre>
+  <code  class="language-csharp">
+      public void ConfigureServices(IServiceCollection services)
+      {
+            services.AddMvc();
+
+            //added
+          services.AddDbContext<BloggingDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("BlogConnection")));
+
+              ...
+          }
+
+  </code>
+</pre>
+=============================================================================================
+<h4>Step 5 : Run below in package manager</h4>
+
+<div class="row">
+  <div class="col">
+      <pre>
+          <code  class="language-csharp">
+            Add-Migration InitialCreate 
+            Update-Database   
+        </code>
+      </pre>
+  </div>
+
+  <div class="col">
+    <img src="../img/migration.PNG">
+  </div>
+
+  <div class="col">
+      <img src="../img/blog.PNG">
+    </div>
+</div>
+
+<strong>Add-Migration does: </strong> Once the add migration command executes successfully,
+it creates a folder name as ‘Migration’ in the project and creates the class with the same name [MigrationName] in my case MigrationName:InitialCreate
+<br>
+<strong>Update-database:</strong>This will create database(Blog) and table(Blog and Post) in SQL Server .
+===============================================================================================================
+
+<h4>Step 6 : Now on controller we can access data</h4>
+
+<pre>
+  <code class="language-csharp">
+      public class BlogController : Controller
+      {
+          private BloggingDbContext _context;
+  
+          public BlogController(BloggingDbContext context)
+          {
+              _context = context;
+          }
+  
+          [Route("/blogs")]
+          public IActionResult Index()
+          {
+              var a = _context.Blogs.ToList();
+              return View(a);
+          }
+      }
+  </code>
+</pre>
+Then hits <strong>http://localhost:<port>/blogs</strong> will hit index method
+<br>
+we are done :)<br>
+  =====================================================================================
+  <br>
+  <h2>Now lets Update model and later update database as well</h2>
+
+<h4>Step 1 Add Alias Field in Blog.cs as below </h4>
+<pre>
+  <code class="language-csharp">
+      public class Blog
+      {
+          public int Id { get; set; }
+          public string Name { get; set; }
+          public string Alias { get; set; }
+      
+          public ICollection<Post> Posts { get; set; }
+      }
+  </code>
+</pre>
+====================================================================================================
+<h4>Step 2 Update same field in table </h4>
+
+<div class="row">
+ 
+  <div class="col">
+   
+      <pre>
+          <code class="language-csharp">
+              add-migration addedalias
+              update-database 
+          </code>
+        </pre>
+  </div>
+  <div class="col">
+      Adding Migration
+    <img src="../img/updatemigration.PNG">
+  </div>
+
+  <div class="col">
+    Alias on table
+    <img src="../img/aliasintable.PNG">
+  </div>
+</div>
+====================================================================================================
+Lets look what is inside migration file like 2012455654545_addedalias.cs as below
+
+<pre>
+    <code class="language-csharp">
+      public partial class addedalias : Migration
+      {
+          protected override void Up(MigrationBuilder migrationBuilder)
+          {
+              migrationBuilder.AddColumn<string>(
+                  name: "Alias",
+                  table: "Blogs",
+                  nullable: true);
+          }
+      
+          protected override void Down(MigrationBuilder migrationBuilder)
+          {
+              migrationBuilder.DropColumn(
+                  name: "Alias",
+                  table: "Blogs");
+          }
+      }
+  </code>
+</pre>
+===========================================================================================================
+
+<h5>Note here we have Up and Down Method:</h5>
+Here we have Up and Down Function .When you run update-database one of these two function will be executed.
+The Up method upgrades your database from its current state (represented by your previous migration)
+ to the state expected by your current code migration. The Down method does the reverse 
+ operation - it removes all the changes from the current migration and reverts database to the state expected by the previous migration
+ A ModelSnapshot file is also created or updated, depending on whether one previously existed.
+
+<br>
+ To use the Down method you must explicitly specify the target migration for your upgrade.
+ If the target migration is the old one, the migration API will automatically use the Down method and downgrade your database.
+
+ <br>
+ do this to down grade like This
+ Syntax :Update-Database –TargetMigration: <name of last good migration></name>
+ update-database 20190103104657_FirstMigration then look database 
+
+</body>
+
+    <script src="../js/prism.js"></script>
+    <script type="text/javascript">
+      Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+          'remove-trailing': true,
+          'remove-indent': true,
+          'left-trim': true,
+          'right-trim': true,
+          // 'break-lines': 10,
+          // 'indent': 2,
+          // 'remove-initial-line-feed': false,
+          // 'tabs-to-spaces': 4,
+          // 'spaces-to-tabs': 4
+        });
+    </script>
+    </body>
+    </html>

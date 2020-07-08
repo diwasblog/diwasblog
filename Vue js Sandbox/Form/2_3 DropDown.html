@@ -1,0 +1,74 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+    font-size:12pt;
+    font-family:monospace;
+
+}
+</style>
+ 
+</head>
+<body>
+
+<!--########################Main Code######################################-->
+<div id='app'>
+  <select v-model="country">
+    <option value="CA">Nepal</option>
+    <option value="US">United Status</option>
+    <option value="EN">England</option>
+    <option value="India">India</option>
+  </select>
+   <span>{{country}}</span>
+  </div>
+<script>
+const app=new Vue({
+    el:'#app',
+    data:{
+        country:null
+    }
+})
+</script>
+<!--##############################################################-->
+
+
+<!--|#########################DISPLAY############################################-->
+<?prettify linenums=1?>
+<xmp class="prettyprint"
+   >
+ 
+        
+         <script src="https://unpkg.com/vue"></script>
+         <div id='app'>
+          <select v-model="country">
+            <option value="CA">Nepal</option>
+            <option value="US">United Status</option>
+            <option value="EN">England</option>
+            <option value="India">India</option>
+          </select>
+           <span>{{country}}</span>
+          </div>
+
+          
+        <script>
+        const app=new Vue({
+            el:'#app',
+            data:{
+                country:null
+            }
+        })
+        </script>
+
+ 
+</xmp>
+<!--####################################################-->
+
+
+    </body>
+
+</html>

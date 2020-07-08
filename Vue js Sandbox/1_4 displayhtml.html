@@ -1,0 +1,79 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+
+
+<style>
+xmp.prettyprint{
+    font-size:12pt;
+    font-family:monospace;
+
+}
+</style>
+ 
+</head>
+<body>
+
+<!--######################## Main Code ######################################-->
+<div id='app'>
+<div>{{Name}}</div>
+<div>{{Nohtmlcontent}}</div>
+<div v-html="htmlcontent"></div>
+</div>
+
+<script src="https://unpkg.com/vue"></script>
+
+<script>
+const app=new Vue({
+    el:'#app',
+    data:{
+        Name : 'Diwas',
+        Nohtmlcontent:"<h1>Notworking<h1>",  //displayed as it is and not using html format of h1
+        htmlcontent:'<h1>Yes Working</h1>'   //displayed using html format
+    }
+    
+})
+</script>
+<!--##############################################################-->
+
+
+<!--|#########################DISPLAY############################################-->
+<?prettify linenums=1?>
+<xmp class="prettyprint">
+   <html>
+      <head>
+         <title>Fibonacci number</title>
+      </head>
+      <body>
+         <div id='app'>
+            <div>{{Name}}</div>
+            <div>{{Nohtmlcontent}}</div>
+            <div>{{htmlcontent}}</div>
+          </div>
+
+            <script src="https://unpkg.com/vue"></script>
+
+            <script>
+            const app=new Vue({
+                el:'#app',
+                data:{
+                    Name : 'Diwas',
+                    Nohtmlcontent:"<h1>Notworking<h1>",
+                    htmlcontent:'<h1>Yes Working</h1>'
+                }
+                
+            })
+            </script>
+
+
+      </body>
+   </html>
+</xmp>
+<!--####################################################-->
+
+
+    </body>
+
+</html>

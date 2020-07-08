@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<h2>Step 1: Install Elmah Package </h2>
+Type : elmah mvc in nuget package
+Automatically code will be inserted in webconfig file
+<pre>
+    <code class="language-csharp">
+        
+
+        //Added 
+        &lt;add name="MyConnectionTODb"  connectionString="---" providerName="Npgsql" />
+
+
+        //this line will be added
+        &lt;sectionGroup name="elmah">
+            &lt;section name="security" requirePermission="false" type="Elmah.SecuritySectionHandler, Elmah" />
+            &lt;section name="errorLog" requirePermission="false" type="Elmah.ErrorLogSectionHandler, Elmah" />
+            &lt;section name="errorMail" requirePermission="false" type="Elmah.ErrorMailSectionHandler, Elmah" />
+            &lt;section name="errorFilter" requirePermission="false" type="Elmah.ErrorFilterSectionHandler, Elmah" />
+            &lt;/sectionGroup>
+
+            ....
+            //this will be added in &lt;httpHandlers>
+            //Here this will reroute all request to the file elmah.axd
+
+            &lt;add verb="POST,GET,HEAD" path="elmah.axd" type="Elmah.ErrorLogPageFactory, Elmah" />
+
+
+
+            ------ 
+            //This will be added in &lt;httpModules/>
+            <add name="ErrorLog" type="Elmah.ErrorLogModule, Elmah"/>
+
+            ----- 
+            //Configure Elmah saving in database          =======> Important
+            &lt;elmah>
+                &lt;security allowRemoteAccess="1" />
+                  &lt;errorLog type="Elmah.PgsqlErrorLog, Elmah" connectionStringName="DBRerp_ConnectionString"    />
+           &lt;/elmah>
+    </code>
+</pre>
+
+
+<h2>Step 2: DbScript For Postgresql ( this will create one table elmah_error in postgresql database</h2>
+
+
+<pre>
+    <code class="language-csharp">
+        /*
+ 
+   ELMAH - Error Logging Modules and Handlers for ASP.NET
+ 
+    Author(s):
+ 
+        Laimonas Simutis, laimis@gmail.com
+ 
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+ 
+      http://www.apache.org/licenses/LICENSE-2.0
+ 
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ 
+*/
+
+-- ELMAH DDL script for PostgreSQL based on DDL script for Microsoft SQL Server
+
+-- $Id: Pgsql.sql 696 2010-01-09 17:41:05Z azizatif $
+
+/* ------------------------------------------------------------------------
+        TABLES
+   ------------------------------------------------------------------------ */
+
+CREATE SEQUENCE ELMAH_Error_SEQUENCE;
+CREATE TABLE ELMAH_Error
+(
+    ErrorId		CHAR(36) NOT NULL,
+    Application	VARCHAR(60) NOT NULL,
+    Host 		VARCHAR(50) NOT NULL,
+    Type		VARCHAR(100) NOT NULL,
+    Source		VARCHAR(60)  NOT NULL,
+    Message		VARCHAR(500) NOT NULL,
+    "User"		VARCHAR(50)  NOT NULL,
+    StatusCode	INT NOT NULL,
+    TimeUtc		TIMESTAMP NOT NULL,
+    Sequence	INT NOT NULL DEFAULT NEXTVAL('ELMAH_Error_SEQUENCE'),
+    AllXml		TEXT NOT NULL
+);
+
+ALTER TABLE ELMAH_Error ADD CONSTRAINT PK_ELMAH_Error PRIMARY KEY (ErrorId);
+
+CREATE INDEX IX_ELMAH_Error_App_Time_Seq ON ELMAH_Error USING BTREE
+(
+    Application   ASC,
+    TimeUtc       DESC,
+    Sequence      DESC
+);
+    </code>
+</pre>
+Then run url : http//localhost/elmah.axd
+=============================================================================================================================
+
+Important Links:
+<h2> Links to Webconfig for various database</h2>
+<a href="https://bitbucket.org/project-elmah/1x/src/3a71f9a4eeb57921662b5a5acc211fc4b0932cae/samples/web.config?at=v1.2-sp2&fileviewer=file-view-default
+"> Links to webconfig for various datbase</a>
+<br>
+<h2>Script Links for various Db</h2>
+<a href="http://elmah.github.io/downloads/">Script Links</a>
+
+<script src="js/prism.js"></script>
+<script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true,
+            // 'break-lines': 10,
+            // 'indent': 2,
+            // 'remove-initial-line-feed': false,
+            // 'tabs-to-spaces': 4,
+            // 'spaces-to-tabs': 4
+        });
+</script>
+
+</body>
+
+</html>

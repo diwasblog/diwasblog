@@ -1,0 +1,154 @@
+<html>
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ </head>
+
+
+
+ <body>
+1. vm.accountHeadData , accountHeadData contains array of object like this:<br>
+	[{…}, {…}, {…}, {…}, __ob__: Observer]
+	Here, showing 0th , 1th and 2nd object
+	<pre>
+	0:
+	Amount: 10
+	FeeAccountHeadCategoryId: 2
+	Id: 85
+	IsInserted: false
+	Name: "Fee Card"
+	TotalInstalment: 20
+
+	Amount: 10
+	FeeAccountHeadCategoryId: 2
+	Id: 55
+	IsInserted: false
+	Name: "Exam Fee"
+	TotalInstalment: 20
+
+	Amount: "777"
+	FeeAccountHeadCategoryId: 1
+	Id: 28
+	IsInserted: true
+	Name: "Monthly Fee"
+	TotalInstalment: 12
+     </pre>
+
+<br>
+vm.accountHeadData were got as:
+
+
+<xmp class="prettyprint">
+loadAccountHeadData: function () {
+                    var vm = this;
+                    axios.post('/finance/fees/api/feeCategoryBatchAssociation/list', { "BatchId": vm.batchId, "FeeCategoryId":vm.feeCategoryId })
+                        .then(function (response) {
+                            if (response.data.Result.length >= 0) {
+                                vm.accountHeadData = [];
+                                vm.accountHeadData = response.data.Result;
+                                vm.accountHeadDataLoading = false;
+                            }
+                            if (response.data.Result.length == 0) {
+                                vm.accountHeadDataLoading = false;
+                                vm.loadingMessage = "Oops! No data at the moment!";
+                            }
+                    })
+                    .catch(function (error) {
+                        vm.accountHeadDataLoading = false;
+                        })
+                },
+</xmp>	
+
+
+======================================================================================
+2. loading vm.accountHeadData in UI
+ <img src="../img/multiple insert.png">
+
+=======================================================================================
+3) Now on checked button is checked ,we take checked row and put in new array as below
+
+	<h4>New Array :activeAccountHeadData</h4>
+
+<xmp class="prettyprint">
+	applyAssociationData() {
+	    let vm = this;
+	    let activeAccountHeadData = [];
+
+	    Object.keys(vm.accountHeadData).forEach(function (key) {
+	        if (vm.accountHeadData[key].IsInserted) {
+	            if (vm.checkInput(vm.accountHeadData[key].Amount)) {
+	                alert("The data you entered must be numeric.");
+	                return;
+	            }
+	            activeAccountHeadData.push(vm.accountHeadData[key]);
+     }
+     axios({
+            method: 'post',
+            url: '/finance/fees/api/applyaccountheadfeecategoryassociation',
+            data: { "BatchId": vm.batchId, "FeeCategoryId": vm.feeCategoryId,"Data": JSON.stringify(activeAccountHeadData) }
+        })
+            .then(function (response) {
+            	alert("successfully inserted selected Data");
+        }
+    })
+}
+
+
+checkInput: function (input) {
+                    var regex = /\d+(\.\d+)?/;
+                    if (input.toString().match(regex)) {
+                        return false;
+                    }
+                    return true;
+                },
+</xmp>	
+
+
+
+========================================================================
+<br>
+How to get that table
+
+<xmp class="prettyprint">
+	<table class="table table-bordered table-condensed">
+                            <tr>
+                                <th></th>
+                                <th>Name</th>
+                                <th>Amount</th>
+                                <th>Total Instalment</th>
+                            </tr>
+                            <tr v-for="option in accountHeadData">
+                                <td align="center">
+                                    <input type="checkbox" v-model="option.IsInserted" />
+                                </td>
+                                <td>
+                                    {{option.Name}}
+                                </td>
+                                <td style="vertical-align:middle;">
+                                    <input v-bind:disabled="!option.IsInserted" type="text" v-model="option.Amount" class="form-control" />
+                                </td>
+                                <td>
+                                    <input v-bind:disabled="!option.IsInserted" type="text" v-model="option.TotalInstalment" class="form-control" />
+                                </td>
+                            </tr>
+                        </table>
+                        <button class="btn btn-primary" @@click="submitAssociationData">Submit</button>
+                        <button @@click="applyAssociationData" class="btn btn-primary">Apply Changes to All Students</button>
+
+</xmp>	
+===========================================================================================================================================
+<br>
+</body>
+</html> 	

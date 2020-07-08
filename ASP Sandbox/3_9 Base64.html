@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+    <p><span style="font-size: 14pt;"><span style="color: #ff0000; font-size: 24pt;"><code>Base64</code></span>&nbsp;is a common way to convert <span style="color: #ff0000;">binary data into a text form.</span></span><span style="color: #ff0000;">&nbsp;</span></p>
+    <p><span style="font-size: 14pt;">It is used so that typical <strong>binary data (such as images,file like css,js and many more)</strong> may be safely sent over legacy "not 8-bit clean" channels.</span></p>
+    <p><span style="font-size: 14pt;">The ratio of output bytes to input bytes is 4:3 (33% overhead).Ie Output is 33% more than Input Bytes.</span></p>
+    <h2><span style="color: #ff00ff;"><strong>Base64 Encoding Steps (Simplified):</strong></span></h2>
+    <ol>
+    <li>Binary data is arranged in continuous chunks of 24 bits (3 bytes) each.</li>
+    <li>Each 24 bits chunk is grouped in to four parts of 6 bit each.</li>
+    <li>Each 6 bit group is converted into their corresponding Base64 character values, i.e. Base64 encoding converts three octets into four encoded characters. The ratio of output bytes to input bytes is 4:3 (33% overhead).</li>
+    <li>Interestingly, the same characters will be encoded differently depending on their position within the three-octet group which is encoded to produce the four characters.</li>
+    <li>The receiver will have to reverse this process to recover the original message.</li>
+    </ol>
+    <p><span style="font-size: 12pt;">There are two handy&nbsp;methods for dealing with Base64,&nbsp;</span></p>
+    <p><span style="font-size: 12pt;">They are : <span style="color: #ff00ff;"><strong>ToBase64String</strong></span> and <span style="color: #ff00ff;"><strong>FromBase64String</strong>.&nbsp;</span></span></p>
+    <p><span style="text-decoration: underline;"><span style="font-size: 14pt; color: #ff0000; text-decoration: underline;">ToBase64String</span></span></p>
+    <p><span style="font-size: 12pt; color: #000000;"><code><strong>Convert.ToBase64String</strong></code>&nbsp;method in the&nbsp;<code>System</code>&nbsp;namespace takes a<span style="color: #0000ff;"><strong>&nbsp;<code>byte[]</code></strong></span>as a parameter and returns a <strong><span style="color: #0000ff;">string.</span></strong></span></p>
+    <p><span style="font-size: 12pt; color: #000000; font-family: 'comic sans ms', sans-serif;">The good part about the method taking a&nbsp;<code>byte[]</code>&nbsp;parameter is that part of the work is already done for you &ndash; getting the&nbsp;<code>byte</code>&nbsp;representation of your data. From there, we need to convert each&nbsp;<code>byte</code>&nbsp;into it&rsquo;s 8-bit binary representation. We&nbsp;<em>could</em>&nbsp;use one of the&nbsp;<code>Convert.ToString()</code>&nbsp;overloads in .NET</span></p>
+
+    <pre>
+      <code class="language-csharp">
+        public static string ToBase64String( byte[] inArray )
+      </code>
+    </pre>
+
+    ==============================================================================================================
+
+    <p><span style="text-decoration: underline;"><span style="font-size: 14pt; color: #ff0000;"><strong>FromBase64String</strong></span></span></p>
+    <p><span style="font-size: 12pt; color: #000000;"><strong><code style="color: #000000;">Convert.ToBase64String</code><span style="color: #000000;">&nbsp;method in the&nbsp;</span><code style="color: #000000;">System</code><span style="color: #000000;">&nbsp;namespace takes a</span><span style="color: #0000ff;">&nbsp;string&nbsp;</span><span style="color: #000000;">as a parameter and returns a </span><span style="color: #0000ff;"><span style="color: #0000ff;">bytes</span></span></strong></span></p>
+
+    <pre>
+      <code class="language-csharp">
+        public static byte[] FromBase64String (string s);
+      </code>
+    </pre>
+
+
+    <script src="js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

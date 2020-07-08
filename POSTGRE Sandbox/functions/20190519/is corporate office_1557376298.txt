@@ -1,0 +1,26 @@
+-- FUNCTION: office.is_corporate_office(character varying)
+
+-- DROP FUNCTION office.is_corporate_office(character varying);
+-- DROP FUNCTION office.is_corporate_office(int);
+
+
+CREATE OR REPLACE FUNCTION office.is_corporate_office(
+	office_id_ int)
+    RETURNS boolean
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+AS $BODY$
+BEGIN
+    IF EXISTS(SELECT 1 FROM office.offices WHERE office_id=office_id_ AND parent_office_id is null) THEN
+
+        RETURN true;
+    END IF;
+
+    RETURN false;
+END
+$BODY$;
+
+ALTER FUNCTION office.is_corporate_office(int)
+    OWNER TO postgres;

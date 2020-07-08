@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
+<body>
+    <p><span style="font-size: 24pt; color: #2dc26b;"><strong>What is a web server?</strong></span><br /><span
+            style="font-size: 18pt;">In simple terms, a web server is a software, that is used to deliver <strong>web
+                pages to clients</strong> using the Hypertext Transfer Protocol (HTTP). For example,<strong><span
+                    style="color: #000000;"> IIS is a web server that can be used to run asp.net web
+                    applications.</span></strong></span></p>
+    <hr />
+    <p><span style="font-size: 24pt; color: #2dc26b;"><strong>Do you need IIS to develop and test asp.net web
+                applications?</strong></span><br /><span style="color: #000000; font-size: 18pt;"><strong>Ans: No,
+                Visual Studio ships with a built-in web server. If you want to just build and test web applications on
+                your machine, you don't need an IIS. Keep in mind,&nbsp;Built-in web server will not serve requests to
+                another computer. By default, visual studio uses the built-in web server.</strong></span></p>
+    <hr />
+    <p><span style="font-size: 24pt; color: #2dc26b;"><strong>How to check if IIS is
+                installed?</strong></span><br /><span style="font-size: 18pt; color: #000000;">1. Click on the Windows
+            <span style="color: #e03e2d;"><strong>Start </strong></span>button&nbsp;</span><br /><span
+            style="font-size: 18pt; color: #000000;">2. Type&nbsp;<span
+                style="color: #e03e2d;"><strong>inetmgr</strong>&nbsp;</span>in the Run window.&nbsp;</span><br /><span
+            style="font-size: 18pt; color: #000000;">3. Click<strong><span style="color: #e03e2d;">
+                    OK</span></strong>.&nbsp;</span><br /><span style="font-size: 18pt; color: #000000;">4. If you get
+            the IIS manager window,&nbsp;<span style="color: #e03e2d;"><strong>it is
+                    installed</strong>,&nbsp;<strong>otherwise not installed</strong>.</span></span></p>
+    <hr />
+    <p><span style="font-size: 24pt;"><strong>How to install IIS?</strong></span></p>
+    <p><span style="font-size: 18pt; color: #000000;">1)Goto search and Type:&nbsp;<span
+                style="color: #e03e2d;"><strong>Turn on or off windows features&nbsp;</strong></span></span></p>
+    <p><span style="font-size: 18pt; color: #000000;">2)Click on it then pop up will appear . There just
+            find<strong>&nbsp;<span style="color: #e03e2d;">Internet Information System</span></strong>&nbsp;and enable
+            all the features&nbsp;</span></p>
+    <p><span style="font-size: 18pt; color: #000000;">3)Press&nbsp;<strong>Ok.</strong>&nbsp;</span></p>
+    <p><span style="font-size: 18pt; color: #000000;">Notice:&nbsp;Notice for installing IIS we may need the
+            internet.</span></p>
+    <p><span style="font-size: 18pt; color: #000000;">Now, Goto Browser Type:<strong>&nbsp;<a style="color: #000000;"
+                    href="http://localhost" aria-invalid="true">http://localhost</a></strong></span></p>
+    <p><span style="font-size: 18pt; color: #000000;">If installed then we get below screen</span></p>
+    <p><img src="https://i.ibb.co/T8zpw0L/localhost-check.png" /></p>
+    <p>&nbsp;</p>
+    <p><span style="font-size: 24pt;">Host a Site</span></p>
+    <p><span style="font-size: 18pt;">Open inetmgr&nbsp;</span></p>
+    <p><img src="https://i.ibb.co/y8W0vJH/1-inetmgr.png" alt="" width="1426" height="740" /></p>
+    <p>You will get this screen.</p>
+    <p>Then look at left top corner ==&gt;blue underline</p>
+    <p>DESKTOP-9SHPG17&nbsp; == &gt; Actually this is computer name</p>
+    <p><img src="https://i.ibb.co/zFjMqgR/computer-name.png" alt="" width="604" height="310" /></p>
+    <p>Then goto browser&nbsp;</p>
+    <p>then either type localhost or computername we get same webpage as shown above.</p>
+
+    <p>If you try <a href="http://localhost" aria-invalid="true">http://localhost</a> then it will launch a site only
+        from local system.</p>
+    <p>If you try <a href="http://desktop-9shpg17/" aria-invalid="true">http://desktop-9shpg17/</a> then it will launch
+        also from other computer system within the computer network.</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>Sometimes IIS gets automatically installed along with OS but many times we have to install ourselves.<br />Lets
+        check IIS is installed or not . Open browser type: <a href="http://localhost"
+            aria-invalid="true">http://localhost</a> ==&gt; if opens IIS pages then ok.</p>
+    <p>Then if we get IIS pages then we go to&nbsp;<br />inetmgr in run&nbsp;</p>
+</body>
+
+</html>

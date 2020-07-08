@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+  Output Parameter is same like return result of function
+    <div class="row">
+      <div class="col-lg-6">
+          <pre class="limit-5">
+              <code class="language-sql">
+              create proc usp_GetEmployeeCountByGender
+              @Gender nvarchar(200),
+              @EmployeeCount int output
+              as 
+              Begin
+                select @EmployeeCount=COUNT(Id) from tbl_Employee where Gender=@Gender
+              End
+              </code>
+          </pre>  
+      </div>
+
+      <div class="col-lg-6">
+          <pre class="limit-5">
+              <code class="language-sql">
+              create proc usp_GetEmployeeCountByGender
+              @Gender nvarchar(200),
+              @EmployeeCount int out
+              as 
+              Begin
+                select @EmployeeCount=COUNT(Id) from tbl_Employee where Gender=@Gender
+              End
+              </code>
+          </pre>  
+      </div>
+
+
+
+    </div>
+
+We get return result by executing below code 
+  <pre class="limit-5">
+      <code class="language-sql">
+          Declare @TotalCount int
+          Execute usp_GetEmployeeCountByGender @Gender='Male',@EmployeeCount=@TotalCount out
+          Print @TotalCount
+      </code>
+    </pre> 
+
+    Output :  3
+
+    <p><span style="font-size: 14pt; color: #ff00ff;"><strong>Checking Table is present or not</strong></span></p>
+    <pre class="limit-5">
+        <code class="language-sql">
+            sp_help tblEmployee
+        </code>
+      </pre> 
+
+      <p><span style="font-size: 14pt; color: #ff00ff;"><strong>View the dependencies of the stored procedure to other </strong></span></p>
+      This system SP is very useful, especially if you want to check, if there are any stored procedures that are referencing a table that you are abput to drop. sp_depends can also be used with other database objects like table etc.
+
+      <pre class="limit-5">
+          <code class="language-sql">
+              sp_depends tblEmployee
+          </code>
+        </pre> 
+
+
+        <h2>Alternative </h2>
+
+        <div class="row">
+
+          <div class="col-lg-6">
+              <div class="row">
+
+                  <div class="col-lg-12">
+                      <pre class="limit-5">
+                          <code class="language-sql">
+                              create proc usp_GetEmployeeCountByGender
+                              @Gender nvarchar(200),
+                              @EmployeeCount int output
+                              as
+                              Begin
+                                select @EmployeeCount=COUNT(Id) from tbl_Employee where Gender=@Gender
+                              End 
+                          </code>
+                        </pre> 
+                       
+                  </div>
+
+                  <div class="col-lg-12">
+                      <pre class="limit-5">
+                          <code class="language-sql">
+                              Declare @TotalCount int
+                              Execute usp_GetEmployeeCountByGender @Gender='Male',@EmployeeCount=@TotalCount out
+                              Print @TotalCount
+                          </code>
+                        </pre> 
+                    </div>
+                </div>
+          </div>
+
+
+          <div class="col-lg-6">
+              <div class="row">
+
+                  <div class="col-lg-12">
+                      <pre class="limit-5">
+                          <code class="language-sql">
+                              create proc usp_GetEmployeeCountByGenderMethod2
+                              @Gender nvarchar(20)
+                              as 
+                              Begin
+                                  return (Select COUNT(Id) from tbl_Employee where @Gender=@Gender)
+                              End
+
+                          </code>
+                        </pre> 
+                  </div>
+
+                  <div class="col-lg-12">
+                      <pre class="limit-5">
+                          <code class="language-sql">
+                              Declare @Total int
+                              Execute  @Total = usp_GetEmployeeCountByGenderMethod2 'Male'
+                              Print @Total
+                          </code>
+                        </pre> 
+                    </div>
+                </div>
+          </div>
+        </div>
+
+        Next Example 
+
+        Using Output Parameter
+<div class="row">
+  <div class="col-lg-6 col-sm-6">
+    
+      <pre class="limit-5">
+          <code class="language-sql">
+              Create proc usp_GetNameById1
+              @Id int,
+              @Name nvarchar(20) output
+              as
+              Begin
+                Select @Name=Name from tbl_Employee Where Id=@Id
+              End
+          </code>
+        </pre> 
+  </div>
+  <div class="col-lg-6 col-sm-6">
+      <pre class="limit-5">
+          <code class="language-sql">
+              Declare @EmployeeName nvarchar(20)
+              Execute usp_GetNameById1 1, @EmployeeName Out
+              Print 'Name=' +@EmployeeName
+          </code>
+        </pre> 
+  </div>
+</div>
+
+Using Return Parameter
+Showing donot work if return parameter is other than integer
+
+<div class="row">
+    <div class="col-lg-6 col-sm-6">
+      
+        <pre class="limit-5">
+            <code class="language-sql">
+                Create proc usp_GetNameById2
+                @Id int
+                as
+                Begin
+                  return (Select Name from tbl_Employee where Id=@Id)
+                  //Here we are returning string 'name'
+                End
+            </code>
+          </pre> 
+    </div>
+    <div class="col-lg-6 col-sm-6">
+        <pre class="limit-5">
+            <code class="language-sql">
+                Declare @EmployeeName nvarchar(20)
+                Execute @EmployeeName=usp_GetNameById2 1
+                Print 'Name=' +@EmployeeName
+            </code>
+          </pre> 
+    </div>
+  </div>
+
+  Output: <p><span style="color: #ff0000;">Msg 245, Level 16, State 1, Procedure usp_GetNameById2, Line 12</span><br /><span style="color: #ff0000;">Conversion failed when converting the nvarchar value 'Diwas' to data type int.</span></p>
+
+  <table style="height: 100px; width: 36.5901%; border-collapse: collapse; margin-left: auto; margin-right: auto;" border="2">
+      <tbody>
+      <tr>
+      <td style="width: 50%;"><span style="font-family: impact, sans-serif; background-color: #ffffff;">Return Status Value</span></td>
+      <td style="width: 36.5828%;"><span style="font-family: impact, sans-serif; background-color: #ffffff;">Output Parameter</span></td>
+      </tr>
+      <tr>
+      <td style="width: 50%;">Only Integer Value</td>
+      <td style="width: 36.5828%;">Any DataType</td>
+      </tr>
+      <tr>
+      <td style="width: 50%;">Only One value</td>
+      <td style="width: 36.5828%;">Multiple Value</td>
+      </tr>
+      <tr>
+      <td style="width: 50%;">Used in case of getting success or failure message(ie 0 or 1)</td>
+      <td style="width: 36.5828%;">Use to return value like name,age ,id etc</td>
+      </tr>
+      </tbody>
+      </table>
+
+    <script src="js/prism.js"></script>
+    <script type="text/javascript">
+      Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+          'remove-trailing': true,
+          'remove-indent': true,
+          'left-trim': true,
+          'right-trim': true,
+          // 'break-lines': 10,
+          // 'indent': 2,
+          // 'remove-initial-line-feed': false,
+          // 'tabs-to-spaces': 4,
+          // 'spaces-to-tabs': 4
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,63 @@
+-- View: core.ibt_ledgers
+
+-- DROP VIEW core.ibt_ledgers;
+
+CREATE OR REPLACE VIEW core.ibt_ledgers AS
+ SELECT ibt_setup.local_receivable_gl_account_id AS gl_id
+   FROM core.ibt_setup
+UNION ALL
+ SELECT ibt_setup.local_payable_gl_account_id AS gl_id
+   FROM core.ibt_setup
+UNION ALL
+ SELECT ibt_setup.remote_receivable_gl_account_id AS gl_id
+   FROM core.ibt_setup
+UNION ALL
+ SELECT ibt_setup.remote_payable_gl_account_id AS gl_id
+   FROM core.ibt_setup;
+
+ALTER TABLE core.ibt_ledgers
+    OWNER TO postgres;
+
+
+
+
+
+
+-- View: transactions.transactions_view_for_ibt
+
+-- DROP VIEW transactions.transactions_view_for_ibt;
+
+CREATE OR REPLACE VIEW transactions.transactions_view_for_ibt AS
+ SELECT t.tran_id,
+    t.office_id,
+    t.tran_date::date AS tran_date,
+    t.value_date::date AS value_date,
+    t.book_name,
+    td.gl_account_id,
+    td.debit,
+    td.credit,
+    td.statement_reference,
+    t.teller_id
+   FROM transactions.transactions t
+     JOIN transactions.transaction_details td ON t.tran_id = td.tran_id
+     JOIN ( SELECT DISTINCT ibt_ledgers.gl_id
+           FROM core.ibt_ledgers) l ON td.gl_account_id = l.gl_id
+  WHERE t.verification_status_id > 0
+UNION ALL
+ SELECT 1 AS tran_id,
+    bd.office_id,
+    bd.value_date::date AS tran_date,
+    bd.value_date::date AS value_date,
+    'Opening'::character varying(20) AS book_name,
+    bd.gl_account_id,
+    bd.debit,
+    bd.credit,
+    'Balance b/d.'::character varying AS statement_reference,
+    1 AS teller_id
+   FROM transactions.balance_bd_view bd
+     JOIN ( SELECT DISTINCT ibt_ledgers.gl_id
+           FROM core.ibt_ledgers) l ON bd.gl_account_id = l.gl_id;
+
+ALTER TABLE transactions.transactions_view_for_ibt
+    OWNER TO postgres;
+

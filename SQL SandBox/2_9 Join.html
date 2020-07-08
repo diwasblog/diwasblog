@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/bootstrap-grid.css">
+  <link rel="stylesheet" href="css/bootstrap-reboot.css">
+  <link rel="stylesheet" href="css/dracula.css">
+  <link rel="stylesheet" href="css/dracula-prism.css">
+  <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+
+  <p><span style="color: #ff0000;"><strong><span style="font-size: 18pt;">Types of JOINS</span></strong></span></p>
+  <p><span style="font-size: 14pt; color: #ff00ff;">1)INNER JOIN</span></p>
+  <p><span style="font-size: 14pt; color: #ff00ff;">2)OUTER JOIN</span></p>
+  <p><span style="font-size: 14pt; color: #ff00ff;">&nbsp; &nbsp; &nbsp;2.1)LEFT OUTER JOIN</span></p>
+  <p><span style="font-size: 14pt; color: #ff00ff;">&nbsp; &nbsp; &nbsp;2.2) RIGHT OUTER JOIN</span></p>
+  <p><span style="font-size: 14pt; color: #ff00ff;">&nbsp; &nbsp; &nbsp;2.3) FULL OUTER JOIN</span></p>
+  <p><span style="font-size: 14pt; color: #ff00ff;">3)CROSS JOIN</span></p>
+  <p><span style="font-size: 14pt; color: #ff00ff;">4) CROSS APPLY</span></p>
+  <p><span style="font-size: 14pt; color: #ff00ff;">5)OUTER APPLY</span></p>
+
+  <br>
+  ===================================================================================================
+  <br>
+
+  <div class="row">
+    <div class="col-3">
+      <table style="border-collapse: collapse; width: 38.7407%;" border="1">
+        <tbody>
+          <tr style="background: black; color: white;">
+            <td style="width: 5.16542%;"><span style="font-size: 14pt;">Id</span></td>
+            <td style="width: 9.11422%;"><span style="font-size: 14pt;">Name</span></td>
+            <td style="width: 6.23267%;"><span style="font-size: 14pt;">Age</span></td>
+            <td style="width: 10.5016%;"><span style="font-size: 14pt;">Address</span></td>
+            <td style="width: 7.72676%;"><span style="font-size: 14pt;">Salary</span></td>
+          </tr>
+          <tr>
+            <td style="width: 5.16542%;">1</td>
+            <td style="width: 9.11422%;">Ramesh</td>
+            <td style="width: 6.23267%;">32</td>
+            <td style="width: 10.5016%;">Ahmedabad</td>
+            <td style="width: 7.72676%;">2000</td>
+          </tr>
+          <tr>
+            <td style="width: 5.16542%;">2</td>
+            <td style="width: 9.11422%;">Khilan</td>
+            <td style="width: 6.23267%;">25</td>
+            <td style="width: 10.5016%;">Delhi</td>
+            <td style="width: 7.72676%;">1500</td>
+          </tr>
+          <tr>
+            <td style="width: 5.16542%;">3</td>
+            <td style="width: 9.11422%;">Kaushik</td>
+            <td style="width: 6.23267%;">23</td>
+            <td style="width: 10.5016%;">Kota</td>
+            <td style="width: 7.72676%;">2000</td>
+          </tr>
+          <tr>
+            <td style="width: 5.16542%;">4</td>
+            <td style="width: 9.11422%;">Chaitali</td>
+            <td style="width: 6.23267%;">25</td>
+            <td style="width: 10.5016%;">Mumbai</td>
+            <td style="width: 7.72676%;">6500</td>
+          </tr>
+          <tr>
+            <td style="width: 5.16542%;">5</td>
+            <td style="width: 9.11422%;">Hardik</td>
+            <td style="width: 6.23267%;">27</td>
+            <td style="width: 10.5016%;">Bhopal</td>
+            <td style="width: 7.72676%;">8500</td>
+          </tr>
+          <tr>
+            <td style="width: 5.16542%;">6</td>
+            <td style="width: 9.11422%;">Kamal</td>
+            <td style="width: 6.23267%;">22</td>
+            <td style="width: 10.5016%;">MP</td>
+            <td style="width: 7.72676%;">4500</td>
+          </tr>
+          <tr>
+            <td style="width: 5.16542%;">7</td>
+            <td style="width: 9.11422%;">Muffy</td>
+            <td style="width: 6.23267%;">24</td>
+            <td style="width: 10.5016%;">Indore</td>
+            <td style="width: 7.72676%;">10000</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-3">
+      <table style="border-collapse: collapse; width: 27.3212%;" border="1">
+        <tbody>
+          <tr style="background: black; color: white;">
+            <td style="width: 6.0032%;">OID</td>
+            <td style="width: 6.32337%;">Date</td>
+            <td style="width: 7.07041%;">Cust_ID</td>
+            <td style="width: 7.92424%;">Amount</td>
+          </tr>
+          <tr>
+            <td style="width: 6.0032%;">102</td>
+            <td style="width: 6.32337%;">2018</td>
+            <td style="width: 7.07041%;">3</td>
+            <td style="width: 7.92424%;">3000</td>
+          </tr>
+          <tr>
+            <td style="width: 6.0032%;">100</td>
+            <td style="width: 6.32337%;">2009</td>
+            <td style="width: 7.07041%;">3</td>
+            <td style="width: 7.92424%;">1500</td>
+          </tr>
+          <tr>
+            <td style="width: 6.0032%;">101</td>
+            <td style="width: 6.32337%;">2010</td>
+            <td style="width: 7.07041%;">2</td>
+            <td style="width: 7.92424%;">1600</td>
+          </tr>
+          <tr>
+            <td style="width: 6.0032%;">103</td>
+            <td style="width: 6.32337%;">2008</td>
+            <td style="width: 7.07041%;">4</td>
+            <td style="width: 7.92424%;">2060</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h2>General ways</h2>
+  <div class="row">
+
+    <div class="col-sm-5">
+      <pre>
+      <code class="language-sql">
+        Select Id,Name,Amount,Date
+        From Customer,Order
+        Where Customer.Id=Order.Cust_Id;
+      </code>
+    </pre>
+    </div>
+
+    <div class="col-sm-5">
+      <table style="border-collapse: collapse; width: 28.1971%;" border="1">
+        <tbody>
+          <tr style="background: black; color: white;">
+            <td style="width: 4.87421%;"><strong>Id</strong></td>
+            <td style="width: 7.59959%;"><strong>Name</strong></td>
+            <td style="width: 8.64776%;"><strong>Amount</strong></td>
+            <td style="width: 7.07547%;"><strong>Date</strong></td>
+          </tr>
+          <tr>
+            <td style="width: 4.87421%;">3</td>
+            <td style="width: 7.59959%;">Kaushik</td>
+            <td style="width: 7.07547%;">3000</td>
+            <td style="width: 8.64776%;">2019</td>
+          </tr>
+          <tr>
+            <td style="width: 4.87421%;">3</td>
+            <td style="width: 7.59959%;">Kaushik</td>
+            <td style="width: 7.07547%;">1500</td>
+            <td style="width: 8.64776%;">2009</td>
+          </tr>
+          <tr>
+            <td style="width: 4.87421%;">2</td>
+            <td style="width: 7.59959%;">Khilan</td>
+            <td style="width: 7.07547%;">1600</td>
+            <td style="width: 8.64776%;">2010</td>
+          </tr>
+          <tr>
+            <td style="width: 4.87421%;">4</td>
+            <td style="width: 7.59959%;">Chaitail</td>
+            <td style="width: 7.07547%;">2060</td>
+            <td style="width: 8.64776%;">2008</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  ========================================================================================================================
+  <h2>Inner Join</h2>
+  <div class="row">
+
+    <div class="col-sm-5">
+      <pre>
+      <code class="language-sql">
+        Select Id,Name,Amount,Date
+        From Customer
+        INNER JOIN Order
+        Where Customer.Id=Order.Cust_Id;
+      </code>
+    </pre>
+    </div>
+
+    <div class="col-sm-5">
+      <table style="border-collapse: collapse; width: 28.1971%;" border="1">
+        <tbody>
+          <tr style="background: black; color: white;">
+            <td style="width: 4.87421%;"><strong>Id</strong></td>
+            <td style="width: 7.59959%;"><strong>Name</strong></td>
+            <td style="width: 8.64776%;"><strong>Amount</strong></td>
+            <td style="width: 7.07547%;"><strong>Date</strong></td>
+          </tr>
+          <tr>
+            <td style="width: 4.87421%;">3</td>
+            <td style="width: 7.59959%;">Kaushik</td>
+            <td style="width: 7.07547%;">3000</td>
+            <td style="width: 8.64776%;">2019</td>
+          </tr>
+          <tr>
+            <td style="width: 4.87421%;">3</td>
+            <td style="width: 7.59959%;">Kaushik</td>
+            <td style="width: 7.07547%;">1500</td>
+            <td style="width: 8.64776%;">2009</td>
+          </tr>
+          <tr>
+            <td style="width: 4.87421%;">2</td>
+            <td style="width: 7.59959%;">Khilan</td>
+            <td style="width: 7.07547%;">1600</td>
+            <td style="width: 8.64776%;">2010</td>
+          </tr>
+          <tr>
+            <td style="width: 4.87421%;">4</td>
+            <td style="width: 7.59959%;">Chaitail</td>
+            <td style="width: 7.07547%;">2060</td>
+            <td style="width: 8.64776%;">2008</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  ===================================================================================================================
+  <br>
+  <h2>LEFT Join/LEFT Outer Join</h2>
+  It will select all the records from the left table and based on the JOIN condition,it will select any matching records
+  from the "Right"
+  table and returns us the result.
+  <div class="row">
+
+    <div class="col-sm-5">
+      <pre>
+      <code class="language-sql">
+        Select Id,Name,Amount,Date
+        From Customer
+        LEFT JOIN Order
+        Where Customer.Id=Order.Cust_Id;
+      </code>
+    </pre>
+    </div>
+
+    <div class="col-sm-5">
+      <table style="border-collapse: collapse; width: 28.1971%;" border="1">
+        <tbody>
+          <tr style="background: black; color: white;">
+            <td style="width: 4.87421%;"><strong>Id</strong></td>
+            <td style="width: 7.59959%;"><strong>Name</strong></td>
+            <td style="width: 7.07547%;"><strong>Amount</strong></td>
+            <td style="width: 8.64776%;"><strong>Date</strong></td>
+          </tr>
+          <tr>
+            <td style="width: 4.87421%;">1</td>
+            <td style="width: 7.59959%;">Ramesh</td>
+            <td style="width: 7.07547%;">NULL</td>
+            <td style="width: 8.64776%;">NULL</td>
+          </tr>
+          <tr>
+            <td style="width: 4.87421%;">2</td>
+            <td style="width: 7.59959%;">Khilan</td>
+            <td style="width: 7.07547%;">Null</td>
+            <td style="width: 8.64776%;">Null</td>
+          </tr>
+          <tr>
+            <td style="width: 4.87421%;">3</td>
+            <td style="width: 7.59959%;">Kaushik</td>
+            <td style="width: 7.07547%;">3000</td>
+            <td style="width: 8.64776%;">2018</td>
+          </tr>
+          <tr>
+            <td style="width: 4.87421%;">4</td>
+            <td style="width: 7.59959%;">Chaitail</td>
+            <td style="width: 7.07547%;">2060</td>
+            <td style="width: 8.64776%;">2008</td>
+          </tr>
+          <tr>
+            <td style="width: 4.87421%;">5</td>
+            <td style="width: 7.59959%;">Hardik</td>
+            <td style="width: 7.07547%;">Null</td>
+            <td style="width: 8.64776%;">Null</td>
+          </tr>
+          <tr>
+            <td style="width: 4.87421%;">6</td>
+            <td style="width: 7.59959%;">Kamal</td>
+            <td style="width: 7.07547%;">Null</td>
+            <td style="width: 8.64776%;">Null</td>
+          </tr>
+          <tr>
+            <td style="width: 4.87421%;">7</td>
+            <td style="width: 7.59959%;">Muffy</td>
+            <td style="width: 7.07547%;">Null</td>
+            <td style="width: 8.64776%;">Null</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  ===================================================================================================
+  <br>
+  <div class="row">
+    <div class="col">
+      <table style="border-collapse: collapse; width: 14.0461%; height: 245px;" border="1">
+        <tbody>
+          <tr style="background: black; color: white;">
+            <td style="width: 6.7086%; height: 49px;"><strong>ID_A</strong></td>
+            <td style="width: 7.33752%; height: 49px;"><strong>Val_A</strong></td>
+          </tr>
+          <tr style="height: 49px;">
+            <td style="width: 6.7086%; height: 49px;">1</td>
+            <td style="width: 7.33752%; height: 49px;">A</td>
+          </tr>
+          <tr style="height: 49px;">
+            <td style="width: 6.7086%; height: 49px;">2</td>
+            <td style="width: 7.33752%; height: 49px;">B</td>
+          </tr>
+          <tr style="height: 49px;">
+            <td style="width: 6.7086%; height: 49px;">3</td>
+            <td style="width: 7.33752%; height: 49px;">C</td>
+          </tr>
+          <tr style="height: 49px;">
+            <td style="width: 6.7086%; height: 49px;">4</td>
+            <td style="width: 7.33752%; height: 49px;">D</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col">
+      <table style="border-collapse: collapse; width: 14.0461%; height: 245px;" border="1">
+        <tbody>
+          <tr style="background: black; color: white;">
+            <td style="width: 6.7086%; height: 49px;"><strong>ID_B</strong></td>
+            <td style="width: 7.33752%; height: 49px;"><strong>Val_B</strong></td>
+          </tr>
+          <tr style="height: 49px;">
+            <td style="width: 6.7086%; height: 49px;">1</td>
+            <td style="width: 7.33752%; height: 49px;">A</td>
+          </tr>
+          <tr style="height: 49px;">
+            <td style="width: 6.7086%; height: 49px;">2</td>
+            <td style="width: 7.33752%; height: 49px;">B</td>
+          </tr>
+          <tr style="height: 49px;">
+            <td style="width: 6.7086%; height: 49px;">5</td>
+            <td style="width: 7.33752%; height: 49px;">E</td>
+          </tr>
+          <tr style="height: 49px;">
+            <td style="width: 6.7086%; height: 49px;">6</td>
+            <td style="width: 7.33752%; height: 49px;">F</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col">
+      Inner Join
+      <table style="border-collapse: collapse; width: 22.7321%;" border="1">
+        <tbody>
+          <tr style="background: black; color: white;">
+            <td style="width: 5.46958%;">Id_A</td>
+            <td style="width: 5.78974%;">Val_A</td>
+            <td style="width: 5.04273%;">Id_B</td>
+            <td style="width: 6.43012%;">Val_B</td>
+          </tr>
+          <tr>
+            <td style="width: 5.46958%;">1</td>
+            <td style="width: 5.78974%;">A</td>
+            <td style="width: 5.04273%;">1</td>
+            <td style="width: 6.43012%;">A</td>
+          </tr>
+          <tr>
+            <td style="width: 5.46958%;">2</td>
+            <td style="width: 5.78974%;">B</td>
+            <td style="width: 5.04273%;">2</td>
+            <td style="width: 6.43012%;">B</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col">
+      Left Join
+      <table style="border-collapse: collapse; width: 23.159%;" border="1">
+        <tbody>
+          <tr style="background: black; color: white;">
+            <td style="width: 5.57631%;">Id_A</td>
+            <td style="width: 5.78976%;">Val_B</td>
+            <td style="width: 5.68299%;">Id_A</td>
+            <td style="width: 6.10992%;">Val_A</td>
+          </tr>
+          <tr>
+            <td style="width: 5.57631%;">1</td>
+            <td style="width: 5.78976%;">A</td>
+            <td style="width: 5.68299%;">1</td>
+            <td style="width: 6.10992%;">A</td>
+          </tr>
+          <tr>
+            <td style="width: 5.57631%;">2</td>
+            <td style="width: 5.78976%;">B</td>
+            <td style="width: 5.68299%;">2</td>
+            <td style="width: 6.10992%;">B</td>
+          </tr>
+          <tr>
+            <td style="width: 5.57631%;">3</td>
+            <td style="width: 5.78976%;">C</td>
+            <td style="width: 5.68299%;">Null</td>
+            <td style="width: 6.10992%;">Null</td>
+          </tr>
+          <tr>
+            <td style="width: 5.57631%;">4</td>
+            <td style="width: 5.78976%;">D</td>
+            <td style="width: 5.68299%;">Null</td>
+            <td style="width: 6.10992%;">Null</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col">
+      Right Join
+      <table style="border-collapse: collapse; width: 23.159%;" border="1">
+        <tbody>
+          <tr style="background: black; color: white;">
+            <td style="width: 5.57631%;">Id_B</td>
+            <td style="width: 5.78976%;">Val_B</td>
+            <td style="width: 5.68299%;">Id_A</td>
+            <td style="width: 6.10992%;">Val_A</td>
+          </tr>
+          <tr>
+            <td style="width: 5.57631%;">1</td>
+            <td style="width: 5.78976%;">A</td>
+            <td style="width: 5.68299%;">1</td>
+            <td style="width: 6.10992%;">A</td>
+          </tr>
+          <tr>
+            <td style="width: 5.57631%;">2</td>
+            <td style="width: 5.78976%;">B</td>
+            <td style="width: 5.68299%;">2</td>
+            <td style="width: 6.10992%;">B</td>
+          </tr>
+          <tr>
+            <td style="width: 5.57631%;">5</td>
+            <td style="width: 5.78976%;">E</td>
+            <td style="width: 5.68299%;">Null</td>
+            <td style="width: 6.10992%;">Null</td>
+          </tr>
+          <tr>
+            <td style="width: 5.57631%;">6</td>
+            <td style="width: 5.78976%;">F</td>
+            <td style="width: 5.68299%;">Null</td>
+            <td style="width: 6.10992%;">Null</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col">
+      Cross Join
+      <table style="border-collapse: collapse; width: 23.5859%;" border="1">
+        <tbody>
+          <tr style="background: black; color: white;">
+            <td style="width: 6.21665%;">Id_A</td>
+            <td style="width: 6.10997%;">Val_A</td>
+            <td style="width: 5.36283%;">Id_B</td>
+            <td style="width: 5.89651%;">Val_B</td>
+          </tr>
+          <tr>
+            <td style="width: 6.21665%;">1</td>
+            <td style="width: 6.10997%;">A</td>
+            <td style="width: 5.36283%;">1</td>
+            <td style="width: 5.89651%;">A</td>
+          </tr>
+          <tr>
+            <td style="width: 6.21665%;">2</td>
+            <td style="width: 6.10997%;">B</td>
+            <td style="width: 5.36283%;">1</td>
+            <td style="width: 5.89651%;">A</td>
+          </tr>
+          <tr>
+            <td style="width: 6.21665%;">3&nbsp;</td>
+            <td style="width: 6.10997%;">C 1</td>
+            <td style="width: 5.36283%;">1</td>
+            <td style="width: 5.89651%;">A</td>
+          </tr>
+          <tr>
+            <td style="width: 6.21665%;">4</td>
+            <td style="width: 6.10997%;">D</td>
+            <td style="width: 5.36283%;">1</td>
+            <td style="width: 5.89651%;">A</td>
+          </tr>
+          <tr>
+            <td style="width: 6.21665%;">1&nbsp;</td>
+            <td style="width: 6.10997%;">A</td>
+            <td style="width: 5.36283%;">2</td>
+            <td style="width: 5.89651%;">B</td>
+          </tr>
+          <tr>
+            <td style="width: 6.21665%;">2&nbsp;</td>
+            <td style="width: 6.10997%;">B</td>
+            <td style="width: 5.36283%;">2</td>
+            <td style="width: 5.89651%;">B</td>
+          </tr>
+          <tr>
+            <td style="width: 6.21665%;">3&nbsp;</td>
+            <td style="width: 6.10997%;">C</td>
+            <td style="width: 5.36283%;">2</td>
+            <td style="width: 5.89651%;">B</td>
+          </tr>
+          <tr>
+            <td style="width: 6.21665%;">4&nbsp;</td>
+            <td style="width: 6.10997%;">D</td>
+            <td style="width: 5.36283%;">2</td>
+            <td style="width: 5.89651%;">B</td>
+          </tr>
+          <tr>
+            <td style="width: 6.21665%;">1</td>
+            <td style="width: 6.10997%;">A</td>
+            <td style="width: 5.36283%;">5</td>
+            <td style="width: 5.89651%;">E</td>
+          </tr>
+          <tr>
+            <td style="width: 6.21665%;">2</td>
+            <td style="width: 6.10997%;">B</td>
+            <td style="width: 5.36283%;">5</td>
+            <td style="width: 5.89651%;">E</td>
+          </tr>
+          <tr>
+            <td style="width: 6.21665%;">3&nbsp;</td>
+            <td style="width: 6.10997%;">C</td>
+            <td style="width: 5.36283%;">5</td>
+            <td style="width: 5.89651%;">E</td>
+          </tr>
+          <tr>
+            <td style="width: 6.21665%;">4</td>
+            <td style="width: 6.10997%;">D</td>
+            <td style="width: 5.36283%;">5</td>
+            <td style="width: 5.89651%;">E</td>
+          </tr>
+          <tr>
+            <td style="width: 6.21665%;">1&nbsp;</td>
+            <td style="width: 6.10997%;">A</td>
+            <td style="width: 5.36283%;">6</td>
+            <td style="width: 5.89651%;">F</td>
+          </tr>
+          <tr>
+            <td style="width: 6.21665%;">2&nbsp;</td>
+            <td style="width: 6.10997%;">B</td>
+            <td style="width: 5.36283%;">6</td>
+            <td style="width: 5.89651%;">F</td>
+          </tr>
+          <tr>
+            <td style="width: 6.21665%;">3&nbsp;</td>
+            <td style="width: 6.10997%;">C</td>
+            <td style="width: 5.36283%;">6</td>
+            <td style="width: 5.89651%;">F</td>
+          </tr>
+          <tr>
+            <td style="width: 6.21665%;">4&nbsp;</td>
+            <td style="width: 6.10997%;">D</td>
+            <td style="width: 5.36283%;">6</td>
+            <td style="width: 5.89651%;">F</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <br>
+  ===============================================================================================================================================
+
+  =========================================================================================
+
+
+  ===============================================================================================
+
+  <div class="row">
+    <div class="col">
+      tblCountry
+      <table style="border-collapse: collapse; width: 22.7321%;" border="1">
+        <tbody>
+          <tr style="background: black; color: white;">
+            <td style="width: 10.2988%;"><strong>Country_Id</strong></td>
+            <td style="width: 12.4333%;"><strong>Country_Name</strong></td>
+          </tr>
+          <tr>
+            <td style="width: 10.2988%;">1</td>
+            <td style="width: 12.4333%;">India</td>
+          </tr>
+          <tr>
+            <td style="width: 10.2988%;">2</td>
+            <td style="width: 12.4333%;">Nepal</td>
+          </tr>
+          <tr>
+            <td style="width: 10.2988%;">4</td>
+            <td style="width: 12.4333%;">SriLanka</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col">
+      tblState
+      <table style="border-collapse: collapse; width: 28.2818%; height: 197px;" border="1">
+        <tbody>
+          <tr style="height: 50px; background: black; color: white;">
+            <td style="width: 1.06724%; height: 50px;">StateId</td>
+            <td style="width: 13.2071%; height: 50px;">Country_Id</td>
+            <td style="width: 14.0075%; height: 50px;">StateName</td>
+          </tr>
+          <tr style="height: 49px;">
+            <td style="width: 1.06724%; height: 49px;">1</td>
+            <td style="width: 13.2071%; height: 49px;">1</td>
+            <td style="width: 14.0075%; height: 49px;">Maharastra</td>
+          </tr>
+          <tr style="height: 49px;">
+            <td style="width: 1.06724%; height: 49px;">2</td>
+            <td style="width: 13.2071%; height: 49px;">1</td>
+            <td style="width: 14.0075%; height: 49px;">Punjab</td>
+          </tr>
+          <tr style="height: 49px;">
+            <td style="width: 1.06724%; height: 49px;">3</td>
+            <td style="width: 13.2071%; height: 49px;">2</td>
+            <td style="width: 14.0075%; height: 49px;">Kathmandu</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col">
+      <pre>
+            <code class="language-sql">
+      Select * FROM tblCountry
+      Inner Join tblState
+      On tblCountry.CountryId=tblState.CountryId
+      </code>
+      </pre>
+    </div>
+
+    <div class="col">
+      <table style="border-collapse: collapse; width: 100%;" border="1">
+        <tbody>
+          <tr style="background:black;color:white">
+            <td style="width: 20%;">CountryId</td>
+            <td style="width: 20%;">CountryName</td>
+            <td style="width: 20%;">StateId</td>
+            <td style="width: 20%;">CountryId</td>
+            <td style="width: 20%;">StateName</td>
+          </tr>
+          <tr>
+            <td style="width: 20%;">1</td>
+            <td style="width: 20%;">India</td>
+            <td style="width: 20%;">1</td>
+            <td style="width: 20%;">1</td>
+            <td style="width: 20%;">Maharastra</td>
+          </tr>
+          <tr>
+            <td style="width: 20%;">1</td>
+            <td style="width: 20%;">India</td>
+            <td style="width: 20%;">2</td>
+            <td style="width: 20%;">1</td>
+            <td style="width: 20%;">Punjab</td>
+          </tr>
+          <tr>
+            <td style="width: 20%;">2</td>
+            <td style="width: 20%;">Nepal</td>
+            <td style="width: 20%;">3</td>
+            <td style="width: 20%;">2</td>
+            <td style="width: 20%;">Kathmandu</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <br>
+  <div class="row">
+    <div class="col">
+      <pre>
+         <code class="language-sql">
+            Select * FROM tblCountry
+        Left Join tblState
+        On tblCountry.CountryId=tblState.CountryId
+         </code>
+       </pre>
+    </div>
+
+    <div class="col">
+      <table style="border-collapse: collapse; width: 52.508%;" border="1">
+        <tbody>
+          <tr style="background: black; color: white;">
+            <td style="width: 9.54109%;">CountryId</td>
+            <td style="width: 11.889%;">CountryName</td>
+            <td style="width: 8.58057%;">StateId</td>
+            <td style="width: 11.2486%;">CountryId</td>
+            <td style="width: 11.2487%;">StateName</td>
+          </tr>
+          <tr>
+            <td style="width: 9.54109%;">1</td>
+            <td style="width: 11.889%;">India</td>
+            <td style="width: 8.58057%;">1</td>
+            <td style="width: 11.2486%;">1</td>
+            <td style="width: 11.2487%;">Maharastra</td>
+          </tr>
+          <tr>
+            <td style="width: 9.54109%;">1</td>
+            <td style="width: 11.889%;">India</td>
+            <td style="width: 8.58057%;">2</td>
+            <td style="width: 11.2486%;">1</td>
+            <td style="width: 11.2487%;">Punjab</td>
+          </tr>
+          <tr>
+            <td style="width: 9.54109%;">2</td>
+            <td style="width: 11.889%;">Nepal</td>
+            <td style="width: 8.58057%;">3</td>
+            <td style="width: 11.2486%;">2</td>
+            <td style="width: 11.2487%;">Kathmandu</td>
+          </tr>
+          <tr>
+            <td style="width: 9.54109%;">4</td>
+            <td style="width: 11.889%;">Srilanka</td>
+            <td style="width: 8.58057%;">Null</td>
+            <td style="width: 11.2486%;">Null</td>
+            <td style="width: 11.2487%;">Null</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  ======================================================================================================================
+  <br>
+  <div class="row">
+    <div class="col">
+      <table style="border-collapse: collapse; width: 24.6531%;" border="1">
+        <tbody>
+          <tr style="background: black; color: white;">
+            <td style="width: 4.53575%;">DepartmentId</td>
+            <td style="width: 19.6905%;">DepartmentName</td>
+          </tr>
+          <tr>
+            <td style="width: 4.53575%;">1</td>
+            <td style="width: 19.6905%;">IT</td>
+          </tr>
+          <tr>
+            <td style="width: 4.53575%;">2</td>
+            <td style="width: 19.6905%;">HR</td>
+          </tr>
+          <tr>
+            <td style="width: 4.53575%;">3</td>
+            <td style="width: 19.6905%;">Payroll</td>
+          </tr>
+          <tr>
+            <td style="width: 4.53575%;">4</td>
+            <td style="width: 19.6905%;">Admin</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col">
+      <table style="border-collapse: collapse; width: 33.8314%;" border="1">
+        <tbody>
+          <tr style="background: black; color: white;">
+            <td style="width: 9.96083%;">EmployeeId</td>
+            <td style="width: 13.0559%;">EmployeeName</td>
+            <td style="width: 10.9213%;">DepartmentId</td>
+          </tr>
+          <tr>
+            <td style="width: 9.96083%;">1</td>
+            <td style="width: 13.0559%;">Mark</td>
+            <td style="width: 10.9213%;">1</td>
+          </tr>
+          <tr>
+            <td style="width: 9.96083%;">2</td>
+            <td style="width: 13.0559%;">John</td>
+            <td style="width: 10.9213%;">1</td>
+          </tr>
+          <tr>
+            <td style="width: 9.96083%;">3</td>
+            <td style="width: 13.0559%;">Mike</td>
+            <td style="width: 10.9213%;">1</td>
+          </tr>
+          <tr>
+            <td style="width: 9.96083%;">4</td>
+            <td style="width: 13.0559%;">Mary</td>
+            <td style="width: 10.9213%;">2</td>
+          </tr>
+          <tr>
+            <td style="width: 9.96083%;">5</td>
+            <td style="width: 13.0559%;">Stacy</td>
+            <td style="width: 10.9213%;">2</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <br>
+  <p><span style="font-size: 12pt;">In this case we use Right Join to retrieve all department and employee names
+      irrespective of whether a Department has Employee or not.</span></p>
+  <br>
+
+  <div class="row">
+    <div class="col">
+      <pre>
+          <code class="language-sql">
+            Select DepartmentName,EmployeeName
+            From Employees
+            Right Join Departments
+            On Employees.DepartmentId=Departments.DepartmentId
+          </code>
+        </pre>
+    </div>
+
+    <div class="col">
+      <table style="border-collapse: collapse; width: 26.0406%;" border="1">
+        <tbody>
+          <tr style="background: black; color: white;">
+            <td style="width: 13.8207%;">DepartmentName</td>
+            <td style="width: 12.2199%;">EmployeeName</td>
+          </tr>
+          <tr>
+            <td style="width: 13.8207%;">IT&nbsp;</td>
+            <td style="width: 12.2199%;">Mark</td>
+          </tr>
+          <tr>
+            <td style="width: 13.8207%;">IT</td>
+            <td style="width: 12.2199%;">John</td>
+          </tr>
+          <tr>
+            <td style="width: 13.8207%;">IT</td>
+            <td style="width: 12.2199%;">Mike</td>
+          </tr>
+          <tr>
+            <td style="width: 13.8207%;">HR</td>
+            <td style="width: 12.2199%;">Mary</td>
+          </tr>
+          <tr>
+            <td style="width: 13.8207%;">HR</td>
+            <td style="width: 12.2199%;">Stacy</td>
+          </tr>
+          <tr>
+            <td style="width: 13.8207%;">Payroll</td>
+            <td style="width: 12.2199%;">Null</td>
+          </tr>
+          <tr>
+            <td style="width: 13.8207%;">Admin</td>
+            <td style="width: 12.2199%;">Null</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <br>
+  <p><span style="font-size: 14pt; color: #ff0000;">Business case for using Right Join</span></p>
+  <p><span style="font-size: 12pt;">To retreive all the Department Names and total no. of Employees with in each
+      departments</span></p>
+  <div class="row">
+    <div class="col">
+      <pre>
+        <code class="language-sql">
+          Select DepartmentName,Count(Employees.DepartmentId) as TotalEmployees
+          From Employees
+          Right Join Departments
+          On Department.DepartmentId=Employees.DepartmentId
+          Group By DepartmentName
+          Order By TotalEmployee
+        </code>
+      </pre>
+    </div>
+
+    <div class="col">
+      <table style="border-collapse: collapse; width: 25.4717%;" border="1">
+        <tbody>
+          <tr style="background: black; color: white;">
+            <td style="width: 12.2642%;">DepartmenName</td>
+            <td style="width: 13.2075%;">TotalEmployee</td>
+          </tr>
+          <tr>
+            <td style="width: 12.2642%;">Admin</td>
+            <td style="width: 13.2075%;">0</td>
+          </tr>
+          <tr>
+            <td style="width: 12.2642%;">Payroll</td>
+            <td style="width: 13.2075%;">0</td>
+          </tr>
+          <tr>
+            <td style="width: 12.2642%;">HR</td>
+            <td style="width: 13.2075%;">2</td>
+          </tr>
+          <tr>
+            <td style="width: 12.2642%;">IT</td>
+            <td style="width: 13.2075%;">3</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <p><span style="font-size: 18pt;"><span style="color: #ff0000;"><strong>Group By Clause</strong></span> is always used
+      in conjunction with <span style="color: #ff0000;">one or more aggregrate</span> function like <span
+        style="color: #ff0000;">Count(),Sum(), Avg() , Min() , Max()</span></span></p>
+  =================================================================================================
+
+
+  <p><span style="font-size: 12pt;">When we use<strong> Left or Right Join</strong>, We have a base table Employee and
+      the <strong><span style="color: #ff0000;">records are order by the primary key</span></strong> i.e The <span
+        style="color: #ff0000;">EmployeeID</span> of the base table by default. But when <strong><span
+          style="color: #000000;">we use the Inner Join,</span></strong> then the table having <strong>smallest number
+        of records are used to order by</strong>. Here in our above example, the <strong>HumanResources.Department has
+        16 Records.</strong> So&nbsp; the records are <strong><span style="color: #ff0000;">sorted by</span></strong>
+      the <strong><span style="color: #ff0000;">departmentId</span></strong> of the HumanResources.Department
+      table.</span></p>
+
+
+  <hr>
+  <h2>Joins seems to be have duplicate. (VVVVVVVVVVVVVVIIIIIIIIIII)</h2>
+
+  <p><span style="font-size: 18pt; color: #000000;">Use the correct <strong><span style="color: #e03e2d;">Primary Keys
+        </span></strong>and <strong><span style="color: #e03e2d;">Foreign Keys</span></strong> to join the tables to
+      ensure no duplicates.&nbsp;
+    </span></p>
+  <h4>Here we have Id : Primary Key and Cust_Id as Foreign Key . Actually they represent Field in different Table</h4>
+  <div class="row">
+    <div class="col-3">
+      <table style="border-collapse: collapse; width: 38.7407%;" border="1">
+        <tbody>
+          <tr style="background: black; color: white;">
+            <td style="width: 5.16542%;"><span style="font-size: 14pt;">Id</span></td>
+            <td style="width: 9.11422%;"><span style="font-size: 14pt;">Name</span></td>
+            <td style="width: 6.23267%;"><span style="font-size: 14pt;">Age</span></td>
+
+          </tr>
+
+          <tr>
+            <td style="width: 5.16542%;">2</td>
+            <td style="width: 9.11422%;">Khilan</td>
+            <td style="width: 6.23267%;">25</td>
+
+          </tr>
+          <tr>
+            <td style="width: 5.16542%;">3</td>
+            <td style="width: 9.11422%;">Kaushik</td>
+            <td style="width: 6.23267%;">23</td>
+
+          </tr>
+          <tr>
+            <td style="width: 5.16542%;">4</td>
+            <td style="width: 9.11422%;">Chaitali</td>
+            <td style="width: 6.23267%;">25</td>
+
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-3">
+      <table style="border-collapse: collapse; width: 27.3212%;" border="1">
+        <tbody>
+          <tr style="background: black; color: white;">
+            <td style="width: 6.0032%;">OID</td>
+            <td style="width: 6.32337%;">Date</td>
+            <td style="width: 7.07041%;">Cust_ID</td>
+            <td style="width: 7.92424%;">Amount</td>
+          </tr>
+          <tr>
+            <td style="width: 6.0032%;">101</td>
+            <td style="width: 6.32337%;">2010</td>
+            <td style="width: 7.07041%;">2</td>
+            <td style="width: 7.92424%;">1600</td>
+          </tr>
+          <tr>
+            <td style="width: 6.0032%;">102</td>
+            <td style="width: 6.32337%;">2018</td>
+            <td style="width: 7.07041%;">3</td>
+            <td style="width: 7.92424%;">3000</td>
+          </tr>
+          <tr>
+            <td style="width: 6.0032%;">100</td>
+            <td style="width: 6.32337%;">2009</td>
+            <td style="width: 7.07041%;">3</td>
+            <td style="width: 7.92424%;">1500</td>
+          </tr>
+
+          <tr>
+            <td style="width: 6.0032%;">103</td>
+            <td style="width: 6.32337%;">2008</td>
+            <td style="width: 7.07041%;">4</td>
+            <td style="width: 7.92424%;">2060</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <div class="row">
+
+    <div class="col-sm-5">
+      <pre>
+        <code class="language-sql">
+          Select Id,Name,Amount,Date
+          From Customer
+          INNER JOIN Order
+          Where Customer.Id=Order.Cust_Id;
+        </code>
+      </pre>
+    </div>
+
+    <div class="col-sm-5">
+      <table style="border-collapse: collapse; width: 28.1971%;" border="1">
+        <tbody>
+          <tr style="background: black; color: white;">
+            <td style="width: 4.87421%;"><strong>Id</strong></td>
+            <td style="width: 7.59959%;"><strong>Name</strong></td>
+            <td style="width: 8.64776%;"><strong>Amount</strong></td>
+            <td style="width: 7.07547%;"><strong>Date</strong></td>
+          </tr>
+          <tr style="">
+            <td style="width: 4.87421%;color:red">3</td>
+            <td style="width: 7.59959%;color:red">Kaushik</td>
+            <td style="width: 7.07547%;">3000</td>
+            <td style="width: 8.64776%;">2018</td>
+          </tr>
+          <tr>
+            <td style="width: 4.87421%;color:red">3</td>
+            <td style="width: 7.59959%;color:red">Kaushik</td>
+            <td style="width: 7.07547%;">1500</td>
+            <td style="width: 8.64776%;">2009</td>
+          </tr>
+          <tr>
+            <td style="width: 4.87421%;">2</td>
+            <td style="width: 7.59959%;">Khilan</td>
+            <td style="width: 7.07547%;">1600</td>
+            <td style="width: 8.64776%;">2010</td>
+          </tr>
+          <tr>
+            <td style="width: 4.87421%;">4</td>
+            <td style="width: 7.59959%;">Chaitail</td>
+            <td style="width: 7.07547%;">2060</td>
+            <td style="width: 8.64776%;">2008</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p><span style="font-size: 18pt;"><span style="color: #000000;">Here,</span> <span style="color: #e03e2d;">3</span>
+      <span style="color: #000000;">and </span><strong><span style="color: #e03e2d;">Kaushik </span></strong><span
+        style="color: #000000;">seem to be duplicate but on a complete row basis,</span> <strong><span
+          style="color: #2dc26b;">each row is completely unique</span></strong><span style="color: #000000;">. So, in
+        select statement use a unique value only.</span></span></p>
+
+  <div class="row">
+
+    <div class="col-lg-6">
+      //Don't do this: This doesnot results unique . For selecting only Id,Name we should not have to join
+      <pre>
+        <code class="language-sql">
+            Select Id,Name
+            From Customer
+            INNER JOIN Order
+            Where Customer.Id=Order.Cust_Id;
+        </code>
+      </pre>
+    </div>
+
+    <div class="col-lg-6">
+      //Do this: they makes unique on select
+      <pre>
+        <code class="language-sql">
+            Select Id,Name,Amount
+            From Customer
+            INNER JOIN Order
+            Where Customer.Id=Order.Cust_Id;
+        </code>
+      </pre>
+    </div>
+  </div>
+
+  <h4> Some times you may not get join having primary and foreign key relationship. In this case you can use DISTINCT
+    and groupby concept.</h4>
+
+
+  <pre>
+      <code class="language-sql">
+          SELECT DISTINCT city,Mobile
+          FROM customers
+      </code>
+    </pre>
+  Note:Most of the file try to be far away from distinct. DISTINCT not only possibly hides data from you, but can result
+  in many repeat executions in order to filter the final result set.
+  <hr>
+  <script src="js/prism.js"></script>
+  <script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+      {
+        'remove-trailing': true,
+        'remove-indent': true,
+        'left-trim': true,
+        'right-trim': true,
+        // 'break-lines': 10,
+        // 'indent': 2,
+        // 'remove-initial-line-feed': false,
+        // 'tabs-to-spaces': 4,
+        // 'spaces-to-tabs': 4
+      });
+  </script>
+</body>
+
+</html>

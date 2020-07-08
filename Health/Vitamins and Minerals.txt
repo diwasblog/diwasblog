@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<p><span style="font-size: 24pt;">Vitamins&nbsp;</span></p>
+<p><span style="font-size: 18pt;">Vitamins are organic compounds that are essential <span style="color: #e03e2d;"><strong>in very small amounts</strong></span> for supporting normal physiologic function.&nbsp; </span></p>
+<p><strong><span style="font-size: 24pt; color: #e03e2d;">Vitamin Types</span></strong></p>
+<p><img src="https://2.bp.blogspot.com/-ZFzYCrrtLWM/VRULUZ1nL8I/AAAAAAAABeU/zlr8kMNZgT0/s1600/AtoZFitness-Vitamins.png" width="282" height="191" /></p>
+<table style="border-collapse: collapse; width: 100%; height: 141px;" border="1">
+<tbody>
+<tr style="height: 33px;">
+<td style="width: 50%; height: 33px;"><span style="font-size: 18pt;">Water Soluble</span></td>
+<td style="width: 50%; height: 33px;"><span style="font-size: 18pt;">Fat Soluble</span></td>
+</tr>
+<tr style="height: 54px;">
+<td style="width: 50%; height: 54px;">
+<ul>
+<li>&nbsp;Vitamin B and Vitamin C</li>
+</ul>
+</td>
+<td style="width: 50%; height: 54px;">
+<ul>
+<li>Vitamin A, Vitamin D, Vitamin E and Vitamin K</li>
+</ul>
+</td>
+</tr>
+<tr style="height: 54px;">
+<td style="width: 50%; height: 54px;">
+<ul>
+<li>This cannot be stored by body for a long time</li>
+</ul>
+</td>
+<td style="width: 50%; height: 54px;">
+<ul>
+<li>It can be stored in the body in the form of fat.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><span style="font-size: 24pt;">Water-Soluble Vitamins</span></p>
+<p><span style="font-size: 24pt;">&nbsp;1 ) Vitamin B -complex</span></p>
+<hr />
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<td style="width: 33.3333%;">Types</td>
+<td style="width: 33.3333%;">If Deficiency</td>
+<td style="width: 16.6667%;">Found in</td>
+<td style="width: 16.6667%;">What if taken more</td>
+</tr>
+<tr>
+<td style="width: 33.3333%;">
+<p><strong>Vitamin B1 (Thiamine)</strong></p>
+<p>&nbsp;</p>
+</td>
+<td style="width: 33.3333%;">
+<ul>
+<li>burning feet</li>
+<li>nausea</li>
+<li>fatigue</li>
+<li>gastrointestinal problems.</li>
+<li>Beri Beri&nbsp;</li>
+<li>Heart Failure</li>
+</ul>
+</td>
+<td style="width: 16.6667%;">
+<p>&nbsp;</p>
+<ul>
+<li>Sunflower seeds</li>
+<li>asparagus</li>
+<li>lettuce</li>
+<li>mushrooms</li>
+<li>spinach</li>
+<li>eggplant</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</td>
+<td style="width: 16.6667%;">
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr>
+<td style="width: 33.3333%;">
+<p><strong>Vitamin B3 (Niacin) </strong></p>
+</td>
+<td style="width: 33.3333%;">
+<ul>
+<li>dermatitis</li>
+<li>diarrhea</li>
+<li>dementia</li>
+</ul>
+<p>&nbsp;</p>
+</td>
+<td style="width: 16.6667%;">
+<ul>
+<li>Mushrooms</li>
+<li>asparagus</li>
+<li>peanuts</li>
+<li>&nbsp;green leafy vegetables</li>
+<li>potato</li>
+<li>carrots</li>
+<li>almonds</li>
+<li>turnips</li>
+<li>Chicken Meats</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</td>
+<td style="width: 16.6667%;">&nbsp;</td>
+</tr>
+<tr>
+<td style="width: 33.3333%;">
+<p><strong>&nbsp;</strong></p>
+</td>
+<td style="width: 33.3333%;">&nbsp;</td>
+<td style="width: 16.6667%;">&nbsp;</td>
+<td style="width: 16.6667%;">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p><span style="font-size: 24pt;">2) Vitamin C</span></p>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<td style="width: 33.3333%;"><strong>Vitamin C (Ascorbic acid)</strong></td>
+<td style="width: 33.3333%;">
+<ul>
+<li>gum infections</li>
+<li>&nbsp;dry hair and skin</li>
+<li>bleeding gums</li>
+<li>&nbsp;dry eye</li>
+<li>hair loss</li>
+<li>joint pain</li>
+<li>anemia</li>
+<li>scurvy</li>
+</ul>
+</td>
+<td style="width: 16.6667%;">
+<ul>
+<li>Guava</li>
+<li>&nbsp;bell pepper</li>
+<li>grapefruit</li>
+<li>strawberries</li>
+<li>papaya</li>
+<li>broccoli</li>
+<li>sweet potato</li>
+<li>cauliflower</li>
+<li>lemon juice</li>
+<li>kale</li>
+</ul>
+</td>
+<td style="width: 16.6667%;">&nbsp;including kidney stones, rebound scurvy, increased oxidative stress, excess iron absorption</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+</body>
+</html>

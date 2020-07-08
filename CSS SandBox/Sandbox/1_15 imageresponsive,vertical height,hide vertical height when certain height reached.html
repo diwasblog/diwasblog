@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css" />
+    <link rel="stylesheet" href="css/bootstrap-grid.css" />
+    <link rel="stylesheet" href="css/bootstrap-reboot.css" />
+    <link rel="stylesheet" href="css/dracula.css" />
+    <link rel="stylesheet" href="css/dracula-prism.css" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="https://draculatheme.com/assets/img/favicon.ico"
+    />
+  </head>
+
+  <body>
+    <p style="text-align: justify;">
+      <span style="color: #008000;"
+        ><strong
+          >=====================================================================================================================</strong
+        ></span
+      >
+    </p>
+
+    <h2>Image Responsive</h2>
+    <pre>
+        <code class="language-css">
+          img {
+            max-width: 100%;
+            height: auto;
+          }
+        </code>
+      </pre>
+    <p
+      data-height="161"
+      data-theme-id="dark"
+      data-slug-hash="VBoyZd"
+      data-default-tab="css,result"
+      data-user="DiwasPoudel"
+      data-pen-title="image responsive without bootstrap"
+      class="codepen"
+    >
+      See the Pen
+      <a href="https://codepen.io/DiwasPoudel/pen/VBoyZd/"
+        >image responsive without bootstrap</a
+      >
+      by Diwas Poudel (<a href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a
+      >) on <a href="https://codepen.io">CodePen</a>.
+    </p>
+    <script async src="http://static.codepen.io/assets/embed/ei.js"></script>
+    =========================================================================================================
+    <br />
+    <p>
+      <strong
+        ><span style="font-size: 14pt;"
+          >This tutorial helps you to stop image stretching while we fix height.
+          Stretched image problem mainly seen when we fix height of any image.
+          So there is a solution by which
+          <span style="color: #ff0000;"
+            >we can resize image without stretching and keep aspect ratio.</span
+          ></span
+        ></strong
+      >
+    </p>
+    <h2>All image of same height without stretching</h2>
+    <div class="row">
+      <div class="col-lg-8">
+        <pre>
+                <code class='language-html'>
+                    &lt;div class="wrapper">
+                    &lt;div class="container">
+                    &lt;div class="row">
+                    &lt;div class="col-md-4">
+                    &lt;img class="img-fluid image-resize" src="http://foodsense.is/uploads/slides/0219_foodsense.jpg">
+                    &lt;/div>
+                    
+                    &lt;div class="col-md-4">
+                    &lt;img class="img-fluid image-resize" src="https://www.gettyimages.com/gi-resources/images/CreativeLandingPage/HP_Sept_24_2018/CR3_GettyImages-159018836.jpg">
+                    &lt;/div>
+                    
+                    &lt;div class="col-md-4">
+                    &lt;img class="img-fluid image-resize" src="https://www.w3schools.com/w3images/fjords.jpg">
+                    &lt;/div>
+                    &lt;/div>
+                    &lt;/div>
+                    &lt;/div>
+                </code>
+              </pre>
+      </div>
+
+      <div class="col-lg-4">
+        <pre>
+                <code class='language-html'>
+                    .image-resize{
+                      height:300px;
+                      object-fit:cover;
+                      object-position:center center;
+                    }
+                </code>
+              </pre>
+      </div>
+    </div>
+
+    <br />
+    ===========================================================================================================================
+    <h2>Vertical line in html</h2>
+    <p
+      data-height="223"
+      data-theme-id="dark"
+      data-slug-hash="rrXpVy"
+      data-default-tab="css,result"
+      data-user="DiwasPoudel"
+      data-pen-title="Vertical line"
+      class="codepen"
+    >
+      See the Pen
+      <a href="https://codepen.io/DiwasPoudel/pen/rrXpVy/">Vertical line</a> by
+      Diwas Poudel (<a href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>)
+      on <a href="https://codepen.io">CodePen</a>.
+    </p>
+    <script async src="http://static.codepen.io/assets/embed/ei.js"></script>
+    =======================================================================
+    <h2>
+      Remove vertical line and horizontal line when certain height is reached
+      using Media Queries
+    </h2>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <pre>
+            <code class='language-html'>
+              &lt;hr>
+              &lt;div class=" vertical-divider"> &lt;/div>
+            </code>
+          </pre>
+      </div>
+
+      <div class="col-lg-6">
+        <pre>
+            <code class='language-css'>
+            @media(max-width:767px) {
+              .vertical-divider{
+                display:none;
+              }
+            }
+    
+            @media(max-width:767px) {
+              hr {
+                display:none;
+              }
+            }
+            .vertical-divider {
+                        border-left: 1px solid #B0B0B0;
+                        height: 290px;
+                        padding-right: 0px;
+                        padding-left: 0px;
+                        width: 5px;
+                    }
+            </code>
+          </pre>
+      </div>
+    </div>
+
+    <script src="js/prism.js"></script>
+    <script type="text/javascript">
+      Prism.plugins.NormalizeWhitespace.setDefaults({
+        "remove-trailing": true,
+        "remove-indent": true,
+        "left-trim": true,
+        "right-trim": true
+        // 'break-lines': 10,
+        // 'indent': 2,
+        // 'remove-initial-line-feed': false,
+        // 'tabs-to-spaces': 4,
+        // 'spaces-to-tabs': 4
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+      <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+  
+  <script src="https://unpkg.com/vue"></script>
+  
+  <style>
+  xmp.prettyprint{
+  
+      font-size:12pt;
+      font-family:"Consolas, 'Courier New', monospace";
+  
+  }
+  </style>
+   
+  </head>
+  <body>
+<h2>e.preventDefault()</h2>
+ e.preventDefault() would prevent the default event from occuring.
+<div class="row">
+<div class="col-lg-6">
+  <xmp class='prettyprint'>
+    <a href="www.google.com" id="gLink">Google</a>
+  </xmp>
+</div>
+
+<div class="col-lg-6">
+ <xmp class='prettyprint'>
+  const y=document.getElementById('gLink');
+
+  y.addEventListener('click',function(e){
+      e.preventDefault();
+})
+  </xmp>
+</div>
+</div>
+On clicking link the default behavior of link is disable by e.preventDefault() method.
+<p data-height="162" data-theme-id="dark" data-slug-hash="gjJzRP" data-default-tab="js,result" data-user="DiwasPoudel" data-pen-title="gjJzRP" class="codepen">See the Pen <a href="https://codepen.io/DiwasPoudel/pen/gjJzRP/">gjJzRP</a> by Diwas Poudel (<a href="https://codepen.io/DiwasPoudel">@DiwasPoudel</a>) on <a href="https://codepen.io">CodePen</a>.</p>
+<script async src="http://static.codepen.io/assets/embed/ei.js"></script>
+
+  </body>
+  </html>

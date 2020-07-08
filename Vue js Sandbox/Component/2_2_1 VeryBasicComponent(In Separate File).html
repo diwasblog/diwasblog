@@ -1,0 +1,74 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+
+<!--Explaination-->
+<p style="text-align: center;"><span style="color: #ff0000; font-size: 14pt;"><strong>Example</strong></span></p>
+<!--########################Main Code######################################-->
+
+
+<div id='app'>
+  <div class="row">
+    <sidebar></sidebar>
+
+
+  </div>
+</div>
+<script src="js/2_3_1.vue_component.js"></script>
+
+
+
+<!--##############################################################-->
+
+
+<!--|#########################DISPLAY############################################-->
+<?prettify linenums=1?>
+
+<xmp class="prettyprint">
+  <body>
+
+<<div id='app'>
+  <div class="row">
+    <sidebar></sidebar>
+  </div>
+</div>
+
+<script src="js/2_3_1.vue_component.js"></script>
+</body>
+</xmp>
+
+
+<p style="text-align: center;"><span style="color: #ff0000; font-size: 14pt;"><strong>js/2_3_1vue_component.js</strong></span></p>
+<xmp class="prettyprint">
+<script>
+Vue.component('sidebar',{
+  template:`
+            
+              <ul>
+                  <li>Home</li>
+                  <li>About</li>
+                  <li>Service</li>
+                  <li>Bitfumes</li>
+                  </ul>
+                  `})
+     new Vue({
+       el:'#app',
+     })             
+</script>
+
+</xmp>

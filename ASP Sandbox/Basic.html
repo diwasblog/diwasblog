@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+  <link rel="stylesheet" href="css/b">
+  <link rel="stylesheet" href="css/bootstrap-grid.css">
+  <link rel="stylesheet" href="css/bootstrap-reboot.css">
+  <link rel="stylesheet" href="css/dracula.css">
+  <link rel="stylesheet" href="css/dracula-prism.css">
+  <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+  <h4>Verbatim String</h4>
+  <div class="row">
+    <div class="col-lg-6">
+      //To Reject escape sequence
+      <pre>
+            <code class="language-csharp">
+              var filename = "c:\temp\newfile.txt"
+              //Output:
+              // c:    emp ewfile.txt
+          
+            </code>
+          </pre>
+    </div>
+
+    <div class="col-lg-6">
+      <pre>
+            <code class="language-csharp">
+              var filename = @"c:\temp\newfile.txt";
+              //or
+              var filename = "c:\\myfile.txt"; 
+              //Output:
+              //c:\temp\newﬁle.txt
+
+          
+            </code>
+          </pre>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-lg-6">
+      <h2>apostrophe</h2>
+      <pre>
+            <code class="language-csharp">
+              char apostrophe = '\'';
+
+          
+            </code>
+          </pre>
+    </div>
+
+    <div class="col-lg-6">
+      <h2>oneBackslash</h2>
+      <pre>
+            <code class="language-csharp">
+              char oneBackslash = '\\'; 
+            </code>
+          </pre>
+    </div>
+  </div>
+
+  <h2>String Operation</h2>
+
+  <pre>
+                <code class="language-csharp">
+                        String.Format("Hello {0} Foo {1}", "World", "Bar")   //Hello World Foo Bar
+                </code>
+              </pre>
+
+  <h2>Null or empty</h2>
+
+  <pre>
+                          <code class="language-csharp">
+                                string nullString = null; 
+                                string emptyString = ""; 
+                                string whitespaceString = "    "; 
+
+                                result = String.IsNullOrEmpty(nullString);            // true 
+                                result = String.IsNullOrEmpty(emptyString);           // true
+                                 result = String.IsNullOrEmpty(whitespaceString);      // false 
+                          </code>
+                        </pre>
+
+  <h2>Trim</h2>
+
+  <pre>
+    <code class="language-csharp">
+            string x = "   Hello World!    ";
+            string y = x.Trim();           // "Hello World!"
+
+
+            //TrimStart and TrimEnd also
+    </code>
+</pre>
+
+
+  <h2>Char array to string</h2>
+
+  <pre>
+<code class="language-csharp">
+string delimiter=","; 
+char[] charArray = new[] { 'a', 'b', 'c' };
+string inputString = String.Join(delimiter, charArray);
+
+Console.WriteLine(inputString);  // a, b,c
+</code>
+</pre>
+
+
+  <h2>List of Char to string</h2>
+
+  <pre>
+<code class="language-csharp">
+        string delimiter = "|";
+         List<char> charList = new List<char>() { 'a', 'b', 'c' }; 
+        string inputString = String.Join(delimiter, charList);
+        // a, b,c
+
+</code>
+</pre>
+
+  <hr>
+  <h2>ToString()</h2>
+
+  <pre>
+<code class="language-csharp">
+        double doubleValue = 10.456; 
+        string roundedDouble = doubleValue.ToString("0.00");  //Output : 10.46
+        string integerPart = doubleValue.ToString("00");    // output 10 
+
+
+        DateTime currentDate = DateTime.Now; //  {7/21/2016 7:23:15 PM}
+        string dateTimeString = currentDate.ToString("dd-MM-yyyy HH:mm:ss"); // "21-07-2016 19:23:15"
+        string dateOnlyString = currentDate.ToString("dd-MM-yyyy"); // "21-07-2016" 
+        string dateWithMonthInWords = currentDate.ToString("dd-MMMM-yyyy HH:mm:ss"); // "21-July-2016 19:23:15" 
+
+        Console.WriteLine(date.ToString());        //Outputs: 12/31/2016 12:00:00 AM       
+         Console.WriteLine(date.ToShortDateString()); //Outputs: 12/31/2016        
+         Console.WriteLine(date.ToLongDateString()); //Outputs: Saturday, December 31, 2016        
+         Console.WriteLine(date.ToString("dd/MM/yyyy"));    //Outputs: 31/12/2016
+</code>
+</pre>
+
+  <h2>Date </h2>
+  <div class="row">
+    <div class="col-lg-12">
+      <h2>Date</h2>
+      <pre>
+            <code class="language-csharp">
+                DateTime dt = new DateTime(2016,08,01,18,50,23,230);
+                var t = String.Format("{0:t}", dt); // "6:50 PM"                       
+                ShortTime var d = String.Format("{0:d}", dt); // "8/1/2016"       
+                ShortDate var T = String.Format("{0:T}", dt); // "6:50:23 PM"                          
+                LongTime var D = String.Format("{0:D}", dt); // "Monday, August 1, 2016"              
+                LongDate var f = String.Format("{0:f}", dt); // "Monday, August 1, 2016 6:50 PM"     
+                 LongDate+ShortTime var F = String.Format("{0:F}", dt); // "Monday, August 1, 2016 6:50:23 PM"   
+                 FullDateTime var g = String.Format("{0:g}", dt); // "8/1/2016 6:50 PM"                    
+                 ShortDate+ShortTime var G = String.Format("{0:G}", dt); // "8/1/2016 6:50:23 PM"                
+                 ShortDate+LongTime var m = String.Format("{0:m}", dt); // "August 1"                            
+                 MonthDay var y = String.Format("{0:y}", dt); // "August 2016"                         
+                 YearMonth var r = String.Format("{0:r}", dt); // "SMon, 01 Aug 2016 18:50:23 GMT"      
+                 RFC1123 var s = String.Format("{0:s}", dt); // "2016-08-01T18:50:23"                
+                  SortableDateTime var u = String.Format("{0:u}", dt); // "2016-08-01 18:50:23Z"     
+            </code>
+          </pre>
+    </div>
+  </div>
+
+
+
+  <h2>Date </h2>
+  <div class="row">
+    <div class="col-lg-12">
+      <h2>Date</h2>
+      <pre>
+            <code class="language-csharp">
+                DateTime dt = new DateTime(2016,08,01,18,50,23,230);
+                var t = String.Format("{0:t}", dt); // "6:50 PM"                       
+                ShortTime var d = String.Format("{0:d}", dt); // "8/1/2016"       
+                ShortDate var T = String.Format("{0:T}", dt); // "6:50:23 PM"                          
+                LongTime var D = String.Format("{0:D}", dt); // "Monday, August 1, 2016"              
+                LongDate var f = String.Format("{0:f}", dt); // "Monday, August 1, 2016 6:50 PM"     
+                 LongDate+ShortTime var F = String.Format("{0:F}", dt); // "Monday, August 1, 2016 6:50:23 PM"   
+                 FullDateTime var g = String.Format("{0:g}", dt); // "8/1/2016 6:50 PM"                    
+                 ShortDate+ShortTime var G = String.Format("{0:G}", dt); // "8/1/2016 6:50:23 PM"                
+                 ShortDate+LongTime var m = String.Format("{0:m}", dt); // "August 1"                            
+                 MonthDay var y = String.Format("{0:y}", dt); // "August 2016"                         
+                 YearMonth var r = String.Format("{0:r}", dt); // "SMon, 01 Aug 2016 18:50:23 GMT"      
+                 RFC1123 var s = String.Format("{0:s}", dt); // "2016-08-01T18:50:23"                
+                  SortableDateTime var u = String.Format("{0:u}", dt); // "2016-08-01 18:50:23Z"     
+            </code>
+          </pre>
+    </div>
+  </div>
+
+
+
+  <div class="row">
+    <div class="col-lg-12">
+      <h2>Enum</h2>
+      <pre>
+            <code class="language-csharp">
+                public enum Day 
+                {    
+                  Monday,    
+                  Tuesday,    
+                  Wednesday,    
+                  Thursday,    
+                  Friday,    
+                  Saturday,    
+                  Sunday 
+                }
+
+                Day myFavoriteDay = Day.Friday;
+                Day myLeastFavoriteDay = Day.Monday;
+
+
+              // Get the int that corresponds to myFavoriteDay // Friday is number 4 
+              int myFavoriteDayIndex = (int)myFavoriteDay;
+
+   
+            </code>
+          </pre>
+    </div>
+  </div>
+  <br>
+  <hr>
+  <h2>Working With GUID</h2>
+  GUID (or UUID) is an acronym for <b>'Globally Unique Identiﬁer'</b> (or <b>'Universally Unique Identiﬁer'</b>). It is
+  a
+  128-bit
+  integer number used to identify resources.
+  <div class="row">
+    <div class="col-lg-12">
+
+      <pre>
+              <code class="language-csharp">
+                // Guid To String
+                  string myGuidString = myGuid.ToString();
+
+
+                  //Formatting Guid
+                  var guid = new Guid("7febf16f-651b-43b0-a5e3-0da8da49e90d");
+                  // None          "7febf16f651b43b0a5e30da8da49e90d" 
+                  Console.WriteLine(guid.ToString("N"));
+                  // Hyphens       "7febf16f-651b-43b0-a5e3-0da8da49e90d" 
+                  Console.WriteLine(guid.ToString("D"));
+                  // Braces        "{7febf16f-651b-43b0-a5e3-0da8da49e90d}" 
+                  Console.WriteLine(guid.ToString("B"));
+                  // Parentheses   "(7febf16f-651b-43b0-a5e3-0da8da49e90d)" 
+                  Console.WriteLine(guid.ToString("P"));
+                  // Hex           "{0x7febf16f,0x651b,0x43b0{0xa5,0xe3,0x0d,0xa8,0xda,0x49,0xe9,0x0d}}" 
+                  Console.WriteLine(guid.ToString("X")); 
+              </code>
+            </pre>
+    </div>
+  </div>
+
+
+  <h2>Creating Empty Guid</h2>
+  <div class="row">
+    <div class="col-lg-12">
+
+      <pre>
+                <code class="language-csharp">
+                    Guid g = Guid.Empty; 
+                    Guid g2 = new Guid();
+
+                </code>
+              </pre>
+    </div>
+  </div>
+
+  <h2>Creating New Guid</h2>
+  <div class="row">
+    <div class="col-lg-12">
+
+      <pre>
+                <code class="language-csharp">
+                    Guid g = Guid.NewGuid();
+
+                </code>
+              </pre>
+    </div>
+  </div>
+
+
+
+  <h2>Creating Guids with a speciﬁc value:
+  </h2>
+  <div class="row">
+    <div class="col-lg-12">
+
+      <pre>
+                <code class="language-csharp">
+                    Guid g = new Guid("0b214de7-8958-4956-8eed-28f9ba2c47c6"); 
+                    Guid g2 = new Guid("0b214de7895849568eed28f9ba2c47c6"); 
+                    Guid g3 = Guid.Parse("0b214de7-8958-4956-8eed-28f9ba2c47c6"); 
+                </code>
+              </pre>
+    </div>
+  </div>
+
+
+  <h2>List String
+  </h2>
+  <div class="row">
+    <div class="col-lg-4">
+
+      <pre>
+                    <code class="language-csharp">
+                        var temp = new List<string>(); 
+                        temp.Add("foo"); 
+                        temp.Add("bar"); 
+                        var stringList = temp;
+
+                    </code>
+                  </pre>
+    </div>
+
+    <div class="col-lg-4">
+      For Modeling
+      <pre>
+        <code class="language-csharp">
+
+            public class Student{
+              public string FirstName {get;set;}
+              public string LastName {get;set;}
+            }
+
+            var studentList = new List<Student>();    
+              studentList.Add(new Student("Scott", "Nuke"));    
+              studentList.Add(new Student("Vincent", "King"));    
+              studentList.Add(new Student("Craig", "Bertt"));
+ 
+        </code>
+      </pre>
+    </div>
+
+  </div>
+
+
+  <h2>Dictionary
+  </h2>
+  <div class="row">
+    <div class="col-lg-4">
+
+      <pre>
+                  <code class="language-csharp">
+                      var numberDictionary = new Dictionary<int, string>
+                         {    
+                           { 1, "One" },  
+                           { 2, "Two" }, 
+                        };
+
+                  </code>
+                </pre>
+    </div>
+
+    <div class="col-lg-4">
+
+      <pre>
+                    <code class="language-csharp">
+                        var temp = new Dictionary<int, string>(); 
+                          temp.Add(1, "One"); 
+                          temp.Add(2, "Two"); 
+                          var numberDictionarynumberDictionary = temp;  
+                    </code>
+                  </pre>
+    </div>
+
+    <div class="col-lg-4">
+
+      <pre>
+                      <code class="language-csharp">
+                          var dict = new Dictionary<string, int> 
+                            {   
+                               ["key1"] = 1,    
+                               ["key2"] = 50 
+                              };
+
+                      </code>
+                    </pre>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-lg-4">
+
+      <pre>
+                    <code class="language-csharp">
+                        var dict = new Dictionary<string, int>();
+                        dict["key1"] = 1; 
+                        dict["key2"] = 50
+
+  
+                    </code>
+                  </pre>
+    </div>
+
+    <div class="col-lg-4">
+
+      <pre>
+                      <code class="language-csharp">
+                          var dict = new Dictionary<string, int> 
+                            {    
+                              { "key1", 1 }, 
+                              { "key2", 50 } 
+                            };
+ 
+                      </code>
+                    </pre>
+    </div>
+
+    <div class="col-lg-4">
+
+      <pre>
+                        <code class="language-csharp">
+                            var dict = new Dictionary<string, int>(); 
+                              dict.Add("key1", 1); 
+                              dict.Add("key2", 50);
+
+  
+                        </code>
+                      </pre>
+    </div>
+  </div>
+
+  <hr>
+  <div class="row">
+    <div class="col-lg-4">
+
+      <pre>
+                      <code class="language-csharp">
+                          // Reading data 
+                          Console.WriteLine(people["John"]); // 30 
+                          Console.WriteLine(people["George"]); // throws KeyNotFoundException
+
+                      </code>
+                    </pre>
+    </div>
+
+    <div class="col-lg-4">
+
+      <pre>
+                        <code class="language-csharp">
+                            // Iterating through contents 
+                            foreach(KeyValuePair<string, int> person in people) 
+                              {   
+                                 Console.WriteLine("Name={0}, Age={1}", person.Key, person.Value);
+                              }
+
+                                foreach(string name in people.Keys) 
+                                {    
+                                  Console.WriteLine("Name={0}", name);
+                                 }
+
+                                foreach(int age in people.Values) 
+                                {    
+                                  Console.WriteLine("Age={0}", age); 
+                                }
+   
+                        </code>
+                      </pre>
+    </div>
+
+    <div class="col-lg-4">
+
+      <pre>
+                          <code class="language-csharp">
+                              Duplicate key when using collection initialization var people = new Dictionary<string, int> 
+                                {    
+                                  { "John", 30 },
+                                   {"Mary", 35}, 
+                                   {"Jack", 40}, 
+                                   {"Jack", 40} }; 
+                                   // throws ArgumentException since "Jack" already exists 
+                                }
+                          </code>
+                        </pre>
+    </div>
+  </div>
+
+  <h2>Dynamic vs Anonymous</h2>
+  <div class="row">
+    <div class="col-lg-6">
+      <pre>
+      <code class="language-csharp">
+          Anonymous types allow the creation of objects without having to explicitly deﬁne their types ahead of time, while maintaining static type checking.
+
+          var anon = new { Value = 1 }; 
+          Console.WriteLine(anon.Id); // compile time error
+
+      </code>
+    </pre>
+    </div>
+
+    <div class="col-lg-6">
+      <pre>
+        <code class="language-csharp">
+            Conversely, dynamic has dynamic type checking, opting for runtime errors, instead of compile-time errors.
+
+            dynamic val = "foo"; 
+            Console.WriteLine(val.Id); // compiles, but throws runtime error 
+        </code>
+      </pre>
+    </div>
+  </div>
+
+
+  <script src="js/prism.js"></script>
+  <script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+      {
+        'remove-trailing': true,
+        'remove-indent': true,
+        'left-trim': true,
+        'right-trim': true,
+        // 'break-lines': 10,
+        // 'indent': 2,
+        // 'remove-initial-line-feed': false,
+        // 'tabs-to-spaces': 4,
+        // 'spaces-to-tabs': 4
+      });
+  </script>
+</body>
+
+</html>

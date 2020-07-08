@@ -1,0 +1,120 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+</head>
+<body>
+
+  <h2>Catching Static Files in browser</h2>
+  In startup replace app.UseStaticFiles() by below code 
+<xmp class="prettyprint">
+    app.UseStaticFiles(new StaticFileOptions()
+    {
+        OnPrepareResponse =
+    r =>
+    {
+        string path = r.File.PhysicalPath;
+        if (path.EndsWith(".css") || path.EndsWith(".js") || path.EndsWith(".gif") || path.EndsWith(".jpg") || path.EndsWith(".png") || path.EndsWith(".svg"))
+        {
+            TimeSpan maxAge = new TimeSpan(30, 0, 0, 0);  //30 days
+            r.Context.Response.Headers.Append("Cache-Control", "max-age=" + maxAge.TotalSeconds.ToString("0"));
+        }
+    }
+        });
+</xmp>
+=======================================================================================================
+
+<p><span style="color: #ff00ff;"><strong><span style="font-size: 24pt;">Cache</span></strong></span></p>
+<p><span style="font-size: 14pt;">A cache is temporary place where&nbsp; data is stored in order to deliver the information quicker the next time it is requested.</span></p>
+<p><span style="font-size: 14pt;"> Utilizing a cache on a website helps increase performance and ultimately, delivers a better user experience.</span></p>
+<h2><span style="color: #ff00ff;"><strong>Types of Cache&nbsp;</strong></span></h2>
+<p><span style="color: #ff00ff; font-size: 24pt;"><strong>1)Client Side Cache (Browser Cache)</strong></span></p>
+<p><span style="color: #000000; font-size: 12pt;">Client side caches are usually used <strong><span style="color: #ff00ff;">to avoid transferring the same data over the network repeatedly</span></strong>.</span></p>
+<p><span style="color: #000000; font-size: 12pt;">It can <strong>reduce network traffic and latency,</strong> <strong>then help users save money especially when they are paying for the data.</strong></span></p>
+<p><span style="text-decoration: underline; font-size: 18pt;"><span style="color: #000000;"><strong>If done Client side cache mechanism then,suppose <span style="color: #ff0000; text-decoration: underline;">30 minutes</span> cache time is set then&nbsp;</strong></span></span></p>
+<p><span style="color: #000000; font-size: 14pt;">1)When first request is made from client then it will serve data from server.</span></p>
+<p><span style="color: #000000; font-size: 14pt;">2)Second call will fetch from client side cache</span></p>
+<p><span style="color: #000000; font-size: 14pt;">3)If third call is made within 30 minutes then again will fetch from browser cache.</span></p>
+<p><span style="color: #000000; font-size: 14pt;">4)If4th ,5th request is made within 30 minutes then again will fetch from browser cache.</span></p>
+<p><span style="color: #000000; font-size: 14pt;">5)Now, If 30 minutes pass away then it will fetch data from server again and same process repeat.</span></p>
+
+<img src="img/client.png"><br>
+=======================================================================================================
+<br>
+<p><span style="color: #ff00ff;"><strong><span style="font-size: 18pt;">Server Side Cache</span></strong></span></p>
+
+<br>
+<p><span style="color: #000000; font-size: 14pt;">Server side caches are generally used to avoid making expensive database operations repeatedly to serve up the same content to lots of different clients.</span></p>
+<p><span style="color: #000000; font-size: 14pt;">If 30 minutes is maintain for cache on server then&nbsp;</span></p>
+<p><span style="color: #000000; font-size: 14pt;">when first request is made then that is called from server ,and send to client as well as save to cache.</span></p>
+<p><span style="color: #000000; font-size: 14pt;">On next call (if made with in 30 minutes) then client just get data from server cache .</span></p>
+<p><span style="color: #000000; font-size: 14pt;">If 30 minutes past away then client gets data from server and same happens again and again.</span></p>
+
+<img src="img/server.png">
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<td style="width: 50%;"><span style="font-size: 14pt;">Client Side Cache</span></td>
+<td style="width: 50%;"><span style="font-size: 14pt;">Server Side Cache</span></td>
+</tr>
+<tr>
+<td style="width: 50%;"><span style="color: #000000; font-size: 12pt;">This cache is used <strong>to avoid transferring the same data over the network repeatedly</strong>.</span></td>
+<td style="width: 50%;"><span style="font-size: 12pt;">This cache is used to avoid making expensive database operations repeatedly to serve up the same content to lots of different clients.</span></td>
+</tr>
+<tr>
+<td style="width: 50%;"><span style="color: #000000; font-size: 12pt;">Cache is maintain at client side</span></td>
+<td style="width: 50%;"><span style="font-size: 12pt;">Cache is maintain at server side.</span></td>
+</tr>
+<tr>
+<td style="width: 50%;"><span style="color: #000000; font-size: 12pt;">It saves database call as well as bandwidth</span></td>
+<td style="width: 50%;"><span style="font-size: 12pt;">It save database call but not bandwidth.</span></td>
+</tr>
+<tr>
+<td style="width: 50%;"><span style="color: #000000; font-size: 12pt;">It reduce network traffic and latency, then help users save money especially when they are paying for the data.</span></td>
+<td style="width: 50%;"><span style="font-size: 12pt;">It has to go over the network on each call but saves database call.</span></td>
+</tr>
+<tr>
+<td style="width: 50%;"><span style="font-size: 12pt;">Note , if the server decides to change the way the webpage looks like, you're in trouble because the browser's "memory" of how it thinks the page should look like is now out of date, and it'll give you an old version of the page instead of the new one. This is why people sometimes tell you to "clear your browser cache"-- that forces your browser to "forget" what the page looks like. This forces it to ask the server for the new, updated version of the page</span><span style="color: #000000; font-size: 12pt;"><br /></span></td>
+<td style="width: 50%;"><span style="font-size: 12pt;">&nbsp;</span></td>
+</tr>
+<tr>
+<td style="width: 50%;"><span style="font-size: 12pt;">Mainly done for caching static pages.</span></td>
+<td style="width: 50%;"><span style="font-size: 12pt;">Mainly done if&nbsp; page is&nbsp;<em>really&nbsp;</em>complex and takes a lot of time to generate.</span></td>
+</tr>
+<tr>
+<td style="width: 50%;"><span style="font-size: 12pt;">&nbsp;</span></td>
+<td style="width: 50%;"><span style="font-size: 12pt;">If <span style="color: #ff00ff;"><strong>page is complex</strong></span> then it's better to do server side caching because server side language has to parse the content and generate html page for each request.If cache is maintain then web server (my case :asp.net server==&gt;Kestrel Server),just send those cache pages to all client.</span></td>
+</tr>
+</tbody>
+</table>
+======================================
+Look at below site:
+https://www.youtube.com/watch?v=U3r8p3d5rF0
+<br>
+
+<h2>Client Side</h2>
+[CacheOutput(ClientTimeSpan=10)]
+public IEnumerable<Person> GetPersons(){
+...    
+}
+=======================================
+<br>
+<h2>Server Side</h2>
+[CacheOutput(ServerTimeSpan=10)]
+public IEnumerable<Person> GetPersons(){
+...    
+}
+</body>
+
+</html>

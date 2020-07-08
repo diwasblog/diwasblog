@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../Ef/css/bootstrap.css">
+    <link rel="stylesheet" href="../Ef/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../Ef/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../Ef/css/dracula.css">
+    <link rel="stylesheet" href="../Ef/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+    <h2>Finding NTC, NCELL, CDMA By Searching</h2>
+    <pre>
+    <code class="language-sql">
+        where (left(ba.mobilenumber,3) = '984' or left(ba.mobilenumber,3) = '986'  or left(ba.mobilenumber,3) = '985' -- Ntc GSM
+                or left(ba.mobilenumber,3) = '974' or left(ba.mobilenumber,3) = '975' -- NTC CDMA
+                or left(ba.mobilenumber,3) = '980' or left(ba.mobilenumber,3) = '981' or left(ba.mobilenumber,3) = '982' -- Ncell
+                or left(ba.mobilenumber,3) = '961' or left(ba.mobilenumber,3) = '988' -- Smart
+                or left(ba.mobilenumber,3) = '972' -- UTL
+                or left(ba.mobilenumber,3) = '963') -- Hello
+                and length(ba.mobilenumber) = 10
+                order by pef.pefid;
+    </code>
+</pre>
+
+
+    <h2>Type of Call Status</h2>
+
+    <pre>
+    <code class="language-sql">
+    
+'Wrong Number',
+'Switch Off',
+'Wrong Number',
+'Error',
+'Not Received',
+'Reschedule'
+
+    </code>
+</pre>
+
+
+
+    <pre>
+    <code class="language-sql">
+      where username  like concat('%',$4,'%') or ($4=''))
+  
+    </code>
+</pre>
+
+    <pre>
+    <code class="language-sql">
+     where  ((a.startdate between to_date($2,'mm/dd/yyyy') and to_date($3,'mm/dd/yyyy')) or ($2='' and $3=''))     
+    </code>
+</pre>
+    \
+
+
+    <pre>
+    <code class="language-sql">
+            select act.id,act.groupname,act.startdate,act.enddate,act.remarks,
+            Sum(case when LOWER(p.sex)='male' then 1 else 0 end)Male
+             ,Sum(case when Lower(p.sex)='female' then 1 else 0 end)Female
+             ,Sum(case when LOWER(p.sex)='male' or LOWER(p.sex)='female' then 1 else 0 end)Total
+            ,Sum(case when p.syncedwithcallcenter then 1 else 0 end)SyncedWithCallCenter
+             from  activitytraining act 
+            left join activitytrainingparticipant ap on ap.activitytrainingid=act.id
+             left join participant p on p.id=ap.participantid
+             where act.atf_activityid = $1 and (act.startdate < to_date($2,'yyyy-mm-dd'))
+             group by act.id,act.startdate,act.enddate,act.groupname
+             
+    </code>
+</pre>
+
+    <script src="../Ef/js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+    </script>
+</body>
+
+</html>

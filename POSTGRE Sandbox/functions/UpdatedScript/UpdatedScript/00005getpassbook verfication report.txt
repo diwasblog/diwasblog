@@ -1,0 +1,114 @@
+-- FUNCTION: deposit.get_pv_report(integer, date, date, integer, integer, integer)
+
+-- DROP FUNCTION deposit.get_pv_report(integer, date, date, integer, integer, integer);
+
+
+CREATE OR REPLACE FUNCTION deposit.get_pv_report(
+	office_id_ integer,
+	from_ date,
+	to_ date,
+	collector_ integer,
+	product_ integer,
+	verified_ integer)
+    RETURNS TABLE(account_number_id bigint, account_number character varying, product character varying, customer text, address text, collector_name character varying, last_verified character varying, verified_by character varying) 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+
+BEGIN
+    CREATE TEMP TABLE _pv(
+    account_number_id           bigint,
+    account_number              character varying(50),
+    customer                    text,
+    address                     text,
+    collector_id                int,
+    product_id                  int,
+    collector_name              character varying(250),
+    last_verified               date,
+    verified_by                 character varying(150),
+	audit_user_id				int	,
+	last_tran_date				date,
+	verified_last_date			date,
+	verified					boolean NOT NULL DEFAULT FALSE,
+	is_auto						boolean
+    ) ON COMMIT DROP;
+
+	IF collector_ > 0 THEN
+    INSERT INTO _pv(account_number_id, account_number, customer, address, collector_id, product_id)
+    SELECT a.account_number_id, a.account_number, c.customer_name, c.permanent_address, a.collector_id, a.deposit_product_id
+    FROM deposit.account_holders a JOIN core.customers_view c ON a.customer_id = c.customer_id
+    WHERE a.office_id = $1 AND a.status = true AND a.creation_date::date <= to_ 
+	AND a.is_pb_provided=true
+	AND a.collector_id=collector_;
+	
+	ELSE
+	    INSERT INTO _pv(account_number_id, account_number, customer, address, collector_id, product_id)
+    SELECT a.account_number_id, a.account_number, c.customer_name, c.permanent_address, a.collector_id, a.deposit_product_id
+    FROM deposit.account_holders a JOIN core.customers_view c ON a.customer_id = c.customer_id
+    WHERE a.office_id = $1 AND a.status = true AND a.creation_date::date <= to_ 
+	AND a.is_pb_provided=true;
+	END IF;
+
+
+    IF product_ > 0 THEN
+        DELETE FROM _pv WHERE _pv.product_id <> product_;
+	ELSE
+    END IF;
+	
+	
+
+    UPDATE _pv SET last_verified = t.last_date, audit_user_id=t.audit_user_id--, verified_by = deposit.get_passbook_verified_by(_pv.account_number_id)
+    FROM (SELECT p.account_number_id, MAX(p.audit_ts::date) last_date, audit_user_id
+    FROM deposit.passbook_verifications p WHERE p.audit_ts::date <= $3 GROUP BY p.account_number_id, audit_user_id) t
+    WHERE t.account_number_id = _pv.account_number_id;
+    --AND t.last_date BETWEEN $2-30 AND $3;
+	
+--SELECT * FROM deposit.get_pv_report(1, '2019-01-01', '2019-02-01', 0, 0, 1) order by last_verified
+	
+
+	UPDATE _pv SET last_tran_date=last_tran
+	FROM (SELECT v.account_number_id,MAX(tran_date)last_tran FROM deposit.tranaction_view_for_pb v WHERE v.tran_date<=$3 GROUP BY v.account_number_id) dv
+	WHERE _pv.account_number_id=dv.account_number_id;
+	
+	UPDATE _pv SET verified=true , is_auto = true,audit_user_id=0 WHERE _pv.last_tran_date<=_pv.last_verified;
+	
+	UPDATE _pv SET  is_auto = true ,verified=true, audit_user_id=0, last_verified =$2
+	WHERE _pv.last_tran_date IS NULL;
+	
+	
+	UPDATE _pv SET  verified=false
+	WHERE _pv.last_tran_date IS NOT NULL AND _pv.last_verified IS NULL;
+	
+	UPDATE _pv SET verified=true WHERE _pv.last_verified BETWEEN $2 AND $3;	
+	
+	
+	UPDATE _pv SET verified_by=u.user_name
+	FROM office.users u
+	WHERE _pv.audit_user_id=u.user_id;
+
+-- 	UPDATE _pv SET verified=true WHERE last_tran_date NOT BETWEEN _pv.last_verified+1 AND $3
+-- 	AND _pv.last_verified< $2;
+-- 	UPDATE _pv SET verified=true WHERE _pv.last_verified BETWEEN $2 AND $3;
+
+    IF verified_ = 0 THEN
+	DELETE FROM _pv WHERE verified=true;
+ELSEIF verified_=1 THEN
+	DELETE FROM _pv WHERE verified=false;
+	ELSE
+END IF;
+	
+
+    
+    RETURN QUERY(
+    SELECT _pv.account_number_id, _pv.account_number, p.deposit_product_name, _pv.customer, _pv.address, c.collector_name, core.date_bs_from_ad(_pv.last_verified), _pv.verified_by
+    FROM _pv JOIN core.deposit_products p ON _pv.product_id = p.deposit_product_id LEFT JOIN office.collectors c ON _pv.collector_id = c.collector_id
+    );
+END
+
+$BODY$;
+
+ALTER FUNCTION deposit.get_pv_report(integer, date, date, integer, integer, integer)
+    OWNER TO postgres;

@@ -1,0 +1,214 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<style>
+xmp.prettyprint{
+    font-size:12pt;
+    font-family:monospace;
+
+}
+</style>
+ 
+</head>
+<body>
+
+  <xmp class="prettyprint">
+      <div class="article_new_car article_last_modele">
+          <a href="https://www.automobile.tn/neuf/bmw/serie-1-5p/118i-business-line-bva.22253/" class="link_article_new_car">
+             <div class="tag promo">Promo</div>
+             <img src="https://catalogue.automobile.tn/max/2013/03/22253.jpg" alt="BMW Série 1 5p" />
+             <h2>BMW Série 1 5p</h2>
+             <div class="price_last_modele">A partir de <span>115 900 DT</span></div>
+             <div class="tag-text promo"> <s>119.100 DT</s> </div>
+          </a>
+       </div>
+      
+       <div class="article_new_car article_last_modele">
+          <a href="https://www.automobile.tn/neuf/bmw/serie-1-5p/118i-business-line-bva.22253/" class="link_article_new_car">
+             <div class="tag promo">Promo</div>
+             <img src="https://catalogue.automobile.tn/max/2013/03/22253.jpg" alt="BMW Série 1 5p" />
+             <h2>BMW Série 1 5p</h2>
+             <div class="price_last_modele">A partir de <span>115 900 DT</span></div>
+             <div class="tag-text promo"> <s>119.100 DT</s> </div>
+          </a>
+       </div>
+      
+       <div class="article_new_car article_last_modele">
+          <a href="https://www.automobile.tn/neuf/bmw/serie-3.113/" class="link_article_new_car">
+             <img src="https://catalogue.automobile.tn/max/2015/12/22263.jpg" alt="BMW Série 3" />
+             <h2>BMW Série 3</h2>
+             <div class="price_last_modele">A partir de <span>136 900 DT</span></div>
+          </a>
+       </div>
+  </xmp>
+
+<xmp class="prettyprint">
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            startcrawlerasyncAsync();
+            Console.ReadLine();
+        }
+  
+        private static async Task startcrawlerasyncAsync()
+        {
+            var url = "https://www.automobile.tn/neuf/bmw.3/";
+            var httpClient = new HttpClient();
+            var html = await httpClient.GetStringAsync(url);
+            var htmlDocument = new HtmlDocument();
+            htmlDocument.LoadHtml(html);
+  
+            var cars = new List<Car>();
+            var divs = htmlDocument.DocumentNode.Descendants("div").Where(node => node.GetAttributeValue("class", "").Equals("article_new_car article_last_modele")).ToList();
+  
+            foreach (var div in divs)
+            {
+  
+                var car = new Car
+                {
+  
+                    Model = div.Descendants("h2").FirstOrDefault().InnerText,
+                    Price = div.Descendants("div").FirstOrDefault().InnerText,
+                    Link = div.Descendants("a").FirstOrDefault().ChildAttributes("href").FirstOrDefault().Value,
+                    ImageUrl = div.Descendants("img").FirstOrDefault().ChildAttributes("src").FirstOrDefault().Value
+                };
+  
+                cars.Add(car);
+            }
+  
+            Console.Read();
+        }
+    }
+</xmp>
+
+<xmp class="prettyprint">
+    public class Car
+    {
+        public string Model { get; set; }
+        public string Price { get; set; }
+        public string Link { get; set; }
+        public string ImageUrl { get; set; }
+    }
+</xmp>
+================================================================================================================
+<br>
+
+<h2>INNER HTML vs INNER TEXT</h2>
+<xmp class="prettyprint">
+
+    <div id="test">
+       <b>Hello world</b>
+       <h2>Diwas Poudel</h2>
+     </div>
+   
+  alert(document.getElementById("test").innerHTML)  //output : <b>Hello world</b><h2>Diwas Poudel</h2>
+   alert(document.getElementById("test").innerText)    //output : Hello world Diwas Poudel
+</xmp>
+
+========================================================================================================
+<h2>Outer HTML</h2>
+<xmp class="prettyprint">
+    alert(document.getElementById("test").outerHTML)
+    //output
+    <div id="test">
+        <b>Hello world</b>
+        <h2>Diwas Poudel</h2>
+    </div>
+</xmp>
+===============================================================================================
+<xmp class="prettyprint">
+    <body>  
+        <div id="div1">  
+            <a href="div1-a1">Link 1 inside div1</a>  
+            <a href="div1-a2">Link 2 inside div1</a>  
+        </div>  
+        <a href="a3">Link 3 outside all divs</a>      
+        <div id="div2">  
+            <a href="div2-a1">Link 1 inside div2</a>  
+            <a href="div2-a2">Link 2 inside div2</a>  
+        </div>  
+    </body>
+</xmp>
+
+<h2>Getting all link of page</h2>
+<div class="row">
+  <div class="col">
+      <xmp class="prettyprint">
+          HtmlDocument document2 = new HtmlDocument();  
+          document2.Load(@"C:\Temp\sample.txt")  
+          HtmlNode[] nodes = document2.DocumentNode.SelectNodes("//a").ToArray();  
+          foreach (HtmlNode item in nodes)  
+          {  
+              Console.WriteLine(item.InnerHtml);  
+          }  
+      </xmp>
+  </div>
+
+  <div class="col">
+      Link 1 inside div1
+      <br>
+      Link 2 inside div1
+      <br>
+      Link 3 outside all divs
+      <br>
+      Link 1 inside div2
+      <br>
+      Link 2 inside div2
+  </div>
+</div>
+===================================================================================
+<h2>Getting Specific div on page</h2>
+<div class="row">
+  <div class="col">
+      
+      HtmlDocument document2 = new HtmlDocument();
+      document2.Load(@"C:\Users\Qubex Developer 1\source\repos\WebCrawler\crawlingfile.txt");
+      
+      HtmlNode node = document2.DocumentNode.SelectNodes("//div[@id='div1']").First();
+      Console.WriteLine(node.InnerText);
+  </div>
+
+  <div class="col">
+      output:
+      Link 1 inside div1
+      <br>
+      Link 2 inside div1
+  </div>
+</div>
+====================================================================================================
+<h2>Getting Specific div on page</h2>
+<div class="row">
+  <div class="col">
+      
+      HtmlDocument document2 = new HtmlDocument();
+      document2.Load(@"C:\Users\Qubex Developer 1\source\repos\WebCrawler\crawlingfile.txt");
+      
+      HtmlNode node = document2.DocumentNode.SelectNodes("//div[@id='div1']").First();
+      Console.WriteLine(node.InnerText);
+  </div>
+
+  <div class="col">
+      output:
+      Link 1 inside div1
+      <br>
+      Link 2 inside div1
+  </div>
+</div>
+===========================================================================================
+<br>
+<h2>Crawler inside table</h2>
+<xmp class="prettyprint">
+    
+    List<List<string>> table = htmlDocument.DocumentNode.SelectSingleNode("//table[@class='table table-search-results']")
+        .Descendants("tr")
+        .Skip(1)
+        .Where(tr => tr.Elements("td").Count() > 1)
+        .Select(tr => tr.Elements("td").Select(td => td.InnerText.Trim()).ToList())
+        .ToList();
+</xmp>
+  </body>
+  </html>

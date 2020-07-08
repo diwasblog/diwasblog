@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+
+  <body>
+
+
+    <h2>Use of label For</h2>
+    'for' of the label must match with the id of input field so that when you click on label the input field will 
+    be highlighted. 
+
+    <div class="row">
+      <div class='col-lg-6'>
+          <pre>
+              <code class="language-html">
+                &lt;form>
+                    &lt;label for="FN">First Name&lt;/label>
+                    &lt;input type="text" name="lname" id="FN" disabled>&lt;br>
+                    &lt;input type="submit" value="Submit">
+                &lt;/form>
+             </code>
+            </pre>
+        
+      </div>
+
+  <div class='col-lg-6'>
+      <form>
+          <label for="FN">First Name</label>
+          <input type="text" name="FirstName" id="FN"><br><br>
+          <input type="submit" value="Submit">
+        </form>
+    </div>
+    </div>
+   
+
+==============================================================================================<br>
+Without label for (click on label textbox willnot be highlighted.)
+<div class="row">
+    <div class='col-lg-6'>
+        <pre>
+            <code class="language-html">
+              &lt;form>
+                  &lt;label>First Name&lt;/label>
+                  &lt;input type="text" name="lname" id="FN" disabled>&lt;br>
+                  &lt;input type="submit" value="Submit">
+              &lt;/form>
+           </code>
+          </pre>
+      
+    </div>
+
+<div class='col-lg-6'>
+    <form>
+        <label>First Name</label>
+        <input type="text" name="FirstName" id="FN"><br><br>
+        <input type="submit" value="Submit">
+      </form>
+  </div>
+  </div>
+ 
+===========================================================================================
+
+<script src="js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+    </body>
+  </html>
+  

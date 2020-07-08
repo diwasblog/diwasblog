@@ -1,0 +1,24 @@
+<img src="img/mvc,mvvm,mvp.png">
+
+<p><span style="font-size: 18pt; color: #ff00ff;">MVP( Model View Presenter)</span></p>
+<ol>
+<li><span style="font-size: 12pt;">The <strong>MVP pattern</strong> is similar to the <strong>MVC pattern</strong>. </span></li>
+<li><span style="font-size: 12pt;">It is derived from<strong> MVC pattern</strong>, wherein the <strong>controller</strong> is replaced by the <strong>presenter</strong>. </span></li>
+<li><span style="font-size: 12pt;">This pattern divides an application into three major aspects: <span style="color: #000000;"><strong>Model, View, and Presenter.</strong></span></span></li>
+</ol>
+
+<p><span style="font-size: 12pt;"><strong><span style="color: #ff00ff;">Model</span> </strong>defines the business rules for data means as how the data can be changed and manipulated.</span></p>
+<p id="25fb" class="graf graf--p graf-after--p"><span style="font-size: 12pt;">&nbsp;<strong><span style="color: #ff00ff;">View</span> </strong>represents UI components like XML, HTML , (==&gt; &nbsp;XML, Activity, fragments in MVP) etc. View displays the data that is received from the controller as the outcome.Model and View interact with each other using the Observer pattern.</span></p>
+<p id="26ab" class="graf graf--p graf-after--p"><span style="font-size: 12pt;"><span style="color: #ff00ff;"><strong>Controller</strong> </span>is responsible to process incoming requests. It processes the user&rsquo;s data through the Model and passing back the results to View. It normally acts as a mediator between the View and the Model.</span></p>
+<p id="b068" class="graf graf--p graf-after--p"><span style="font-size: 12pt; color: #ff00ff;"><strong class="markup--strong markup--p-strong">Presenter</strong></span></p>
+<p id="896e" class="graf graf--p graf-after--p"><span style="font-size: 12pt;">The Presenter receives the input from users via View, then process the user&rsquo;s data with the help of Model and passing the results back to the View. Presenter communicates with view through interface. Interface is defined in presenter class, to which it pass the required data.&nbsp;<span class="markup--quote markup--p-quote is-other" data-creator-ids="anon">Activity/fragment or any other view component implement this interface and renders the data in a way they want.</span></span></p>
+<p id="4334" class="graf graf--p graf-after--p"><span style="font-size: 12pt;">In the MVP design pattern, the presenter manipulates the model and also updates the view. In MVP View and Presenter are completely decoupled from each other&rsquo;s and communicate to each other&rsquo;s by an interface. Because if decoupling mocking of the view is easier and unit testing of applications that leverage the MVP design pattern over the MVC design pattern are much easier.</span></p>
+<p class="graf graf--p graf-after--p">&nbsp;</p>
+<p id="068e" class="graf graf--p graf-after--p"><span style="font-size: 14pt; color: #ff00ff;"><strong class="markup--strong markup--p-strong">Model View View-model (MVVM)</strong></span></p>
+<p id="31e1" class="graf graf--p graf-after--p">MVVM pattern supports two-way data binding between View and View-Model. This allows automatic propagation of changes, inside the state of View-Model to the View. Generally, the View-Model utilizes the observer pattern to inform changes in the View-Model to the Model.</p>
+<p id="57c4" class="graf graf--p graf-after--p"><span style="color: #ff00ff;"><strong><span style="font-size: 14pt;">View-Model</span></strong></span></p>
+<p id="8c43" class="graf graf--p graf-after--p"><span style="font-size: 12pt;">It is responsible for exposing methods, commands, and other properties that help to maintain the state of the view, manipulate the model as the result of actions on the view, and trigger events in the view itself. View has a reference to View-Model but View-Model has no information about the View. There is many-to-one relationship between View and View-Model means many Views can be mapped to one View-Model. It is completely independent of Views.</span></p>
+<p id="465a" class="graf graf--p graf-after--p"><span style="font-size: 12pt;">The bi-directional data binding or the two way data binding between the view and the View-Model ensures that the models and properties in the View-Model is in sync with the view. The MVVM design pattern is well suited in applications that need support for bi-directional data binding.</span></p>
+
+
+<img src='img/type of presentation pattern.png'>

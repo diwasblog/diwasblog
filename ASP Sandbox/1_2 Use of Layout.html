@@ -1,0 +1,145 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+    font-size:12pt;
+    font-family:monospace;
+
+}
+</style>
+ 
+</head>
+<body>
+
+   <span style="font-size: 18pt; color: #ff00ff;"><strong>What is the advantage of using _Layout.cshtml view?</strong></span><br /><span style="font-size: 14pt;">Layout views provide the advantage of maintaining consistent look and feel across all the views in an mvc application. A typical layout view consists of</span><br /><span style="font-size: 14pt;"><strong>1.</strong>&nbsp;Header</span><br /><span style="font-size: 14pt;"><strong>2.</strong>&nbsp;Footer</span><br /><span style="font-size: 14pt;"><strong>3.</strong>&nbsp;Navigation menu</span><br /><span style="font-size: 14pt;"><strong>4.</strong>&nbsp;View specific content&nbsp;</span>
+<br>
+<img src="img/Layout view in mvc.png"><br>
+   Create _Layout.cshtml in View/Shared Folder and paste this code
+  <xmp class="prettyprint">
+      <html>
+          <head>
+              <title>@ViewBag.Title</title>
+          </head>
+          <body>
+              <table border="1" style="width:800px; font-family:Arial;">
+                  <tr>
+                      <td colspan="2" style="text-align:center;background-color:dodgerblue">
+                          <h3>Website Header</h3>
+                      </td>
+                  </tr>
+                  <tr>
+                      <td style="width:200px;background-color:dodgerblue">
+                          <h3>Menu</h3>
+                      </td>
+                      <td style="width:1000px">
+                          @RenderBody()   
+                      </td>
+                  </tr>
+                  <tr>
+                      <td colspan="2" style="text-align:center; font-size:x-small;background-color:dodgerblue">
+                          <h3>Website Footer</h3>
+                      </td>
+                  </tr>
+              </table>
+          </body>
+          </html>          
+  </xmp>
+  <img src="img/mylayout.png">
+<br>
+  2)Then Create _ViewStart.cshtml inside View folder and paste this code 
+  <br>
+ Note: 
+<span style="font-size: 14pt; font-family: 'comic sans ms', sans-serif;">Specify the Layout property in this file and place it in the Views folder. <br />All the views will then use the layout file that is specified in _ViewStart.cshtml.<br /> This eliminates the need to specify Layout property on each and every view, <br />and making them more cleaner and maintainable.</span>
+
+
+  <xmp class='prettyprint'>
+    @{
+      Layout = "~/Views/Shared/_Layout.cshtml";
+    } 
+  </xmp>
+Then for each an every view like index.cshtml and many more.. present inside View folder will use this _layout.cshtml
+  ============================================================================================
+<br>
+3)  Create Model as Employee
+<xmp class='prettyprint'>
+    public class Employee
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int Age { get; set; }
+        public string Country { get; set; }
+    }
+</xmp> 
+
+
+=================================================================================
+<Br>
+4)Then go to create index action in home controller
+
+<xmp class='prettyprint'>
+    public class HomeController : Controller
+    {
+        public ActionResult Index()
+        {
+            Employee emp = new Employee();
+            emp.Name = "Diwas";
+            emp.Age = 25;
+            emp.Country = "Nepal";
+            emp.Id = 12;
+            return View(emp);
+        }
+
+        ....
+      }
+</xmp>
+
+=====================================================================================
+<br>
+5)View of this is index.cshtml and looks like this.
+
+<xmp class='prettyprint'>
+    @model layout.Models.Employee
+
+    @{
+        ViewBag.Title = "Home Page";
+        // now need to specify Layout='/Views/..' will auto use layout.cshtml because we have set this inside viewStart.cshtml
+    }
+    
+    @Model.Age
+    @Model.Country
+    @Model.Name    
+</xmp>
+
+<br>
+6)Now output will be as:
+<img src="img/finaloutput.png">
+
+<h3>We are success on loading content of index.cshtml in RenderBody() section of layoutpage</h3>
+
+=======================================================================================================================
+<br>
+<br>
+<h1>Important</h1>
+<img src="http://1.bp.blogspot.com/-1PYs9BlU_3s/Uemsw08jI9I/AAAAAAAABZI/2fSKwyWSOAQ/s1600/_ViewStart+in+asp.net+mvc+3.png" alt="_ViewStart in asp.net mvc 3" border="1" />&nbsp;<br /><br />If you want a set of views in a specific folder, to use a different layout file, then you can include another _ViewStart.cshtml file in that specific folder.&nbsp;
+
+<h2>Important2 : If we want to use different layout.cshtml than also we can use as below</h2>
+<xmp class='prettyprint'>
+    @model layout.Models.Employee
+
+    @{
+        ViewBag.Title = "Home Page";
+        Layout='/Views/differntlayout.cshtml' 
+    }
+    
+    @Model.Age
+    @Model.Country
+    @Model.Name    
+</xmp>
+</body>
+</html>

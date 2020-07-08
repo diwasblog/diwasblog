@@ -1,0 +1,26 @@
+<p><span style="font-size: 14pt; color: #ff00ff;"><strong>MVC API vs WebAPI</strong></span></p>
+<table style="border-collapse: collapse; width: 100%; height: 287px;" border="1">
+<tbody>
+<tr style="height: 49px;">
+<td style="width: 50%; height: 49px;"><span style="font-size: 12pt; color: #ff0000;"><strong>MVC API&nbsp;</strong></span></td>
+<td style="width: 50%; height: 49px;"><span style="font-size: 12pt; color: #ff0000;"><strong>WebAPI</strong></span></td>
+</tr>
+<tr style="height: 49px;">
+<td style="width: 50%; height: 49px;"><span style="font-size: 12pt;">&nbsp;Used to create web applications that returns both <span style="color: #ff0000;">views</span> and <span style="color: #ff0000;">data</span></span></td>
+<td style="width: 50%; height: 49px;"><span style="font-size: 12pt;">Used to create webapplicatoin that returns only <span style="color: #ff0000;">data</span> not view.</span></td>
+</tr>
+<tr style="height: 68px;">
+<td style="width: 50%; height: 68px;"><span style="font-size: 12pt;"><code>MVC Application</code>&nbsp;project type adds web specific things like Scripts,Content for CSS and Javascript.</span></td>
+<td style="width: 50%; height: 68px;"><span style="font-size: 12pt;">WepApi Application doesnot have Scripts and Content as it doesnot have view.</span></td>
+</tr>
+<tr style="height: 121px;">
+<td style="width: 50%; height: 121px;"><span style="font-size: 12pt;">Web API helps to build REST-ful services over the .NET Framework and it also support<strong><span style="color: #ff0000;"> content-negotiation</span></strong>(<strong>it's about deciding the best response format data that could be acceptable by the client.</strong> it could be <strong>JSON,XML,ATOM</strong> or other formatted data), self hosting which are not in MVC.</span></td>
+<td style="width: 50%; height: 121px;"><span style="font-size: 12pt;">Doesnot support content-negotiation . It support JSON type data&nbsp; or XML type data format only and we return this result via .<strong><span style="color: #ff0000;">JSONRESULT</span></strong></span></td>
+</tr>
+</tbody>
+</table>
+<p><span style="color: #ff00ff;"><strong><span style="font-size: 18pt;">Model + View===&gt;Html&nbsp; (MVC Project)</span></strong></span></p>
+<p><span style="color: #ff00ff;"><strong><span style="font-size: 18pt;">Model+ContentNegotiation ===&gt;Result (API)</span></strong></span></p>
+<p><span style="color: #ff0000;"><strong><span style="font-size: 18pt;">Web API Self Hosting</span></strong></span></p>
+<p><span style="font-size: 12pt;">You can mix Web API and MVC controller in a single project to handle advanced AJAX requests which may return data in JSON, XML or any others format and building a full blown HTTP service. Typically, this will be called Web API self hosting.</span></p>
+<p><span style="font-size: 12pt;">When you have mixed MVC and Web API controller and you want to implement the authorization then you have to create two filters one for MVC and another for Web API since boths are different.</span></p>

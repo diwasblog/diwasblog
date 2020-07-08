@@ -1,0 +1,371 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+
+<!--Explaination-->
+
+<!--########################Main Code######################################-->
+<div id="app">
+    <div class="container">
+      <form>
+        <div class="row">
+          <div class="col-xs-12 col-sm-8 col-xm-offset-2 col-md-6 col-md-offset-3">
+        <h1>Form Data</h1>
+          <div class="form-group">
+            <label for="email">Mail</label>
+            <input type="text"
+                   id="email"
+                   class="form-control"
+                   name="email"
+                   v-model="userData.email" >    
+          </div>
+          
+          <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password"
+                     id="password"
+                     class="form-control"
+                     v-model='userData.password'>    
+            </div>
+
+            <div class="form-group">
+                <label for="Age">Age</label>
+                <input type="number" id="age" class="form-control"  v-model="userData.age">    
+            </div>
+        </div>
+
+              <div class="row" >
+                  <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 form-group">
+                    <label for="message">Message</label>
+                    <textarea  id="message"   rows="5"  class="form-control"  v-model="message"></textarea>
+              </div>
+              </div>
+
+              
+
+              </div>
+
+              <div class="row">
+                  <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 form-group">
+                    <div class="form-group">
+                      
+                      <label for="sendmail">
+                        <input 
+                             type="checkbox"
+                             id="sendmail"
+                             value="SendMail"
+                             v-model="sendMail">Send SendMail
+                      </label>
+
+                      <label for="sendInfomail">
+                        <input 
+                             type="checkbox"
+                             id="sendInfomail"
+                             value="sendInfoMail"
+                             v-model="sendMail">Send sendInfomail 
+                      </label>
+
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 form-group">
+                      <div class="form-group">
+                        
+                        <label for="Male">
+                          <input 
+                               type="radio"
+                               id="male"
+                               value="Male"
+                               v-model="gender">Male
+                        </label>
+
+                        <label for="Female">
+                          <input 
+                               type="radio"
+                               id="female"
+                               value="Female"
+                               v-model="gender">Female 
+                        </label>
+
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row" >
+                      <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 form-group">
+                        <label for="priority">Priority</label>
+                       <select
+                            id="priority"
+                            class="form-control"
+                            v-model="selectedPriority">
+                        <option v-for="item in priorities">
+                            {{item}}
+                        </option>  
+                        </select>
+                   
+                  </div>
+                  </div>
+
+
+      </form>
+
+      <hr>
+      <div class="row">
+        <div class="col-xs=12 col-sm-8 col-sm-offset-2 col0md-6 col-md-offset-3">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4>Your Data</h4>
+              </div>
+              <div class="panel-body">
+                <p><b>Mail:</b>{{userData.email}}</p>
+                <p><b>Password:</b>{{userData.password}}</p>
+                <p><b>Age:</b>{{userData.age}}</p>
+                <p style="white-space:pre"><b>Message:</b>{{message}}</p>
+                <p><strong>Send Mail?</strong></p>
+                <ul>
+                  <li v-for="item in sendMail">{{item}}</li>
+                </ul>
+
+                <p><b>Gender:</b>{{gender}}</p>
+                <p><b>Priority</b>{{selectedPriority}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+           
+
+      </div>
+    </div>
+</div>
+
+
+<script src="https://unpkg.com/vue"></script>
+<script>
+let app=new Vue({
+  el:'#app',
+  data:{
+   userData:{
+     email:'',
+     password:'',
+     age:27
+  },
+  message:'A new Text',
+  sendMail:[],
+  gender:'Male',
+  priorities:['High','Medium','Low'],
+  selectedPriority:'High'
+
+
+  }
+})
+</script>
+<!--##############################################################-->
+
+
+<!--|#########################DISPLAY############################################-->
+<?prettify linenums=1?>
+<xmp class="prettyprint"
+   >
+
+   <html>
+      <head>
+         <title>Using This</title>
+      </head>
+      <body>
+
+          <div id="app">
+
+              <div class="container">
+                <form>
+                  <div class="row">
+                    <div class="col-xs-12 col-sm-8 col-xm-offset-2 col-md-6 col-md-offset-3">
+                  <h1>Form Data</h1>
+                    <div class="form-group">
+                      <label for="email">Mail</label>
+                      <input type="text"
+                             id="email"
+                             class="form-control"
+                             v-model="userData.email">    
+                    </div>
+  
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password"
+                               id="password"
+                               class="form-control"
+                               v-model='userData.password'>    
+                      </div>
+  
+                      <div class="form-group">
+                          <label for="Age">Age</label>
+                          <input type="number"
+                                 id="age"
+                                 class="form-control"
+                                 v-model="userData.age">    
+                        </div>
+                        |</div>
+  
+                        <div class="row" >
+                            <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 form-group">
+                              <label for="message">Message</label>
+                              <textarea 
+                                      id="message"
+                                      rows="5"
+                                      class="form-control"
+                                      v-model="message"></textarea>
+                         
+                        </div>
+                        </div>
+  
+                        
+  
+                        </div>
+  
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 form-group">
+                              <div class="form-group">
+                                
+                                <label for="sendmail">
+                                  <input 
+                                       type="checkbox"
+                                       id="sendmail"
+                                       value="SendMail"
+                                       v-model="sendMail">Send SendMail
+                                </label>
+       
+                                <label for="sendInfomail">
+                                  <input 
+                                       type="checkbox"
+                                       id="sendInfomail"
+                                       value="sendInfoMail"
+                                       v-model="sendMail">Send sendInfomail 
+                                </label>
+       
+                              </div>
+                            </div>
+                          </div>
+  
+  
+                          <div class="row">
+                              <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 form-group">
+                                <div class="form-group">
+                                  
+                                  <label for="Male">
+                                    <input 
+                                         type="radio"
+                                         id="male"
+                                         value="Male"
+                                         v-model="gender">Male
+                                  </label>
+         
+                                  <label for="Female">
+                                    <input 
+                                         type="radio"
+                                         id="female"
+                                         value="Female"
+                                         v-model="gender">Female 
+                                  </label>
+         
+                                </div>
+                              </div>
+                            </div>
+  
+                            <div class="row" >
+                                <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 form-group">
+                                  <label for="priority">Priority</label>
+                                 <select
+                                      id="priority"
+                                      class="form-control"
+                                      v-model="selectedPriority">
+                                  <option v-for="item in priorities">
+                                      {{item}}
+                                  </option>  
+                                  </select>
+                             
+                            </div>
+                            </div>
+      
+  
+                </form>
+  
+                <hr>
+                <div class="row">
+                  <div class="col-xs=12 col-sm-8 col-sm-offset-2 col0md-6 col-md-offset-3">
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h4>Your Data</h4>
+                        </div>
+                        <div class="panel-body">
+                          <p><b>Mail:</b>{{userData.email}}</p>
+                          <p><b>Password:</b>{{userData.password}}</p>
+                          <p><b>Age:</b>{{userData.age}}</p>
+                          <p style="white-space:pre"><b>Message:</b>{{message}}</p>
+                          <p><strong>Send Mail?</strong></p>
+                          <ul>
+                            <li v-for="item in sendMail">{{item}}</li>
+                          </ul>
+  
+                          <p><b>Gender:</b>{{gender}}</p>
+                          <p><b>Priority</b>{{selectedPriority}}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+  
+                     
+  
+                </div>
+              </div>
+        </div>
+  
+  
+        <script src="https://unpkg.com/vue"></script>
+        <script>
+          let app=new Vue({
+            el:'#app',
+            data:{
+             userData:{
+               email:'',
+               password:'',
+               age:27
+            },
+            message:'A new Text',
+            sendMail:[],
+            gender:'Male',
+            priorities:['High','Medium','Low'],
+            selectedPriority:'High'
+  
+  
+            }
+          })
+        </script>
+      </body>
+   </html>
+</xmp>
+<!--####################################################-->
+
+
+    </body>
+
+</html>

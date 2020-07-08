@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../../CSS SandBox/Sandbox/css/bootstrap.css">
+    <link rel="stylesheet" href="../../CSS SandBox/Sandbox/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../../CSS SandBox/Sandbox/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../../CSS SandBox/Sandbox/css/dracula.css">
+    <link rel="stylesheet" href="../../CSS SandBox/Sandbox/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+
+  </head>
+  <body>
+    <p><strong><span style="font-size: 12pt; color: #000000;">1)Create MVC project with Individual Authentication Selected</span></strong></p>
+    <p><strong><span style="font-size: 12pt; color: #000000;">2)Goto Model/IdentityModel.cs and add this claim</span></strong></p>
+    Each time you login or register and will set the claim
+    
+<pre>
+<code class="language-csharp">
+  namespace ClaimBased.Models
+  {
+      public class ApplicationUser : IdentityUser
+      {
+          public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
+          {
+              // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
+              var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
+  
+              // Add custom user claims here
+              userIdentity.AddClaim(new Claim(ClaimTypes.Email,this.Email));
+  
+              return userIdentity;
+          }
+      }
+  
+      public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+      {
+          public ApplicationDbContext()
+              : base("DefaultConnection", throwIfV1Schema: false)
+          {
+          }
+  
+          public static ApplicationDbContext Create()
+          {
+              return new ApplicationDbContext();
+          }
+      }
+</code>
+</pre>
+<p><strong><span style="font-size: 12pt; color: #000000;">3)Now goto home controller and check if claim data exists and based on the condition redirect the user</span></strong></p>
+Here when you go to /about page then your claim of email is checked if present and is equal to "diwas@gmail.com" then you get the message you 
+can view the page otherwise your page is not permitted one.
+<pre>
+  <code class="language-csharp">
+    public class HomeController : Controller
+    {
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        public ActionResult About()
+        {
+            var user = HttpContext.User as ClaimsPrincipal;
+            if (!user.HasClaim(c => c.Type == ClaimTypes.Email))
+            {
+                ViewBag.Message = "Cannot detect the Email -Claim is absent.";
+               return View();
+            }
+
+
+            var email = Convert.ToString(user.FindFirst(c => c.Type == ClaimTypes.Email).Value);
+
+            if (email == "diwas@gmail.com")
+            {
+                ViewBag.Message = "You can view this page.";
+            }
+            else
+            {
+                ViewBag.Message = "Your cannot view this page -your Email is not permitted one.";
+            }
+
+            return View();
+        }
+
+        public ActionResult Contact()
+        {
+            ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
+    }
+  </code>
+</pre>
+=======================================================================================================================
+<h3>These two are equivalent for getting data from claim</h3>
+<h2>Method 1</h2>
+<pre>
+  <code class="language-csharp">
+    var user = HttpContext.User as ClaimsPrincipal;
+    var email = Convert.ToString(user.FindFirst(c => c.Type == ClaimTypes.Email).Value);
+  </code>
+  </pre>
+
+  <h2>Method 2</h2>
+  <pre>
+    <code class="language-csharp">
+      var prinicpal = (ClaimsPrincipal)Thread.CurrentPrincipal;
+      var email = prinicpal.Claims.Where(c => c.Type == ClaimTypes.Email).Select(c => c.Value).SingleOrDefault();
+    </code>
+    </pre>
+    <script src="../../CSS SandBox/Sandbox/js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

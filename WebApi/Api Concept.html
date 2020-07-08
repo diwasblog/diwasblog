@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<p><span style="font-size: 14pt;">GET, PUT and DELETE are <span style="color: #ff0000;"><strong>idempotent</strong> </span>means making same request donot effect the resource.</span></p>
+<p><span style="font-size: 14pt;">Making as many GET request has no affect on the server.</span></p>
+<p><span style="font-size: 14pt;">We&nbsp; can make DELETE request as many times as we want as only the first request has affect on the server and other donot.</span></p>
+<p><span style="font-size: 14pt;">ie .delete ; api/student/10 ==&gt; this will delete the record for the first time called and on next call to this url then no affect on server because record with id 10 will not exist.</span></p>
+<p><span style="font-size: 14pt;">When we make PUT request then only first request has affect on the server and when request PUT request again then has no affect on the server.</span></p>
+<p><span style="font-size: 14pt;">ie&nbsp; api/student/update/10&nbsp; ==&gt;While updating we have ID and when we make first request then we&nbsp; make second request for&nbsp; update then also we get the updated to&nbsp;</span></p>
+<p><span style="font-size: 14pt;">But POST is <strong><span style="color: #ff0000;">non idempotent</span></strong> because each times you run POST then new resource will be created.And on each time you request will affect the server so API creater have created POST as separate.</span></p>
+<p><span style="font-size: 14pt;">Rest Protocal says donot use own standard ,use international standard like Post\/GET/patch to get http resource</span></p>
+<p><span style="color: #000000;"><strong><span style="font-size: 14pt;">Following the standard of HTTP is&nbsp; REST</span></strong></span></p>
+<p><span style="font-size: 14pt;">Instead of saying inserting data,updating data, delete data we just say insert ,update or delete <span style="color: #ff0000;"><strong>resource</strong></span>.Because </span><br /><span style="font-size: 14pt;">some times data may be image ,video and many more so saying resource instead of data is better.</span></p>
+<p><span style="font-size: 14pt;">We can update as well as insert using POST and PUT but strict rules for REST API is </span><br /><span style="font-size: 14pt;">do Insert using POST</span><br /><span style="font-size: 14pt;">and Update using PUT.</span><br /><span style="font-size: 14pt;">So we must follow</span></p>
+</body>
+</html>

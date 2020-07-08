@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+
+  <body>
+
+
+  <pre class="limit-10">
+  <code class='language-sql'>
+   CREATE OR ALTER PROCEDURE usp_Finance_InsertBillTitle
+(
+  @InstitutionId int,
+  @Name nvarchar(50),
+  @Alias nvarchar(50),
+  @orderId int,
+  @AdminName nvarchar(50)
+)
+WITH ENCRYPTION
+AS  
+BEGIN
+  SET @Name = ltrim(rtrim(@Name));
+  SET @Alias = ltrim(rtrim(@Alias));
+  DECLARE @Date datetime= DATEADD(MINUTE,345,GETUTCDATE());
+  IF (ISNULL(@Name, '') = '')
+    THROW 5000001, 'Null or empty Name', 501;
+  IF EXISTS(SELECT fbt.Id FROM [dbo].[Finance.BillTitle] fbt WHERE fbt.Name = ltrim(rtrim(@Name)) AND fbt.InstitutionId = @InstitutionId)
+    THROW 5000001, 'Name already exists', 501;
+  INSERT INTO [dbo].[Finance.BillTitle]
+  (
+    InstitutionId, [Name], AdminName, ModifiedDate,[Alias],[OrderId]
+  )
+  VALUES
+  (
+    @InstitutionId,
+      ltrim(rtrim(@Name)), -- Name - nvarchar
+    @AdminName,
+    @Date,
+    @Alias,
+    @orderId
+  )
+END
+
+  </code>
+</pre>
+
+
+
+ <pre class="limit-10">
+  <code class='language-sql'>
+   CREATE OR ALTER PROCEDURE usp_Finance_UpdateBillTitle
+(
+  @Id int,
+  @InstitutionId int,
+  @Name nvarchar(50),
+  @AdminName nvarchar(50),
+  @Alias nvarchar(50),
+  @OrderId int
+)
+WITH ENCRYPTION
+AS
+BEGIN
+  SET @Name = LTRIM(rtrim(@Name))
+  SET @Alias = LTRIM(rtrim(@Alias))
+  DECLARE @Date datetime= DATEADD(MINUTE,345,GETUTCDATE());
+  IF (ISNULL(@Name, '') = '')
+    THROW 5000001, 'Null or empty Name', 501;
+  IF EXISTS(SELECT fbt.Id FROM [dbo].[Finance.BillTitle] fbt WHERE fbt.Name = ltrim(rtrim(@Name)) AND fbt.InstitutionId = @InstitutionId AND fbt.Id <> @Id)
+    THROW 5000001, 'Name already exists', 501;
+  UPDATE fbt
+    SET fbt.[Name] = ltrim(rtrim(@Name)),
+      fbt.Alias = ltrim(rtrim(@Alias)),
+      fbt.AdminName = @AdminName,
+      fbt.ModifiedDate = @Date
+  FROM [Finance.BillTitle] fbt
+  WHERE fbt.InstitutionId = @InstitutionId AND fbt.Id = @Id
+END
+
+  </code>
+</pre>
+
+
+ <pre class="limit-10">
+  <code class='language-sql'>
+    CREATE OR ALTER PROCEDURE usp_Finance_DeleteBillTitle
+(
+  @InstitutionId int,
+  @Id int
+)
+WITH ENCRYPTION
+AS
+BEGIN
+  IF EXISTS(SELECT TOP(1) facb.Id FROM [dbo].[Finance.AccountHead.Course.BillTitleAssociation] facb WHERE facb.BillTitleId = @Id)
+    THROW 5000001, 'Cannot delete this Bill Title, First delete the Association', 501;
+  DELETE FROM [Finance.BillTitle] WHERE Id = @Id 
+END
+
+  </code>
+</pre>
+
+
+ <pre class="limit-10">
+  <code class='language-sql'>
+   CREATE OR ALTER PROCEDURE usp_Finance_SelectBillTitle
+(
+  @InstitutionId int
+)
+WITH ENCRYPTION
+AS
+BEGIN
+  SELECT Id, InstitutionId, [Name], AdminName, ModifiedDate, [Alias], [OrderId]
+  FROM [Finance.BillTitle] fbt
+  WHERE fbt.InstitutionId = @InstitutionId
+  ORDER BY fbt.OrderId
+END
+
+  </code>
+</pre>
+
+   <script src="js/prism.js"></script>
+    <script type="text/javascript">
+      Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+          'remove-trailing': true,
+          'remove-indent': true,
+          'left-trim': true,
+          'right-trim': true,
+          // 'break-lines': 10,
+          // 'indent': 2,
+          // 'remove-initial-line-feed': false,
+          // 'tabs-to-spaces': 4,
+          // 'spaces-to-tabs': 4
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,94 @@
+.header-area .viral-news-main-menu {
+  position: relative;
+  width: 100%;
+  z-index: 100;
+  height: 100px; }
+  @media only screen and (min-width: 768px) and (max-width: 991px) {
+    .header-area .viral-news-main-menu {
+      height: 80px; } }
+  @media only screen and (max-width: 767px) {
+    .header-area .viral-news-main-menu {
+      height: 70px; } }
+  .header-area .viral-news-main-menu .classy-nav-container {
+    background-color: transparent; }
+  .header-area .viral-news-main-menu .classy-navbar {
+    height: 100px;
+    padding: 0; }
+    @media only screen and (min-width: 768px) and (max-width: 991px) {
+      .header-area .viral-news-main-menu .classy-navbar {
+        height: 80px; } }
+    @media only screen and (max-width: 767px) {
+      .header-area .viral-news-main-menu .classy-navbar {
+        height: 70px; } }
+    .header-area .viral-news-main-menu .classy-navbar .classynav ul li a {
+      font-weight: 700; }
+      .header-area .viral-news-main-menu .classy-navbar .classynav ul li a:hover, .header-area .viral-news-main-menu .classy-navbar .classynav ul li a:focus {
+        color: #e20378;
+        font-weight: 700; }
+    .header-area .viral-news-main-menu .classy-navbar .classynav ul li.active a {
+      color: #e20378; }
+    .header-area .viral-news-main-menu .classy-navbar .classynav > ul > li > a {
+      text-transform: uppercase;
+      padding: 12px 12px 11px;
+      background-color: transparent;
+      line-height: 1;
+      color: #231f1f;
+      font-weight: 700; }
+      .header-area .viral-news-main-menu .classy-navbar .classynav > ul > li > a:hover, .header-area .viral-news-main-menu .classy-navbar .classynav > ul > li > a:focus {
+        color: #e20378; }
+  .header-area .viral-news-main-menu .search-btn {
+    padding: 15px 40px;
+    display: block;
+    cursor: pointer;
+    -webkit-transition-duration: 500ms;
+    transition-duration: 500ms; }
+    .header-area .viral-news-main-menu .search-btn:hover, .header-area .viral-news-main-menu .search-btn:focus {
+      color: #e20378; }
+    @media only screen and (min-width: 992px) and (max-width: 1199px) {
+      .header-area .viral-news-main-menu .search-btn {
+        padding: 15px 20px; } }
+
+
+        .header-area .is-sticky #stickyMenu {
+          background-color: #fff;
+          box-shadow: 0 5px 30px rgba(0, 0, 0, 0.15);
+          border-bottom: none; }
+          .header-area .is-sticky #stickyMenu .viral-search-form {
+            top: 100px; }
+            @media only screen and (min-width: 768px) and (max-width: 991px) {
+              .header-area .is-sticky #stickyMenu .viral-search-form {
+                top: 80px; } }
+            @media only screen and (max-width: 767px) {
+              .header-area .is-sticky #stickyMenu .viral-search-form {
+                top: 70px; } }
+
+                
+                .header-area .viral-news-main-menu .classy-nav-container {
+                  background-color: transparent; }
+
+
+                  .header-area .viral-news-main-menu .classy-navbar {
+                    height: 100px;
+                    padding: 0; }
+                    @media only screen and (min-width: 768px) and (max-width: 991px) {
+                      .header-area .viral-news-main-menu .classy-navbar {
+                        height: 80px; } }
+                    @media only screen and (max-width: 767px) {
+                      .header-area .viral-news-main-menu .classy-navbar {
+                        height: 70px; } }
+                    .header-area .viral-news-main-menu .classy-navbar .classynav ul li a {
+                      font-weight: 700; }
+                      .header-area .viral-news-main-menu .classy-navbar .classynav ul li a:hover, .header-area .viral-news-main-menu .classy-navbar .classynav ul li a:focus {
+                        color: #e20378;
+                        font-weight: 700; }
+                    .header-area .viral-news-main-menu .classy-navbar .classynav ul li.active a {
+                      color: #e20378; }
+                    .header-area .viral-news-main-menu .classy-navbar .classynav > ul > li > a {
+                      text-transform: uppercase;
+                      padding: 12px 12px 11px;
+                      background-color: transparent;
+                      line-height: 1;
+                      color: #231f1f;
+                      font-weight: 700; }
+                      .header-area .viral-news-main-menu .classy-navbar .classynav > ul > li > a:hover, .header-area .viral-news-main-menu .classy-navbar .classynav > ul > li > a:focus {
+                        color: #e20378; }

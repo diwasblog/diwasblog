@@ -1,0 +1,60 @@
+-- FUNCTION: transactions.get_bill_print(bigint)
+
+-- DROP FUNCTION transactions.get_bill_print(bigint);
+
+CREATE OR REPLACE FUNCTION transactions.get_bill_print(
+	tran_id_ bigint)
+    RETURNS TABLE(entry_by character varying, verified text, office_id integer, office_name character varying, tran_date date, bs_date character varying, detail text, account_number character varying, amount money) 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+BEGIN
+	DROP TABLE IF EXISTS _t;
+	CREATE TEMP TABLE _t(
+	id serial,
+	entry_by  character varying,
+	v_status_id int,
+	verified text,
+	office_id integer,
+	office_name character varying,
+	tran_date date,
+	bs_date character varying,
+	detail text,
+	account_number character varying,
+	amount money
+	) ON COMMIT DROP;
+		
+		INSERT INTO _t(office_id, entry_by, v_status_id, tran_date, bs_date, detail, account_number, amount)
+
+		SELECT t.office_id, u.full_name , t.verification_status_id , t.tran_date,core.date_bs_from_ad(t.tran_date::date),'??? ??? ???????' ,a.account_number,tr.credit  FROM transactions.transaction_details tr
+			INNER JOIN transactions.transactions t ON tr.tran_id=t.tran_id
+			INNER JOIN deposit.account_holders a ON tr.account_number_id = a.account_number_id
+			INNER JOIN office.users u ON t.audit_user_id = u.user_id
+			WHERE t.verification_status_id>=0
+			AND t.tran_id=tran_id_ --761175
+			AND tr.credit>'0'
+			UNION ALL
+		SELECT t.office_id, u.full_name , t.verification_status_id , t.tran_date,core.date_bs_from_ad(t.tran_date::date),'???? ??? ???????' ,a.account_number,tr.credit  FROM transactions.transaction_details tr
+			INNER JOIN transactions.transactions t ON tr.tran_id=t.tran_id
+			INNER JOIN core.share_accounts a ON tr.share_account_id = a.share_account_id
+			INNER JOIN office.users u ON t.audit_user_id = u.user_id
+			WHERE t.verification_status_id>=0
+			AND t.tran_id=tran_id_ --761175
+			AND tr.credit>'0';
+			
+			UPDATE _t SET office_name=o.office_name
+			FROM office.offices o
+			where o.office_id=_t.office_id;
+			
+			UPDATE _t SET verified = (CASE WHEN v_status_id>0 THEN 'Verified' ELSE  'Not Verified' END);
+			
+			RETURN QUERY (SELECT _t.entry_by  , _t.verified, _t.office_id, _t.office_name, _t.tran_date, _t.bs_date , _t.detail, _t.account_number, _t.amount FROM _t);
+
+    END
+$BODY$;
+
+ALTER FUNCTION transactions.get_bill_print(bigint)
+    OWNER TO postgres;

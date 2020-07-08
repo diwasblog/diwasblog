@@ -1,0 +1,325 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+</head>
+<body>
+
+<p><span style="font-size: 14pt;">TypeScript is an<strong>&nbsp;open-source&nbsp;programming language</strong>&nbsp;developed and maintained by<strong><span style="color: #ff00ff;">&nbsp;Microsoft</span></strong>.</span></p>
+<p><span style="font-size: 14pt;">TypeScript was first made public in <strong>October 2012</strong> (at version 0.8), <strong>after two years of internal development at Microsoft</strong>.</span></p>
+
+
+<p><span style="font-size: 14pt;"><strong>Angular is a complete rewrite from the same team that built&nbsp;<a title="AngularJS" href="https://en.wikipedia.org/wiki/AngularJS">AngularJS</a></strong>. AngularJS was release on <span style="color: #ff00ff;"><strong>October 20, 2010</strong></span> .</span></p>
+<p><span style="font-size: 14pt;"><strong><span style="color: #ff00ff;">Google</span> </strong>is developer of Angular.</span></p>
+
+<p><span style="font-size: 18pt; color: #ff00ff;"><strong>Why TypeScript is developed while having JavaScript?&nbsp;</strong></span><br /><span style="font-size: 14pt;">When JavaScript was developed then JavaScript development team introduced JavaScript as a <span style="color: #ff0000;"><strong>client-side programming language</strong>.</span> But when people was using JavaScript then developer get to know that JavaScript can be used as a <span style="color: #ff0000;"><strong>server-side programming language</strong></span> also. But <strong>When JavaScript was growing then the code of JavaScript became complex and heavy.</strong> Because of this, <strong>JavaScript was even not able to full fill the requirement of Object-oriented programming language.</strong> This prevents JavaScript from succeeding at the enterprise level as a server-side technology. Then&nbsp;<strong>TypeScript</strong>&nbsp;was developed by the development team to bridge this gap.</span></p>
+<p><span style="font-size: 14pt; color: #ff00ff;"><strong>Features of TypeScript:</strong></span></p>
+<ul>
+<li><span style="font-size: 12pt;"><strong>TypeScript Code is converted into Plain JavaScript Code:</strong>: TypeScript code is not understandable by the browsers. Thats why if the code is written in TypeScript then it is compiled and converted the code i.e. translate the code into JavaScript.The above process is known as&nbsp;<span style="color: #ff0000;"><strong>Trans-piled</strong>.</span> By the help of JavaScript code, browsers are able to read the code and display.</span></li>
+<li><span style="font-size: 12pt;"><strong>JavaScript is TypeScript</strong>: Whatever code is written in JavaScript can be converted to TypeScript by changing the extension from&nbsp;<strong>.js</strong>&nbsp;to&nbsp;<strong>.ts</strong>.</span></li>
+<li><span style="font-size: 12pt;"><strong>Use TypeScript anywhere:</strong>&nbsp;TypeScript code can be run on any browser, devices or in any operating system. TypeScipt is not specific to any Virtual-machine etc.</span></li>
+<li><span style="font-size: 12pt;"><strong>TypeScript supports JS libraries:</strong>&nbsp;With TypeScript, developers can use existing JavaScript code, incorporate popular JavaScript libraries, and can be called from other JavaScript code.</span></li>
+</ul>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr style="background:gray;color:white">
+<td style="width: 50%;">TypeScript</td>
+<td style="width: 50%;">Javascript</td>
+</tr>
+<tr>
+<td style="width: 50%;">OOP</td>
+<td style="width: 50%;">Scripting Language</td>
+</tr>
+<tr>
+<td style="width: 50%;">Has Static typing(know error at compile type)</td>
+<td style="width: 50%;">Doesnot have</td>
+</tr>
+<tr>
+<td style="width: 50%;">Supports module&nbsp;</td>
+<td style="width: 50%;">Doesnot</td>
+</tr>
+</tbody>
+</table>
+<p><span style="font-size: 14pt;"><strong>Advantages of using TypeScript over JavaScript</strong></span></p>
+<ul>
+<li><span style="font-size: 12pt;">TypeScript always point out the<strong> compilation errors at the time of development only</strong>. Because of this at the run-time the chance of getting errors are very less whereas JavaScript is an interpreted language.</span></li>
+<li><span style="font-size: 12pt;">TypeScript has a feature which is strongly-typed or supports static typing.<strong> That means Static typing allows for checking type correctness at compile time.</strong> T<strong><span style="color: #ff0000;">his is not available in JavaScript.</span></strong></span></li>
+<li><span style="font-size: 12pt;">TypeScript is nothing but JavaScript and some additional features i.e. ES6 features. It may not be supported in your target browser but TypeScript compiler can compile the&nbsp;<strong>.ts</strong>&nbsp;files into ES3,ES4 and ES5 also.</span></li>
+</ul>
+<p><span style="font-size: 14pt;"><strong>Disadvantages of using TypeScript over JavaScript</strong></span></p>
+<ul>
+<li><span style="font-size: 12pt;">Generally TypeScript takes time to compile the code.</span></li>
+<li><span style="font-size: 12pt;">TypeScript does not support abstract classes.</span></li>
+</ul>
+
+<h2>Install typescript </h2>
+
+<xmp class="prettyprint">
+npm install -g typescript
+</xmp>
+
+Create test.ts file and write below code
+<xmp class="prettyprint">
+    function greeter(person) {
+      return "Hello, " + person;
+  }
+  
+  let user = "Jane User";
+  document.body.innerHTML = greeter(user);
+</xmp>
+
+Then in command type this :
+<xmp class="prettyprint">
+    tsc typescript.ts
+</xmp>
+Then this will compile test.ts and get another file : test.js so this is compiled js file of that ts file and 
+this is present where test.ts is present.
+
+============================================================================================
+<br>
+TypeScript is superset of Javascript which has additional features like 
+Type <br>
+Decorator<br>
+Interfaces<br>
+Plus all ES features like Arrow function,classes,modules etc.
+
+<h2>Type</h2>
+<xmp class="prettyprint">
+    let isDone:boolean=false;
+    let decimal:number=10;
+    let name:string='Edwin';
+    let posts:number[]=[1,2,3];
+    let notSure:any='Hi:)';
+</xmp>
+
+<h2>Interface</h2>
+
+<xmp class="prettyprint">
+    interface Post{
+        title:string;
+    }
+</xmp>
+============================================================================
+<h2>String and accessing it </h2>
+<br>
+<div class="row">
+    <div class="col-lg-6">
+        //In Type Script
+        <xmp class="prettyprint">
+                let employeeName:string = "John Smith"; 
+                let employeeDept:string = "Finance"; 
+                
+                // Pre-ES6 
+                let employeeDesc1: string = employeeName + " works in the " + employeeDept + " department."; 
+                
+                // Post-ES6 
+                let employeeDesc2: string = `${employeeName} works in the ${employeeDept} department.`; 
+                
+                console.log(employeeDesc1);//John Smith works in the Finance department. 
+                console.log(employeeDesc2);//John Smith works in the Finance department. 
+        </xmp>
+    </div>
+</div>
+<br>
+====================================================================
+<h2>Array</h2>
+<br>
+<div class="row">
+    <div class="col-lg-6">
+        //In Type Script
+        <xmp class="prettyprint">
+            let fruits: Array<string>;
+            fruits = ['Apple', 'Orange', 'Banana']; 
+            
+            let ids: Array<number>;
+            ids = [23, 34, 100, 124, 44]; 
+        </xmp>
+    </div>
+</div>
+<br>
+
+<h2>Array Supporting multiple type</h2>
+<br>
+<div class="row">
+    <div class="col-lg-6">
+        //In Type Script
+        <xmp class="prettyprint">
+                let values: (string | number)[] = ['Apple', 2, 'Orange', 3, 4, 'Banana']; 
+                // or 
+                let values: Array<string | number> = ['Apple', 2, 'Orange', 3, 4, 'Banana']; 
+        </xmp>
+    </div>
+</div>
+<br>
+<h2>Access array type data in loop</h2>
+<br>
+<div class="row">
+    <div class="col-lg-6">
+        //In Type Script
+        <xmp class="prettyprint">
+                let fruits: string[] = ['Apple', 'Orange', 'Banana']; 
+
+                for(var index in fruits)
+                { 
+                    console.log(fruits[index]);  // output: Apple Orange Banana
+                }
+                
+                for(var i = 0; i < fruits.length; i++)
+                { 
+                    console.log(fruits[i]); // output: Apple Orange Banana
+                }
+        </xmp>
+    </div>
+</div>
+<br>
+
+================================================================
+<br>
+<div class="row">
+    <div class="col-lg-6">
+        //In Type Script
+        <xmp class="prettyprint">
+                let something: any = "Hello World!"; 
+                something = 23;
+                something = true;
+        </xmp>
+    </div>
+
+    <div class="col-lg-6">
+        // Later compiled as 
+            <xmp class="prettyprint">
+                    var something = "Hello World!";
+                    something = 23;
+                    something = true;
+            </xmp>
+    </div>
+</div>
+<br>
+==========================================================================
+<br>
+<h2>Any type Array</h2>
+<div class="row">
+        <div class="col-lg-6">
+            //In Type Script
+            <xmp class="prettyprint">
+                    let arr: any[] = ["John", 212, true]; 
+                    arr.push("smith"); 
+                    console.log(arr); //Output: [ 'John', 212, true, 'Ram' ] 
+                    
+            </xmp>
+        </div>
+    
+        <div class="col-lg-6">
+            // Later compiled to JS as 
+                <xmp class="prettyprint">
+                        var arr = ["John", 212, true];
+                        arr.push("Ram");
+                        console.log(arr);
+                </xmp>
+        </div>
+    </div>
+    =========================================================================
+    <br>
+    <h2>Function with return type</h2>
+    <xmp class="prettyprint">
+            var a : number;
+            var b: boolean;
+            var c :string;
+            
+            a=32;
+            b=true;
+            c="Hello";
+            
+            function add(c: number , d:number){
+              return c+d + this.a;
+            }
+            
+            var sum = add(3,2);
+            console.log(sum);  //37
+    </xmp>
+
+    ========================================================================================
+    <br>
+    <h2>With Optional Parameters</h2>
+
+    <xmp class="prettyprint">
+            function add(c: number, d: number, e?: number) {
+                if (e != null) {
+                    return c + d + e;
+                }
+                else
+                    return c + d;
+              
+            }
+            
+            
+            console.log(add(3, 2));
+            console.log(add(3,2,43));
+    </xmp>
+    ======================================================================
+    <h2>Passing Array to Function </h2>
+    <xmp class="prettyprint">
+            var data:number[] = [1,2,3,4,5]  
+
+            function disp(dataList:number[]) {
+               for(var i = 0;i<dataList.length;i++) { 
+                  console.log(names[i]) 
+                }  
+            
+              for(var index in data)
+                { 
+                    console.log(data[index]);  // output: 1 2 3 4 5
+                }
+            }  
+            disp(names)
+    </xmp>
+
+    =====================================================================
+    <br>
+    <h2>Async Function always return Promise</h2>
+
+    <xmp class="prettyprint">
+            function delay(milliseconds: number, count: number): Promise<number> {
+                    return new Promise<number>(resolve => {
+                            setTimeout(() => {
+                                resolve(count);
+                            }, milliseconds);
+                        });
+                }
+                
+                async function dramaticWelcome(): Promise<void> {
+                    console.log("Hello");
+                
+                    for (let i = 0; i < 5; i++) {
+                        // await is converting Promise<number> into number
+                        const count:number = await delay(500, i);
+                        console.log(count);
+                    }
+                
+                    console.log("World!");
+                }
+                
+                dramaticWelcome();
+    </xmp>
+
+    Output:
+    Hello <br>
+    0 <br>
+    1 <br>
+    2 <br>
+    3 <br>
+    4 <br>
+    World <br>
+</body>
+</html>

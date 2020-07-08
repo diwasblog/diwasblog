@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/bootstrap-grid.css">
+  <link rel="stylesheet" href="css/bootstrap-reboot.css">
+  <link rel="stylesheet" href="css/dracula.css">
+  <link rel="stylesheet" href="css/dracula-prism.css">
+  <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+  <p><span style="color: #000000;"><strong><span style="font-size: 14pt;">Step 1 : Manage Nuget
+          Package</span></strong></span></p>
+  <pre>
+      <code class="language-csharp">
+        Install IPageList MVC
+      </code>
+    </pre>
+
+  <p><span style="color: #000000;"><strong><span style="font-size: 14pt;">Step 2 : In Controller</span></strong></span>
+  </p>
+
+  <pre>
+      <code class="language-csharp">
+        [Route("suchana")]
+        public ActionResult SuchanaList(int? page)
+        {
+            var pageNumber = page ?? 1;
+            var pageSize = 8;
+            var data = _newsService.GetAllNews();
+            var datas = new PagedList<News>(data, pageNumber, pageSize);
+            return View(datas);  //passing PageList to VIew
+        }
+      </code>
+    </pre>
+  ===========================================================================================
+  <p><span style="color: #000000;"><strong><span style="font-size: 14pt;">Step 2 : In View</span></strong></span></p>
+
+  <pre>
+      <code class="language-csharp">
+        @*@model IEnumerable<DLPIUArghakhanchi.Models.News>*@
+          @model PagedList.IPagedList<DLPIUArghakhanchi.Models.News></DLPIUArghakhanchi.Models.News>
+          @using PagedList.Mvc;
+          
+          @foreach (var item in Model)
+          {
+              &lt;div class="row">
+              &lt;div class="col-xs-12 col-sm-12 col-md-9">
+              &lt;div class="row">
+              &lt;div class="col-md-12">
+              &lt;a href="/suchana/@item.Id">&lt;label style="cursor:pointer">@item.Title&lt;/label>&lt;/a>
+              &lt;/div>
+              &lt;/div>
+                  
+                     @item.Description
+                  &lt;/div>
+
+              lt;/div>
+
+              lt;hr />
+          }
+          &lt;div style="margin-left:30px">
+              @Html.PagedListPager(Model, page => Url.Action("SuchanaList", new { page = page }))
+          &lt;/div>
+          
+      </code>
+    </pre>
+  ===============================================================================================================
+  <h2>Passing More value during pagination </h2>
+
+  <pre>
+	<code class="language-csharp">
+	// in cshtml
+	
+	ViewBag.disId = Request.QueryString["InfrastructureDistrictId"];
+
+	ViewBag.vdcID = Request.QueryString["InfrastructureVdcId"];
+
+	ViewBag.ward = Request.QueryString["Ward"];
+
+	ViewBag.typeId = Request.QueryString["InfrastructureTypeId"];
+
+	ViewBag.spanId = Request.QueryString["InfrastructureLifeSpanId"];
+	
+	
+	
+		Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+		// we have passed 5 parameter
+		@Html.PagedListPager(Model, page => Url.Action("index", 
+		new { 	page,
+				InfrastructureDistrictID = ViewBag.disId, 
+				InfrastructureVdcId = ViewBag.vdcId, 
+				Ward = ViewBag.ward, InfrastructureTypeId = ViewBag.typeId,
+				InfrastructureLifeSpanId = ViewBag.spanId 
+				}),
+				PagedListRenderOptions.ClassicPlusFirstAndLast)
+	</code>
+	</pre>
+
+
+  <h2> Then in controller </h2>
+
+  <pre>
+	<code class="language-csharp">
+		public ActionResult Index(int? page, int? infrastructureDistrictId, int? infrastructureVdcId, int? ward, int? infrastructureTypeId, int? infrastructureLifeSpanId)
+		{
+		
+		
+		int pageSize = 10;
+			int pageNumber = 1;
+			if (page != null)
+			{
+				pageNumber = (int)page;
+			}
+
+			return View(lst.InfrastructureListModel.ToPagedList(pageNumber, pageSize));  //InfrastructureListModel is IEnumerable or list
+
+		}
+	</code>
+	
+	</pre>
+  ==========================================================================================
+  <br>
+  <h2>Pagination without IPageList </h2>
+
+  <pre>
+		<code class="language-csharp">
+		<form action="/baseinfo/farmers2" method="post" id="memberListForm">
+		<input type="hidden" name="CurrentPage" id="currentpage" />
+		<input type="hidden" name="StartPage" id="startpage" />
+		<input type="hidden" name="EndPage" id="endpage" />
+			<div class="pagination" id="pagination_active">
+								@if (Model.FarmerSearchDTO.CurrentPage > 1)
+								{
+									<button class="btn btn-primary" value="@(Model.FarmerSearchDTO.CurrentPage-1)" id="@(Model.FarmerSearchDTO.CurrentPage-1)" @@click="callSearchPagination(@(Model.FarmerSearchDTO.CurrentPage-1))">Prev </button>
+								}
+								@for (long i = Model.StartPage; i < (Model.EndPage + 1); i++)
+								{
+									<button class="btn @(Model.FarmerSearchDTO.CurrentPage == i ? "btn-primary active" : "")" value="@i" id="@i" @@click="callSearchPagination(@i)">@i</button>
+								}
+								@if (Model.FarmerSearchDTO.CurrentPage < Model.TotalPages)
+								{
+									<button class="btn btn-primary" value="@(Model.FarmerSearchDTO.CurrentPage+1)" id="@(Model.FarmerSearchDTO.CurrentPage+1)" @@click="callSearchPagination(@(Model.FarmerSearchDTO.CurrentPage+1))">Next</button>	
+								}
+
+							</div>
+							
+							
+							       //vue
+			callSearchPagination(id) {
+				let vm = this;
+				document.getElementById("currentpage").value = id;
+
+				document.querySelector('#memberListForm').submit();
+			},	
+</form>			
+		</code>
+  </pre>
+
+
+  ======================================================================================
+  <br>
+  <br>
+  <h2>Own Pagination Without PageList</h2>
+  <pre>
+    <code class="language-csharp">
+        public class Pager
+        {
+          public Pager( int currentPage, long totalPost = 0, int startPage = 0 ,int endPage = 0,int pageSize = 10)
+          {
+            
+            long tPages = (long)(Math.Ceiling((decimal)totalPost) / (decimal)pageSize);
+            long cPage = (long)currentPage;
+            long sPage = currentPage - 5;
+            long ePage = currentPage + 4;
+            if (sPage <= 0)
+            {
+              ePage -= (startPage - 1);
+              sPage = 1;
+            }
+            if (ePage > tPages)
+            {
+              ePage = (long)tPages;
+              if (ePage > 10)
+              {
+                sPage = ePage - 9;
+              }
+            }
+      
+            TotalPost = totalPost;
+            CurrentPage = cPage;
+            PageSize = pageSize;
+            TotalPages = tPages;
+            StartPage = sPage;
+            EndPage = ePage;
+          }
+      
+          public long TotalPost { get; private set; }
+          public long CurrentPage { get; private set; }
+          public int PageSize { get; private set; }
+          public long TotalPages { get; private set; }
+          public long StartPage { get; private set; }
+          public long EndPage { get; private set; }
+        }
+      
+             
+
+
+
+    </code>
+  </pre>
+
+  <pre>
+    <code class="language-csharp">
+      //then call it like this 
+      	var pager = new Pager( currentPage, totalPost);
+      </code>
+  </pre>
+
+
+  <br>
+  ======================================================================================
+<br>
+<h1>Standard Asp.Net Pagination </h2>
+
+
+Step 1) Download PageList.Mvc
+<br>
+
+
+Step 2) <br><br>
+
+<pre>
+    <code class="language-csharp">
+     public class MarketController : Controller
+    {
+		[AllowAnonymous]
+		[Route("coop_shg/stock")]
+		public ActionResult CoopShgStock(int? page) 
+		{
+			var pageNumber = page ?? 1;
+			var pageSize = CoopService.CountTotalCoops();
+			var data = _unitOfWork.ExecuteFunction<fn_get_coop_by_pagination_wise>("fn_get_coop_by_pagination_wise", new List<object>{ page});// only getting 10 data at a time
+			IPagedList<CoopDTO> list = new StaticPagedList<CoopDTO>(data ?? new List<CoopDTO>(), page ?? 1, 10, pageSize);
+			return View(list);
+		}
+	}
+
+      </code>
+  </pre>
+
+Step 3) View of This Controller 
+<pre>
+<code class="language-csharp">
+@*@model IEnumerable<HEIFER.BLL.DTO.Person.CoopDTO>*@
+@using PagedList.Mvc 
+@model PagedList.IPagedList<HEIFER.BLL.DTO.Person.CoopDTO>
+@{
+	ViewBag.Title = "Coop Shg Stock Information";
+}
+@foreach (var item in Model)
+{
+	&lt;tr>
+		&lt;td>
+			@item.Name
+		&lt;/td>
+		&lt;td>
+			<center>@item.Address</center>
+		&lt;/td>
+
+		&lt;td>
+			&lt;center>
+				&lt;button type="button" @@click="getShgs('@item.Id')" class="btn btn-primary">Shg</button>
+				
+			&lt;/center>
+		&lt;/td>
+	&lt;/tr>
+}
+		&lt;/tbody>
+	&lt;/table>
+&lt;/div>
+&lt;div style="height:18px"></div>
+&lt;div class="text-center">
+	
+
+		Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+		@Html.PagedListPager(Model, page => Url.Action("CoopShgStock",new { page = page }))
+
+&lt;/div>
+&lt;/div>
+
+
+</code>
+</pre>
+
+
+<pre>
+<code class="language-csharp">
+-- FUNCTION: public.fn_get_coop_by_pagination_wise(integer)
+
+-- DROP FUNCTION public.fn_get_coop_by_pagination_wise(integer);
+
+CREATE OR REPLACE FUNCTION public.fn_get_coop_by_pagination_wise(
+	integer)
+    RETURNS TABLE(coop_id integer, coop_name character varying, address character varying) 
+    LANGUAGE 'sql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+
+select c.id,c.name,c.address  from coop c 
+OFFSET (($1-1)*10) rows FETCH NEXT (10) ROWS ONLY
+
+$BODY$;
+
+ALTER FUNCTION public.fn_get_coop_by_pagination_wise(integer)
+    OWNER TO postgres;
+
+
+</code>
+
+</pre>
+
+  <script src="js/prism.js"></script>
+  <script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+      {
+        'remove-trailing': true,
+        'remove-indent': true,
+        'left-trim': true,
+        'right-trim': true,
+        // 'break-lines': 10,
+        // 'indent': 2,
+        // 'remove-initial-line-feed': false,
+        // 'tabs-to-spaces': 4,
+        // 'spaces-to-tabs': 4
+      });
+  </script>
+</body>
+
+</html>

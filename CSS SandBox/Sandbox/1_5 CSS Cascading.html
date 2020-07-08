@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+
+  <body>
+
+    ================================================================================================================
+    Read in cascading matter. First go inside html tag then inside head tag there it found link tag so go to style.css and applyy
+    blue color to span then again replace span by red color then return back from style then read span as purple color then
+    apply purple to span at first to both span. Then go inside body and find first span with inline green so replace purple to 
+    green here. Then goto next line and there it will find span with no inline style so its color remains purple.
+
+    So must priority style is apply to inline then internal then external.
+<div class="row">
+  <div class="col-lg-6">
+    <pre>
+      <code class="language-html">
+          &lt;head>
+          &lt;link rel="stylesheet" type="text/css" href="css/style.css">
+          &lt;style>
+          span{color:purple;}
+          &lt;/style>
+        &lt;/head>
+        &lt;span style="color:green">I am green</span>
+        &lt;span>I am default&lt;/span>
+      </code>
+    </pre>  
+  </div>
+
+  <div class="col-lg-6">
+    <pre>
+      <code class="language-css">
+        //style.css
+          span{color:blue;}
+          span{color:red;}
+      </code>
+    </pre> 
+  </div>
+</div>
+
+Output: 
+<p><span style="font-size: 14pt;"><span style="color: #008000;">I am green .</span> I am default.</span></p>
+
+===========================================================================================================
+<h2>Targeting all span inside paragraph (any deep inside)</h2>
+
+
+  <div class="row">
+    <div class="col-lg-6">
+        <pre>
+            <code class="language-html">
+                &lt;p>
+                    My dog name is:
+                    &lt;span class="dog-name">
+                    Roger
+                    &lt;/span>
+                    &lt;/p>
+            </code>
+          </pre> 
+    </div>
+
+    <div class="col-lg-6">
+        <pre>
+            <code class="language-css">
+                p span {
+                  color: yellow;
+                  }
+              </code>
+              </pre>
+
+    </div>
+  </div>
+
+  <hr>
+  <h2>Only direct child of  paragraph tag</h2>
+
+
+  <div class="row">
+    <div class="col-lg-6">
+        <pre>
+            <code class="language-html">
+                &lt;p>
+                &lt;span>
+                    This is yellow
+                    &lt;/span>
+                      &lt;strong>
+                        &lt;span>
+                          This is not yellow
+                        &lt;/span>
+                      &lt;/strong>
+                 &lt;/p>
+            </code>
+          </pre> 
+    </div>
+
+    <div class="col-lg-6">
+        <pre>
+            <code class="language-css">
+                p > span {
+                  color: yellow;
+                  }
+              </code>
+              </pre>
+
+    </div>
+  </div>
+
+<hr>
+<h2>Applying affect to span just after paragraph</h2>
+
+<div class="row">
+    <div class="col-lg-6">
+        <pre>
+            <code class="language-html">
+                &lt;p>This is a paragraph&lt;/p>
+                &lt;span>This is a yellow span&lt;/span>
+            </code>
+          </pre> 
+    </div>
+
+    <div class="col-lg-6">
+        <pre>
+            <code class="language-css">
+                p + span {
+                  color: yellow;
+                  }
+                  
+              </code>
+              </pre>
+
+    </div>
+  </div>
+    <script src="js/prism.js"></script>
+    <script type="text/javascript">
+      Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+          'remove-trailing': true,
+          'remove-indent': true,
+          'left-trim': true,
+          'right-trim': true,
+          // 'break-lines': 10,
+          // 'indent': 2,
+          // 'remove-initial-line-feed': false,
+          // 'tabs-to-spaces': 4,
+          // 'spaces-to-tabs': 4
+        });
+    </script>
+  </body>
+</html>

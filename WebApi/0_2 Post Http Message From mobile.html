@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+<h2>Uploading  text and any video data from mobile to web api </h2>
+
+Step 1 : Create ApiController like CallApiController.cs
+<pre>
+<code class="language-csharp">
+ public class CallAPIController : ApiController
+    {
+		[Route("api/v1/create/call")]
+		[HttpPost]
+		public async System.Threading.Tasks.Task<IHttpActionResult> CreateCallAsync()
+		{
+			try
+			{
+				var userId = new Guid("d3e0f6f4-40f2-4dbe-b0d1-5820ddef9526");
+
+				if (!Request.Content.IsMimeMultipartContent())
+					throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+
+				string path = HttpContext.Current.Server.MapPath("~/Attachments/CallRecord");
+				if (!Directory.Exists(path))
+					Directory.CreateDirectory(path);
+
+				var provider = new CustomMultipartFormDataStreamProvider(path);
+
+				try
+				{
+					var uploadFiles = await Request.Content.ReadAsMultipartAsync(provider);
+					var result = CallService.CreateCall(uploadFiles,provider,userId);
+					return Ok(result);
+				}
+				catch (Exception ex)
+				{
+					return this.BadRequest(provider.Message);
+
+				}
+			}
+			catch (Exception ex)
+			{
+				return this.BadRequest(ex.Message);
+			}
+		}
+	}
+</code>
+</pre>
+
+<h2>Create CustomMultipartFormDataStreamProvider.cs file  ==> as core/helper/CustomMultipartFormDataStreamProvider.cs </h2>
+
+<pre>
+<code class="language-csharp">
+public class CustomMultipartFormDataStreamProvider : MultipartFormDataStreamProvider
+		{
+			public string Message { get; set; }
+			public CustomMultipartFormDataStreamProvider(string path)
+				   : base(path)
+			{
+			}
+			public override string GetLocalFileName(HttpContentHeaders headers)
+			{
+				string originalFileName = headers.ContentDisposition.FileName.Replace("\"", string.Empty);
+				FileInfo fileInfo = new FileInfo(originalFileName);
+				string ext = fileInfo.Extension;
+
+				if (!GlobalValue.AcceptedFiles.Contains(ext))
+				{
+					this.Message = ext + " not supported";
+					throw new Exception("");
+				}
+				originalFileName = Guid.NewGuid() + ext;
+				return originalFileName;
+			}
+		}
+</code>
+</pre>
+
+<h2>GlobalValue.cs   inside core/constant/GlobalValue.cs</h2>
+
+<pre>
+<code class="language-csharp">
+public class GlobalValue 
+	{
+		public static List<string> AcceptedFiles
+		{
+			get
+			{
+				return new List<string> {
+			 ".mp3",".png"
+		};
+			}
+		}
+	}
+</code>
+</pre>
+
+
+<h2> </h2>
+<pre>
+<code class="language-csharp">
+public class CallService
+	{
+
+		public static string CreateCall(CustomMultipartFormDataStreamProvider uploadFiles, CustomMultipartFormDataStreamProvider provider, Guid userId)
+		{
+			try
+			{
+				using (CallRepository callRepo = new CallRepository())
+				{
+					CallRecordDTO callRecords = new CallRecordDTO();
+
+					#region Check file type
+					if (uploadFiles.FileData.Count() != 0)
+					{
+							var contentType = uploadFiles.FileData.FirstOrDefault().Headers.ContentType; 
+							var fileName = uploadFiles.FileData.FirstOrDefault().Headers.ContentDisposition.FileName;
+							if (contentType.MediaType.ToLower().StartsWith("i"))
+								callRecords.Type = "Image";
+
+							else if (contentType.MediaType.ToLower().StartsWith("application/"))
+								callRecords.Type = "File";
+							else if (contentType.MediaType.ToLower().StartsWith("audio"))
+								callRecords.Type = "Audio";
+							else if (contentType.MediaType.ToLower().StartsWith("video"))
+								callRecords.Type = "Video";
+							int pos = uploadFiles.FileData.FirstOrDefault().LocalFileName.LastIndexOf("\\") + 1;
+							var data = uploadFiles.FileData.FirstOrDefault().LocalFileName.Substring(pos, uploadFiles.FileData.FirstOrDefault().LocalFileName.Length - pos);
+							callRecords.VoiceRecordFilePath = data;
+					}
+					#endregion
+
+					#region Check the object with data
+					foreach (var key in provider.FormData.AllKeys)
+					{
+						var data = provider.FormData[key];
+						if (key == "StartDateTime")
+							callRecords.StartDatetTime = Convert.ToDateTime(data);
+						else if (key == "EndDateTime")
+							callRecords.EndDateTime = Convert.ToDateTime(data);
+						else if (key == "FarmerId")
+							callRecords.FarmerId = Convert.ToInt32(data);
+						else if (key == "Remarks")
+							callRecords.Remarks = data;
+						else if (key == "CallStatus")
+							callRecords.CallStatus = data;
+						else if (key == "Duration")
+							callRecords.Duration = data;
+						else if (key == "SHGId")
+							callRecords.SHGId = Convert.ToInt32(data);
+						else if (key == "FollowUpCallDateTime")
+							callRecords.FollowUpCallDateTime = Convert.ToDateTime(data);
+
+					}
+					#endregion
+					//model.newsDTO.CreatedBy = userId;
+					//model.newsDTO.CreatedDate = DateTime.Now;
+					//model.newsDTO.UpdatedBy = userId;
+					//model.newsDTO.UpdatedDate = DateTime.Now;
+					callRecords.UserId = userId;
+					callRepo.CreateCall(callRecords);
+					return "successful";
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+
+</code>
+</pre>
+
+
+<h2>Then in postman just hit the url </h2>
+Here, just pass file as one parameter 
+
+<img src="Img/upload file.PNG">
+
+
+<script src="../ASP Sandbox/js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>

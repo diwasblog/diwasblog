@@ -1,0 +1,17 @@
+--SELECT * FROM sms.is_joint_cust(1)
+
+CREATE OR REPLACE FUNCTION sms.is_joint_cust(
+	cust_id_ bigint)
+    RETURNS boolean
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+AS $BODY$
+BEGIN
+    RETURN(SELECT COUNT(*) > 1 FROM core.non_corporate_customers  WHERE customer_id = $1);
+END
+$BODY$;
+
+ALTER FUNCTION sms.is_joint_cust(bigint)
+    OWNER TO postgres;

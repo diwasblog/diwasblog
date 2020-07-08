@@ -1,0 +1,218 @@
+<html>
+
+<head>
+  <script
+    src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+  <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+  <script src="https://unpkg.com/vue"></script>
+
+  <style>
+    xmp.prettyprint {
+      font-size: 12pt;
+      font-family: monospace;
+
+    }
+  </style>
+
+</head>
+
+<body>
+  <p><span style="font-size: 18pt;">&nbsp;EPPlus is an <strong><span style="color: #2dc26b;">open .net
+          library</span></strong> that reads and writes Excel 2007+ files using the<span
+        style="color: #2dc26b;"><strong> Open Office Xml format </strong></span>(xlsx). You donot have to install an
+      office package.</span></p>
+  <xmp class="prettyprint">
+    data{
+    Name:'',
+    LeaveCount:'',
+    LeaveForward:''
+    options: {
+    headings: {
+    Name: 'Name',
+    LeaveCount: 'Leave Count',
+    LeaveForward: 'Leave Forward',
+    }
+    }
+    }
+  </xmp>
+  https://www.freetutorials.us/ultimate-web-developer-course-build-10-websites-from-scratch/
+
+
+
+  <h2> Excel</h2>
+  <a href="https://drive.google.com/open?id=16HuOaNykct8XF5yrCYyDJM9V54fvpBnO">
+    <img src="https://drive.google.com/open?id=16HuOaNykct8XF5yrCYyDJM9V54fvpBnO"
+      style="width: 300px; max-width: 100%; height: auto" title="Click for the larger version." />
+  </a>
+
+  <xmp class="prettyprint">
+    [Route("report/pastreport/excel")]
+    [ValidateMenuAccess(MenuCode = 131)]
+    public void FeebookExcel(int courseid, int batchid)
+    {
+    // int batch, course;
+    try
+    {
+
+    ExcelPackage pck = new ExcelPackage();
+    var ws = pck.Workbook.Worksheets.Add("Past Student Report");
+
+    var feebookReport = _studentService.GetPastStudentReportForExcel(GetInstitutionId(), courseid, batchid);
+    ws.Cells["A2:D2"].Merge = true;
+    ws.Cells["A2:D2"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+    ws.Cells["A2:D2"].Style.Font.Bold = true;
+    ws.Cells["A2:D2"].Style.Font.Size = 12;
+    ws.Cells["A2"].Value = GetInstitutionName();
+
+    ws.Cells["A3:D3"].Merge = true;
+    ws.Cells["A3:D3"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+    ws.Cells["A3:D3"].Style.Font.Bold = true;
+    ws.Cells["A3:D3"].Style.Font.Size = 12;
+    string heading1 = "Past Student Report";
+    ws.Cells["A3"].Value = heading1;
+
+    ws.Cells["A4:D4"].Merge = true;
+    ws.Cells["A4:D4"].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+    ws.Cells["A4:D4"].Style.Font.Bold = true;
+    ws.Cells["A4:D4"].Style.Font.Size = 12;
+    string heading2 = "Generated on " + DateTime.Now.ToString("M/d/yyyy");
+    ws.Cells["A4"].Value = heading2;
+
+    var modelCells = ws.Cells["A5"];
+    var modelRows = feebookReport.Count()+5;
+    string modelRange = "A5:D" + modelRows.ToString();
+    var modelTable = ws.Cells[modelRange];
+    ws.Cells["A5:D5"].Style.Font.Bold = true;
+
+    // Assign borders
+    modelTable.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+    modelTable.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+    modelTable.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+    modelTable.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+
+    // Fill worksheet with data to export
+    modelCells.LoadFromCollection(Collection: feebookReport, PrintHeaders: true);
+
+    // By default, the column width is not set to auto fit for the content of the range, so we are using AutoFit().
+    modelTable.AutoFitColumns();
+
+    //ws.Cells["A4"].LoadFromCollection(dueReport, true);
+    pck.SaveAs(Response.OutputStream);
+    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    Response.AddHeader("content-disposition", "attachment; filename=EduERP_Report_PastStudentReport.xlsx");
+
+
+
+
+    }
+    catch (Exception ex)
+    {
+    FlashMessage.Danger(ex.Message);
+    }
+  </xmp>
+
+  <xmp class="prettyprint">
+    exportClicked: function () {
+    let vm = this;
+    try {
+    window.location.href = `/bims/report/pastreport/excel?courseid=${vm.courseId}&batchid=${vm.batchId}`;
+    }
+    catch (ex) {
+    alert("Unable to convert to Excel now. Please try again later...");
+    console.log(ex);
+    }
+  </xmp>
+
+  <xmp class="prettyprint">
+
+    <h2>We cannot pass array to controller so we must pass by doing stringify</h2>
+  </xmp>
+
+  ===========================================================================================================
+  <br>
+
+  <xmp class="prettyprint">
+    var orderReport = _inventoryItemOrderService.GetOrderForReport(GetInstitutionId());
+
+    DataTable dt = new DataTable();
+    dt.Columns.Add("Bill");
+    dt.Columns.Add("Vendor");
+    dt.Columns.Add("Purchased Date");
+    dt.Columns.Add("Item");
+    foreach (var item in orderReport)
+    {
+    dt.Rows.Add(item.BillNo, item.VendorName, item.PurchasedDateBS, item.Item);
+    }
+
+    .........................
+    modelCells.LoadFromDataTable(dt, PrintHeaders: true);
+  </xmp>
+  =================================================================================
+  <br>
+  <xmp class="prettyprint">
+    string TotalValue = "F" + (modelRows + 1);
+    ws.Cells[TotalValue].Value = discountSum;
+    ws.Cells[TotalValue].Style.Font.Bold = true;
+    ws.Cells[TotalValue].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+    ws.Cells[TotalValue].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+    ws.Cells[TotalValue].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+
+  </xmp>
+
+
+
+  <h2>In Multiple Sheet in same excelfile</h2>
+  If what you are looking for is multiple worksheets in same file then just add another worksheet.
+  <xmp class="prettyprint">
+
+
+
+
+    ExcelWorksheet ws1 = pkg.Workbook.Worksheets.Add("WorkSheet1");
+    //your operations for worksheet1
+
+    ExcelWorksheet ws2 = pkg.Workbook.Worksheets.Add("WorkSheet2");
+    //your operations for worksheet2
+  </xmp>
+
+
+  <h2>Adding Excel to Particular Location</h2>
+  <xmp class="prettyprint">
+    // file name with .xlsx extension
+    string p_strPath = "H:\\geeksforgeeks.xlsx";
+
+    if (File.Exists(p_strPath))
+    File.Delete(p_strPath);
+
+    // Create excel file on physical disk
+    FileStream objFileStrm = File.Create(p_strPath);
+    objFileStrm.Close();
+  </xmp>
+
+
+
+<h2>Downloading Large File link </h2>
+<pre>
+<code class="language-csharp">
+public class DownloadController : RerpController
+    {
+        [AllowAnonymous]
+        [Route("download/downloadapk")]
+        public FileResult DownLoadAPk()
+        {
+            var path = Server.MapPath("~/Attachments/apk/rerp.apk");
+            byte[] filebytes = System.IO.File.ReadAllBytes(path);
+            var res = new FileContentResult(filebytes, "application/octet-stream")
+            {
+                FileDownloadName = "rerp.apk"
+            };
+            return res;
+        }
+    }
+
+</code>
+</pre>
+</body>
+
+</html>

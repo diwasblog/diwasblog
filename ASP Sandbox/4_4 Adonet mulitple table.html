@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/b">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+=====================================================================================================
+<h2>For holding sql data in datatable </h2>
+    <pre>
+    <code class="language-csharp">
+      public DataTable GetAttendanceByMonth(int institutionId, int departmentId, int monthId)
+      {
+          using (var conn = (SqlConnection)_connectionFactory.GetConnection)
+          {
+              DataTable dt = new DataTable();
+              SqlCommand cmd = new SqlCommand("usp_MON_Employee_SelectAttendanceByMonthId", conn);
+              cmd.Parameters.AddWithValue("InstitutionId",institutionId );
+              cmd.Parameters.AddWithValue("ActiveMonthId", monthId);
+              cmd.Parameters.AddWithValue("DepartmentId", departmentId);
+              cmd.CommandType = System.Data.CommandType.StoredProcedure;
+              var reader = cmd.ExecuteReader();
+              dt.Load(reader);
+              return dt;
+          }
+      }
+  }
+
+      </code>
+      </pre>
+  ======================================================================================================
+  <br>
+  <h2>Getting two table data from store procedure</h2>
+  <h5>First table contain object of notice</h5>
+     <h5>Second table contain list of attachment of notice</h5>
+  <pre>
+    <code class="language-csharp">
+      public Notice GetById(int id,int institutionId)
+        {
+
+            using (var cmd = _unitOfWork.CreateCommand())
+            {
+                cmd.CommandText = "usp_Notice_SelectById";
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.AddParameter("@InstitutionId", institutionId);
+                cmd.AddParameter("@Id", id);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    Notice obj = new Notice();
+                    while (reader.Read())
+                    {
+                        obj.Title = reader["Title"].ToString();
+                        obj.Id = int.Parse(reader["Id"].ToString());
+                        obj.DateAD = reader["DateAD"].ToString();
+                        obj.FullContent = reader["FullContent"].ToString();
+                        //obj.FileNames = reader["FileNames"].ToString();
+                    }
+
+                    List<Attachment> attachmentList = new List<Attachment>();
+                    reader.NextResult();
+                    while (reader.Read())
+                    {
+                        var _temp = new Attachment(); 
+                        _temp.Id = Convert.ToInt32(reader["Id"]);
+                        _temp.Name = reader["Name"].ToString();
+                        attachmentList.Add(_temp);
+                    }
+                    obj.Attachment = attachmentList;
+                    return obj;
+                }
+            }
+        }
+
+employee short summary
+ public class Notice
+    {
+        public int Id { get; set; }
+        public int InstitutionId { get; set; }
+        public string Title { get; set; }
+        public string DateAD { get; set; }  
+        public string RefinedContent { get; set; }
+        [AllowHtml]
+        public string FullContent { get; set; }
+        public string AdminName { get; set; }
+
+        public IEnumerable<HttpPostedFileBase> UploadedFiles { get; set; }
+        public string FileNames { get; set; }
+
+        public IEnumerable<Attachment> Attachment { get; set; }
+    }
+
+    public class Attachment
+    {
+        public int Id { get; set; }  
+        public string Name { get; set; }
+        public int InstitutionId { get; set; }
+        public string AdminName { get; set; } 
+        public string NoticeId { get; set; }
+        public HttpPostedFileBase UploadFile { get; set; }
+        
+    }
+
+    </code>
+  </pre>
+  =============================================================================================================
+  <br>
+  <h2>IF one is Datatable next must also be Datatable</h2>
+  <pre>
+    <code class="language-csharp">
+      public AttendanceReportPageVM GetAttendanceByMonth(int institutionId, int departmentId, int monthId)
+        {
+            using (var conn = (SqlConnection)_connectionFactory.GetConnection)
+            {
+                AttendanceReportPageVM obj = new AttendanceReportPageVM();
+                DataTable dt = new DataTable();
+                SqlCommand cmd = new SqlCommand("usp_MON_Employee_SelectAttendanceByMonthId", conn);
+                cmd.Parameters.AddWithValue("InstitutionId",institutionId );
+                cmd.Parameters.AddWithValue("ActiveMonthId", monthId);
+                cmd.Parameters.AddWithValue("DepartmentId", departmentId);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                DataSet ds = new DataSet();
+                SqlDataAdapter da = new SqlDataAdapter();
+                da = new SqlDataAdapter(cmd);
+                da.Fill(ds);
+                obj.EmployeeAttendanceData = ds.Tables[0];
+                obj.AdditionalData = ds.Tables[1];
+                return obj;
+                }
+            }
+        }
+
+public class AttendanceReportPageVM
+    {
+        public DataTable EmployeeAttendanceData { get; set; }
+        public DataTable AdditionalData { get; set; }
+        public IEnumerable<Department> Departments { get; set; } 
+        public string InstitutionName { get; set; }
+    }
+    </code>
+  </pre>
+<script src="js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

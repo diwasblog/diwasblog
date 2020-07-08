@@ -1,0 +1,174 @@
+<html>
+
+<head>
+  <script
+    src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+  <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+
+  <style>
+    xmp.prettyprint {
+      font-size: 12pt;
+      font-family: monospace;
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <h3>Type of String in Javascript</h3>
+
+  <div class="row">
+    <div class="col-lg-6">
+      <xmp class="prettyprint">
+        console.log("ab");
+        console.log("a\"b");//1
+        console.log("a\\\"b");//3
+        console.log("a\\\\\"b");//5
+        console.log("a\\\\\\\"b");//7
+        console.log("a\"b\"c");
+        console.log("a\"\"b");
+        console.log("\"\"");
+        console.log( "Alan said, \"Peter is learning JavaScript\".";);
+      </xmp>
+    </div>
+
+
+    <div class="col-lg-6">
+      <xmp class="prettyprint">
+        ab
+        a"b
+        a\"b
+        a\\"b
+        a\\\"b
+        a"b"c
+        a""b
+        ""
+        Alan said, "Peter is learning JavaScript".
+
+      </xmp>
+
+    </div>
+  </div>
+
+  <h1 class="content-title Tutorial-header"><span style="color: #ff00ff;"><strong>How To Work with Strings in
+        JavaScript</strong></span></h1>
+  <p><span style="color: #000000; font-size: 12pt;"><strong>Three ways of writing string in javascript :</strong></span>
+  </p>
+  <p><span style="color: #ff00ff;"><strong>1)&nbsp;single quotes (<code>' '</code>) <span style="color: #000000;">Eg :
+          <code
+            class="code-highlight language-js hljs "><span class="hljs-string">'This string uses single quotes.'</span>;</code></span></strong></span>
+  </p>
+  <p><span style="color: #ff00ff;"><strong>2 )double quotes (<code>" "</code>)&nbsp; <span style="color: #000000;">Eg:
+          <code
+            class="code-highlight language-js hljs "><span class="hljs-string">"This string uses doublequotes."</span>;</code></span></strong></span>
+  </p>
+  <p><span style="color: #ff00ff;"><strong>3) backticks (<code>` `</code>) ==&gt;template literal&nbsp; &nbsp;Eg:&nbsp;
+        <code
+          class="code-highlight language-js hljs "><span class="hljs-string" style="color: #000000;">`This string uses doublequotes.`</span>;</code></strong></span>
+  </p>
+  <p><strong><span style="color: #ff0000;">Note: Type of quote used must match on both sides</span></strong></p>
+
+
+  <h1 class="content-title Tutorial-header"><span style="color: #ff00ff;"><strong>How To Work with Strings in
+        JavaScript</strong></span></h1>
+  <p><span style="color: #000000; font-size: 12pt;"><strong>Three ways of writing string in javascript :</strong></span>
+  </p>
+  <p><span style="color: #ff00ff;"><strong>1)&nbsp;single quotes (<code>' '</code>) <span style="color: #000000;">Eg :
+          <code
+            class="code-highlight language-js hljs "><span class="hljs-string">'This string uses single quotes.'</span>;</code></span></strong></span>
+  </p>
+  <p><span style="color: #ff00ff;"><strong>2 )double quotes (<code>" "</code>)&nbsp; <span style="color: #000000;">Eg:
+          <code
+            class="code-highlight language-js hljs "><span class="hljs-string">"This string uses doublequotes."</span>;</code></span></strong></span>
+  </p>
+  <p><span style="color: #ff00ff;"><strong>3) backticks (<code>` `</code>) ==&gt;template literal&nbsp; &nbsp;Eg:&nbsp;
+        <code
+          class="code-highlight language-js hljs "><span class="hljs-string" style="color: #000000;">`This string uses doublequotes.`</span>;</code></strong></span>
+  </p>
+  <p><strong><span style="color: #ff0000;">Note: Type of quote used must match on both sides</span></strong></p>
+
+  <pre
+    class="code-pre "><strong><span style="color: #000000; font-size: 12pt;"><code class="code-highlight language-js hljs "><span class="hljs-keyword">const</span> brokenString = <span class="hljs-string">'I'</span>m a broken string<span class="hljs-string">';<br />console.log(brokenString); <span style="color: #ff0000;">//will give error</span></span></code></span></strong></pre>
+  <p><span style="font-size: 12pt;">In order to avoid an error being thrown in these situations, we have a few options
+      that we can use:</span></p>
+  <ul>
+    <li><span style="font-size: 12pt;"><strong><span style="color: #ff00ff;">Opposite string
+            syntax</span></strong></span></li>
+  </ul>
+  <pre
+    class="code-pre "><span style="font-size: 12pt;"><code class="code-highlight language-js hljs "><span class="hljs-string">"We're safely using an apostrophe in double quotes."</span></code></span><br /><br /></pre>
+  ===========================================================
+  <ul>
+    <li><span style="font-size: 12pt;"><strong><span style="color: #ff00ff;">Escape characters</span></strong></span>
+    </li>
+  </ul>
+  <pre
+    class="code-pre "><span style="font-size: 12pt;"><code class="code-highlight language-js hljs "><span class="hljs-string">'We\'re safely using an apostrophe in single quotes.'</span></code></span><br /><br /></pre>
+  ===========================================================
+  <ul>
+    <li><strong><span style="color: #ff00ff;">Template literals</span></strong></li>
+  </ul>
+  <pre class="code-pre "><code>`We're safely using apostrophes and "quotes" in a template literal.`;</code>
+  </pre>
+  =======================================================================================
+  <xmp class="prettyprint">
+    const poem = "The Wide Ocean";
+    const author = "Pablo Neruda";
+    const first= "My favorite poem is " + poem + " by " + author ".";
+    const second= `My favorite poem is ${poem} by ${author}.`;
+    const third= 'My favorite poem is ' + poem + ' by ' + author '.';
+  </xmp>
+  =========================================================================================
+  <h2>Note : template literal support multi line</h2>
+  <xmp class="prettyprint">
+    const threeLines = `This is a string
+    that spans across
+    three lines.`;
+  </xmp>
+  <h4>Otherwise you have to do this for multi line</h4>
+
+  <xmp class="prettyprint">
+    const threeLines = "This is a string\n\that spans across\n\three lines.";
+  </xmp>
+  <h4>OR</h4>
+  <xmp class="prettyprint">
+    const threeLines = "This is a string\n" +"that spans across\n" +"three lines.";
+  </xmp>
+  ===========================================================================================================
+  <br>
+  <div>
+    <blockquote>
+      <p><span style="color: #ff00ff;"><strong><span style="font-size: 18pt;">Single quote or double
+              quote</span></strong></span><br /><span
+          style="font-size: 12pt; font-family: 'andale mono', monospace;"><span style="color: #0000ff;"><strong>gjslint
+              (Google Closure Linter)</strong> favors '</span> <span style="color: #ff00ff;">single
+            quotes</span></span><br /><span
+          style="font-size: 12pt; font-family: 'andale mono', monospace;"><strong>standard (an NPM package),</strong>
+          favors ' <span style="color: #0000ff;">single quotes</span></span><br /><span
+          style="font-size: 12pt; font-family: 'andale mono', monospace;"><strong>jslint favors "</strong> <span
+            style="color: #0000ff;">double quotes</span> by default</span><br /><span
+          style="font-size: 12pt; font-family: 'andale mono', monospace;"><strong>eslint favors</strong> " <span
+            style="color: #0000ff;">double quotes</span> by default</span><br /><span
+          style="font-size: 12pt; font-family: 'andale mono', monospace;"><strong>TypeScript Contributors Coding
+            Guidelines favor</strong> " <span style="color: #0000ff;">double quotes</span></span></p>
+    </blockquote>
+    <p><span style="font-size: 12pt;">Best way is to stick to one and keep following</span></p>
+    <p><br /><span style="font-size: 12pt;">If you're dealing with JSON, it should be noted that strictly speaking,
+      </span><br /><span style="font-size: 12pt;"><strong><span style="color: #ff0000;">JSON strings must be double
+            quoted.</span> </strong>Sure, many libraries support single </span><br /><span
+        style="font-size: 12pt;">quotes as well, but I had great problems in one of my projects before realizing
+      </span><br /><span style="font-size: 12pt;">that single quoting a string is in fact not according to JSON
+        standards.</span></p>
+    <p><br /><span style="font-size: 12pt;">The property names within the JSON strings must be double-quoted, but a JSON
+        string as a whole can be single-quoted: </span><br /><span style="font-size: 12pt;">var jsonString =
+        '{"key1":"value1"}'; </span><br /><span style="font-size: 12pt;">(Not that I recommend manually building
+        JSON.)</span></p>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,164 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+        integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <script
+        src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+
+
+    <style>
+        xmp.prettyprint {
+            font-size: 12pt;
+            font-family: monospace;
+
+        }
+    </style>
+
+</head>
+
+<body>
+    <p><span style="color: #000000;"><strong><span style="font-size: 24pt;">Validate TextField</span></strong></span>
+    </p>
+    <p><span style="color: #000000;"><strong><span style="font-size: 14pt;">By default all form field values are <span
+                        style="color: #f1c40f;">accessed as strings</span>.So if you want numeric value you first have
+                    to convert field from <span style="color: #e03e2d;">strings to
+                        numbers</span>.</span></strong></span></p>
+
+
+    <xmp class="prettyprint">
+        var field1 = parseInt(form.field1.value);
+        var field2 = parseInt(form.field2.value);
+    </xmp>
+    <p><span style="font-size: 14pt;">So if you want to<span style="color: #000000;"><strong> add two
+                    number</strong></span> then you have to<strong><span style="color: #000000;"> parse</span></strong>
+            two values and <strong><span style="color: #000000;">then only add them.</span></strong></span></p>
+
+
+    <hr>
+    <p><span style="color: #000000;"><strong><span style="font-size: 24pt;">Validate Select Field</span></strong></span>
+    </p>
+
+    <xmp class="prettyprint">
+        var selectBox = form.fieldname;
+        var selectedValue = selectBox.options[selectBox.selectedIndex].value
+        var selectedText = selectBox.options[selectBox.selectedIndex].text
+    </xmp>
+
+
+    <hr>
+    <p><span style="color: #000000;"><strong><span style="font-size: 24pt;">Validate Check Box</span></strong></span>
+    </p>
+
+    <xmp class="prettyprint">
+        <label>
+            <input type="checkbox" name="IsFemale"> Female
+        </label>
+        form.IsFemale.checked
+    </xmp>
+
+
+    <hr>
+    <p><span style="color: #000000;"><strong><span style="font-size: 24pt;">Validate CheckBox
+                    Array</span></strong></span>
+    </p>
+
+    <xmp class="prettyprint">
+        <label>
+            <input type="checkbox" name="IsFemale"> Female
+        </label>
+        form.IsFemale.checked
+    </xmp>
+
+
+    <hr>
+
+    <h2>Multiple CheckBox Validation</h2>
+
+    <xmp class="prettyprint">
+        <form name="contactForm" onsubmit="return validateForm()" action="/examples/actions/confirmation.php"
+            method="post">
+
+            <div class="row">
+                <label>Hobbies <i>(Optional)</i></label>
+                <div class="form-inline">
+                    <label><input type="checkbox" name="hobbies[]" value="sports"> Sports</label>
+                    <label><input type="checkbox" name="hobbies[]" value="movies"> Movies</label>
+                    <label><input type="checkbox" name="hobbies[]" value="music"> Music</label>
+                </div>
+            </div>
+            <div class="row">
+                <input type="submit" value="Submit">
+            </div>
+        </form>
+
+        function validateForm() {
+        var hobbies = [];
+        var checkboxes = document.getElementsByName("hobbies[]");
+        for(var i=0; i < checkboxes.length; i++) { if(checkboxes[i].checked) { values hobbies.push(checkboxes[i].value);
+            } } } </xmp> <h2>Forcing Text Field to Uppercase</h2>
+            <xmp class="prettyprint">
+                <input style="text-transform: uppercase;" type="text" name="fieldname">
+            </xmp>
+            <script async src="https://jsfiddle.net/Diwas_Poudel/cg4eqjm8/embed/html,result/" height="500"></script>
+            <br>
+
+
+            <h2>First Letter Capital</h2>
+
+            <xmp class="prettyprint">
+                <input id="field_ucfirst" type="text">
+
+                <script>
+
+                    document.getElementById("field_ucfirst").addEventListener("keypress", function (e) {
+                        if (this.selectionStart == 0) {
+                            // uppercase first letter
+                            forceKeyPressUppercase(e);
+                        } else {
+                            // lowercase other letters
+                            forceKeyPressLowercase(e);
+                        }
+                    }, false);
+
+                </script>
+            </xmp>
+
+
+            <h2>Please Wait... functionality on Login Page</h2>
+
+            <xmp class="prettyprint">
+                <form method="POST" action="..." onsubmit="return checkForm(this);">
+                    ...
+                    <input type="submit" name="myButton" value="Submit">
+                    <input type="button" value="Reset Button" onclick="resetForm(this.form);">
+                </form>
+
+
+                <script type="text/javascript">
+
+                    function checkForm(form) // Submit button clicked
+                    {
+                        //
+                        // check form input values
+                        //
+
+                        form.myButton.disabled = true;
+                        form.myButton.value = "Please wait...";
+                        return true;
+                    }
+
+                    function resetForm(form) // Reset button clicked
+                    {
+                        form.myButton.disabled = false;
+                        form.myButton.value = "Submit";
+                    }
+
+                </script>
+            </xmp>
+
+</body>
+
+</html>

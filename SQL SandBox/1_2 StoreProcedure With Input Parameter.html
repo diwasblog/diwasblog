@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+
+  <body>
+
+
+      <p><span style="font-size: 14pt;">A <span style="color: #ff00ff;">stored procedure</span> is<span style="color: #ff0000;"> group of T-SQL (Transact SQL) statements. </span></span></p>
+      <p><span style="font-size: 14pt;">If you have a situation, where you write the same query over and over again, you can&nbsp;save that specific query as a stored procedure and call it just by it's name.</span></p>
+
+    <p><span style="font-size: 18pt;"><strong><span style="color: #ff00ff;">Advantage of Store Procedure&nbsp;</span></strong></span></p>
+<p><span style="font-size: 14pt;"><strong>&nbsp; &nbsp;<span style="font-size: 18pt;">&nbsp;1. Execution plan retention and reusability&nbsp;- </span></strong></span></p>
+<p><span style="font-size: 14pt;">Stored Procedures are compiled and their execution plan is cached and used again, when the same SP is executed again. Although adhoc queries also create and reuse plan, the plan is reused only when the query is textual match and the datatypes are matching with the previous call. Any change in the datatype or you have an extra space in the query then, a new plan is created.</span><strong><br /><br /><span style="font-size: 18pt;">2. Reduces network traffic&nbsp;- </span></strong></p>
+<p><strong><span style="font-size: 14pt;">You only need to send, EXECUTE SP_Name statement, over the network, instead of the entire batch of adhoc SQL code.</span><br /><br /><span style="font-size: 18pt;">3. Code reusability and better maintainability&nbsp;- </span></strong></p>
+<p><span style="font-size: 14pt;">A stored procedure can be reused with multiple applications. If the logic has to change, we only have one place to change, where as if it is inline sql, and if you have to use it in multiple applications, we end up with multiple copies of this inline sql. If the logic has to change, we have to change at all the places, which makes it harder maintaining inline sql.</span><strong><br /><br /><span style="font-size: 18pt;">4. Better Security&nbsp;- </span></strong></p>
+<p><span style="font-size: 14pt;">A database user can be granted access to an SP and prevent them from executing direct "select" statements against a table. &nbsp;This is fine grain access control which will help control what data a user has access to.</span><strong><br /><br /><span style="font-size: 14pt;">5. Avoids SQL Injection attack&nbsp;- </span></strong></p>
+<p><span style="font-size: 14pt;">SP's prevent sql injection attack.</span></p>
+
+<h2>Why Store Procedure</h2>
+First, stored procedures allow
+a lot more flexibility offering capabilities such as conditional logic. Second, because stored procedures are
+stored within the DBMS, bandwidth and execution time are reduced. This is because a single stored procedure
+can execute a complex set of SQL statements. Third, SQL Server pre-compiles stored procedures such that
+they execute optimally. Fourth, client developers are abstracted from complex designs. They would simply need
+to know the stored procedure's name and the type of data it returns.
+=======================================================================
+
+Stored procedure makes testing easier and you can change the query without touching the application code.
+
+=====================================================
+
+    <h2>Store Procedure with Input Parameter</h2>
+
+    step 1 : First Create Table  with parameter id,name,gender,departmentiD<br>
+    Step 2: Right click on database name==>New query <br>
+    Step 3: Right below store procedure <br>
+
+      <pre class="limit-5">
+        <code class="language-sql">
+            Create Procedure usp_GetEmployees //usp_GetEmployees is procedure name
+            as
+            Begin
+              Select Name, Gender, DepartmentId from tblEmployee  //sql code between begin and end
+            End
+        </code>
+      </pre>
+      Or
+      <pre class="limit-5">
+          <code class="language-sql">
+              Create Proc usp_GetEmployees  //usp_GetEmployees is procedure name
+              as
+              Begin
+                Select Name, Gender,DepartmentId from tblEmployee  //sql code between begin and end
+              End
+          </code>
+        </pre>
+        Step 4: Goto left corner and press execute   
+                This will create store procedure at programmically>spGetEmployees  <br>
+        <hr>
+        <h2>Execute StoreProcedure</h2>
+        All of these are same
+        <div class="row">
+          <div class="col-lg-4">
+              <pre class="limit-5">
+                  <code class="language-sql">
+                     usp_GetEmployees
+                  </code>
+                </pre>
+          </div>
+          <div class="col-lg-4">
+              <pre class="limit-5">
+                  <code class="language-sql">
+                      Execute usp_GetEmployees
+                  </code>
+                </pre>
+            </div>
+            <div class="col-lg-4">
+                <pre class="limit-5">
+                    <code class="language-sql">
+                      Exec usp_GetEmployees
+                    </code>
+                  </pre>
+            </div>
+        </div>
+        Step 5: Then above  code and click execute then we will display as below   <br>      
+
+
+        ==
+        <table style="border-collapse: collapse; width: 100%;" border="1">
+            <tbody>
+            <tr>
+            <td style="width: 25%;">Name</td>
+            <td style="width: 25%;">Gender</td>
+            <td style="width: 25%;">DepartmentId</td>
+            </tr>
+            <tr>
+            <td style="width: 25%;">Diwas</td>
+            <td style="width: 25%;">Male</td>
+            <td style="width: 25%;">1</td>
+            </tr>
+            <tr>
+            <td style="width: 25%;">Yogesh</td>
+            <td style="width: 25%;">Female</td>
+            <td style="width: 25%;">2</td>
+            </tr>
+            <tr>
+            <td style="width: 25%;">Dipesh</td>
+            <td style="width: 25%;">Male</td>
+            <td style="width: 25%;">3</td>
+            </tr>
+            <tr>
+            <td style="width: 25%;">Saroj</td>
+            <td style="width: 25%;">Female</td>
+            <td style="width: 25%;">2</td>
+            </tr>
+            <tr>
+            <td style="width: 25%;">Hari</td>
+            <td style="width: 25%;">Male</td>
+            <td style="width: 25%;">1</td>
+            </tr>
+            </tbody>
+            </table>
+        ==
+        <p><strong><span style="color: #339966;">===================================================================================================</span></strong></p>
+
+
+This will required DepartmentId and Gender for user to pass
+<pre class="limit-5">
+    <code class="language-sql">
+        create proc usp_GetEmployeeByDepartmentAndGender
+          @Gender nvarchar(200),  //user will pass this
+          @DepartmentId int       //user will pass this as well
+        as 
+        Begin
+            Select Name, Gender, DepartmentId from tbl_Employee where Gender=@Gender 
+            and DepartmentId=@DepartmentId
+        End
+    </code>
+  </pre> 
+
+  Execute it as
+  <pre class="limit-5">
+      <code class="language-sql">
+          usp_GetEmployeeByDepartmentAndGender 'Male',1
+      </code>
+    </pre> 
+
+    <table style="border-collapse: collapse; width: 100%;" border="1">
+        <tbody>
+        <tr>
+        <td style="width: 25%;"><span style="color: #ff0000;">Name</span></td>
+        <td style="width: 25%;"><span style="color: #ff0000;">Gender</span></td>
+        <td style="width: 25%;"><span style="color: #ff0000;">DepartmentId</span></td>
+        </tr>
+        <tr>
+        <td style="width: 25%;">Diwas</td>
+        <td style="width: 25%;">True</td>
+        <td style="width: 25%;">1</td>
+        </tr>
+        <tr>
+        <td style="width: 25%;">Hari</td>
+        <td style="width: 25%;">True</td>
+        <td style="width: 25%;">1</td>
+        </tr>
+        </tbody>
+        </table>
+
+
+        <p><span style="font-size: 14pt; color: #ff00ff;"><strong>Alter StoreProcedure Name</strong></span></p>
+    <pre class="limit-5">
+        <code class="language-sql">
+            Alter proc usp_SelectEmployeeByDepartmentAndGender  //from usp_GetEmployeeByDepartmentAndGender to usp_SelectEmployeeByDepartmentAndGender
+            @Gender nvarchar(200),  //user will pass this
+            @DepartmentId int       //user will pass this as well
+          as 
+          Begin
+              Select Name, Gender, DepartmentId from tbl_Employee where Gender=@Gender 
+              and DepartmentId=@DepartmentId
+          End
+        </code>
+      </pre>  
+      
+<p><span style="font-size: 14pt; color: #ff00ff;"><strong>Drop StoreProcedure</strong></span></p>
+<pre class="limit-5">
+    <code class="language-sql">
+       Drop proc usp_SelectEmployeeByDepartmentAndGender
+    </code>
+  </pre>  
+
+    <script src="js/prism.js"></script>
+    <script type="text/javascript">
+      Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+          'remove-trailing': true,
+          'remove-indent': true,
+          'left-trim': true,
+          'right-trim': true,
+          // 'break-lines': 10,
+          // 'indent': 2,
+          // 'remove-initial-line-feed': false,
+          // 'tabs-to-spaces': 4,
+          // 'spaces-to-tabs': 4
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,3 @@
+ALTER TABLE core.deposit_products ADD COLUMN interest_provision_rate numeric;
+ALTER TABLE core.deposit_products ADD COLUMN commission_rate numeric;
+ALTER TABLE core.deposit_products ADD COLUMN ac_op_commission numeric;

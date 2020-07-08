@@ -1,0 +1,41 @@
+-- FUNCTION: transactions.insert_collection_loan(integer, character varying, date, character varying, integer, character varying, money, text, integer, json)
+
+-- DROP FUNCTION transactions.insert_collection_loan(integer, character varying, date, character varying, integer, character varying, money, text, integer, json);
+
+CREATE OR REPLACE FUNCTION transactions.insert_collection_loan(
+	_office_id integer,
+	_book_name character varying,
+	_tran_date date,
+	_collector_name character varying,
+	_audit_user_id integer,
+	_account_number character varying,
+	_amount money,
+	_statement_ref text,
+	_tran_count integer,
+	_tran_details json)
+    RETURNS void
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+AS $BODY$
+DECLARE _tran_id bigint;
+BEGIN
+
+INSERT INTO transactions.collection_sheet_master(office_id,book_name,tran_date, value_date, 
+                    collector_id, instrument_id, instrument_number, audit_user_id,verification_status_id,verified_by_user_id) 
+                  SELECT $1, $2, $3, $3, office.get_collector_id_by_name($1,$4), 1, NULL, $5,1,$5; 
+                    SELECT CURRVAL('transactions.collection_sheet_master_master_id_seq') INTO _tran_id;
+
+ INSERT INTO transactions.collection_sheet_details(master_id, loan_id, amount, statement_reference, audit_user_id) 
+  select _tran_id,loan_id,aa.amount,statement_reference,_audit_user_id from json_populate_recordset(null::transactions.tran_collection_type, _tran_details)
+  as aa inner join
+ loan.loan_grant as b on aa.account_number=b.loan_account_number;
+ 
+ 
+ 
+END
+$BODY$;
+
+ALTER FUNCTION transactions.insert_collection_loan(integer, character varying, date, character varying, integer, character varying, money, text, integer, json)
+    OWNER TO postgres;

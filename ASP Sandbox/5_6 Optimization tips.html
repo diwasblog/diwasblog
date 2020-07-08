@@ -1,0 +1,20 @@
+var data = employees.Where(e => e.Gender == "Male").ToList(); // may occur error if Gender = 'male' <br>
+
+var data employees.Where(e => e.Gender.Equals("Male", StringComparison.OrdinalIgnoreCase)).ToList(); // works for
+whatever the case
+
+
+
+//In global.aspx
+protected void Application_Start()
+{
+ViewEngines.Engines.Clear();
+ViewEngines.Engines.Add(new RazorViewEngine());
+
+AreaRegistration.RegisterAllAreas();
+
+GlobalConfiguration.Configure(WebApiConfig.Register);
+FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+RouteConfig.RegisterRoutes(RouteTable.Routes);
+BundleConfig.RegisterBundles(BundleTable.Bundles);
+}

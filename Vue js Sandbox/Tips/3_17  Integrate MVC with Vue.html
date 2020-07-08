@@ -1,0 +1,317 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+    font-size:12pt;
+    font-family:monospace;
+
+}
+</style>
+ 
+</head>
+<body>
+
+    <ol>
+        <li><span style="font-size: 12pt; font-family: 'comic sans ms', sans-serif;">Create empty project with mvc selected</span></li><br>
+        <li><span style="font-size: 12pt; font-family: 'comic sans ms', sans-serif;">Open cmd in project</span></li><br>
+        <li><span style="font-size: 12pt; font-family: 'comic sans ms', sans-serif;">install node (while installing node ==&gt; npm will automatically installed)</span></li><br>
+        <li><span style="font-size: 12pt; font-family: 'comic sans ms', sans-serif;">check : <span style="color: #ff0000;">node -v</span> and <span style="color: #ff0000;">npm -v</span></span></li><br>
+        <li><span style="font-size: 12pt; font-family: 'comic sans ms', sans-serif;">&nbsp; &nbsp;<span style="color: #ff0000;">npm init</span> ( will create package.json(all name of package will be present here),package.json.lock file and node_module folder(where all packages are saved locally))</span></li><br>
+        package.json.lock came in  npm5 version.
+        <li><span style="font-size: 12pt; font-family: 'comic sans ms', sans-serif;"><span style="color: #ff0000;">npm install --save-dev babel-core babel-loader babel-preset-es2015 babel-preset-stage-0</span></span></li> //We are using an ES6 code, so we need to transpile the ES6 code into ES5. In this process, we need the babel-loader so first let us install that by this step.We are transpiling because browser today's arenot that much advance to load es6 code so transpiled it to es5. After some yrs after we shouldnot have to transpile becoz browser may be advance later.And browser will understand<b>  import and export</b> command<br>
+        <li><span style="font-size: 12pt; font-family: 'comic sans ms', sans-serif; color: #ff0000;">npm install -g <a style="color: #ff0000;" href="mailto:webpack@3.10.0">webpack@3.10.0</a></span></li><br>
+        <li><span style="font-size: 12pt; font-family: 'comic sans ms', sans-serif; color: #ff0000;">npm install --save-dev <a style="color: #ff0000;" href="mailto:webpack@3.10.0">webpack@3.10.0</a></span></li><br>
+        <li><span style="font-size: 12pt; font-family: 'comic sans ms', sans-serif; color: #ff0000;">npm install vue</span></li>(automatically package of vue get stored in node_module file<br>
+        <li><span style="font-size: 12pt; font-family: 'comic sans ms', sans-serif;">Then create webpack.config.cs(Configuring Webpack Development Server) in project folder(not in solution folder) and paste this inside webpack.config.cs.we can define the loaders and plugins that can be used to support the other languages that need to be compiled in the javascript.
+
+        </span></li> <br>
+        </ol>
+
+        <xmp class="prettyprint">
+            module.exports = {
+              entry: './scripts/index.js',
+              output: {
+                  filename: './scripts/dist/bundle.js'
+              },
+              devtool: 'source-map',
+              module: {
+                  loaders: [
+                      {
+                          test: /\.js$/,
+                          exclude: /node_modules/,
+                          loader: 'babel-loader',
+                          query: {
+                              presets: ['es2015', 'stage-0']
+                          }
+                      }
+                 ]
+              }
+          };
+        </xmp>
+
+11. Then create index.js inside Script folder and paste this content.index.js is the file, which webpack will compile<br /></span></pre>
+<xmp class="prettyprint">
+    import Vue from 'vue/dist/vue.js';
+    window.Vue = Vue;
+</xmp>       
+12. If done well then run this command</span><br /><span style="font-size: 12pt; font-family: 'comic sans ms', sans-serif;"><span style="color: #ff0000;">webpack</span> </span>
+  Output :
+  <xmp class="prettyprint">
+      I:\M\MVC with Vuejs\IntegratingVueWithMVC\IntegratingVueWithMVC>webpack
+      Hash: da7e3230749aa3adf862
+      Version: webpack 3.10.0
+      Time: 1805ms
+                             Asset    Size  Chunks                    Chunk Names
+          ./scripts/dist/bundle.js  307 kB       0  [emitted]  [big]  main
+      ./scripts/dist/bundle.js.map  380 kB       0  [emitted]         main
+         [0] (webpack)/buildin/global.js 509 bytes {0} [built]
+         [1] ./scripts/index.js 222 bytes {0} [built]
+          + 4 hidden modules
+  </xmp>
+ What happens here is Webpack transpile all imported code into Es5 Version  in bundle.js file in dist folder (Just Auto Created Now when webpack is runned).So We later use this bundle.js in our _layout page so that all browser will understand transpiled version.
+  Webpack will create one bundle.js file in a dist. This file is the ES5 version of JavaScript, and we will include this in _layout.cshtml file as below
+
+<br /><br /><span style="font-size: 12pt; font-family: 'comic sans ms', sans-serif;">
+    13. Then create View/Shared/_layout.cshtml and paste this</span></pre>
+    <br>
+    Here we have added <strong>bundle.js file (Browser supported js file present in index.js) </strong>
+        
+          <xmp class="prettyprint">
+              @{
+                Layout = null;
+            }
+            <!DOCTYPE html>
+            <html>
+                <head>
+                    <meta name="viewport" content="width=device-width" />
+                    <title>Vuejs with ASP MVC</title>
+                    <script src="~/scripts/dist/bundle.js"></script>
+                </head>
+                <body>
+                    @RenderBody()
+                    @RenderSection("scripts", false)
+                </body>
+            </html>
+          </xmp>
+          14.Then create homeController and then right click on index action and create view as index.cshtml (with partial  as _layout page selected)</span><br /><span style="text-decoration: underline;"><span style="font-size: 12pt; font-family: 'comic sans ms', sans-serif;">In index.cshtml</span></span></pre>
+          <xmp class="prettyprint">
+              <div id="app" v-cloak>
+                  <p>{{message}}</p>
+              </div>
+              @section scripts{
+              <script>
+                  new Vue({
+                      el: '#app',
+                      data: {
+                          message: "Hello from VueJS in ASP MVC"
+                      }
+                  });
+              </script>
+              }
+              
+          </xmp>
+          I have instantiated the Vue and defined a variable &ldquo;message&rdquo; to display message from Vue.</span></pre>
+        <p><span style="font-size: 12pt; font-family: 'comic sans ms', sans-serif;">15. output on browser :Hello from VueJS in ASP MVC</span></p>
+
+
+
+        Others Tips
+        Where these packages are install
+       <h3> 1)npm root</h3> 
+        <h3>2)npm root -g</h3>
+
+        ==============================================================================================================
+        <h2>Note</h2>
+
+        Running Webpack in command line will compile your node_module file present in index.js and will create ES5 JS version 
+        (that all browser supports) in bundle.js file present in dist folder. So We use this bundle.js file in _layout.cshtml file so every
+        browser will supports.
+
+        Webpack < =====Equivalent to===== > npm run build
+        <br>
+        Webpack --watch  < ===========Equivalent to ================= > npm run watch
+
+        <h2>Webpack --watch</h2>: Running this in command will continuely runs and check if any update present in index.js file and if present then it automatically transpile.
+    
+        <p><span style="font-size: 18pt; color: #ff00ff;">Where packages are installed ?</span></p>
+        <p><span style="font-size: 14pt;">Note that : npm install jquery . It will install latest version of jquery.&nbsp;</span></p>
+    <xmp class="prettyprint">
+        C:/diwas : npm install jquery
+    </xmp>
+
+        <p><span style="font-size: 14pt;">It will install jquery in the same folder where you run npm install. So jquery will be installed inside C:/diwas/node_module. It will create jquery folder&nbsp; and inside it will install .</span></p>
+    
+<br>
+=================================================================================================================
+<br>
+<p><span style="font-size: 18pt; color: #ff00ff;">Understanding Package.json file ?</span></p>
+<p><span style="font-size: 14pt;">When you work with large projects you would need lot of JavaScript frameworks. So in one project you would probably need jquery , angular , lodash and so on. Doing &ldquo;npm install&rdquo; again and again is definitely wasting precious time of your life.</span><br /><span style="font-size: 14pt;">So to load all javascript framework references in one go &ldquo;npm&rdquo; team has given a package.json. In this package.json file you can make an entry to all javascript references and load them in one go.</span></p>
+<p><span style="font-size: 14pt;">To create package.json file open the node command prompt and type &ldquo;npm init&rdquo;. After &ldquo;npm init&rdquo; command it would ask for package name , version number , project description and so on. Once you fill all the question it will create a package.json file in your current folder.&nbsp;</span></p>
+
+=======================================================================================================
+<br>
+<p><span style="font-size: 18pt;">Versioning in Package.json file ?</span></p>
+<p><span style="font-size: 14pt;">Most software versions follow <strong>semantic versioning</strong>. </span></p>
+<p><span style="font-size: 14pt;">In semantic versioning versions are divided in to <strong>three numbers</strong> as shown in the image below.</span></p>
+<p><span style="font-size: 14pt;">Major.Minor.Revision</span></p>
+<p><span style="color: #ff0000;"><strong><span style="font-size: 14pt;">Major Version :&nbsp;</span></strong></span></p>
+<ul>
+<li><span style="font-size: 14pt;">Any increment in major version is an indication that there are <span style="color: #ff0000;"><strong>breaking changes in the software functionality</strong></span>. </span></li>
+<li><span style="font-size: 14pt;">It&rsquo;s very much possible that the <strong><span style="color: #ff0000;">old code will not work</span></strong> with these changes and have to be tested properly.</span></li>
+</ul>
+<p><span style="font-size: 14pt; color: #ff0000;">Minor Version:</span></p>
+<p><span style="font-size: 14pt;">This version is incremented when<span style="color: #ff0000;"> <strong>we add new features</strong> </span>but the <span style="color: #ff0000;"><strong>old code still works.</strong></span></span></p>
+<p><span style="font-size: 14pt;"><span style="color: #ff0000;"><strong>Revision:- </strong></span></span></p>
+<p><span style="font-size: 14pt; color: #000000;"><strong>This version is incremented when we are just doing<span style="color: #ff0000;"> bug fixes. </span></strong></span></p>
+<p><span style="font-size: 14pt; color: #000000;"><strong>So there are<span style="color: #ff0000;"> no new functionalities added, no breaking changes</span> and<span style="color: #ff0000;"> back ward compatible with old code&nbsp;</span></strong></span></p>
+
+<br>
+=============================================================================================================
+<br>
+<p><span style="font-size: 18pt;">Versioning in Package.json file ?</span></p>
+<ul>
+<li><span style="font-size: 14pt;">Most software versions follow <strong>semantic versioning</strong>. </span></li>
+<li><span style="font-size: 14pt;">In semantic versioning versions are divided in to <strong>three numbers</strong> as shown in the image below.</span></li>
+<li><span style="font-size: 14pt;">Major.Minor.Revision</span></li>
+</ul>
+<p><span style="color: #ff0000;"><strong><span style="font-size: 14pt;">Major Version :&nbsp;</span></strong></span></p>
+<ul>
+<li><span style="font-size: 14pt;">Any increment in major version is an indication that there are <span style="color: #ff0000;"><strong>breaking changes in the software functionality</strong></span>. </span></li>
+<li><span style="font-size: 14pt;">It&rsquo;s very much possible that the <strong><span style="color: #ff0000;">old code will not work</span></strong> with these changes and have to be tested properly.</span></li>
+</ul>
+<p><span style="font-size: 14pt; color: #ff0000;">Minor Version:</span></p>
+<p><span style="font-size: 14pt;">This version is incremented when<span style="color: #ff0000;"> <strong>we add new features</strong> </span>but the <span style="color: #ff0000;"><strong>old code still works.</strong></span></span></p>
+<p><span style="font-size: 14pt;"><span style="color: #ff0000;"><strong>Revision:- </strong></span></span></p>
+<p><span style="font-size: 14pt; color: #000000;"><strong>This version is incremented when we are just doing<span style="color: #ff0000;"> bug fixes. </span></strong></span></p>
+<p><span style="font-size: 14pt; color: #000000;"><strong>So there are<span style="color: #ff0000;"> no new functionalities added, no breaking changes</span> and<span style="color: #ff0000;"> back ward compatible with old code&nbsp;</span></strong></span></p>
+
+
+<xmp class="prettyprint">
+    "angular":"^1.6.5",    ====> Exact
+    "angular":"1.6.5",     ====> Major /Minor 
+    "angular":"~1.6.5"     ====> Minimum or lower
+</xmp>
+
+<p>Exact (1.6.5) :This will do a get latest of exact version 1.6.5 not more or not less. If that version is not available it will throw up an exception.</p>
+<p>Major/Minor(^1.6.5) :The carrot sign will get minimum 1.6.5 and if there are any higher MINOR / REVISION versions it will get that.&nbsp;</p>
+<p>Note :It will never get higher major versions.</p>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<td style="width: 33.3333%;">Have</td>
+<td style="width: 33.3333%;">Can get</td>
+<td style="width: 33.3333%;">Can't get</td>
+</tr>
+<tr>
+<td style="width: 33.3333%;">^1.6.5</td>
+<td style="width: 33.3333%;">1.6.5, 1.6.7,1.6.8, 1.7.7</td>
+<td style="width: 33.3333%;">1.6.1 , 2.0</td>
+</tr>
+</tbody>
+</table>
+<p>Minimum or Lower (~1.6.5)</p>
+<p>The tilde sign will get HIGHER REVISION version</p>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<td style="width: 33.3333%;">Have</td>
+<td style="width: 33.3333%;">Can get</td>
+<td style="width: 33.3333%;">Cannot get</td>
+</tr>
+<tr>
+<td style="width: 33.3333%;">~1.6.5</td>
+<td style="width: 33.3333%;">1.6.7, 1.6.8,1.6.9&nbsp;</td>
+<td style="width: 33.3333%;">1.7.1, 2.0.0&nbsp;</td>
+</tr>
+</tbody>
+</table>
+
+<h3><a rel="noopener" name="What_is_package-lock.json_file_"></a><strong><span style="color: #ff0000;">What is package-lock.json file ?</span></strong></h3>
+<p><span style="font-size: 14pt;">As discussed in the previous sections package.json has<strong> &ldquo;^&rdquo;</strong> and <strong>&ldquo;~&rdquo;</strong> versioning mechanism.</span></p>
+<p><span style="font-size: 14pt;"> Now suppose in your <strong><span style="color: #ff0000;">package.json</span></strong> you have mentioned <strong><span style="color: #ff00ff;">"jquery": "^3.1.0"</span></strong>and Jquery has a new version<strong><span style="color: #ff00ff;"> &ldquo;3.2.1&rdquo;.</span></strong> So in actual it will install or in other words LOCK DOWN to &ldquo;3.2.1&rdquo;.</span></p>
+<p><span style="font-size: 14pt;">So <strong>in package.json you will have &ldquo;^3.1.0&rdquo;</strong> but <strong>actually you will be using &ldquo;3.2.1&rdquo;</strong>. This entry of actual version is present in &ldquo;package-lock.json&rdquo;. So package lock files have the EXACT versions which are used in your code.</span></p>
+
+
+<div class="row">
+    <div class="col-lg-6">
+  <xmp class="prettyprint">
+//package.json
+"jquery":"3.1.0"
+  </xmp>
+    </div>
+
+    <div class="col-lg-6">
+            <xmp class="prettyprint">
+//package.lock.json
+"jquery":"3.2.1"
+                </xmp>
+    </div>
+    will have 3.1.0 but internally it will use 3.2.1
+</div>
+==================================================================================================
+<h2>We have package.json like this ?</h2>
+
+<xmp class="prettyprint">
+{
+    "name": "test-project",
+    "version": "1.0.0",
+    "description": "A Vue.js project",
+    "main": "src/main.js",
+    "dependencies": {
+        "vue": "^2.5.2"
+    },
+    "devDependencies": {
+        "babel-core": "^6.22.1",
+        "babel-eslint": "^8.2.1"
+    }
+}
+</xmp>
+<xmp class="prettyprint">
+   npm install -save  vue :
+</xmp>
+ This will install vue inside node_module and will automatically comes to dependencies 
+ section of package.json
+ 
+ ==================================================================
+ <xmp class="prettyprint">
+  npm install babel-core -dev 
+ </xmp>
+ : This will also install babel-core in node_module and will automatically 
+ comes to dev-dependencies section of package.json
+ 
+<xmp class="prettyprint">
+ npm install live-server -g : 
+</xmp>
+<div><span style="font-size: 12pt;">This will <strong><span style="color: #ff00ff;">not install live-server in node_module</span></strong> but will<span style="color: #ff00ff;"><strong> install in computer</strong> </span></span><span style="font-size: 12pt;">and this<span style="color: #ff00ff;"> <strong>will also not add in package.json</strong>.</span></span></div>
+
+<pre class=" language-json"><code class=" language-json"><span class="token string"><span style="background-color: #ffffff;"><br /><span style="font-size: 14pt;">Actually we need to install certain application globally because we may need this any where and we can access live-server</span><br /><span style="font-size: 14pt;">from any where within the computer.</span><br /><br />
+
+    <h2>Location where globally install package will be stored</h2>
+<xmp class="prettyprint">
+npm root -g  
+//output :C:\Users\DIWAS\AppData\Roaming\npm\node_modules
+</xmp>
+
+<pre class=" language-json"><code class=" language-json"><span class="token string"><span style="background-color: #ffffff;"><br /><br /><br /><span style="font-size: 12pt;">Go there .. your will find live-server install inside node_modules folder of that path.</span><br /> </span><br /><br /><br /><br /></span></code></pre>
+
+
+<h2>Remove package from globally</h2>
+<xmp class="prettyprint">
+    npm remove -g live-server
+</xmp>    
+===============================================
+<h2>To show all dependencies</h2>
+
+<xmp class="prettyprint">
+    npm list 
+    //or npm list --depth  0
+    // or npm list --depth 1 and soon
+</xmp>
+</body>
+</html>
+

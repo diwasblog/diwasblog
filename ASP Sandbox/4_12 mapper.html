@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+
+   
+    <h2>Mapster</h2>
+
+    <p><span style="font-size: 14pt;"><strong><span style="color: #000000;">AutoMapper, SharpMap,EmitMapper, ExpressMapper,TinyMapper,O0Mapper,ValueInjector MapSter</span> </strong>are mapper library.The real advantage of using <span style="color: #ff0000;"><strong>Mapster</strong> </span>is its performance. It is<span style="color: #000000;"><strong> 2.5 times faster than AutoMapper</strong></span>. And<span style="color: #000000;"><strong> twice as fast to the other known mappers frameworks.</strong></span></span></p>
+<br>
+<br>
+
+Note: Dapper is ORM(Object Relation Mapping). Table Relations is mapped to object and get table data to object parameter.
+<br>
+Mapper is Object to Object Mapping.
+<br>
+<h2>Install mapster from nuget and directly use it</h2>
+    <h2>Mapster usage : Method 1 ==> Source Directly mapped to Destination (using extension methods)</h2>
+
+    <pre>
+        <code class="language-csharp">
+            var destinationObject = sourceObject.Adapt&lt;TDestination>();
+        </code>
+    </pre>
+    ==============================================================================
+    <br>
+    <h2>Mapster usage : Method 2 ==> Dependency Injection</h2>
+
+    <pre>
+        <code class="language-csharp">
+            IAdapter adapter = new Adapter();
+
+            var destinationObject = adapter.Adapt&lt;TDestination>(sourceObject);
+        </code>
+    </pre>
+    ==============================================================================
+    <br>
+    <h2>Mapster usage : Method  3 ==> Using Static Method</h2>
+
+    <pre>
+        <code class="language-csharp">
+            var destinationObject = TypeAdapter.Adapt&lt;TDestination>;
+        </code>
+    </pre>
+    ==============================================================================================
+    <br>
+    <h2>Mapping Lists</h2>
+
+    <pre>
+        <code class="language-csharp">
+            var target = TypeAdapter.Adapt&lt;List&lt;Source>, IEnumerable&lt;Destination>>(list); 
+        </code>
+    </pre>
+    <h2>Example 1</h2>
+    <div class="row">
+        <div class="col-lg-7">
+            <pre>
+                <code class="language-csharp">
+                    public IEnumerable<StudentViewModel> Get()
+                        {
+                            Student s = new Student();
+                            var data = s.GetAllStudent();
+                            var destObject = TypeAdapter.Adapt&lt;List&lt;Student>, IEnumerable&lt;StudentViewModel>>(data.ToList());
+                            return destObject;
+                        }
+                </code>
+            </pre>
+        </div>
+        <div class="col-lg-5">
+            <pre>
+                <code class="language-csharp">
+                    public class Student
+                    {
+                        public int Id { get; set; }
+                        public string Name { get; set; }
+                        public int SchoolId { get; set; }
+                        public int Age { get; set; }
+
+
+                        public IEnumerable&lt;Student> GetAllStudent()
+                        {
+                            Student s1 = new Student { Id = 1, Name = "Diwas" };
+                            Student s2 = new Student { Id = 2, Name = "Subhum" };
+
+                            var s = new List&lt;Student> { s1, s2 };
+                            return s;
+                        }
+                    }
+
+                    public class StudentViewModel
+                    {
+                        public int Id { get; set; }
+                        public string Name { get; set; }
+                        public int SchoolId { get; set; }
+                        public int Age { get; set; }
+
+                    }
+                </code>
+            </pre>
+        </div>
+    </div>
+
+=============================================================================================
+<br>
+<h2>Queryable Extension </h2>
+
+<pre>
+    <code class="language-csharp">
+        using(MyDbContext context = new MyDbContext())
+        {
+            // Build a Select Expression from DTO
+            var destinations = context.Sources.ProjectToType&lt;Destination>().ToList();
+
+            // Versus creating by hand:  Not God
+            var destinations = context.Sources.Select(c => new Destination(){
+                Id = p.Id,
+                Name = p.Name,
+                Surname = p.Surname,
+                ....
+            })
+            .ToList();
+        }
+    </code>
+</pre>=
+=========================================================================================
+<h2>Mapping Poco Class</h2>
+<p><span style="font-size: 14pt;">Mapster can map <strong>2 different POCO types</strong> using the following rules</span></p>
+<ul>
+<li><span style="font-size: 14pt;">Source and destination property names are the same. Ex:&nbsp;<span style="color: #ff00ff;"><strong><code>dest.Name = src.Name</code></strong></span></span></li>
+<li><span style="font-size: 14pt;">Source has get method. Ex:&nbsp;<span style="color: #ff00ff;"><strong><code>dest.Name = src.GetName()</code></strong></span></span></li>
+<li><span style="font-size: 14pt;">Source property has child object which can flatten to destination. Ex:<strong><span style="color: #ff00ff;">&nbsp;<code>dest.ContactName = src.Contact.Name</code>&nbsp;</span></strong>or<span style="color: #ff00ff;"><strong>&nbsp;<code>dest.Contact_Name = src.Contact.Name</code></strong></span></span></li>
+</ul>
+<pre>
+    <code class="language-csharp">
+        class Staff {
+            public string Name { get; set; }
+            public int GetAge() { return (DateTime.Now - this.BirthDate).TotalDays / 365.25; }
+            public Staff Supervisor { get; set; }
+            ...
+        }
+        
+        struct StaffDto {
+            public string Name { get; set; }
+            public int Age { get; set; }
+            public string SupervisorName { get; set; }
+        }
+        
+        var dto = TypeAdapter.Adapt<Staff, StaffDto>(staff);  
+        //dto.Name = staff.Name,
+        // dto.Age = staff.GetAge(),
+        // dto.SupervisorName = staff.Supervisor.Name
+    </code>
+</pre>
+
+<h2>Best Sites: https://devhub.io/repos/eswann-Mapster#MappingNew</h2>
+    <script src="js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+    </body>
+    </html>

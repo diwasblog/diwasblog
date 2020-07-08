@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/bootstrap-grid.css">
+  <link rel="stylesheet" href="css/bootstrap-reboot.css">
+  <link rel="stylesheet" href="css/dracula.css">
+  <link rel="stylesheet" href="css/dracula-prism.css">
+  <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+
+
+
+
+  =======================================================================================================
+  That’s because the default character set for most browsers doesn’t accommodate these “special” characters. To fix
+  this, specify a UTF-8 character encoding by adding a meta element with a charset attribute to the head
+  Remove utf-8 staff from head section and look on internet explorer we willnot understand
+  those langauge.
+  <div class="row">
+    <div class='col-lg-6'>
+      <pre class="limit-15">
+          <code class='language-html'>  
+              &lt;head>
+              &lt;meta charset='UTF-8'/>
+              &lt;/head>
+            
+              &lt;ol>
+              &lt;li>bir&lt;/li>
+              &lt;li>iki&lt;/li>
+              &lt;li>üç&lt;/li>
+              &lt;li>dört&lt;/li>
+              &lt;li>  सबैलाई नमस्कार&lt;/li>
+              &lt;/ol>
+          </code>
+         </pre>
+    </div>
+
+    <div class='col-lg-6'>
+      <html>
+
+      <head>
+
+      </head>
+
+      <body>
+        <ol>
+          <li>bir</li>
+          <li>iki</li>
+          <li>üç</li>
+          <li>dört</li>
+          <li> सबैलाई नमस्कार</li>
+        </ol>
+      </body>
+
+      </html>
+    </div>
+  </div>
+
+
+  ======================================================================================================
+
+  <script src="js/prism.js"></script>
+  <script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+      {
+        'remove-trailing': true,
+        'remove-indent': true,
+        'left-trim': true,
+        'right-trim': true,
+        // 'break-lines': 10,
+        // 'indent': 2,
+        // 'remove-initial-line-feed': false,
+        // 'tabs-to-spaces': 4,
+        // 'spaces-to-tabs': 4
+      });
+  </script>
+</body>
+
+</html>

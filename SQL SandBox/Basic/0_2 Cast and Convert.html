@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../css/dracula.css">
+    <link rel="stylesheet" href="../css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+  </head>
+  <body>
+    <p><span style="color: #333333; font-size: 14pt;">CAST And CONVERT&nbsp;&nbsp;function in SQL converts data from one data typeto another.</span>
+
+      <h2><span style="color: #ff00ff;"><strong>Are Cast and Convert Different?</strong></span></h2>
+      <div class="row">
+        <div class="col-lg-6">
+          <pre>
+          <code class="language-sql">
+          CAST (expression AS [data type])
+          //
+          CAST ( expression AS data_type [ ( length ) ] )
+
+          </code>
+          </pre> 
+        </div>
+
+        <div class="col-lg-6">
+          <pre>
+          <code class="language-sql">
+            CONVERT (expression, [data type])
+            //In Advance
+            CONVERT ( data_type [ ( length ) ] , expression [ , style ] )
+          </code>
+          </pre> 
+        </div>
+      </div>
+=========================================================================================
+<h2>Example</h2>
+
+
+<div class="row">
+       
+        <div class="col-lg-8">
+           <h2>Student_Score Table</h2>
+<table class="content" border="1">
+<tbody>
+<tr style="background-color: black; color: white;">
+<td>Column Name</td>
+<td>Data Type</td>
+</tr>
+<tr>
+<td>StudentID</td>
+<td>integer</td>
+</tr>
+<tr>
+<td>First_Name</td>
+<td>char(20)</td>
+</tr>
+<tr>
+<td>Score</td>
+<td>float</td>
+</tr>
+</tbody>
+</table>
+          
+        </div>
+
+        <div class="col-lg-4">
+          <h2>Student_Score Data</h2>
+          <table class="content" border="1" cellspacing="0" cellpadding="2">
+<tbody>
+<tr style="background-color: black; color: white;">
+<td align="center">StudentID</td>
+<td align="right">First_Name</td>
+<td align="right">Score</td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="right">Jenny</td>
+<td align="right">85.2</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="right">Bob</td>
+<td align="right">92.5</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="right">Alice</td>
+<td align="right">90</td>
+</tr>
+<tr>
+<td align="center">4</td>
+<td align="right">James</td>
+<td align="right">120.1</td>
+</tr>
+</tbody>
+</table>
+
+        </div>
+      </div>
+
+
+ <div class="row">
+        <div class="col-lg-8">
+          ===============================
+          <br>
+          Using CAST
+          <pre>
+          <code class="language-sql">
+
+          SELECT First_Name, CAST(Score AS Integer) Int_Score FROM Student_Score;
+          </code>
+          </pre> 
+
+          Using CONVERT
+          <pre>
+          <code class="language-sql">
+            SELECT First_Name, CONVERT(Score, Integer) Int_Score FROM Student_Score;
+          </code>
+          </pre> 
+        </div>
+
+        <div class="col-lg-4">
+          ================================
+          <br>
+          Same Output For Both
+          <table border="1">
+<tbody>
+<tr style="background-color:black;color:white">
+<td align="right"><u>First_Name</u></td>
+<td align="right"><u>Int_Score</u></td>
+</tr>
+<tr>
+<td align="right">Jenny</td>
+<td align="right">85</td>
+</tr>
+<tr>
+<td align="right">Bob</td>
+<td align="right">92</td>
+</tr>
+<tr>
+<td align="right">Alice</td>
+<td align="right">90</td>
+</tr>
+<tr>
+<td align="right">James</td>
+<td align="right">120</td>
+</tr>
+</tbody>
+</table>
+</div>
+        </div>
+      </div>
+
+=========================================================================================
+<p><span style="color: #000000;"><strong><span style="font-size: 14pt;">The following are the differences between the 2 functions.</span><br />1.&nbsp;Cast&nbsp;is based on ANSI standard and&nbsp;Convert&nbsp;is specific to SQL Server. So, if&nbsp;portability&nbsp;is a concern and i<span style="color: #ff00ff;">f you want to use the script with other&nbsp;database applications, use&nbsp;Cast().&nbsp;</span><br />2.&nbsp;Convert&nbsp;provides&nbsp;more flexibility&nbsp;than&nbsp;Cast. For example, it's possible to control how you want DateTime datatypes to be converted using styles&nbsp;with convert function.<br /><br /><span style="color: #ff0000;">The general guideline is to use&nbsp;CAST(), unless you want to take advantage of the style functionality in&nbsp;CONVERT().</span>
+
+  ====================================================================================
+
+
+
+    <script src="../js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

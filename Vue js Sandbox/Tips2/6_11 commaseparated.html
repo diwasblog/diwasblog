@@ -1,0 +1,83 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+
+  <xmp class="prettyprint">
+
+      <input type="hidden" id="tagIds" name="tagIds" value="" />
+
+
+      vm.selectedTags.forEach(function (key) {
+        temp = temp + key.id + ",";
+    })
+
+    document.getElementById("tagIds").value = temp;
+  </xmp>
+
+
+  getting tag from here
+  <xmp class="prettyprint">
+      <multiselect v-model="selectedTags"
+      id="ajax"
+      label="name"
+      track-by="id"
+      placeholder="Type to search"
+      open-direction="bottom"
+      :options="tagData"
+      :multiple="true"
+      :searchable="true"
+      :loading="isLoading"
+      :internal-search="false"
+      :clear-on-select="false"
+      :close-on-select="true"
+      :options-limit="300"
+      :limit="3"
+      :limit-text="limitText"
+      :max-height="600"
+      :show-no-results="false"
+      :hide-selected="true" @@search-change="asyncFindTag">
+<template slot="clear" slot-scope="props">
+ <div class="multiselect__clear" v-if="tagData.length" @@mousedown.prevent.stop="clearAll(props.search)"></div>
+</template><span slot="noResult">Oops! No elements found. Consider changing the search query.</span>
+</multiselect>
+
+multiselect.css 
+
+components: { Multiselect },
+
+asyncFindTag(query) {
+  let vm = this;
+  vm.isLoading = true
+  axios.get("/admin/api/tag/search?searchText="+query)
+      .then(function (response) {
+          if (response.data.result) {
+              vm.tagData = [];
+              vm.tagData = response.data.result;
+              vm.isLoading = false
+          }
+          else {
+              vm.isLoading = false;
+          }
+      })
+      .catch(function (error) {
+          alert(error);
+      })
+  </xmp>
+  </body>
+  </html>

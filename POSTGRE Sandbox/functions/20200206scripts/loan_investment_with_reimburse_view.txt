@@ -1,0 +1,71 @@
+-- View: loan.loan_investement_with_reimburse
+
+-- DROP VIEW loan.loan_investement_with_reimburse;
+
+CREATE OR REPLACE VIEW loan.loan_investement_with_reimburse AS
+ SELECT lg.office_id,
+    lg.loan_id,
+    lg.customer_id,
+    lg.issue_date,
+    lg.loan_account_number,
+    c.customer_name,
+    c.permanent_address,
+    c.contact_number,
+    p.loan_product_name,
+    t.book_name,
+    lg.annual_interest_rate,
+    lg.interest_fine,
+    lg.penalty_rate,
+    lg.i_discount_rate,
+    lg.p_discount_rate,
+    lg.loan_duration,
+    lg.sanctioned_amount,
+    td.debit AS investment,
+        CASE
+            WHEN lg.is_flat = true THEN 'flat'::text
+            ELSE 'Diminishing'::text
+        END AS int_calc_method,
+    lg.is_auto_payment,
+    c.unit_name,
+    oc.collector_name
+   FROM transactions.transactions t
+     JOIN transactions.transaction_details td ON t.tran_id = td.tran_id
+     JOIN loan.loan_grant lg ON td.loan_id = lg.loan_id
+     JOIN loan.loan_products p ON lg.loan_product_id = p.loan_product_id
+     JOIN core.customers_view c ON lg.customer_id = c.customer_id
+     JOIN office.collectors oc ON lg.collector_id = oc.collector_id
+  WHERE (t.book_name::text = ANY (ARRAY['LoanIssue'::character varying::text, 'LoanReimburse'::character varying::text])) AND td.debit IS NOT NULL
+UNION ALL
+ SELECT lg.office_id,
+    lg.loan_id,
+    lg.customer_id,
+    lg.issue_date,
+    lg.loan_account_number,
+    c.customer_name,
+    c.permanent_address,
+    c.contact_number,
+    p.loan_product_name,
+    'Old Loan'::character varying AS book_name,
+    lg.annual_interest_rate,
+    lg.interest_fine,
+    lg.penalty_rate,
+    lg.i_discount_rate,
+    lg.p_discount_rate,
+    lg.loan_duration,
+    lg.sanctioned_amount,
+    lg.old_amount AS investment,
+        CASE
+            WHEN lg.is_flat = true THEN 'flat'::text
+            ELSE 'Diminishing'::text
+        END AS int_calc_method,
+    lg.is_auto_payment,
+    c.unit_name,
+    oc.collector_name
+   FROM loan.loan_grant lg
+     JOIN loan.loan_products p ON lg.loan_product_id = p.loan_product_id
+     JOIN core.customers_view c ON lg.customer_id = c.customer_id
+     JOIN office.collectors oc ON lg.collector_id = oc.collector_id
+  WHERE lg.old_loan = true;
+
+ALTER TABLE loan.loan_investement_with_reimburse
+    OWNER TO postgres;
