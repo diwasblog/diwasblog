@@ -6,33 +6,38 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
-    <link rel="stylesheet" href="../Ef/css/bootstrap.css">
-    <link rel="stylesheet" href="../Ef/css/bootstrap-grid.css">
-    <link rel="stylesheet" href="../Ef/css/bootstrap-reboot.css">
-    <link rel="stylesheet" href="../Ef/css/dracula.css">
-    <link rel="stylesheet" href="../Ef/css/dracula-prism.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula-prism.css">
     <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
 </head>
 
 <body>
-    <p><span style="font-size: 24pt;">View Concept in Depth</span></p>
-    <ul>
-        <li><span style="font-size: 14pt;">View are just saved SQL queries or stored queries or virtual tables. </span>
-        </li>
-        <li><span style="font-size: 14pt;">It doesn't contain any data like other physical tables.</span></li>
-        <li><span style="font-size: 14pt;">Just like a real table, a view consists of rows and columns.</span></li>
-        <li><span style="font-size: 14pt;">The fields in a view are from one or more real tables in the database.</span>
-        </li>
-        <li><span style="font-size: 14pt;">It is called virtual tables because you can call view as like table: select *
-                from my_first_view</span></li>
-    </ul>
-    <p><span style="font-size: 24pt;">What is saved SQL queries?</span></p>
-    <p><strong><span style="font-size: 14pt; color: #e03e2d;">Means it only store query on the
-                database.&nbsp;</span></strong></p>
-    <p><span style="font-size: 14pt;">suppose your view is like this:</span></p>
+
+    <body>
+        <p><span style="font-size: 24pt;">View Concept in Depth</span></p>
+        <ul>
+            <li><span style="font-size: 14pt;">View are just saved SQL queries or stored queries or virtual tables.
+                </span>
+            </li>
+            <li><span style="font-size: 14pt;">It doesn't contain any data like other physical tables.</span></li>
+            <li><span style="font-size: 14pt;">Just like a real table, a view consists of rows and columns.</span></li>
+            <li><span style="font-size: 14pt;">The fields in a view are from one or more real tables in the
+                    database.</span>
+            </li>
+            <li><span style="font-size: 14pt;">It is called virtual tables because you can call view as like table:
+                    select *
+                    from my_first_view</span></li>
+        </ul>
+        <p><span style="font-size: 24pt;">What is saved SQL queries?</span></p>
+        <p><strong><span style="font-size: 14pt; color: #e03e2d;">Means it only store query on the
+                    database.&nbsp;</span></strong></p>
+        <p><span style="font-size: 14pt;">suppose your view is like this:</span></p>
 
 
-    <pre>
+        <pre>
         <code class="language-sql">
             create view   my_first_view as(  
                 select * from student  where id =45
@@ -40,53 +45,58 @@
         </code>
     </pre>
 
-    <p><span style="font-size: 14pt;">then this query is stored in a database like other data in the database. Look
-            below:</span></p>
-    <table style="border-collapse: collapse; width: 9.73404%;" border="1">
-        <tbody>
-            <tr>
-                <td style="width: 100%;"><strong><span style="color: #000000;">create view as</span></strong></td>
-            </tr>
-            <tr>
-                <td style="width: 100%;"><strong><span style="color: #000000;">select *</span></strong></td>
-            </tr>
-            <tr>
-                <td style="width: 100%;"><strong><span style="color: #000000;">from student</span></strong></td>
-            </tr>
-            <tr>
-                <td style="width: 100%;"><strong><span style="color: #000000;">where</span></strong></td>
-            </tr>
-            <tr>
-                <td style="width: 100%;"><strong><span style="color: #000000;">id = 45</span></strong></td>
-            </tr>
-        </tbody>
-    </table>
-    <p>&nbsp;</p>
+        <p><span style="font-size: 14pt;">then this query is stored in a database like other data in the database. Look
+                below:</span></p>
+        <table style="border-collapse: collapse; width: 9.73404%;" border="1">
+            <tbody>
+                <tr>
+                    <td style="width: 100%;"><strong><span style="color: #000000;">create view as</span></strong></td>
+                </tr>
+                <tr>
+                    <td style="width: 100%;"><strong><span style="color: #000000;">select *</span></strong></td>
+                </tr>
+                <tr>
+                    <td style="width: 100%;"><strong><span style="color: #000000;">from student</span></strong></td>
+                </tr>
+                <tr>
+                    <td style="width: 100%;"><strong><span style="color: #000000;">where</span></strong></td>
+                </tr>
+                <tr>
+                    <td style="width: 100%;"><strong><span style="color: #000000;">id = 45</span></strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <p>&nbsp;</p>
 
-    <p><span style="font-size: 18pt;">When you&nbsp;<code>SELECT</code> from a view as <span
-                style="color: #e03e2d;"><strong>select * from my_first_view</strong></span> , <strong>the database has
-                to run the query stored in the database view to get the result each time to set to use in your
-                statement</strong>. The&nbsp;data you 'see' in a view, is not actually stored anywhere and is
-            <strong><span style="color: #e03e2d;">generated from the tables on the fly.</span></strong></span></p>
-    <p>&nbsp;</p>
-    <p><span style="font-size: 18pt;">Note: When someone<strong><span style="color: #e03e2d;">
-                    add/update/delete</span></strong> data from <strong><span style="color: #f1c40f;">student
-                    table</span></strong> then also you will get modified or updated data from the my_first_view()
-            views.</span></p>
-    <p>&nbsp;</p>
-    <hr>
-    <p><strong><span style="font-size: 24pt; color: #e03e2d;">Why View?</span></strong></p>
-    <p><span style="font-size: 18pt;">The purpose of creating views is to make sure that the user does not have access
-            to all the data and is being restricted through a view. Views can be used as a mechanism to implement
-            <strong>row and column level security</strong>.</span></p>
-    <p><span style="font-size: 18pt; color: #e03e2d;"><strong>Row Level Security:</strong></span><br /><span
-            style="font-size: 18pt;">For example, I want an end-user, to have access only to IT Department employees. If
-            I grant him access to the underlying tblEmployees and tblDepartments tables, he will be able to see, every
-            department employee. To achieve this, I can create a view, which returns only IT Department employees, and
-            grant the user access to the view and not to the underlying table. </span></p>
-    <p>&nbsp;</p>
+        <p><span style="font-size: 18pt;">When you&nbsp;<code>SELECT</code> from a view as <span
+                    style="color: #e03e2d;"><strong>select * from my_first_view</strong></span> , <strong>the database
+                    has
+                    to run the query stored in the database view to get the result each time to set to use in your
+                    statement</strong>. The&nbsp;data you 'see' in a view, is not actually stored anywhere and is
+                <strong><span style="color: #e03e2d;">generated from the tables on the fly.</span></strong></span></p>
+        <p>&nbsp;</p>
+        <p><span style="font-size: 18pt;">Note: When someone<strong><span style="color: #e03e2d;">
+                        add/update/delete</span></strong> data from <strong><span style="color: #f1c40f;">student
+                        table</span></strong> then also you will get modified or updated data from the my_first_view()
+                views.</span></p>
+        <p>&nbsp;</p>
+        <hr>
+        <p><strong><span style="font-size: 24pt; color: #e03e2d;">Why View?</span></strong></p>
+        <p><span style="font-size: 18pt;">The purpose of creating views is to make sure that the user does not have
+                access
+                to all the data and is being restricted through a view. Views can be used as a mechanism to implement
+                <strong>row and column level security</strong>.</span></p>
+        <p><span style="font-size: 18pt; color: #e03e2d;"><strong>Row Level Security:</strong></span><br /><span
+                style="font-size: 18pt;">For example, I want an end-user, to have access only to IT Department
+                employees. If
+                I grant him access to the underlying tblEmployees and tblDepartments tables, he will be able to see,
+                every
+                department employee. To achieve this, I can create a view, which returns only IT Department employees,
+                and
+                grant the user access to the view and not to the underlying table. </span></p>
+        <p>&nbsp;</p>
 
-    <pre>
+        <pre>
     <code class="language-sql">
         Create View vWEmployeesNonConfidentialData as (
             as
@@ -99,36 +109,38 @@
 
 </pre>
 
-    <hr>
-    <p><strong><span style="font-size: 18pt;">Very Important Note:</span></strong></p>
-    <ul>
-        <li>&nbsp;If the <strong><span style="color: #e03e2d;">update </span></strong>you made to<strong><span
-                    style="color: #e03e2d;"> underlying table</span></strong>s is adding or deleting Data, then the view
-            is <strong><span style="color: #e03e2d;">auto-updated with the new data</span></strong>.&nbsp;</li>
-        <li>&nbsp;If you<span style="color: #e03e2d;"><strong> add or delete the columns </strong></span>from the <span
-                style="color: #e03e2d;"><strong>underlying tables</strong></span>, then you need to run
-            <code>sp_RefreshView</code> a stored procedure to reflect the <strong><span style="color: #e03e2d;">new
-                    schema in your view.</span></strong></li>
-        <pre>
+        <hr>
+        <p><strong><span style="font-size: 18pt;">Very Important Note:</span></strong></p>
+        <ul>
+            <li>&nbsp;If the <strong><span style="color: #e03e2d;">update </span></strong>you made to<strong><span
+                        style="color: #e03e2d;"> underlying table</span></strong>s is adding or deleting Data, then the
+                view
+                is <strong><span style="color: #e03e2d;">auto-updated with the new data</span></strong>.&nbsp;</li>
+            <li>&nbsp;If you<span style="color: #e03e2d;"><strong> add or delete the columns </strong></span>from the
+                <span style="color: #e03e2d;"><strong>underlying tables</strong></span>, then you need to run
+                <code>sp_RefreshView</code> a stored procedure to reflect the <strong><span style="color: #e03e2d;">new
+                        schema in your view.</span></strong></li>
+            <pre>
                             <code class="language-sql">
                                     exec sp_refreshview @viewname
                             </code>
                         </pre>
-        <li>&nbsp;If you<span style="color: #e03e2d;">Each time you execute a SELECT query using the view, the data is
-                rebuilt, so it is always up-to-date.It is not a frozen copy stored at the time the view was created.
-        </li>
+            <li>&nbsp;If you<span style="color: #e03e2d;">Each time you execute a SELECT query using the view, the data
+                    is
+                    rebuilt, so it is always up-to-date.It is not a frozen copy stored at the time the view was created.
+            </li>
 
-    </ul>
+        </ul>
 
-    <pre>
+        <pre>
         <code class="language-sql">
             CREATE OR REPLACE VIEW view_name AS 
                 Select query
         </code>
     </pre>
-    <hr>
-    <h2>Create into View</h2>
-    <pre>
+        <hr>
+        <h2>Create into View</h2>
+        <pre>
         <code class="language-sql">
                 CREATE VIEW north_america_customers AS
                 SELECT *
@@ -138,8 +150,8 @@
     </pre>
 
 
-    <h2>Insert into View</h2>
-    <pre>
+        <h2>Insert into View</h2>
+        <pre>
         <code class="language-sql">
                
 INSERT INTO north_america_customers
@@ -149,26 +161,30 @@ VALUES ('CFDCM','Catfish Dot Com','Will Bunker','President','Old Country Road','
         </code>
     </pre>
 
-    <h2>Updateable View ( For insert, update and delete in View)</h2>
+        <h2>Updateable View ( For insert, update and delete in View)</h2>
 
-    <h2 id="exam6">When can a view be updated?</h2>
-    <p><strong>1</strong>. The view is defined based on one and only one table.</p>
-    <p><strong>2</strong>. The view must include the <strong><span style="color: #e03e2d;">PRIMARY KEY</span></strong>
-        of the table based upon which the view has been created.</p>
-    <p><strong>3</strong>. The view <strong><span style="color: #e03e2d;">should not</span></strong> have any field made
-        with <strong><span style="color: #e03e2d;">aggregate </span></strong>functions.</p>
-    <p><strong>4</strong>. The view <strong><span style="color: #e03e2d;">must not</span></strong> have any
-        <strong><span style="color: #e03e2d;">DISTINCT </span></strong>clause in its definition.</p>
-    <p><strong>5</strong>. The view <strong><span style="color: #e03e2d;">must not</span></strong> have <strong><span
-                style="color: #e03e2d;">any GROUP BY or HAVING clause</span></strong> in its definition.</p>
-    <p><strong>6</strong>. The view <strong><span style="color: #e03e2d;">must not</span></strong> have any
-        <strong><span style="color: #e03e2d;">SUBQUERIES </span></strong>in its definitions.</p>
-    <p><strong>7</strong>. If the view you want to update is based upon another view, the later should be updatable.</p>
-    <p><strong>8</strong>. Any of the selected output fields (of the view) <strong><span style="color: #e03e2d;">must
-                not</span></strong> use <strong><span style="color: #e03e2d;">constants, strings or value
-                expressions</span></strong>.</p>
-    <h2>Update into View</h2>
-    <pre>
+        <h2 id="exam6">When can a view be updated?</h2>
+        <p><strong>1</strong>. The view is defined based on one and only one table.</p>
+        <p><strong>2</strong>. The view must include the <strong><span style="color: #e03e2d;">PRIMARY
+                    KEY</span></strong>
+            of the table based upon which the view has been created.</p>
+        <p><strong>3</strong>. The view <strong><span style="color: #e03e2d;">should not</span></strong> have any field
+            made
+            with <strong><span style="color: #e03e2d;">aggregate </span></strong>functions.</p>
+        <p><strong>4</strong>. The view <strong><span style="color: #e03e2d;">must not</span></strong> have any
+            <strong><span style="color: #e03e2d;">DISTINCT </span></strong>clause in its definition.</p>
+        <p><strong>5</strong>. The view <strong><span style="color: #e03e2d;">must not</span></strong> have
+            <strong><span style="color: #e03e2d;">any GROUP BY or HAVING clause</span></strong> in its definition.</p>
+        <p><strong>6</strong>. The view <strong><span style="color: #e03e2d;">must not</span></strong> have any
+            <strong><span style="color: #e03e2d;">SUBQUERIES </span></strong>in its definitions.</p>
+        <p><strong>7</strong>. If the view you want to update is based upon another view, the later should be updatable.
+        </p>
+        <p><strong>8</strong>. Any of the selected output fields (of the view) <strong><span
+                    style="color: #e03e2d;">must
+                    not</span></strong> use <strong><span style="color: #e03e2d;">constants, strings or value
+                    expressions</span></strong>.</p>
+        <h2>Update into View</h2>
+        <pre>
         <code class="language-sql">
                
                 UPDATE north_america_customers SET fax='555-333-4141' WHERE customerid='CFDCM';
@@ -176,8 +192,8 @@ VALUES ('CFDCM','Catfish Dot Com','Will Bunker','President','Old Country Road','
     </pre>
 
 
-    <h2>Update into View</h2>
-    <pre>
+        <h2>Update into View</h2>
+        <pre>
         <code class="language-sql">
 
                 DELETE FROM north_america_customers WHERE customerid='CFDCM';
@@ -188,22 +204,21 @@ VALUES ('CFDCM','Catfish Dot Com','Will Bunker','President','Old Country Road','
 
 
 
-
-    <script src="../Ef/js/prism.js"></script>
-    <script type="text/javascript">
-        Prism.plugins.NormalizeWhitespace.setDefaults(
-            {
-                'remove-trailing': true,
-                'remove-indent': true,
-                'left-trim': true,
-                'right-trim': true,
-                // 'break-lines': 10,
-                // 'indent': 2,
-                // 'remove-initial-line-feed': false,
-                // 'tabs-to-spaces': 4,
-                // 'spaces-to-tabs': 4
-            });
-    </script>
-</body>
+        <script src="../ASP Sandbox/js/prism.js"></script>
+        <script type="text/javascript">
+            Prism.plugins.NormalizeWhitespace.setDefaults(
+                {
+                    'remove-trailing': true,
+                    'remove-indent': true,
+                    'left-trim': true,
+                    'right-trim': true,
+                    // 'break-lines': 10,
+                    // 'indent': 2,
+                    // 'remove-initial-line-feed': false,
+                    // 'tabs-to-spaces': 4,
+                    // 'spaces-to-tabs': 4
+                });
+        </script>
+    </body>
 
 </html>

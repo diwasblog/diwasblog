@@ -6,15 +6,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
-    <link rel="stylesheet" href="../Ef/css/bootstrap.css">
-    <link rel="stylesheet" href="../Ef/css/bootstrap-grid.css">
-    <link rel="stylesheet" href="../Ef/css/bootstrap-reboot.css">
-    <link rel="stylesheet" href="../Ef/css/dracula.css">
-    <link rel="stylesheet" href="../Ef/css/dracula-prism.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula-prism.css">
     <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
 </head>
 
 <body>
+
     <h2> all databases and their sizes</h2>
     <div class="row">
         <div class="col-lg-6">
@@ -83,7 +84,17 @@ ORDER BY pg_relation_size(C.oid) DESC
     </code>
 </pre>
 
-    <script src="../EF/js/prism.js"></script>
+
+    <hr>
+    <h2>Getting All Function of Database</h2>
+    <pre>
+    <code class="language-csharp">
+SELECT pg_get_functiondef(p.oid) FROM pg_proc p
+INNER JOIN pg_namespace ns ON p.pronamespace = ns.oid
+WHERE ns.nspname = 'public';
+    </code>
+</pre>
+    <script src="../ASP Sandbox/js/prism.js"></script>
     <script type="text/javascript">
         Prism.plugins.NormalizeWhitespace.setDefaults(
             {

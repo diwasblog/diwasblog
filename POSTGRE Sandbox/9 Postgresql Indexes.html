@@ -3,67 +3,74 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
-    <link rel="stylesheet" href="../Ef/css/bootstrap.css">
-    <link rel="stylesheet" href="../Ef/css/bootstrap-grid.css">
-    <link rel="stylesheet" href="../Ef/css/bootstrap-reboot.css">
-    <link rel="stylesheet" href="../Ef/css/dracula.css">
-    <link rel="stylesheet" href="../Ef/css/dracula-prism.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula-prism.css">
     <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
-  </head>
-  <body>
-<p><span style="font-size: 24pt; color: #000000;"><strong>Why Indexes?</strong></span></p>
-<p><span style="font-size: 18pt;">Indexes are <span style="color: #000000;"><strong>used by queries to find data from tables quickly.</strong></span></span></p>
-<p><span style="font-size: 18pt;">Indexes are created on tables and views. Index on a table or a view is very similar to an index that we find in a book.</span></p>
-<p><span style="font-size: 18pt;">If you don't have an index, and I ask you to locate a specific chapter in the book, you will have to look at every page starting from the first page of the book.</span></p>
-<p><span style="font-size: 18pt;">On, other hands, if you have the index, you look up the page number of the chapter in the index, and then directly go to that page number to locate the chapter.</span></p>
-<p><span style="font-size: 18pt;">If there is no index to help the query, then the query engine checks every row in the table from the beginning</span></p>
-<p><span style="font-size: 18pt;">to the end. This is called a Table Scan. Table Scan is bad for performance.</span></p>
+</head>
+
+<body>
+    <p><span style="font-size: 24pt; color: #000000;"><strong>Why Indexes?</strong></span></p>
+    <p><span style="font-size: 18pt;">Indexes are <span style="color: #000000;"><strong>used by queries to find data
+                    from tables quickly.</strong></span></span></p>
+    <p><span style="font-size: 18pt;">Indexes are created on tables and views. Index on a table or a view is very
+            similar to an index that we find in a book.</span></p>
+    <p><span style="font-size: 18pt;">If you don't have an index, and I ask you to locate a specific chapter in the
+            book, you will have to look at every page starting from the first page of the book.</span></p>
+    <p><span style="font-size: 18pt;">On, other hands, if you have the index, you look up the page number of the chapter
+            in the index, and then directly go to that page number to locate the chapter.</span></p>
+    <p><span style="font-size: 18pt;">If there is no index to help the query, then the query engine checks every row in
+            the table from the beginning</span></p>
+    <p><span style="font-size: 18pt;">to the end. This is called a Table Scan. Table Scan is bad for performance.</span>
+    </p>
 
 
-<h4>On "employees" table create create index on employeeid</h4>
+    <h4>On "employees" table create create index on employeeid</h4>
 
-<pre>
+    <pre>
     <code class="language-sql">
         CREATE UNIQUE INDEX idx_employees_employeeid
         ON employees (employeeid)
     </code>
 </pre>
 
-Output:
-<img src="https://i.ibb.co/ypZKjcV/index-1.png">
+    Output:
+    <img src="https://i.ibb.co/ypZKjcV/index-1.png">
 
-<h4>On "order" table create index on two field customerid and orderid</h4>
+    <h4>On "order" table create index on two field customerid and orderid</h4>
 
-<pre>
+    <pre>
     <code class="language-sql">
         CREATE UNIQUE INDEX idx_orders_customerid_orderid
         ON orders (customerid,orderid)
     </code>
 </pre>
-<br>
-<hr>
-<h4>Drop Index</h4>
+    <br>
+    <hr>
+    <h4>Drop Index</h4>
 
-<pre>
+    <pre>
     <code class="language-sql">
         DROP INDEX idx_employees_employeeid
     </code>
 </pre>
-<hr>
-<h4>Lets Test Performance</h4>
+    <hr>
+    <h4>Lets Test Performance</h4>
 
-1)Just creating table performance_test
-<pre>
+    1)Just creating table performance_test
+    <pre>
     <code class="language-sql">     
 create table performance_test(
     id serial,
     location text)
     </code>
 </pre>
-<hr>
-2)Insert random data in it.
+    <hr>
+    2)Insert random data in it.
 
-<pre>
+    <pre>
     <code class="language-sql">    
         
         Insert into performance_test (location)
@@ -73,22 +80,22 @@ create table performance_test(
         select 'Sikkim,India' from generate_series(1,5000000)
     </code>
 </pre>
-<hr>
-Lets use explain to look result
-<pre>
+    <hr>
+    Lets use explain to look result
+    <pre>
     <code class="language-sql">
             explain select * from performance_test where id = 2000000
     </code>
 </pre>
-Output: Here , we are performing general sequential search
-<br>
-<img src="https://i.ibb.co/8z1gcVq/index-2.png">
+    Output: Here , we are performing general sequential search
+    <br>
+    <img src="https://i.ibb.co/8z1gcVq/index-2.png">
 
-<br>
-<hr>
-Now, Lets use indexing and look the result
+    <br>
+    <hr>
+    Now, Lets use indexing and look the result
 
-<pre>
+    <pre>
         <code class="language-sql">
                 CREATE UNIQUE INDEX idx_performance_test_id
                 ON performance_test (id)
@@ -105,7 +112,7 @@ Now, Lets use indexing and look the result
     Output: Here , we are performing index scan and look at rate scan , it is too fast then above sequential scan
     <br>
     <img src="https://i.ibb.co/Bs9sYBw/index-3.png">
-    
+
     <br>
 
 
@@ -128,7 +135,21 @@ Now, Lets use indexing and look the result
 
 
 
-
-
+    <script src="../ASP Sandbox/js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+    </script>
 </body>
+
 </html>
