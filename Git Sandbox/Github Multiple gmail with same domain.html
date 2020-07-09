@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../Ef/css/bootstrap.css">
+    <link rel="stylesheet" href="../Ef/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../Ef/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../Ef/css/dracula.css">
+    <link rel="stylesheet" href="../Ef/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+    <!DOCTYPE html>
+    <html>
+
+    <head>
+    </head>
+
+    <body>
+        <p><span style="font-size: 18pt;"><span style="color: #000000;">Windows Credential Manager Store password based
+                    on <strong><span style="color: #e03e2d;">domain </span></strong>and Domain for both</span> <span
+                    style="color: #169179;"><strong>git:https://privateuser@github.com </strong></span>and <span
+                    style="color: #000000;"><span
+                        style="color: #169179;"><strong>git:https://workuser@github.com</strong></span> is the same.
+                    Both have domain</span> <span style="color: #169179;"><strong>github.com.</strong></span></span></p>
+        <p>&nbsp;</p>
+        <p><span style="font-size: 18pt;"><span style="color: #169179;"><strong>Solution for storing multiple Github
+                        Account</strong></span></span></p>
+        <p><span style="font-size: 18pt; color: #000000;"><strong>1) First Delete Existing Github Account From Windows
+                    Credential Manager</strong></span></p>
+        <p>Go to&nbsp;<code>Windows Credential Manager</code>, open the&nbsp;<code>Windows Credentials</code>&nbsp;tab,
+            locate&nbsp;<code>git:<a href="https://github.com">https://github.com</a></code>, open the entry, and
+            click&nbsp;<code>Remove</code>.</p>
+        <p><img src="https://res.cloudinary.com/practicaldev/image/fetch/s--Mcgd267w--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://thepracticaldev.s3.amazonaws.com/i/3xrbl69zb6tzlq9fdcvv.png"
+                alt="" width="544" height="495" /></p>
+        <p>Here we have git:https://github.com , just click on red rectangle and click on remove link.&nbsp;</p>
+        <hr />
+        <p style="text-align: justify;"><span style="font-size: 18pt;">Why So?</span></p>
+        <p style="text-align: justify;"><span style="font-size: 18pt; color: #000000;">Because when you try to store two
+                github repos using two credentials. Say : One Github repo with <a style="color: #000000;"
+                    href="mailto:poudel.diwas777@gmail.com">poudel.diwas777@gmail.com</a> and another has Github repo
+                with <a style="color: #000000;" href="mailto:poudel.diwas789@gmail.com">poudel.diwas789@gmail.com</a>
+                then Say your first github repo in your computer is set to <a style="color: #000000;"
+                    href="mailto:poudel.diwas777@gmail.com">poudel.diwas777@gmail.com</a> and it will set in
+                git:https://github.com by default and when you try to push second github with <a style="color: #000000;"
+                    href="mailto:poudel.diwas789@gmail.com">poudel.diwas789@gmail.com</a> then you may get&nbsp; error
+                like this:</span></p>
+        <pre><span style="color: #000000; font-size: 18pt;"><strong><code>fatal: <span style="color: #2dc26b;">Authentication failed</span> for https://www.github.com/name/repo.git</code></strong></span></pre>
+        <p><span style="font-size: 18pt;">So , We are deleting default : git:https://github.com</span></p>
+        <hr />
+        <p><span style="color: #000000;"><strong><span style="font-size: 18pt;">2 )To recognize two separate accounts
+                        from the same URL for Credential Manager</span></strong></span></p>
+
+        Open Command Prompt and type:
+        <pre>
+    <code class="language-csharp">
+        git config --global credential.github.com.useHttpPath true
+        </code>
+        
+</pre>
+
+        <p><span style="color: #000000;"><strong><span style="font-size: 18pt;">For getting windows credential manager
+                        to recognize two separate accounts from the same URL.</span></strong></span></p>
+        <hr />
+        <p><span style="color: #000000;"><strong><span style="font-size: 18pt;">3)Reauthenticate</span></strong></span>
+        </p>
+        <p><span style="color: #000000; font-size: 18pt;">Just work on your project. Whenever GitHub asks you for your
+                credentials, just type your username and password. Windows will store them and you never ever have to
+                provide them again for this repo.</span></p>
+        <p><span style="color: #000000; font-size: 18pt;">.&nbsp; </span></p>
+    </body>
+
+    </html>
+    <br>
+    ==========================================================================
+    <script src="../EF/js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+    </script>
+</body>
+
+</html>
