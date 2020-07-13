@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../css/dracula.css">
+    <link rel="stylesheet" href="../css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+<style>
+    kbd {
+        background: black
+    }
+</style>
+
+</style>
+
+
+
+<p><span style="text-decoration: underline; color: #e03e2d;"><span style="font-size: 24pt;"><strong>Project
+                Setup</strong></span></span></p>
+<p><span style="font-size: 18pt;">1) <span style="color: #000000;"><strong>new project</strong></span> &gt;&gt;
+        <strong><span style="color: #000000;">Asp.net core web application</span> </strong>&gt;&gt;
+        <strong><span style="color: #000000;">Web Application</span> </strong>(Model- View - Controller
+        ))&nbsp;</span></p>
+<p><span style="font-size: 18pt;">&nbsp; &nbsp;I am going to create a web API, but creating an MVC web
+        application because I need a <span style="color: #e03e2d;"><strong>Data folder</strong></span> of MVC
+        web application(which is not available in web API project)&nbsp; so that we can create<strong><span
+                style="color: #000000;"> aspnet</span></strong> table.</span></p>
+<p><br /><span style="font-size: 18pt;">2 ) set <span style="color: #000000;"><strong>Authentication
+                Mode</strong></span> to <span style="color: #000000;"><strong>Individual
+                Mode</strong></span></span></p>
+<p><br /><span style="font-size: 18pt;">3) <span style="color: #000000;"><strong>Configure
+                Https</strong></span>: <span style="color: #000000;"><strong>yes</strong></span></span></p>
+<p><span style="color: #000000; font-size: 18pt;"><strong>then the project is successfully
+            created.</strong></span></p>
+<h2>Final Folder Structure</h2>
+<img src="https://i.ibb.co/hLfz3Rz/fullfolderstructure.jpg">
+<h2>4. Add Swagger ASp.net core</h2>
+
+<h2>Create <span style="color:red">Options</span> folder then <span style="color:red">SwaggerOptions.cs</span> inside
+    Options folder</h2>
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <h4>SwaggerOptions.cs</h4>
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+                using System;
+                using System.Collections.Generic;
+                using System.Linq;
+                using System.Threading.Tasks;
+                
+                namespace TweekBook.Options
+                {
+                    public class SwaggerOptions
+                    {
+                        public string JsonRoute { get; set; }
+                        public string Description { get; set; }
+                        public string UiEndPoint { get; set; }
+                    }
+                }
+                
+                
+            </code>
+        </pre>
+    </div>
+
+
+</div>
+
+
+<h2>5.Open appSettting.json and then Add swagger like below</h2>
+
+<div class="row">
+    <div class="col-lg-12">
+        <h4>SwaggerOptions.cs</h4>
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+                {
+                    "ConnectionStrings": {
+                      "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=aspnet-TweekBook-362F3B7B-0ECD-45B3-9843-418FE349D324;Trusted_Connection=True;MultipleActiveResultSets=true"
+                    },
+                    <kbd>
+                    "SwaggerOptions": {
+                      "JsonRoute": "swagger/{documentName}/swagger.json",
+                      "Description": "Our API",
+                      "UIEndpoint": "v1/swagger.json"
+                    },</kbd>
+                    "Logging": {
+                      "LogLevel": {
+                        "Default": "Warning"
+                      }
+                    },
+                    "AllowedHosts": "*"
+                  }
+                  
+            </code>
+        </pre>
+    </div>
+
+
+</div>
+
+
+
+
+<h2>6. Create Db and MVC Installer</h2>
+
+<h2>Create Installer folder then Inside that DbInstaller.cs, MvcInstaller.cs,IInstaller.cs , InstallerExtension.cs
+</h2>
+<hr>
+<h2>DbInstaller.cs</h2>
+<pre>
+        <code class="language-csharp">
+            namespace TweekBook.Installers
+{
+    public class DbInstaller : IInstaller
+    {
+        public void InstallServices(IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddDbContext&lt;ApplicationDbContext>(options =>
+                options.UseSqlServer(
+                    configuration.GetConnectionString("DefaultConnection")));
+            services.AddDefaultIdentity&lt;IdentityUser>()
+                .AddEntityFrameworkStores&lt;ApplicationDbContext>();
+        }
+    }
+}
+        </code>
+    </pre>
+
+<hr>
+
+<h2>MvcInstaller.cs</h2>
+<pre>
+    <code class="language-csharp">
+        namespace TweekBook.Installers
+        {
+            public class MvcInstaller : IInstaller
+            {
+               public void InstallServices(IServiceCollection services, IConfiguration Configuration)
+                {
+                    services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+        
+                    services.AddSwaggerGen();
+                }
+            }
+        }
+        
+    </code>
+</pre>
+
+
+<hr>
+
+<h2>IInstaller.cs</h2>
+<pre>
+    <code class="language-csharp">
+
+        namespace TweekBook.Installers
+        {
+            public interface IInstaller
+            {
+                void InstallServices(IServiceCollection services, IConfiguration configuration);
+            }
+        }
+        
+        
+    </code>
+</pre>
+
+<hr>
+
+<h2>InstallerExtension.cs</h2>
+<pre>
+    <code class="language-csharp">
+        namespace TweekBook.Installers
+        {
+            public static class InstallerExtensions
+            {
+                public static void InstallServicesInAssembly(this IServiceCollection services,IConfiguration configuration)
+                {
+                    var installers = typeof(Startup).Assembly.ExportedTypes.Where(x =>
+                         typeof(IInstaller).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract)
+                        .Select(Activator.CreateInstance).Cast&lt;IInstaller>().ToList();
+
+
+            // First Highlight : Select All Installer (MVC and Db in mycase)
+            //Second Hightlight : Create Instance of It
+            //Third Hightlight : Cast those instance as Interface
+        
+                    installers.ForEach(installer => installer.InstallServices(services, configuration));
+                }
+            }
+        }
+        
+    </code>
+</pre>
+
+
+<hr>
+<h2>7. Startup.cs File</h2>
+<div class="row">
+    <div class="col-lg-12">
+        <h4>SwaggerOptions.cs</h4>
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+                namespace TweekBook
+                {
+                    public class Startup
+                    {
+                        public Startup(IConfiguration configuration)
+                        {
+                            Configuration = configuration;
+                        }
+                
+                        public IConfiguration Configuration { get; }
+                
+                        // This method gets called by the runtime. Use this method to add services to the container.
+                        public void ConfigureServices(IServiceCollection services)
+                        {
+                            <kbd>
+                            services.InstallServicesInAssembly(Configuration);
+                        </kbd>
+                        }
+                
+                        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+                        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+                        {
+                            if (env.IsDevelopment())
+                            {
+                                app.UseDeveloperExceptionPage();
+                                app.UseDatabaseErrorPage();
+                            }
+                            else
+                            {
+                                app.UseExceptionHandler("/Home/Error");
+                                
+                                app.UseHsts();
+                            }
+                
+                
+                
+                            app.UseHttpsRedirection();
+                            app.UseStaticFiles();
+                            app.UseAuthentication();
+                            
+                            <kbd>
+                            var swaggerOptions = new SwaggerOptions();
+                            Configuration.GetSection(nameof(SwaggerOptions)).Bind(swaggerOptions);
+                
+                            app.UseSwagger(option => { option.RouteTemplate = swaggerOptions.JsonRoute; });
+                
+                            app.UseSwaggerUI(option =>
+                            {
+                                option.SwaggerEndpoint(swaggerOptions.UiEndPoint, swaggerOptions.Description);
+                            });
+                        </kbd>
+                
+                
+                            app.UseMvc();
+                        }
+                    }
+                }
+                
+            </code>
+        </pre>
+    </div>
+</div>
+
+<hr>
+<h2>8. Create Contract Folder</h2> <br>
+<hr>
+<h2>9. Create V1 folder inside Contract</h2> <br>
+
+<h2>Contract/V1/ApiRoutes.cs</h2>
+<h2>10. ApiRoutes.cs</h2>
+
+
+<pre>
+    <code class="language-csharp">
+        namespace TweekBook.Contracts.V1
+        {
+            public static class ApiRoutes
+            {
+                public const string Root = "api";
+                public const string Version = "v1";
+                public const string Base = Root + "/" + Version;
+        
+                public static class Posts
+                {
+                    public const  string GetAll =Base + "/" + "posts";
+                    public const string Create = Base + "/posts";
+                    public const string Get = Base + "/posts/{postId}";
+                    public const string Update = Base + "/posts/{postId}";
+                    public const string Delete = Base + "/posts/{postId}";
+                }
+        
+            }
+        }
+        
+    </code>
+</pre>
+
+
+<hr>
+
+<h2>11. Create Domain Folder</h2>
+<h2>12. Create post.cs inside Domain Folder</h2>
+
+Post.cs
+<pre>
+    <code class="language-csharp">
+namespace TweekBook.Domain
+{
+    public class Post
+    {
+        [Key]
+        public Guid Id { get; set; }
+
+        [MaxLength(50,ErrorMessage ="Cannot be less than 50")]
+        public string Name { get; set; }
+    }
+}
+
+    </code>
+</pre>
+<hr>
+
+<h2>13. Create Services Folder </h2>
+<h2>14. Create IPostService.cs</h2>
+IPostService.cs
+
+<pre>
+<code class="language-csharp">
+    namespace TweekBook.Services
+    {
+       public interface IPostService
+        {
+            Task&lt;Post> GetPostByIdAsync(Guid postId);
+            Task&lt;List&lt;Post>> GetPostsAsync();
+    
+            Task&lt;bool> CreatePostAsync(Post post);
+            Task&lt;bool> UpdatePostAsync(Post postToUpdate);
+    
+            Task&lt;bool> DeletePostAsync(Guid postId);
+            
+    
+        }
+    }
+    
+    
+</code>
+</pre>
+
+<hr>
+<h2>15. Create PostService.cs inside Services Folder</h2>
+<pre>
+    <code class="language-csharp">
+        namespace TweekBook.Services
+        {
+            public class PostService : IPostService
+            {
+        
+                private readonly ApplicationDbContext _dbContext;
+        
+                public PostService(ApplicationDbContext dbContext)
+                {
+                    _dbContext = dbContext;
+                }
+                
+        
+                public async Task&lt;Post> GetPostByIdAsync(Guid postId)
+                {
+                    return await _dbContext.Posts.SingleOrDefaultAsync(x => x.Id == postId);
+                }
+        
+                   public async Task&lt;List&lt;Post>> GetPostsAsync()
+                    {
+                    return await _dbContext.Posts.ToListAsync();
+                    }
+        
+        
+                public async Task&lt;bool> CreatePostAsync(Post post)
+                {
+                    await _dbContext.Posts.AddAsync(post);
+                    var created = await _dbContext.SaveChangesAsync();
+                    return created > 0;
+                }
+        
+                public async  Task&lt;bool> UpdatePostAsync(Post postToUpdate)
+                {
+                    _dbContext.Posts.Update(postToUpdate);
+                    var updated = await _dbContext.SaveChangesAsync();
+                    return updated > 0;
+        
+                }
+        
+                public async Task&lt;bool> DeletePostAsync(Guid postId)
+                {
+                    var post =await GetPostByIdAsync(postId);
+                    if (post == null)
+                        return false;
+                    _dbContext.Posts.Remove(post);
+                  
+                    var deleted = await _dbContext.SaveChangesAsync();
+                    return deleted > 0;
+                }
+            }
+        }
+        
+
+    </code>
+</pre>
+<hr>
+
+<h2>16. Create V1 folder inside Controller</h2>
+<h2>16. Create Request Folder</h2>
+<h2>17. Inside Request folder create : CreatePostRequest.cs</h2>
+
+CreatePostRequest.cs
+<pre>
+    <code class="language-csharp">
+        namespace TweekBook.Controllers.V1.Requests
+        {
+            public class CreatePostRequest
+            {
+                public string  Name { get; set; }
+            }
+        }
+        
+    </code>
+</pre>
+
+<h2>17. Inside Request folder create : UpdatePostRequest.cs</h2>
+
+UpdatePostRequest.cs
+<pre>
+    <code class="language-csharp">
+        namespace TweekBook.Controllers.V1.Requests
+        {
+            public class UpdatePostRequest
+            {
+                public string Name { get; set; }
+            }
+        }
+        
+    </code>
+</pre>
+
+
+<h2>18. Create Response Folder</h2>
+<h2>19. Inside Response folder create : PostResponse.cs</h2>
+
+CreatePostRequest.cs
+<pre>
+    <code class="language-csharp">
+
+        namespace TweekBook.Controllers.V1.Response
+        {
+            public class PostResponse
+            {
+                public Guid Id { get; set; }
+            }
+        }
+        
+    </code>
+</pre>
+
+
+<h2>20. Create PostsController.cs inside Controller</h2>
+<pre>
+    <code class="language-csharp">
+
+        namespace TweekBook.Controllers.V1
+        {
+            public class PostsController : Controller
+            {
+        
+        
+                private readonly IPostService _postService;
+        
+                public PostsController(IPostService postService)
+                {
+                    _postService = postService;
+                }
+        
+               [HttpGet(ApiRoutes.Posts.GetAll)]
+                public async Task&lt;IActionResult> Get()
+                {
+                    return Ok(await _postService.GetPostsAsync());
+                }
+        
+                [HttpGet(ApiRoutes.Posts.Get)]
+                public async Task&lt;IActionResult> Get([FromRoute] Guid postId)
+                {
+                    var post =await _postService.GetPostByIdAsync(postId);
+        
+                    if (post == null)
+                        return NotFound();
+        
+                    return Ok(post);
+                }
+        
+        
+        
+                [HttpPost(ApiRoutes.Posts.Create)]
+                public async Task&lt;IActionResult> CreateAsync([FromBody] CreatePostRequest postRequest)
+                {
+                    var post = new Post { Name = postRequest.Name };
+        
+        
+                   await _postService.CreatePostAsync(post);
+        
+                    var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
+                    var locationUrl = baseUrl + "/" + ApiRoutes.Posts.Get.Replace("{postId}", post.Id.ToString());
+        
+                    var response = new PostResponse { Id = post.Id };
+                    return Created(locationUrl,response);
+                }
+        
+        
+                [HttpPut(ApiRoutes.Posts.Update)]
+                public async Task&lt;IActionResult> Update([FromRoute] Guid postId, [FromBody]UpdatePostRequest request)
+                {
+                    var post = await _postService.GetPostByIdAsync(postId);
+                    post.Name = request.Name;
+
+                    var updated = await _postService.UpdatePostAsync(post);
+                    if (updated)
+                        return Ok(post);
+        
+                    return NotFound();
+                }
+        
+        
+                [HttpDelete(ApiRoutes.Posts.Delete)]
+                public async Task&lt;IActionResult> Delete([FromRoute] Guid postId)
+                {
+                    var deleted =await _postService.DeletePostAsync(postId);
+        
+                    if (deleted)
+                        return NoContent();    // Otherwise you can do return Ok()
+        
+                    return NotFound();
+        
+                }
+        
+            }
+        }
+        
+
+    </code>
+</pre>
+
+
+
+<h2>21. Add PostService in MvcInstaller.cs</h2>
+<div class="row">
+    <div class="col-lg-12">
+        <h4>SwaggerOptions.cs</h4>
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+                namespace TweekBook.Installers
+                {
+                    public class DbInstaller : IInstaller
+                    {
+                        public void InstallServices(IServiceCollection services, IConfiguration configuration)
+                        {
+                            services.AddDbContext&lt;ApplicationDbContext>(options =>
+                                options.UseSqlServer(
+                                    configuration.GetConnectionString("DefaultConnection")));
+                            services.AddDefaultIdentity&lt;IdentityUser>()
+                                .AddEntityFrameworkStores&lt;ApplicationDbContext>();
+                
+                            <kbd>
+                            services.AddScoped&lt;IPostService, PostService>();</kbd>
+                        }
+                    }
+                }
+                
+                
+            </code>
+        </pre>
+    </div>
+</div>
+
+
+
+<br>
+<hr>
+<h2>22. Now run Add Migration Command in package console</h2>
+<div class="row">
+    <div class="col-lg-4">
+        <pre>
+        <code class="language-csharp">
+            Add-Migration Initial Migration Added Posts
+        </code>
+    </pre>
+
+
+    </div>
+
+    <div class="col-lg-8">
+        <pre>
+        <code class="language-csharp">
+            namespace TweekBook.Data.Migrations
+{
+    public partial class Initial_Migration_Added_Posts : Migration
+    {
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.CreateTable(
+                name: "Posts",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(maxLength: 50, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Posts", x => x.Id);
+                });
+
+                // Here we have Primary Key because we are having Key in Id in Posts Domain Model 
+
+               // [Key]
+               // public Guid Id { get; set; }
+
+               //Here we are having Name of maxLength = 50 because we are having below in Posts Model
+
+              // [MaxLength(50,ErrorMessage ="Cannot be less than 50")]
+              // public string Name { get; set; }
+
+            
+        }
+
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "Posts");
+        }
+    }
+}
+
+        </code>
+    </pre>
+    </div>
+</div>
+
+<hr>
+<h2>Migration Folder looks like this:</h2>
+<div class="row">
+    <div class="col-lg-6">
+        <img src="https://i.ibb.co/w4Ddzq8/migration.jpg">
+
+    </div>
+    <div class="col-lg-6">
+        Here, we have two migration <br>
+        1) 0000000000_Create_Identity_Schema <br>
+        2) 20200711052831_Initial_Migration_Added_Posts
+
+        1) It contain all identity tables
+        2) It contains currently added Posts Data
+    </div>
+</div>
+
+<br>
+<h2>Update Migration</h2>
+Add Migration Just create folder in project with migration as shown above and when we run Update Migration then will
+get same in database.
+<pre>
+    <code class="language-csharp">
+        Update-Database
+    </code>
+
+</pre>
+Then will have Posts table in database as shown below
+<img src="https://i.ibb.co/zmg0hxT/indb.jpg">
+<hr>
+<h2>23. Then Use localhost//swagger and test all those get, update, add and delete api</h2>
+
+
+
+<br>
+<h2>Description</h2>
+<p>In http/1.0 there was just post, get, and head. But in Http/2.0, more others like PUT, PATCH was added.</p>
+<p>&nbsp;</p>
+<p><span style="font-size: 18pt; color: #000000;">For PUT/PATCH &nbsp;for updating the resource would be is <span
+            style="color: #2dc26b;"><strong>/api/cars/dealers/1</strong></span> where id is passed through URL and
+        other through the body.</span></p>
+
+<pre>
+                <code class="language-csharp">
+ public IActionResult PostData([FromRoute] int id ,[FromBody] Post post)
+{
+
+}
+                </code>
+            </pre>
+
+
+<p>&nbsp;</p>
+<p><span style="font-size: 18pt; color: #000000;">For POST, for updating resource would be <span
+            style="color: #2dc26b;"><strong>/api/cars/dealerupdates</strong></span> where id and other data are
+        passed through the body.</span></p>
+
+
+<pre>
+        <code class="language-csharp">
+            public IActionResult PostData([FromBody] Post post)
+
+            {
+            
+            }
+        </code>
+    </pre>
+
+<p><span style="font-size: 18pt;">but universally for <span style="color: #e03e2d;">Insert</span>, we use <span
+            style="color: #e03e2d;">Post Request</span> and <span style="color: #e03e2d;">for Update</span>, we use
+        <span style="color: #e03e2d;">Put request</span>. So, making consistent and following proper REST we follow
+        this principle.&nbsp;</span></p>
+
+<hr />
+<br>
+<h2>POST</h2>
+<br>
+<span style="font-size: 18pt;">Ideally, when we POST a request, the server creates the resource and responds back
+    with a URI to access that resource </span>
+<p><span style="font-size: 18pt; color: #000000;">For example, when you want to create a new article you would POST
+        to&nbsp;<strong><span style="color: #e03e2d;"><em>/articles</em></span></strong>&nbsp;to make the file and
+        get the URI, so you end up with&nbsp;<span
+            style="color: #e03e2d;"><strong><em>/articles/1234/</em>.&nbsp;</strong></span></span></p>
+<br>
+<h2>PUT</h2>
+<br>
+<p><span style="font-size: 18pt; color: #000000;">For PUT, we have to <strong><span style="color: #2dc26b;">send the
+                request with the URI</span></strong>. If that resource is not found, then it will be created and
+        responded back with the same URI or else if present, the resource is updated.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 18pt; color: #000000;">One more thing we have to maintain while doing a PUT request is to
+        send a complete request, meaning with all its parameters to maintain idempotency, but in POST, we can send
+        the partial resource to update it but with the resource identifier. </span></p>
+<p>&nbsp;</p>
+
+
+<p><strong><span style="font-size: 18pt; color: #e03e2d;">Note :</span></strong></p>
+<ul>
+    <li><span style="font-size: 18pt; color: #000000;">One more thing we have to maintain while doing a PUT request
+            is <strong><span style="color: #e03e2d;">to send a complete request, meaning with all its parameters to
+                    maintain idempotency</span></strong></span></li>
+    <li><span style="font-size: 18pt; color: #000000;">But in POST, we can send the<span
+                style="color: #e03e2d;"><strong> partial resource to update</strong></span> it but <strong><span
+                    style="color: #e03e2d;">with the resource identifier</span></strong>. </span></li>
+</ul>
+
+
+<pre>
+    <code class="language-csharp">
+        // We have to send all to maintain idempotency
+PUT /my-name/12
+{
+id: 12,
+first_name: 'SovanUpdated',
+last_name: 'MisraUpdated',
+place: 'Hyderabad'
+}
+    </code>
+</pre>
+
+
+
+<pre>
+    <code class="language-csharp">
+//In Post we can do partial Update
+        POST /my-name/12
+        {
+        id: 12,
+        first_name: 'SovanUpdated'
+        }
+    </code>
+</pre>
+
+
+<pre>
+    <code class="language-csharp">
+//But For Doing Partial Update we Use PATCH method
+        PATCH /my-name/12
+        {
+        id: 12,
+        first_name: 'SovanUpdated'
+        }
+    </code>
+</pre>
+
+
+<h2><span style="font-size: 18pt; color: #000000;"><strong>Summary</strong></span></h2>
+<p><span style="font-size: 18pt; color: #000000;">Use POST w<strong><span style="color: #2dc26b;">hen we do not know
+                how to identify the resource </span></strong>and<strong><span style="color: #2dc26b;"> let the
+                identifier be generated by the system</span></strong>
+        (&nbsp;<code>HTTP POST /resources</code>&nbsp;) and let the user know that the resource has been created by
+        sending "<strong>201 Created</strong>" along with the URI to access the resource
+        (&nbsp;<code><a style="color: #000000;" href="http://localhost:8080/resources/" aria-invalid="true">http://localhost:8080/resources/</a></code>&nbsp;).
+        The POST request can also be used to partially<strong>*</strong>&nbsp;update the resource by passing
+        resource identifier and respond back with "<strong>200 Ok</strong>"</span></p>
+<p><span style="font-size: 18pt; color: #000000;">Use PUT when <strong><span style="color: #2dc26b;">we have the
+                resource identifier known</span></strong> (&nbsp;<code>HTTP PUT /resources/12 </code>) so the system
+        will create with that and respond back with URI with that identifier
+        (&nbsp;<code><a style="color: #000000;" href="http://localhost:8080/resources/" aria-invalid="true">http://localhost:8080/resources/</a>&nbsp;</code>).</span>
+</p>
+<p><span style="font-size: 18pt; color: #000000;">The POST requests are non-idempotent and hence
+        are&nbsp;<em><strong>not</strong>&nbsp;cached by default,&nbsp;</em>and to do so, we have to explicitly set
+        the caching in the headers. So be wise in choosing&nbsp;the request type.</span></p>
+<p><span style="font-size: 18pt; color: #000000;">NB: *Partial Updates can also be done by PATCH, which is also
+        non-idempotent, but this is not made a standard yet.</span></p>
+
+
+<p><strong><span style="font-size: 24pt; color: #2dc26b;">Now to mark attendance, we&nbsp; we have two ways.&nbsp;
+        </span></strong></p>
+<h3>1. Send Student Attendance Information in Bulk Update Using POST METHOD</h3>
+<p><span style="font-size: 14pt;">If we want to send the list of student attendance details in one API call, then we
+        have to use POST API&nbsp;<code>/sessions/{session_id}/students</code>&nbsp;because few records are for
+        creating a new entry and few are to update the existing entry, and there is no unique identifier that can
+        represent all records present in the request. So for such bulk API calls, the POST method is the only
+        option.</span></p>
+<h3>2. Send Each Student's Attendance Information Using a Separate API Call</h3>
+<p><span style="font-size: 14pt;">You can say that we should send each student record using a separate API call
+        (which would cause unnecessary network calls, but let's ignore that for now).
+        POST&nbsp;<code>/sessions/{session_id}/students/{student_id}</code>for creating attendance and
+        PUT&nbsp;<code>/sessions/{session_id}/students/{student_id}/attendances/{attendance_id}</code>&nbsp;for
+        updating attendance. But have you observed the GET API response object (mentioned above)? We do not have any
+        &nbsp;<code>attendance_id&nbsp;</code><span id="_tmp_pre_3">-</span>related information in that, so we don't
+        have any way to identify the resource uniquely.&nbsp;</span></p>
+<p><span style="font-size: 14pt;">You can argue that&nbsp;<code>attendance_id</code><span id="_tmp_pre_4">&nbsp;should
+            be present in the GET API, but there would be many cases where would not
+            have control of the&nbsp;GET API contract. Your job would be to parse the data that you are already
+            getting and use that to send information to the server.&nbsp;</span></span></p>
+
+<script src="../js/prism.js"></script>
+<script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true,
+            // 'break-lines': 10,
+            // 'indent': 2,
+            // 'remove-initial-line-feed': false,
+            // 'tabs-to-spaces': 4,
+            // 'spaces-to-tabs': 4
+        });
+
+
+    (function () {
+        if (!self.Prism) {
+            return;
+        }
+
+        var div = document.createElement('div');
+
+        Prism.hooks.add('before-highlight', function (env) {
+            var elt = env.element;
+            if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                elt = elt.parentNode;
+            }
+            var tags = elt.getAttribute('data-keep-tags');
+            if (!tags) {
+                return;
+            }
+            var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+            env.keepTags = true;
+            env.keepTagsPlaceholder = placeholder;
+
+            tags = tags.split(/\s*,\s*/).join('|');
+            var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+            env.keepTagsRegex = tags_regex;
+
+            env.tokenStack = [];
+            env.backupCode = env.code;
+
+            var code = env.element.innerHTML;
+            code = code.replace(tags_regex, function (match) {
+                env.tokenStack.push(match);
+                return placeholder.replace('{n}', env.tokenStack.length);
+            });
+            env.element.innerHTML = code;
+            code = env.element.textContent;
+            code = code.replace(/^(?:\r?\n|\r)/, '');
+
+            env.code = code;
+        });
+
+        Prism.hooks.add('after-highlight', function (env) {
+            if (!env.keepTags) {
+                return;
+            }
+            for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                    div.innerHTML = inside;
+                    inside = div.textContent;
+                    return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                });
+
+                env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                env.element.innerHTML = env.highlightedCode;
+            }
+        });
+
+    }());
+
+    Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+        v.classList.add("language-sql");
+    });
+    Prism.highlightAll();
+
+</script>
+</body>
+
+</html>

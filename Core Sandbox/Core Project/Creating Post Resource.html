@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+<style>
+    kbd {
+        background: black
+    }
+</style>
+
+
+<p><span style="font-size: 18pt;"><span style="color: #000000;"><strong><code>Startup.cs</code></strong></span> <span
+            style="color: #000000;">is the class which allows us to configure our <span
+                style="color: #2dc26b;">pipeline, middleware, and register our services</span>. Here we do clean code
+            and maintainability.</span></span></p>
+<p><span style="font-size: 18pt;"><span style="color: #000000;">Here, we will transfer <strong><span
+                    style="color: #2dc26b;">Iconfiguration </span></strong>and <strong><span
+                    style="color: #2dc26b;">IServiceCollection </span></strong>of <strong><span
+                    style="color: #2dc26b;">ConfigureServices() </span></strong>of <span
+                style="color: #e03e2d;"><strong>Startup.</strong><strong>c</strong>s</span> to a new file.</span></span>
+</p>
+
+<div class="row">
+    <div class="col-lg-8">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+                using Microsoft.AspNetCore.Mvc;
+                using System;
+                using System.Collections.Generic;
+                using System.Linq;
+                using System.Threading.Tasks;
+                using TweekBook.Contracts.V1;
+                using TweekBook.Domain;
+                
+                namespace TweekBook.Controllers.V1
+                {
+                    public class PostsController : Controller
+                    {
+                        private List&lt;Post> _posts;
+                
+                        public PostsController()
+                        {
+                            _posts = new List&lt;Post>();
+                            for (int i = 0; i < 5; i++)
+                            {
+                                _posts.Add(new Post { Id = Guid.NewGuid().ToString() });
+                            }
+                        }
+                
+                
+                       [HttpGet(ApiRoutes.Posts.GetAll)]
+                        public IActionResult Get()
+                        {
+                            return Ok(_posts);
+                        }
+                
+                        <kbd>
+                        [HttpPost(ApiRoutes.Posts.Create)]
+                        public IActionResult Create([FromBody] Post post)
+                        {
+                            if (string.IsNullOrEmpty(post.Id))
+                            {
+                                post.Id = Guid.NewGuid().ToString();
+                            }
+                            _posts.Add(post);
+                
+                            var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
+                            var locationUrl = baseUrl + "/" + ApiRoutes.Posts.Get.Replace("{postId}", post.Id);  // return url of created resource
+                            return Created(locationUrl,post);  // We create resource 
+                        }
+                    </kbd>
+                    }
+                }
+                
+            </code>
+        </pre>
+    </div>
+    <div class="col-lg-4">
+        Here we are posting using Domain Model Post . And we are creating a resource so we do two things mainly:
+        <br>
+        => return Created with locationUrl of currently created resource and Actual object
+    </div>
+
+</div>
+
+
+<h2>Here we are using Domain Model, so replace it with other</h2>
+<div class="row">
+    <div class="col-lg-6">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+TweetBookV2
+    Connection Services
+    Dependencies
+    ....
+    Properties
+    ....
+    wwwroot
+    Contracts
+      V1
+       <kbd>Requests
+          CreatePostRequest.cs   
+       Response
+          PostResponse.cs</kbd>
+        ApiRoutes.cs
+    Controllers
+      V1
+        PostsController.cs
+    Data  
+       Migration Folder
+    Domain
+       Posts.cs
+    Installer
+        IInstaller.cs</kbd>
+    Options
+        SwaggerOptions.cs
+    appSettings.json
+    Program.cs
+    Startup.cs    
+            </code>
+                </pre>
+    </div>
+
+    <div class="col-lg-6">
+        <h2>CreatePostRequest.cs</h2>
+        <pre>
+            <code class="language-csharp">
+    namespace TweekBook.Controllers.V1.Requests
+    {
+        public class CreatePostRequest
+        {
+            public Guid Id { get; set; }
+        }
+    }
+    
+            </code>
+        </pre>
+
+        <h2>PostResponse.cs</h2>
+        <pre>
+            <code class="language-csharp">
+               
+namespace TweekBook.Controllers.V1.Response
+{
+    public class PostResponse
+    {
+        public Guid Id { get; set; }
+    }
+}
+
+                
+            </code>
+        </pre>
+    </div>
+</div>
+
+<h2>Now PostController.cs changed as </h2>
+
+<h2>Here we are using Domain Model, so replace it with other</h2>
+<div class="row">
+    <div class="col-lg-6">
+        <h1>From</h1>
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+namespace TweekBook.Controllers.V1
+{
+    public class PostsController : Controller
+    {
+        private List&lt;Post> _posts;
+
+        public PostsController()
+        {
+            _posts = new List&lt;Post>();
+            for (int i = 0; i < 5; i++)
+            {
+                _posts.Add(new Post { Id = Guid.NewGuid() });
+            }
+        }
+
+
+        [HttpGet(ApiRoutes.Posts.GetAll)]
+        public IActionResult Get()
+        {
+            return Ok(_posts);
+        }
+
+        
+        [HttpPost(ApiRoutes.Posts.Create)]
+        public IActionResult Create([FromBody] <kbd> Post post </kbd>)
+        {
+            if (string.IsNullOrEmpty(post.Id.ToString()))
+            {
+                post.Id = Guid.NewGuid();
+            }
+            _posts.Add(post);
+
+            var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
+            var locationUrl = baseUrl + "/" + ApiRoutes.Posts.Get.Replace("{postId}", post.Id.ToString());
+
+            return Created(locationUrl,<kbd>post</kbd>);
+        }
+    
+    }
+}
+            </code>
+                </pre>
+    </div>
+
+    <div class="col-lg-6">
+        <h1>To</h1>
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+namespace TweekBook.Controllers.V1
+{
+    public class PostsController : Controller
+    {
+        private List&lt;Post> _posts;
+
+        public PostsController()
+        {
+            _posts = new List&lt;Post>();
+            for (int i = 0; i < 5; i++)
+            {
+                _posts.Add(new Post { Id = Guid.NewGuid() });
+            }
+        }
+
+
+        [HttpGet(ApiRoutes.Posts.GetAll)]
+        public IActionResult Get()
+        {
+            return Ok(_posts);
+        }
+
+        
+        [HttpPost(ApiRoutes.Posts.Create)]
+        public IActionResult Create([FromBody] <kbd>CreatePostRequest postRequest </kbd>)
+        {
+            <kbd>
+            var post = new Post { Id = postRequest.Id };
+            </kbd>
+            if (string.IsNullOrEmpty(post.Id.ToString()))
+            {
+                post.Id = Guid.NewGuid();
+            }
+            _posts.Add(post);
+
+            var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
+            var locationUrl = baseUrl + "/" + ApiRoutes.Posts.Get.Replace("{postId}", post.Id.ToString());
+            <kbd>
+            var response = new PostResponse { Id = post.Id };
+            </kbd>
+            return Created(locationUrl,<kbd>response</kbd>);
+        }
+    
+    }
+}
+                
+            </code>
+        </pre>
+
+
+
+        </code>
+        </pre>
+    </div>
+</div>
+
+
+
+<h2>Getting Single Resource By Id</h2>
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+
+namespace TweekBook.Controllers.V1
+{
+    public class PostsController : Controller
+    {
+        private List&lt;Post> _posts;
+
+        public PostsController()
+        {
+            _posts = new List&lt;Post>();
+            for (int i = 0; i < 5; i++)
+            {
+                _posts.Add(new Post { 
+                    Id = Guid.NewGuid(),
+                    Name = $"PostName{i}"
+                });
+            }
+        }
+
+
+       [HttpGet(ApiRoutes.Posts.GetAll)]
+        public IActionResult Get()
+        {
+            return Ok(_posts);
+        }
+
+        <kbd>
+        [HttpGet(ApiRoutes.Posts.Get)]
+        public IActionResult Get([FromRoute] Guid postId)
+        {
+            var post = _posts.SingleOrDefault(x => x.Id == postId);
+
+            if (post == null)
+                return NotFound();
+
+            return Ok(post);
+        }
+    </kbd>
+    // In get by Id if resource isnot found then we return NotFound() else return just found object
+
+        [HttpPost(ApiRoutes.Posts.Create)]
+        public IActionResult Create([FromBody] CreatePostRequest postRequest)
+        {
+            var post = new Post { Id = postRequest.Id };
+
+            if (string.IsNullOrEmpty(post.Id.ToString()))
+            {
+                post.Id = Guid.NewGuid();
+            }
+            _posts.Add(post);
+
+            var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
+            var locationUrl = baseUrl + "/" + ApiRoutes.Posts.Get.Replace("{postId}", post.Id.ToString());
+
+            var response = new PostResponse { Id = post.Id };
+            return Created(locationUrl,response);
+        }
+    }
+}
+
+    </code>
+
+</pre>
+
+<script src="js/prism.js"></script>
+<script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true,
+            // 'break-lines': 10,
+            // 'indent': 2,
+            // 'remove-initial-line-feed': false,
+            // 'tabs-to-spaces': 4,
+            // 'spaces-to-tabs': 4
+        });
+
+
+    (function () {
+        if (!self.Prism) {
+            return;
+        }
+
+        var div = document.createElement('div');
+
+        Prism.hooks.add('before-highlight', function (env) {
+            var elt = env.element;
+            if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                elt = elt.parentNode;
+            }
+            var tags = elt.getAttribute('data-keep-tags');
+            if (!tags) {
+                return;
+            }
+            var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+            env.keepTags = true;
+            env.keepTagsPlaceholder = placeholder;
+
+            tags = tags.split(/\s*,\s*/).join('|');
+            var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+            env.keepTagsRegex = tags_regex;
+
+            env.tokenStack = [];
+            env.backupCode = env.code;
+
+            var code = env.element.innerHTML;
+            code = code.replace(tags_regex, function (match) {
+                env.tokenStack.push(match);
+                return placeholder.replace('{n}', env.tokenStack.length);
+            });
+            env.element.innerHTML = code;
+            code = env.element.textContent;
+            code = code.replace(/^(?:\r?\n|\r)/, '');
+
+            env.code = code;
+        });
+
+        Prism.hooks.add('after-highlight', function (env) {
+            if (!env.keepTags) {
+                return;
+            }
+            for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                    div.innerHTML = inside;
+                    inside = div.textContent;
+                    return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                });
+
+                env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                env.element.innerHTML = env.highlightedCode;
+            }
+        });
+
+    }());
+
+    Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+        v.classList.add("language-sql");
+    });
+    Prism.highlightAll();
+
+</script>
+</body>
+
+</html>

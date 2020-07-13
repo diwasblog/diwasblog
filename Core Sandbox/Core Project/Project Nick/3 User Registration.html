@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../css/dracula.css">
+    <link rel="stylesheet" href="../css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+<style>
+    kbd {
+        background: black
+    }
+</style>
+<img src="https://i.ibb.co/xFnC8YP/User-Registration.jpg">
+
+<h2>Domain/AuthenticationResult.cs</h2>
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+        namespace TweekBook.Domain
+        {
+            public class AuthenticationResult
+            {
+                public string Token { get; set; }
+                public bool Success { get; set; }
+                public IEnumerable&lt;string> Errors{ get; set; }
+            }
+        }
+        
+    </code>
+</pre>
+<hr>
+<h2>Services/IIdentityService.cs</h2>
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+        namespace TweekBook.Services
+        {
+            public interface IIdentityService
+            {
+                Task&lt;AuthenticationResult> RegisterAsync(string email, string password);
+            }
+        }
+        
+    </code>
+</pre>
+<hr>
+
+<h2>Services/IdentityService.cs</h2>
+<p style="text-align: left;"><span style="font-size: 18pt;"><span style="color: #000000;">The claims are an array
+            of</span><strong><span style="color: #000000;"><span style="color: #e03e2d;"> key-value
+                    pair</span>.</span></strong> <span style="color: #000000;">The keys may be values of a </span><span
+            style="color: #e03e2d;"><strong>JwtRegisteredClaimNames </strong></span><span
+            style="color: #000000;">structure (it provides names for </span><strong><span style="color: #000000;"><span
+                    style="color: #3598db;">public standardized claims </span>like <span
+                    style="color: #2dc26b;">birthday, email,Gender</span></span></strong>) <span
+            style="color: #000000;">or custom name&nbsp;(such as </span><span
+            style="color: #2dc26b;">"id"</span>&nbsp;<span style="color: #000000;">in above example). </span></span></p>
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+        
+        namespace TweekBook.Services
+        {
+            public class IdentityService : IIdentityService
+            {
+                private readonly UserManager&lt;IdentityUser> _userManager;
+                private readonly JwtSettings _jwtSettings;
+        
+                public IdentityService(UserManager&lt;IdentityUser> userManager, JwtSettings jwtSettings)
+                {
+                    _userManager = userManager;
+                    _jwtSettings = jwtSettings;
+                }
+        
+                public async Task&lt;AuthenticationResult> RegisterAsync(string email, string password)
+                {
+                    var existingUser = await _userManager.FindByEmailAsync(email);
+        
+                    // If user already exists 
+        
+                    if (existingUser != null)
+                    {
+                        return new AuthenticationResult
+                        {
+                            Errors = new[] { "User with this email address already exists" }
+                        };
+                    }
+        
+                    //If user not already exists move forward and create new identity with email and username
+                    var newUser = new IdentityUser
+                    {
+                        Email = email,
+                        UserName = email
+                    };
+        
+                    //Then create User
+                    // Here CreateAsync will automatically create hash of password and save into database
+                    var createdUser = await _userManager.CreateAsync(newUser, password);
+        
+                    //If user creation failed
+                    if (!createdUser.Succeeded)
+                    {
+                        return new AuthenticationResult
+                        {
+                            Errors = createdUser.Errors.Select(x => x.Description)
+                        };
+                    }
+        
+                    //Token Part Starts from Here>
+        
+                    return <kbd>GenerateAuthenticationResultForUser(newUser)</kbd>;
+        
+                }
+        
+                //Both Login and Registration User uses this
+                private AuthenticationResult <kbd>GenerateAuthenticationResultForUser(IdentityUser user)</kbd>
+                {
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
+                    var tokenDescripter = new SecurityTokenDescriptor
+                    {
+                        Subject = new ClaimsIdentity(new[] {
+        
+                            new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                            new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                            new Claim("id", user.Id)
+                        }),
+                        Expires = DateTime.UtcNow.AddHours(2),
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+        
+                    };
+        
+                    var token = tokenHandler.CreateToken(tokenDescripter);
+                    // Result of token:
+                    //{
+                    //    {"alg":"HS256","typ":"JWT"}.
+                    //    {"sub":"diwas@gmail.com","jti":"da1a4f37-ce60-4905-b9c8-b8be2764d4bf","email":"diwas@gmail.com","id":"f06c6719-633c-4b94-8478-ebea3ab106d0","nbf":1594481844,"exp":1594489021,"iat":1594481844}
+                    // }
+                    return new AuthenticationResult
+                    {
+                        Success = true,
+                        Token = tokenHandler.WriteToken(token)
+                    };
+                }
+            }
+        }
+        
+        
+        
+    </code>
+</pre>
+
+<p style="text-align: left;"><span style="font-size: 18pt;"><span style="color: #000000;">These claims can be used
+            to</span><span style="color: #3598db;"> filter the data.</span></span></p>
+<p style="text-align: left;">&nbsp;</p>
+
+If user is login/register then data then above 4 data are stored in claim and unless he logout he/she data will be claim
+So, we can access those claim data later
+as shown below.
+<pre>
+    <code class="language-csharp">
+        var currentUser = HttpContext.User;    
+    
+        if (currentUser.HasClaim(c => c.Email == "poudel.diwas777@gmail.com"))    
+        {  
+                .....
+    
+        }
+    </code>
+</pre>
+<hr>
+
+<h2>Request/ UserRegistrationRequest.cs</h2>
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+        namespace TweekBook.Controllers.V1.Requests
+        {
+            public class UserRegistrationRequest
+            {
+                [EmailAddress]
+                public string Email { get; set; }
+        
+                public string Password { get; set; }
+            }
+        }        
+    </code>
+</pre>
+
+
+<h2>Request/ AuthSuccessResponse.cs</h2>
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+        namespace TweekBook.Controllers.V1.Response
+        {
+            public class AuthSuccessResponse
+            {
+                public string  Token { get; set; }
+            }
+        }
+              
+    </code>
+</pre>
+<hr>
+<h2>Request/ AuthFailedResponse.cs</h2>
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+        namespace TweekBook.Controllers.V1.Response
+        {
+            public class AuthFailedResponse
+            {
+        
+                public IEnumerable&lt;string> Errors { get; set; }
+            }
+        }
+             
+    </code>
+</pre>
+
+
+<h2>V1/Controller/IdentityController.cs</h2>
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+        namespace TweekBook.Controllers.V1
+{
+    public class IdentityController:Controller
+    {
+        public readonly IIdentityService _identityService;
+
+        public IdentityController(IIdentityService identityService)
+        {
+            _identityService = identityService;
+        }
+
+        [HttpPost(ApiRoutes.Identity.Register)]
+        public async Task&lt;IActionResult> Register([FromBody] UserRegistrationRequest request)
+        {
+            
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new AuthFailedResponse
+                {
+                    Errors = ModelState.Values.SelectMany(x => x.Errors.Select(xx => xx.ErrorMessage))
+                });  
+            }
+
+
+            var authResponse = await _identityService.RegisterAsync(request.Email, request.Password);
+
+            if(!authResponse.Success)
+            {
+                return BadRequest(new AuthFailedResponse
+                {
+                    Errors = authResponse.Errors
+                });
+            }
+
+            return Ok(new AuthSuccessResponse
+            {
+                Token = authResponse.Token
+            });
+        }
+    }
+}
+</code>
+</pre>
+
+<h2>Installer/MvcInstaller.cs</h2>
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+        public class MvcInstaller : IInstaller
+        {
+           public void InstallServices(IServiceCollection services, IConfiguration configuration)
+            {
+                var jwtSettings = new JwtSettings();
+                configuration.Bind(nameof(jwtSettings), jwtSettings);
+                services.AddSingleton(jwtSettings);
+    
+               <kbd> services.AddScoped&lt;IIdentityService, IdentityService>();</kbd>
+    
+                services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+    
+                ....
+            }
+        }
+</code>
+</pre>
+
+<hr>
+<h4>Checking User Registration in swagger and when set email and password then user gets created and generate token as
+    shown below.</h4>
+<img src="https://i.ibb.co/FsxChPh/swaggeruserregistrationcombinign.jpg">
+
+
+<hr>
+<h2>Check what is in currently generated Token</h2>
+<img src="https://miro.medium.com/max/1094/1*jTGL1WxBSanVV1uAIAa17A.png">
+
+<h2>In Database</h2>
+<img src="https://i.ibb.co/Nsr10ds/userregistrationindb.jpg">
+
+
+<p id="fe2f" data-selectable-paragraph=""><span style="font-size: 18pt;">If at the Swagger UI, you click&nbsp;<span
+            style="color: #2dc26b;"><strong><code>Authorise</code></strong>&nbsp;</span>and write&nbsp;<strong><span
+                style="color: #2dc26b;"><code>Bearer&lt;space&gt;_paste token_</code></span>&nbsp;</strong>, you are
+        authorized.</span></p>
+<p id="b26f" data-selectable-paragraph=""><span style="font-size: 18pt;">Let&rsquo;s see right now how this works. If we
+        want every endpoint of the controller to be authorised, we can just add the&nbsp;<strong><span
+                style="color: #2dc26b;"><code>[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]</code></span></strong>&nbsp;on
+        the controller class.</span></p>
+<p id="fdff" data-selectable-paragraph=""><span style="font-size: 18pt;">If we now try to use the&nbsp;<strong><span
+                style="color: #2dc26b;"><code>/posts</code></span></strong>&nbsp;API without the token in our header, we
+        should get a&nbsp;<strong><span
+                style="color: #2dc26b;"><code>401 Unauthorised</code></span></strong>&nbsp;response</span></p>
+<p style="text-align: center;"><br /><br /></p>
+
+
+
+
+<br>
+<hr>
+<h2>Checking InValid Email</h2>
+As we have used EmailAddress DataAnnotation in UserRegistrationRequest.cs so , if passed invalid then will catched in
+Register Controller with ModelState
+
+<img src="https://i.ibb.co/89y0Kp0/envalid-email.jpg">
+
+
+
+
+
+<img src="https://miro.medium.com/max/1094/1*eujNHrxtpie_ywo8OFZk6w.png">
+
+
+<br>
+<h2>Check What is in Token</h2>
+Copy token and paste here:
+<img src="https://i.ibb.co/1Q2HXDq/jtwms.jpg">
+
+<script src="../js/prism.js"></script>
+<script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true,
+            // 'break-lines': 10,
+            // 'indent': 2,
+            // 'remove-initial-line-feed': false,
+            // 'tabs-to-spaces': 4,
+            // 'spaces-to-tabs': 4
+        });
+
+
+    (function () {
+        if (!self.Prism) {
+            return;
+        }
+
+        var div = document.createElement('div');
+
+        Prism.hooks.add('before-highlight', function (env) {
+            var elt = env.element;
+            if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                elt = elt.parentNode;
+            }
+            var tags = elt.getAttribute('data-keep-tags');
+            if (!tags) {
+                return;
+            }
+            var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+            env.keepTags = true;
+            env.keepTagsPlaceholder = placeholder;
+
+            tags = tags.split(/\s*,\s*/).join('|');
+            var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+            env.keepTagsRegex = tags_regex;
+
+            env.tokenStack = [];
+            env.backupCode = env.code;
+
+            var code = env.element.innerHTML;
+            code = code.replace(tags_regex, function (match) {
+                env.tokenStack.push(match);
+                return placeholder.replace('{n}', env.tokenStack.length);
+            });
+            env.element.innerHTML = code;
+            code = env.element.textContent;
+            code = code.replace(/^(?:\r?\n|\r)/, '');
+
+            env.code = code;
+        });
+
+        Prism.hooks.add('after-highlight', function (env) {
+            if (!env.keepTags) {
+                return;
+            }
+            for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                    div.innerHTML = inside;
+                    inside = div.textContent;
+                    return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                });
+
+                env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                env.element.innerHTML = env.highlightedCode;
+            }
+        });
+
+    }());
+
+    Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+        v.classList.add("language-sql");
+    });
+    Prism.highlightAll();
+
+</script>
+</body>
+
+</html>

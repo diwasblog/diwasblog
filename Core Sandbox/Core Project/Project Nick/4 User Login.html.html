@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../css/dracula.css">
+    <link rel="stylesheet" href="../css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+<style>
+    kbd {
+        background: black
+    }
+</style>
+
+<h2>Login Method in IdentityService</h2>
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+        
+        public async Task<AuthenticationResult> LoginAsync(string email, string password)
+            {
+                var user = await _userManager.FindByEmailAsync(email);
+    
+                // If user already exists 
+    
+                if (user == null)
+                {
+                    return new AuthenticationResult
+                    {
+                        Errors = new[] { "User doesnot  exists" }
+                    };
+                }
+    
+                //Check Password
+                var userHasValidPassword = await _userManager.CheckPasswordAsync(user, password);
+    
+                //If not valid user name or password 
+                if (!userHasValidPassword)
+                {
+                    return new AuthenticationResult
+                    {
+                        Errors = new[] { "User/Password Combination is Wrong" }
+                    };
+                }
+    
+                return GenerateAuthenticationResultForUser(user);
+    
+            }
+        
+    </code>
+</pre>
+<hr>
+<h2>IIdentityService.cs</h2>
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+        namespace TweekBook.Services
+        {
+            public interface IIdentityService
+            {
+                Task&lt;AuthenticationResult> RegisterAsync(string email, string password);
+                <kbd>Task&lt;AuthenticationResult> LoginAsync(string email, string password);</kbd>
+            }
+        }
+        
+    </code>
+</pre>
+
+<h2>Login Action Result in IdentityController</h2>
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+        [HttpPost(ApiRoutes.Identity.Login)]
+        public async Task<IActionResult> Login([FromBody] UserLoginRequest request)
+        {
+            //Checking DataAnnotation Error and Sending in BadRequest so that external User can get this error.
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new AuthFailedResponse
+                {
+                    Errors = ModelState.Values.SelectMany(x => x.Errors.Select(xx => xx.ErrorMessage))
+                });
+            }
+
+
+            var authResponse = await _identityService.<kbd>LoginAsync(request.Email, request.Password)</kbd>;
+
+            if (!authResponse.Success)
+            {
+                return BadRequest(new AuthFailedResponse
+                {
+                    Errors = authResponse.Errors
+                });
+            }
+
+            return Ok(new AuthSuccessResponse
+            {
+                Token = authResponse.Token
+            });
+        }
+
+        
+    </code>
+</pre>
+<hr>
+<h2>Add Authorisize header in Post Controller </h2>
+If token is passed on requesting Any action method then only we get
+
+
+<pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+                namespace TweekBook.Controllers.V1
+                {
+                    <kbd>[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]</kbd>
+                    public class PostsController : Controller
+                    {
+                
+                
+                        .....
+                    }
+                }
+            </code>
+        </pre>
+
+
+<script src="../js/prism.js"></script>
+<script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true,
+            // 'break-lines': 10,
+            // 'indent': 2,
+            // 'remove-initial-line-feed': false,
+            // 'tabs-to-spaces': 4,
+            // 'spaces-to-tabs': 4
+        });
+
+
+    (function () {
+        if (!self.Prism) {
+            return;
+        }
+
+        var div = document.createElement('div');
+
+        Prism.hooks.add('before-highlight', function (env) {
+            var elt = env.element;
+            if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                elt = elt.parentNode;
+            }
+            var tags = elt.getAttribute('data-keep-tags');
+            if (!tags) {
+                return;
+            }
+            var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+            env.keepTags = true;
+            env.keepTagsPlaceholder = placeholder;
+
+            tags = tags.split(/\s*,\s*/).join('|');
+            var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+            env.keepTagsRegex = tags_regex;
+
+            env.tokenStack = [];
+            env.backupCode = env.code;
+
+            var code = env.element.innerHTML;
+            code = code.replace(tags_regex, function (match) {
+                env.tokenStack.push(match);
+                return placeholder.replace('{n}', env.tokenStack.length);
+            });
+            env.element.innerHTML = code;
+            code = env.element.textContent;
+            code = code.replace(/^(?:\r?\n|\r)/, '');
+
+            env.code = code;
+        });
+
+        Prism.hooks.add('after-highlight', function (env) {
+            if (!env.keepTags) {
+                return;
+            }
+            for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                    div.innerHTML = inside;
+                    inside = div.textContent;
+                    return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                });
+
+                env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                env.element.innerHTML = env.highlightedCode;
+            }
+        });
+
+    }());
+
+    Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+        v.classList.add("language-sql");
+    });
+    Prism.highlightAll();
+
+</script>
+</body>
+
+</html>

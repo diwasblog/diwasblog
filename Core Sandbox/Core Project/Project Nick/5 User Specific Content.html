@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../css/dracula.css">
+    <link rel="stylesheet" href="../css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+<style>
+    kbd {
+        background: black
+    }
+</style>
+
+<h2>Login Method in IdentityService</h2>
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+        namespace TweekBook.Domain
+        {
+            public class Post
+            {
+                [Key]
+                public Guid Id { get; set; }
+        
+                [MaxLength(50,ErrorMessage ="Cannot be less than 50")]
+                public string Name { get; set; }
+                <kbd>
+                public string UserId { get; set; }
+        
+                [ForeignKey(nameof(UserId))]
+                public IdentityUser User { get; set; }
+            </kbd>
+            }
+        }
+        Here, UserId is considered to be foreign key 
+    </code>
+</pre>
+<hr>
+<h2>Then create Extensions Folder</h2>
+<h2>Then Extensions/GeneralExtensions.cs</h2>
+GeneralExtensions.cs
+<div class="row">
+    <div class="col-lg-8">
+        <pre>
+            <code class="language-csharp">
+                
+        namespace TweekBook.Extensions
+        {
+            //Return value store in "id" : Here we get currently login User
+            public static  class GeneralExtensions
+            {
+                public static string GetUserId(this HttpContext httpContext)
+                {
+                    if (httpContext.User == null)
+                    {
+                        return string.Empty;
+                    }
+                    //Get Currently Login UserId from Claim which was stored in Claim as "Id"
+                    return httpContext.User.Claims.Single(x => x.Type == "id").Value;
+                }
+            }
+        }
+        
+        // httpContext.User.Claims.Single(x => x.Type == "id").Value; part gets "id" which was stored in claims during login or register
+            </code>
+        </pre>
+    </div>
+    <div class="col-lg-4">
+        <img src="https://i.ibb.co/ypc347s/extension-method.jpg">
+    </div>
+</div>
+
+
+
+<h2>IPostService.cs</h2>
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+        namespace TweekBook.Services
+        {
+           public interface IPostService
+            {
+                Task&lt;Post> GetPostByIdAsync(Guid postId);
+                Task&lt;List&lt;Post>> GetPostsAsync();
+        
+                Task&lt;bool> CreatePostAsync(Post post);
+                Task&lt;bool> UpdatePostAsync(Post postToUpdate);
+        
+                Task&lt;bool> DeletePostAsync(Guid postId);
+        
+               <kbd> Task&lt;bool> UserOwnsPostAsync(Guid postId, string getUserId);</kbd>
+            }
+        }
+        
+    </code>
+</pre>
+
+
+<h2>PostService.cs</h2>
+Add this Function
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+        public async Task<bool> <kbd>UserOwnsPostAsync</kbd>(Guid postId, string userId)
+            {
+                var post = await _dbContext.Posts.AsNoTracking().SingleOrDefaultAsync(x => x.Id == postId);
+    
+                if(post == null)
+                {
+                    return false;
+                }
+    
+                if(post.UserId != userId)
+                {
+                    return false;
+                }
+                return true;
+            }
+        
+    </code>
+</pre>
+<hr>
+<h2>PostController.cs</h2>
+Change Update and Delete ActionResult so that only the user who have created the Post can delete and Update the post
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+
+        [HttpPost(ApiRoutes.Posts.Create)]
+        public async Task&lt;IActionResult> <kbd>CreateAsync</kbd>([FromBody] CreatePostRequest postRequest)
+        {
+            var post = new Post { 
+                Name = postRequest.Name,
+               <kbd> UserId = HttpContext.GetUserId()</kbd>
+            };
+
+
+            await _postService.CreatePostAsync(post);
+
+            var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
+            var locationUrl = baseUrl + "/" + ApiRoutes.Posts.Get.Replace("{postId}", post.Id.ToString());
+
+            var response = new PostResponse { Id = post.Id };
+            return Created(locationUrl, response);
+        }
+
+
+        [HttpPut(ApiRoutes.Posts.Update)]
+        public async Task&lt;IActionResult> <kbd>Update</kbd>([FromRoute] Guid postId, [FromBody] UpdatePostRequest request)
+        {
+            <kbd>
+            var userOwnsPost = await _postService.UserOwnsPostAsync(postId, HttpContext.GetUserId());
+
+            if (!userOwnsPost)
+            {
+                return BadRequest(new { error = "You donot own this post" });
+            }
+            </kbd>
+
+            var post = await _postService.GetPostByIdAsync(postId);
+            post.Name = request.Name;
+
+           
+
+            var updated = await _postService.UpdatePostAsync(post);
+            if (updated)
+                return Ok(post);
+
+            return NotFound();
+        }
+
+
+
+
+        [HttpDelete(ApiRoutes.Posts.Delete)]
+        public async Task&lt;IActionResult> <kbd>Delete</kbd>([FromRoute] Guid postId)
+        {
+            <kbd>
+            var userOwnsPost = await _postService.UserOwnsPostAsync(postId, HttpContext.GetUserId());
+
+            if (!userOwnsPost)
+            {
+                return BadRequest(new { error = "You donot own this post" });
+            }
+            </kbd>
+
+            var deleted = await _postService.DeletePostAsync(postId);
+
+            if (deleted)
+                return NoContent();    // Otherwise you can do return Ok()
+
+            return NotFound();
+
+        }
+    </code>
+</pre>
+
+<h2>Now Run Migration</h2>
+
+<div class="row">
+    <div class="col-lg-6">
+        <pre>
+            <code class="language-csharp">
+                add-migration "add_user_id_to_post_model"
+                update migration
+            </code>
+        </pre>
+    </div>
+    <div class="col-lg-6">
+        <img src="https://i.ibb.co/mtfXNpX/addmigration.jpg">
+    </div>
+</div>
+
+<h2>Database looks like htis:</h2>
+<img src="https://i.ibb.co/YdGKMht/userid-added.jpg">
+
+<hr>
+
+
+<h2>Now check through swagger and the user who is currently login can update and delete only the Post created by Him/her"</h2>
+<script src="../js/prism.js"></script>
+<script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true,
+            // 'break-lines': 10,
+            // 'indent': 2,
+            // 'remove-initial-line-feed': false,
+            // 'tabs-to-spaces': 4,
+            // 'spaces-to-tabs': 4
+        });
+
+
+    (function () {
+        if (!self.Prism) {
+            return;
+        }
+
+        var div = document.createElement('div');
+
+        Prism.hooks.add('before-highlight', function (env) {
+            var elt = env.element;
+            if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                elt = elt.parentNode;
+            }
+            var tags = elt.getAttribute('data-keep-tags');
+            if (!tags) {
+                return;
+            }
+            var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+            env.keepTags = true;
+            env.keepTagsPlaceholder = placeholder;
+
+            tags = tags.split(/\s*,\s*/).join('|');
+            var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+            env.keepTagsRegex = tags_regex;
+
+            env.tokenStack = [];
+            env.backupCode = env.code;
+
+            var code = env.element.innerHTML;
+            code = code.replace(tags_regex, function (match) {
+                env.tokenStack.push(match);
+                return placeholder.replace('{n}', env.tokenStack.length);
+            });
+            env.element.innerHTML = code;
+            code = env.element.textContent;
+            code = code.replace(/^(?:\r?\n|\r)/, '');
+
+            env.code = code;
+        });
+
+        Prism.hooks.add('after-highlight', function (env) {
+            if (!env.keepTags) {
+                return;
+            }
+            for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                    div.innerHTML = inside;
+                    inside = div.textContent;
+                    return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                });
+
+                env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                env.element.innerHTML = env.highlightedCode;
+            }
+        });
+
+    }());
+
+    Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+        v.classList.add("language-sql");
+    });
+    Prism.highlightAll();
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+<style>
+    kbd {
+        background: black
+    }
+</style>
+
+
+<p><span style="font-size: 18pt;"><span style="color: #000000;"><strong><code>Startup.cs</code></strong></span> <span
+            style="color: #000000;">is the class which allows us to configure our <span
+                style="color: #2dc26b;">pipeline, middleware, and register our services</span>. Here we do clean code
+            and maintainability.</span></span></p>
+<p><span style="font-size: 18pt;"><span style="color: #000000;">Here, we will transfer <strong><span
+                    style="color: #2dc26b;">Iconfiguration </span></strong>and <strong><span
+                    style="color: #2dc26b;">IServiceCollection </span></strong>of <strong><span
+                    style="color: #2dc26b;">ConfigureServices() </span></strong>of <span
+                style="color: #e03e2d;"><strong>Startup.</strong><strong>c</strong>s</span> to a new file.</span></span>
+</p>
+
+<div class="row">
+    <div class="col-lg-4">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+TweetBookV2
+    Connection Services
+    Dependencies
+    ....
+    Properties
+    ....
+    wwwroot
+    Contracts
+    V1
+        ApiRoutes.cs
+    Controllers
+    V1
+        PostsController.cs
+    Data  
+    Migration Folder
+    Domain
+    Posts.cs
+    <kbd>Installer
+        IInstaller.cs</kbd>
+    Options
+        SwaggerOptions.cs
+    appSettings.json
+    Program.cs
+    Startup.cs    
+            </code>
+                </pre>
+    </div>
+
+    <div class="col-lg-8">
+        <pre>
+            <code class="language-csharp">
+namespace TweekBook.Installers
+{
+    public interface IInstaller
+    {
+        void InstallServices(IServiceCollection services, IConfiguration configuration);
+    }
+}
+
+            </code>
+        </pre>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-lg-4">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+TweetBookV2
+    Connection Services
+    Dependencies
+    ....
+    Properties
+    ....
+    wwwroot
+    Contracts
+    V1
+        ApiRoutes.cs
+    Controllers
+    V1
+        PostsController.cs
+    Data  
+    Migration Folder
+    Domain
+    Posts.cs
+    Installer
+        IInstaller.cs
+        <kbd>DbInstaller.cs</kbd>
+    Options
+        SwaggerOptions.cs
+    appSettings.json
+    Program.cs
+    Startup.cs    
+            </code>
+                </pre>
+    </div>
+
+    <div class="col-lg-8">
+        <pre>
+            <code class="language-csharp">
+                namespace TweekBook.Installers
+                {
+                    public class DbInstaller : IInstaller
+                    {
+                        public void InstallServices(IServiceCollection services, IConfiguration configuration)
+                        {
+                            services.AddDbContext&lt;ApplicationDbContext>(options =>
+                                options.UseSqlServer(
+                                    configuration.GetConnectionString("DefaultConnection")));
+                            services.AddDefaultIdentity&lt;IdentityUser>()
+                                .AddEntityFrameworkStores&lt;ApplicationDbContext>();
+                        }
+                    }
+                }
+
+            </code>
+        </pre>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-lg-4">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+TweetBookV2
+    Connection Services
+    Dependencies
+    ....
+    Properties
+    ....
+    wwwroot
+    Contracts
+    V1
+        ApiRoutes.cs
+    Controllers
+    V1
+        PostsController.cs
+    Data  
+    Migration Folder
+    Domain
+    Posts.cs
+    Installer
+        IInstaller.cs
+        DbInstaller.cs
+        <kbd>MvcInstaller.cs</kbd>
+    Options
+        SwaggerOptions.cs
+    appSettings.json
+    Program.cs
+    Startup.cs    
+            </code>
+                </pre>
+    </div>
+
+    <div class="col-lg-8">
+        <pre>
+            <code class="language-csharp">
+                namespace TweekBook.Installers
+                {
+                    public class MvcInstaller : IInstaller
+                    {
+                       public void InstallServices(IServiceCollection services, IConfiguration Configuration)
+                        {
+                            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                
+                            services.AddSwaggerGen();
+                        }
+                    }
+                }
+                
+
+            </code>
+        </pre>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-3">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+TweetBookV2
+    Connection Services
+    Dependencies
+    ....
+    Properties
+    ....
+    wwwroot
+    Contracts
+    V1
+        ApiRoutes.cs
+    Controllers
+    V1
+        PostsController.cs
+    Data  
+    Migration Folder
+    Domain
+    Posts.cs
+    Installer
+        IInstaller.cs
+        DbInstaller.cs
+        MvcInstaller.cs
+        <kbd>InstallerExtensions.cs</kbd>
+    Options
+        SwaggerOptions.cs
+    appSettings.json
+    Program.cs
+    Startup.cs    
+            </code>
+                </pre>
+    </div>
+
+    <div class="col-lg-9">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+namespace TweekBook.Installers
+{
+    public static class InstallerExtensions
+    {
+        public static void InstallServicesInAssembly(this IServiceCollection services,IConfiguration configuration)
+        {
+            var installers = <kbd>typeof(Startup).Assembly.ExportedTypes.Where(x =>
+                    typeof(IInstaller).IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract)</kbd>
+                    <kbd>.Select(Activator.CreateInstance)</kbd>.<kbd>Cast&lt;IInstaller>().ToList()</kbd>;
+
+            // First Highlight : Select All Installer (MVC and Db in mycase)
+            //Second Hightlight : Create Instance of It
+            //Third Hightlight : Cast those instance as Interface
+                  
+            installers.ForEach(installer => installer.InstallServices(services, configuration));
+        }
+    }
+}
+            </code>
+        </pre>
+    </div>
+</div>
+
+<hr>
+<h2>StartUp.cs</h2>
+<pre>
+    <code class="language-csharp">
+
+        ......
+        public void ConfigureServices(IServiceCollection services)
+        {
+            
+            services.InstallServicesInAssembly(Configuration);
+        }
+
+
+    </code>
+</pre>
+
+
+<hr>
+<h4>So we have applied clean code in ConfiguringServices() by removing mvc related content to MvcInstaller and DbRelated
+    into DbInstaller</h4>
+
+<script src="js/prism.js"></script>
+<script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true,
+            // 'break-lines': 10,
+            // 'indent': 2,
+            // 'remove-initial-line-feed': false,
+            // 'tabs-to-spaces': 4,
+            // 'spaces-to-tabs': 4
+        });
+
+
+    (function () {
+        if (!self.Prism) {
+            return;
+        }
+
+        var div = document.createElement('div');
+
+        Prism.hooks.add('before-highlight', function (env) {
+            var elt = env.element;
+            if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                elt = elt.parentNode;
+            }
+            var tags = elt.getAttribute('data-keep-tags');
+            if (!tags) {
+                return;
+            }
+            var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+            env.keepTags = true;
+            env.keepTagsPlaceholder = placeholder;
+
+            tags = tags.split(/\s*,\s*/).join('|');
+            var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+            env.keepTagsRegex = tags_regex;
+
+            env.tokenStack = [];
+            env.backupCode = env.code;
+
+            var code = env.element.innerHTML;
+            code = code.replace(tags_regex, function (match) {
+                env.tokenStack.push(match);
+                return placeholder.replace('{n}', env.tokenStack.length);
+            });
+            env.element.innerHTML = code;
+            code = env.element.textContent;
+            code = code.replace(/^(?:\r?\n|\r)/, '');
+
+            env.code = code;
+        });
+
+        Prism.hooks.add('after-highlight', function (env) {
+            if (!env.keepTags) {
+                return;
+            }
+            for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                    div.innerHTML = inside;
+                    inside = div.textContent;
+                    return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                });
+
+                env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                env.element.innerHTML = env.highlightedCode;
+            }
+        });
+
+    }());
+
+    Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+        v.classList.add("language-sql");
+    });
+    Prism.highlightAll();
+
+</script>
+</body>
+
+</html>

@@ -1,11 +1,28 @@
 <p><span style="color: #e03e2d;"><strong><span style="font-size: 36pt;">Tar vs Zip vs gzip</span></strong></span></p>
-<p><span style="font-size: 18pt;"><span style="color: #ba372a;"><strong>.tar</strong></span> == <span style="color: #000000;"><strong>uncompressed</strong></span> archive file</span><br /><span style="font-size: 18pt;"><strong><span style="color: #ba372a;">.zip</span></strong> == (usually) <strong><span style="color: #000000;">compressed</span> </strong>archive file</span><br /><span style="font-size: 18pt;"><strong><span style="color: #ba372a;">.gz</span> </strong>== file (archive or not) compressed using <strong><span style="color: #000000;">gzip tool.</span></strong></span></p>
-<p><span style="font-size: 18pt;"><span style="color: #ba372a;"><strong>.tar.gz</strong></span> <span style="color: #000000;">== So, in order to create a compressed archive, you have first to create an archive using the tar utility here we get .tar file after that you will compress that archive. Resulting .tar.gz file. Also called as.&nbsp; .tgz&nbsp;</span></span></p>
+<p><span style="font-size: 18pt;"><span style="color: #ba372a;"><strong>.tar</strong></span> == <span
+            style="color: #000000;"><strong>uncompressed</strong></span> archive file</span><br /><span
+        style="font-size: 18pt;"><strong><span style="color: #ba372a;">.zip</span></strong> == (usually) <strong><span
+                style="color: #000000;">compressed</span> </strong>archive file</span><br /><span
+        style="font-size: 18pt;"><strong><span style="color: #ba372a;">.gz</span> </strong>== file (archive or not)
+        compressed using <strong><span style="color: #000000;">gzip tool.</span></strong></span></p>
+<p><span style="font-size: 18pt;"><span style="color: #ba372a;"><strong>.tar.gz</strong></span> <span
+            style="color: #000000;">== So, in order to create a compressed archive, you have first to create an archive
+            using the tar utility here we get .tar file after that you will compress that archive. Resulting .tar.gz
+            file. Also called as.&nbsp; .tgz&nbsp;</span></span></p>
 <p>&nbsp;</p>
 <p><strong><span style="font-size: 24pt;"><span style="color: #000000;">Tar File</span></span></strong></p>
-<p><span style="font-size: 18pt;"><span style="color: #000000;">One key thing to remember is a <strong>plain&nbsp;tar&nbsp;file </strong>is just an&nbsp;archive&nbsp;whose <strong>data are not compressed</strong>. In other words, if you tar <strong><span style="color: #f1c40f;">100 files of 50kB</span></strong>, you will end up with an archive whose size will be around <span style="color: #f1c40f;"><strong>5000kB</strong></span>. The only gain you can expect using tar alone would be by avoiding the space wasted by the file system as most of them allocate space at some granularity (for example, on my system, a one byte long file uses 4kB of &nbsp;disk space, 1000 of them will use 4MB but the corresponding tar archive &ldquo;only&rdquo; 1MB).</span></span></p>
+<p><span style="font-size: 18pt;"><span style="color: #000000;">One key thing to remember is a
+            <strong>plain&nbsp;tar&nbsp;file </strong>is just an&nbsp;archive&nbsp;whose <strong>data are not
+                compressed</strong>. In other words, if you tar <strong><span style="color: #f1c40f;">100 files of
+                    50kB</span></strong>, you will end up with an archive whose size will be around <span
+                style="color: #f1c40f;"><strong>5000kB</strong></span>. The only gain you can expect using tar alone
+            would be by avoiding the space wasted by the file system as most of them allocate space at some granularity
+            (for example, on my system, a one byte long file uses 4kB of &nbsp;disk space, 1000 of them will use 4MB but
+            the corresponding tar archive &ldquo;only&rdquo; 1MB).</span></span></p>
 <p><span style="color: #e03e2d;"><strong><span style="font-size: 18pt;">Conclusion:</span></strong></span></p>
-<p><span style="font-size: 18pt;"><span style="color: #000000;">If File system allocate 4kb each file, but actually 1 file each has cost of 1Kb then suppose we have 5 file then with tar file size leads to (5*4) Kb = 20 Kb but tar leads to (5*1)Kb = 5Kb only</span></span></p>
+<p><span style="font-size: 18pt;"><span style="color: #000000;">If File system allocate 4kb each file, but actually 1
+            file each has cost of 1Kb then suppose we have 5 file then with tar file size leads to (5*4) Kb = 20 Kb but
+            tar leads to (5*1)Kb = 5Kb only</span></span></p>
 <p>&nbsp;</p>
 
 ========================================================================================
@@ -37,3 +54,14 @@ Here, I have select categories table of northwind database<br>
 <br>
 <img src="https://i.ibb.co/Jy5M2YH/backup-3.png">
 
+
+
+<hr>
+<hr>
+<h2>Save Query Results as CSV</h2>
+
+<pre>
+    <code class="language-sql">
+        copy (select * from banks) To 'E:\test.csv' With CSV DELIMITER ',' HEADER;
+    </code>
+</pre>

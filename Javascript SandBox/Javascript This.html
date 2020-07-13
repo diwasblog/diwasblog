@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+<style>
+    kbd {
+        background: black
+    }
+</style>
+
+<body>
+
+    <h2>This </h2>
+    <p><span style="font-size: 18pt;"><strong><span style="color: #e03e2d;">'this' </span></strong><span
+                style="color: #000000;">references the object that is currently executing the function.</span></span>
+    </p>
+    <p>&nbsp;</p>
+    <table style="border-collapse: collapse; width: 100%;" border="1">
+        <tbody>
+            <tr>
+                <td style="width: 100%;">
+                    <p><span style="font-size: 14pt; color: #000000;"><strong>If the <span
+                                    style="color: #169179;">function</span> is a <span style="color: #169179;">part of
+                                    an object</span> then 'this' references to the<span style="color: #169179;">
+                                    object</span></strong></span></p>
+                    <p><span style="font-size: 14pt; color: #000000;"><strong><br>var data = (){
+                                testThis(){
+
+                                }
+                                }&nbsp;</strong></span></p>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 100%;"><span style="font-size: 14pt; color: #000000;"><strong>If the function is a
+                            <span style="color: #169179;">regular function </span>then "this" scope has <span
+                                style="color: #169179;">global scope</span>. ie. <span style="color: #e03e2d;">Windows
+                                object </span>in browser and called a global object in the nodejs.
+                        </strong></span><br><br>
+                    function testThis(){
+                    }</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <div class="row">
+        <div class="col-lg-6">
+            <pre>
+                <code class="language-csharp">
+                    console.log(this)
+                </code>
+            </pre>
+        </div>
+        <div class="col-lg-6">
+
+            Window {parent: Window, opener: null, top: Window, length: 0, frames: Window, …}
+        </div>
+    </div>
+
+
+
+
+    <div class="row">
+        <div class="col-lg-6">
+            <pre>
+                <code class="language-csharp">
+                    function testThis() {
+                        console.log(this);
+                    }
+            
+                    testThis();
+                    //Here test is normal function and is calling from global scope so has global scope
+                </code>
+            </pre>
+        </div>
+        <div class="col-lg-6">
+
+            Window {parent: Window, opener: null, top: Window, length: 0, frames: Window, …}
+        </div>
+    </div>
+
+    <hr>
+    <h2>Use of Strict </h2>
+    <div class="row">
+        <div class="col-lg-6">
+            <pre>
+                <code class="language-csharp">
+                    "use strict";
+
+                    console.log(this)
+
+                    function testThis() {
+                        console.log(this);
+                    }
+            
+                    testThis();
+                   
+                </code>
+            </pre>
+        </div>
+        <div class="col-lg-6">
+
+            Window {parent: Window, opener: null, top: Window, length: 0, frames: Window, …}
+
+            undefined
+        </div>
+    </div>
+    <hr>
+    <h2>Using Object Method</h2>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <pre>
+                <code class="language-csharp">
+                    const user = {
+                        firstName: "John",
+                        lastName: "Doe",
+                        fullName() {
+                            console.log(this);
+                            console.log(this.firstName + ' ' + this.lastName);
+                        }
+                    }
+            
+                    user.fullName()
+                    // Here fullName() function is bind to user object so 'this' has user object scope
+                </code>
+            </pre>
+        </div>
+        <div class="col-lg-6">
+
+            {firstName: "John", lastName: "Doe", fullName: ƒ}
+
+            John Doe
+        </div>
+    </div>
+
+    <h2>Using Arrow Function</h2>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <pre>
+                <code class="language-csharp">
+                    const user = {
+                        firstName: "John",
+                        lastName: "Doe",
+                        fullName: () => {
+                            console.log(this);
+                            console.log(this.firstName + ' ' + this.lastName);
+                        }
+                    }
+            
+                    user.fullName()
+                    // Here we have arrow function and arrow function is bind to global so we get window and undefined
+
+                    In the above code example, <b>fullName()</b> is a method of the person object and we invoked it using the object invocation pattern.
+                    That is, we used the property accessors to access the method which was part of the object.
+                </code>
+            </pre>
+        </div>
+        <div class="col-lg-6">
+
+            Window {parent: Window, opener: null, top: Window, length: 0, frames: Window, …}
+
+            Undefined Undefined
+        </div>
+    </div>
+
+
+
+
+    <div class="row">
+        <div class="col-lg-6">
+            <pre>
+                <code class="language-csharp">
+                    function User(name) {
+                        this.name = name;
+                        console.log(this);
+                    }
+            
+            
+                    const newUser = new User("John");
+                    //New creates an empty object So has object scope and assigned value to it
+                </code>
+            </pre>
+        </div>
+        <div class="col-lg-6">
+
+            User {name: "John"}
+        </div>
+    </div>
+    <hr>
+    <hr>
+    <h2>Using in Foreach</h2>
+    <div class="row">
+        <div class="col-lg-6">
+            <pre>
+                <code class="language-csharp">
+                    const user = {
+                        firstName: "Diwas",
+                        lastName: "Poudel",
+                        skills: ["math", "science", "nepali"],
+                        lstSkills() {
+                            //this represent user object
+                            console.log(this);
+            
+                        }
+                    }
+            
+                    user.lstSkills();
+                </code>
+            </pre>
+        </div>
+        <div class="col-lg-6">
+
+            {firstName: "Diwas", lastName: "Poudel", skills: Array(3), lstSkills: ƒ}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <pre data-keep-tags="kbd, em">
+                <code class="language-csharp">
+                    const user = {
+                        firstName: "Diwas",
+                        lastName: "Poudel",
+                        skills: ["math", "science", "nepali"],
+                        lstSkills() {
+            
+                            <kbd>this</kbd>.skills.forEach(function (s) {
+            
+                            });
+            
+                        }
+                    }
+            
+            
+                    user.lstSkills();
+                </code>
+            </pre>
+        </div>
+        <div class="col-lg-6">
+
+            {firstName: "Diwas", lastName: "Poudel", skills: Array(3), lstSkills: ƒ}
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-lg-6">
+            <pre data-keep-tags="kbd, em">
+                <code class="language-csharp">
+                    //Works
+                    const user = {
+                        firstName: "Diwas",
+                        lastName: "Poudel",
+                        skills: ["math", "science", "nepali"],
+                        lstSkills() {
+            
+                            this.skills.forEach(<kbd>function (s) {
+                                
+                                console.log(this);
+                                console.log(this.firstName)
+                            }</kbd>);
+                            //function here is general function so this represent global
+                        }
+                    }
+            
+            
+                    user.lstSkills();
+
+
+
+                </code>
+            </pre>
+
+            function() defined as the callback for forEach has a normal function invocation and as we know, this
+            means that its context is set to the global context or in other words the value of this is set to the window
+            object.
+
+            This happens because every regular, non-arrow function defines its own this or context depending on their
+            invocation.The context of the enclosing objects/function does not affect this tendency to automatically
+            define their own context.
+        </div>
+        <div class="col-lg-6">
+
+            { Window }
+            undefined
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-5">
+            <pre data-keep-tags="kbd, em">
+                <code class="language-csharp">
+                    //Works
+    const user = {
+        firstName: "Diwas",
+        lastName: "Poudel",
+        skills: ["math", "science", "nepali"],
+        lstSkills() {
+
+            this.skills.forEach(function (s) {
+                
+                console.log(this);
+                console.log(this.firstName)
+            },<kbd>this</kbd>);
+            //Now display firstName
+        }
+    }
+
+
+    user.lstSkills();
+                </code>
+            </pre>
+        </div>
+
+        <div class="col-lg-5">
+            <pre data-keep-tags="kbd,em">
+                <code class="language-csharp">
+    const user = {
+        firstName: "Diwas",
+        lastName: "Poudel",
+        skills: ["math", "science", "nepali"],
+        lstSkills() {
+
+            this.skills.forEach(<kbd>(s) =></kbd> {
+                console.log(this);
+                console.log(this.firstName)
+            });
+
+        }
+    }
+
+    user.lstSkills();
+            
+                </code>
+            </pre>
+            Thus, regardless of whether the arrow function was called using function invocation or method invocation, it
+            retains the ]value of this from its enclosing context.In other words, an arrow function’s this value is the
+            same as it was immediately outside it.
+        </div>
+        <div class="col-lg-2">
+
+            { Window }
+            Diwas
+        </div>
+    </div>
+    <script src="../ASP Sandbox/js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+
+
+
+        (function () {
+            if (!self.Prism) {
+                return;
+            }
+
+            var div = document.createElement('div');
+
+            Prism.hooks.add('before-highlight', function (env) {
+                var elt = env.element;
+                if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                    elt = elt.parentNode;
+                }
+                var tags = elt.getAttribute('data-keep-tags');
+                if (!tags) {
+                    return;
+                }
+                var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+                env.keepTags = true;
+                env.keepTagsPlaceholder = placeholder;
+
+                tags = tags.split(/\s*,\s*/).join('|');
+                var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+                env.keepTagsRegex = tags_regex;
+
+                env.tokenStack = [];
+                env.backupCode = env.code;
+
+                var code = env.element.innerHTML;
+                code = code.replace(tags_regex, function (match) {
+                    env.tokenStack.push(match);
+                    return placeholder.replace('{n}', env.tokenStack.length);
+                });
+                env.element.innerHTML = code;
+                code = env.element.textContent;
+                code = code.replace(/^(?:\r?\n|\r)/, '');
+
+                env.code = code;
+            });
+
+            Prism.hooks.add('after-highlight', function (env) {
+                if (!env.keepTags) {
+                    return;
+                }
+                for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                    t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                        div.innerHTML = inside;
+                        inside = div.textContent;
+                        return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                    });
+
+                    env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                    env.element.innerHTML = env.highlightedCode;
+                }
+            });
+
+        }());
+
+        Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+            v.classList.add("language-sql");
+        });
+        Prism.highlightAll();
+
+    </script>
+</body>
+
+</html>

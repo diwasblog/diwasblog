@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../css/dracula.css">
+    <link rel="stylesheet" href="../css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+<style>
+    kbd {
+        background: black
+    }
+</style>
+<hr>
+<h2>appSettings.json</h2>
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+        {
+            "ConnectionStrings": {
+              "DefaultConnection": "Server=.;Database=TweekBook;Trusted_Connection=True;MultipleActiveResultSets=true"
+            }<kbd>,
+            "JwtSettings": 
+            {
+              "Secret": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"    //should be 32 character long
+            }</kbd>,
+            "SwaggerOptions": {
+              "JsonRoute": "swagger/{documentName}/swagger.json",
+              "Description": "Our API",
+              "UIEndpoint": "v1/swagger.json"
+            },
+            "Logging": {
+              "LogLevel": {
+                "Default": "Warning"
+              }
+            },
+            "AllowedHosts": "*"
+          }
+          
+    </code>
+</pre>
+<hr>
+<h2>Adding JwtSettings.cs inside Options Folder</h2>
+<pre>
+<code class="language-csharp">
+  namespace TweekBook.Options
+{
+    public class JwtSettings
+    {
+        public string Secret { get; set; }
+    }
+}
+
+</code>
+</pre>
+<hr>
+<h2>Adding JWT Setting and allowing Authentication to Support in Swagger</h2>
+<p style="text-align: justify;"><span style="font-size: 18pt; color: #000000;">We call <span
+            style="color: #e03e2d;">AddAuthentication() </span>and used <span
+            style="color: #e03e2d;"><em><strong>DefaultAuthenticateScheme</strong></em></span>&nbsp;as&nbsp;<em><strong><span
+                    style="color: #e03e2d;">JwtBearerDefaults</span> .</strong></em>&nbsp;We also specify various
+        options for the JWT bearer scheme. If you carefully observe the <strong><span
+                style="color: #e03e2d;">TokenValidationParameters </span></strong>object you will find that it indicates
+        whether <span style="color: #169179;">issuer</span>, <strong><span
+                style="color: #169179;">audience</span></strong>, <strong><span
+                style="color: #169179;">lifetime</span></strong>, and <span style="color: #169179;"><strong>signature
+                key</strong></span> is to be validated or not. </span></p>
+
+<ul>
+    <li><span style="font-size: 14pt; color: #000000;">Validate the server (<strong><span
+                    style="color: #e03e2d;">ValidateIssuer </span></strong>= false) that generates the token.</span>
+    </li>
+    <li><span style="font-size: 14pt; color: #000000;">Validate the recipient of the token is authorized to receive
+            (<strong><span style="color: #e03e2d;">ValidateAudience </span></strong>= false)</span></li>
+    <li><span style="font-size: 14pt; color: #000000;">Check if the token is not expired and the signing key of the
+            issuer is valid (<strong><span style="color: #e03e2d;">ValidateLifetime </span></strong>= true)</span></li>
+    <li><span style="font-size: 14pt; color: #000000;">Validate signature of the token (<strong><span
+                    style="color: #e03e2d;">ValidateIssuerSigningKey </span></strong>= true)</span></li>
+    <li><span style="font-size: 14pt; color: #000000;">Additionally, we specify the values for the issuer, audience,
+            signing key. In this example, I have stored these values in <strong><span
+                    style="color: #2dc26b;">appsettings.json</span></strong> file.</span></li>
+</ul>
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+namespace TweekBook.Installers
+{
+    public class MvcInstaller : IInstaller
+    {
+       public void InstallServices(IServiceCollection services, IConfiguration configuration)
+        {
+            
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            <kbd>
+
+            //  Just Below MVC
+            //Getting JwtSettings from appSetting.json
+            var jwtSettings = new JwtSettings();
+            configuration.Bind(nameof(jwtSettings), jwtSettings);
+            services.AddSingleton(jwtSettings);
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(x =>
+                {
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret)),
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        RequireExpirationTime = false,
+                        ValidateLifetime = true
+                    };
+                });
+            </kbd>
+
+            services.AddSwaggerGen( <kbd>x=>
+            {
+                
+                //Allowing Authorization in Swagger
+                x.AddSecurityDefinition(name: "Bearer", new OpenApiSecurityScheme()
+                {
+                    Description = "JWT Authorization header using the bearer scheme",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey
+                });
+                x.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {new OpenApiSecurityScheme{Reference = new OpenApiReference
+                    {
+                        Id = "Bearer",
+                        Type = ReferenceType.SecurityScheme
+                    }}, new List&lt;string>()}
+                });
+
+            }</kbd>);
+        }
+    }
+}
+
+    </code>
+</pre>
+
+<hr>
+<p><span style="font-size: 18pt; color: #000000;">Please add below line of code in&nbsp;<span
+            style="color: #2dc26b;"><strong>Configure()&nbsp;</strong></span>method in <span
+            style="color: #2dc26b;">Startup.cs </span></span></p>
+<p><span style="font-size: 18pt; color: #000000;">1) Authentication</span></p>
+<p><span style="font-size: 18pt; color: #000000;">2) CORS</span></p>
+<p><span style="font-size: 18pt; color: #000000;">To enable CORS and enable our API to be accessed from <span
+            style="color: #2dc26b;"><strong>Any Origin</strong></span>, <strong><span style="color: #2dc26b;">On ANy
+                Method</span></strong> and <strong><span style="color: #2dc26b;">allow any header</span></strong>.
+        Remember, we do this because in this particular instance the API is going to be accessed from several
+        sources.</span></p>
+<p>&nbsp;</p>
+
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+
+
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            <kbd>
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            app.UseAuthentication();
+            </kbd>
+            var swaggerOptions = new SwaggerOptions();
+            Configuration.GetSection(nameof(SwaggerOptions)).Bind(swaggerOptions);
+
+            app.UseSwagger(option => { option.RouteTemplate = swaggerOptions.JsonRoute; });
+
+            app.UseSwaggerUI(option =>
+            {
+                option.SwaggerEndpoint(swaggerOptions.UiEndPoint, swaggerOptions.Description);
+            });
+
+
+
+            app.UseMvc();
+        }
+    </code>
+</pre>
+
+
+<script src="../js/prism.js"></script>
+<script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true,
+            // 'break-lines': 10,
+            // 'indent': 2,
+            // 'remove-initial-line-feed': false,
+            // 'tabs-to-spaces': 4,
+            // 'spaces-to-tabs': 4
+        });
+
+
+    (function () {
+        if (!self.Prism) {
+            return;
+        }
+
+        var div = document.createElement('div');
+
+        Prism.hooks.add('before-highlight', function (env) {
+            var elt = env.element;
+            if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                elt = elt.parentNode;
+            }
+            var tags = elt.getAttribute('data-keep-tags');
+            if (!tags) {
+                return;
+            }
+            var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+            env.keepTags = true;
+            env.keepTagsPlaceholder = placeholder;
+
+            tags = tags.split(/\s*,\s*/).join('|');
+            var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+            env.keepTagsRegex = tags_regex;
+
+            env.tokenStack = [];
+            env.backupCode = env.code;
+
+            var code = env.element.innerHTML;
+            code = code.replace(tags_regex, function (match) {
+                env.tokenStack.push(match);
+                return placeholder.replace('{n}', env.tokenStack.length);
+            });
+            env.element.innerHTML = code;
+            code = env.element.textContent;
+            code = code.replace(/^(?:\r?\n|\r)/, '');
+
+            env.code = code;
+        });
+
+        Prism.hooks.add('after-highlight', function (env) {
+            if (!env.keepTags) {
+                return;
+            }
+            for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                    div.innerHTML = inside;
+                    inside = div.textContent;
+                    return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                });
+
+                env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                env.element.innerHTML = env.highlightedCode;
+            }
+        });
+
+    }());
+
+    Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+        v.classList.add("language-sql");
+    });
+    Prism.highlightAll();
+
+</script>
+</body>
+
+</html>
