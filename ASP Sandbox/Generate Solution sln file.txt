@@ -1,0 +1,5 @@
+https://andrewlock.net/creating-and-editing-solution-files-with-the-net-cli/
+
+
+<br>
+https://garywoodfine.com/creating-editing-solution-files-dotnet-core-ubuntu/

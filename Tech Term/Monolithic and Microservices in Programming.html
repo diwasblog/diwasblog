@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<p><span style="font-size: 24pt; color: #2dc26b;"><strong>What is Modular Application Development?</strong></span></p>
+<p style="text-align: justify;"><span style="color: #000000;"><span style="font-size: 18pt;">In modular Application Development, we create <span style="color: #2dc26b;">multiple independent modules of software</span> and later <span style="color: #2dc26b;">combine all</span> to make a <span style="color: #2dc26b;"><strong>large application.</strong></span> Here each module is independent and can be reused in other </span><span style="font-size: 18pt;">applications as well. Finally, all the modules are smushed/combined in one application and deployed in one machine. Eg. Installed Photoshop, each has a separate copy on their system.</span></span></p>
+<p style="text-align: justify;"><span style="font-size: 18pt; color: #000000;">Then came web application, here follow the same modular techniques but hosted on a web server so that multiple users use the same application from the server. Eg. </span><span style="font-size: 18pt; color: #000000;"><span style="color: #e03e2d;"><strong>Web Photoshop</strong></span></span></p>
+<p style="text-align: justify;"><span style="font-size: 18pt; color: #000000;">These both desktop and web applications follow monolithic architecture. Ie .<strong><span style="color: #e03e2d;">Single Store Architecture.&nbsp;</span></strong></span></p>
+<p><span style="color: #236fa1;"><strong><span style="font-size: 18pt;">Biggest Disadvantage of Monolithic Architecture is </span></strong></span></p>
+<p><strong><span style="color: #236fa1; font-size: 18pt;">1) " Bigger the application, difficult to deploy it."</span></strong></p>
+<p style="text-align: justify;"><span style="color: #000000;"><strong><span style="font-size: 18pt;">Suppose you have made an application and if say in module 4 small changes has to be made then we have to build whole system and have to check whether&nbsp; module4 has effect on other module or not. And if no negative effect, then publish the application.</span></strong></span></p>
+<p><span style="color: #236fa1;"><strong><span style="font-size: 18pt;">2) Scalability</span></strong></span></p>
+<p style="text-align: justify;"><span style="font-size: 18pt; color: #000000;">Say e-commerce sites, we know that eCommerce sites has large spikes on a certain day.</span></p>
+<p style="text-align: justify;"><span style="font-size: 18pt; color: #000000;">If you have eCommerce sites then if traffic has raised on your sites then you will scale the whole application server has to scale.&nbsp;</span></p>
+<p style="text-align: justify;"><span style="font-size: 18pt; color: #000000;">Suppose say if only in certain modules has much traffic then also we have to scale whole application. So, lots of money may be required to duplicate the instances of whole application.</span></p>
+<p style="text-align: justify;"><span style="font-size: 18pt; color: #3598db;">3) Single Point of Failure</span></p>
+<p style="text-align: justify;"><span style="font-size: 18pt; color: #000000;">If one modules failed then will not work another module as well because we have to publish on single system</span></p>
+<hr />
+<p><span style="color: #e03e2d; font-size: 36pt;"><strong>Microservices Application</strong></span></p>
+<p style="text-align: justify;"><span style="font-size: 18pt; color: #000000;">Then came microservices architecture, here we have <strong>self-working modules</strong>(<strong><span style="color: #2dc26b;">mini-application</span></strong>) and each of these modules is <strong><span style="color: #2dc26b;">hosted on a separate server.</span></strong> So, if we have more<span style="color: #2dc26b;"> traffic on particular module</span> then <strong><span style="color: #2dc26b;">we can just scale its server</span></strong>. And shouldnot have to touch other servers. So, it minimizes the cost.</span></p>
+<p>&nbsp;</p>
+<p><span style="color: #000000;"><strong><span style="font-size: 18pt;">Here each mini-application can <span style="color: #2dc26b;">communicate with each other</span> via <span style="color: #2dc26b;">APIs </span>and together works as a bigger application.</span></strong></span></p>
+<p>&nbsp;</p>
+<p style="text-align: justify;"><span style="font-size: 18pt; color: #000000;">So this mini-application (self-completed application) which are hosted on different servers and can communicate with each other via APIs.So this mini-application are called as microservices.</span></p>
+<hr />
+<p><span style="color: #2dc26b;"><strong><span style="font-size: 24pt;">Advantages of Microservices:</span></strong></span></p>
+<p><span style="font-size: 18pt; color: #236fa1;">1) Deployment Flexibility</span></p>
+<p style="text-align: justify;"><span style="font-size: 18pt; color: #000000;">Different developers can work on each mini-application and can be flexible to store in different servers. These mini-application can communicate via APIs(Language Independent) and makes a complete system.</span></p>
+<p><span style="font-size: 18pt; color: #3598db;">2)Language Flexibility</span></p>
+<p style="text-align: justify;"><span style="font-size: 18pt; color: #000000;">This mini-application can be built in any language and these applications can communicate with Apis easily. And finally forms a big application.</span></p>
+<p><span style="font-size: 18pt; color: #236fa1;">3)Can Be Scaled Separately</span></p>
+<p><span style="font-size: 18pt; color: #000000;">Each mini application can be scaled separately</span></p>
+<hr />
+<p><span style="color: #2dc26b; font-size: 24pt;"><strong>Disadvantages of Microservices:</strong></span></p>
+<p><span style="font-size: 18pt;"><strong><span style="color: #3598db;">1) Deployment/Architecture Complexity</span></strong></span></p>
+<p><span style="font-size: 18pt; color: #000000;">Can to make an architecture to host in separate server and communicate each other efficiently.</span></p>
+</body>
+</html>
