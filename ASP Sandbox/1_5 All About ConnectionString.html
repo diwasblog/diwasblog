@@ -39,25 +39,46 @@
   <br>
   <hr>
   If dbserver is live and your code at local wants to use it then provide ip address of databaseserver.
-  myServerAddress: <b>provider ip of dbserver.</b>
+  myServerAddress: <b>provider ip of dbserver.</b> <br>
+
+  Here, UserId and Password are SQL Authentication
   =================================================================================================================
-  <pre>
+  <br>
+  <h2>Trusted Connection Method</h2>
+  <pre data-keep-tags="kbd, em">
+  <code class='language-html'>
+    Server=myServerAddress;Database=databaseName;Trusted_Connection=True;
+  </code>
+</pre>
+  Note: When used trusted connection then it is <b>using windows credential or Windows Authentication</b> and if used
+  userid and password then it
+  will
+  ask for sql credential(SQL Server authentication mode). <br>
+
+  Integrated Security=true <=====> Integrated Security=SSPI <========> Integrated Security=true/SSPI <======>
+        Trusted_Connection=True; <br>
+
+        If Trusted_Connection=True; and User Id=myUsername;Password=myPassword; both used then UserId and password (SQL
+        Credential ) will get ignored because SQL Server using windows authentication.
+        ==========================================================================================================
+
+        <pre>
   <code class='language-html'>
      ConfigurationManager.ConnectionStrings["Conn"].ConnectionString;
   </code>
 </pre>
-  ==========================================================================================================
-  <h2>Use of AppSetting</h2>
-  <p><span style="font-size: 14pt;">AppSettings element is a direct child of the <strong>&lt;configuration&gt;</strong>
-      element and a peer of the<strong> system.web</strong> element.</span></p>
+        ==========================================================================================================
+        <h2>Use of AppSetting</h2>
+        <p><span style="font-size: 14pt;">AppSettings element is a direct child of the
+            <strong>&lt;configuration&gt;</strong>
+            element and a peer of the<strong> system.web</strong> element.</span></p>
 
 
-  <pre>
+        <pre>
 <code class="language-html">
 
 &lt;connectionStrings>
-    &lt;add name="Conn" connectionString="Data Source=localhost\SQLEXPRESS;Initial Catalog=NewsPortal;Integrated Security=True" providerName="System.Data.SqlClient" />
-    <!--<add name="DefaultConnection" connectionString="Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\aspnet-NewsCMS-20180827102828.mdf;Initial Catalog=aspnet-NewsCMS-20180827102828;Integrated Security=True" providerName="System.Data.SqlClient" />-->
+    &lt;add name="Conn" connectionString="Data Source=.;Initial Catalog=NewsPortal;Integrated Security=True" providerName="System.Data.SqlClient" />
   &lt;/connectionStrings>
 
 
@@ -79,39 +100,42 @@
  </code> 
  </pre>
 
-  <p><span style="font-size: 18.6667px;">To Access it via code</span></p>
+        <p><span style="font-size: 18.6667px;">To Access it via code</span></p>
 
 
-  <pre>
+        <pre>
   <code class="language-html">
 ConfigurationSettings.AppSettings["youtube"]; 
   </code>
 </pre>
-  ============
-  <p><span style="font-size: 18.6667px;">To Access it in View</span></p>
-  <pre>
+        ============
+        <p><span style="font-size: 18.6667px;">To Access it in View</span></p>
+        <pre>
   <code class="language-html">
 @System.Configuration.ConfigurationManager.AppSettings["youtube"]  
 
 Example:<a href="@System.Configuration.ConfigurationManager.AppSettings["twitter"]">
   </code>
 </pre>
-  ============================================================================================
+        ============================================================================================
 
-  <p><span style="color: #ff00ff;"><strong><span style="font-size: 18pt;">dbConnection vs
-          SqlConnection</span></strong></span></p>
-  <p><code><span style="font-size: 14pt;">DbConnection</span></code><span style="font-size: 14pt;">&nbsp;is a base class
-      for any other database connection.Database connection may be SqlConnection(For SQL Server) ,
-      OracleConnection,MySqlConnection.All these database connection uses base class DbConnection as all thess
-      Connection are derived from DbConnection</span>.</p>
-  <p><strong><span style="font-size: 18pt; color: #ff0000;">Is it good to cast IdbConnection to SQLConnection
-        ?</span></strong></p>
-  <p><span style="font-size: 12pt;">If you prefered to use <strong><span style="color: #ff0000;">SqlConnection</span>
-      </strong>only then you can cast <strong><span style="color: #ff0000;">DbConnection</span> </strong>to
-      SQLConnection</span></p>
-  <p><span style="font-size: 12pt;">It should be safe as long as you never change the connection string to connect to
-      anything other than a SQL Server Database.</span></p>
-  <pre class="lang-cs prettyprint prettyprinted"><code><span class="typ">Database</span><span class="pln"> database </span><span class="pun">=</span> <span class="typ">DatabaseFactory</span><span class="pun">.</span><span class="typ">CreateDatabase</span><span class="pun">(</span><span class="str">"conn string"</span><span class="pun">);</span><span class="pln">
+        <p><span style="color: #ff00ff;"><strong><span style="font-size: 18pt;">dbConnection vs
+                SqlConnection</span></strong></span></p>
+        <p><code><span style="font-size: 14pt;">DbConnection</span></code><span style="font-size: 14pt;">&nbsp;is a base
+            class
+            for any other database connection.Database connection may be SqlConnection(For SQL Server) ,
+            OracleConnection,MySqlConnection.All these database connection uses base class DbConnection as all thess
+            Connection are derived from DbConnection</span>.</p>
+        <p><strong><span style="font-size: 18pt; color: #ff0000;">Is it good to cast IdbConnection to SQLConnection
+              ?</span></strong></p>
+        <p><span style="font-size: 12pt;">If you prefered to use <strong><span
+                style="color: #ff0000;">SqlConnection</span>
+            </strong>only then you can cast <strong><span style="color: #ff0000;">DbConnection</span> </strong>to
+            SQLConnection</span></p>
+        <p><span style="font-size: 12pt;">It should be safe as long as you never change the connection string to connect
+            to
+            anything other than a SQL Server Database.</span></p>
+        <pre class="lang-cs prettyprint prettyprinted"><code><span class="typ">Database</span><span class="pln"> database </span><span class="pun">=</span> <span class="typ">DatabaseFactory</span><span class="pun">.</span><span class="typ">CreateDatabase</span><span class="pun">(</span><span class="str">"conn string"</span><span class="pun">);</span><span class="pln">
 
 using</span><span class="pun">(</span><span class="typ">DbConnection</span><span class="pln"> conn </span><span class="pun">=</span><span class="pln"> database</span><span class="pun">.</span><span class="typ">CreateConnection</span><span class="pun">())</span>
 <span class="pun">{</span>    
@@ -121,89 +145,89 @@ using</span><span class="pun">(</span><span class="typ">DbConnection</span><span
     <span class="pun">}</span>
 <span class="pun">}</span></code></pre>
 
-  ==========================================================================================================
-  <script src="js/prism.js"></script>
+        ==========================================================================================================
+        <script src="js/prism.js"></script>
 
-  <script type="text/javascript">
-    Prism.plugins.NormalizeWhitespace.setDefaults(
-      {
-        'remove-trailing': true,
-        'remove-indent': true,
-        'left-trim': true,
-        'right-trim': true,
-        // 'break-lines': 10,
-        // 'indent': 2,
-        // 'remove-initial-line-feed': false,
-        // 'tabs-to-spaces': 4,
-        // 'spaces-to-tabs': 4
-      });
+        <script type="text/javascript">
+          Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+              'remove-trailing': true,
+              'remove-indent': true,
+              'left-trim': true,
+              'right-trim': true,
+              // 'break-lines': 10,
+              // 'indent': 2,
+              // 'remove-initial-line-feed': false,
+              // 'tabs-to-spaces': 4,
+              // 'spaces-to-tabs': 4
+            });
 
-    (function () {
-      if (!self.Prism) {
-        return;
-      }
+          (function () {
+            if (!self.Prism) {
+              return;
+            }
 
-      var div = document.createElement('div');
+            var div = document.createElement('div');
 
-      Prism.hooks.add('before-highlight', function (env) {
-        var elt = env.element;
-        if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
-          elt = elt.parentNode;
-        }
-        var tags = elt.getAttribute('data-keep-tags');
-        if (!tags) {
-          return;
-        }
-        var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+            Prism.hooks.add('before-highlight', function (env) {
+              var elt = env.element;
+              if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                elt = elt.parentNode;
+              }
+              var tags = elt.getAttribute('data-keep-tags');
+              if (!tags) {
+                return;
+              }
+              var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
 
-        env.keepTags = true;
-        env.keepTagsPlaceholder = placeholder;
+              env.keepTags = true;
+              env.keepTagsPlaceholder = placeholder;
 
-        tags = tags.split(/\s*,\s*/).join('|');
-        var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+              tags = tags.split(/\s*,\s*/).join('|');
+              var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
 
-        env.keepTagsRegex = tags_regex;
+              env.keepTagsRegex = tags_regex;
 
-        env.tokenStack = [];
-        env.backupCode = env.code;
+              env.tokenStack = [];
+              env.backupCode = env.code;
 
-        var code = env.element.innerHTML;
-        code = code.replace(tags_regex, function (match) {
-          env.tokenStack.push(match);
-          return placeholder.replace('{n}', env.tokenStack.length);
-        });
-        env.element.innerHTML = code;
-        code = env.element.textContent;
-        code = code.replace(/^(?:\r?\n|\r)/, '');
+              var code = env.element.innerHTML;
+              code = code.replace(tags_regex, function (match) {
+                env.tokenStack.push(match);
+                return placeholder.replace('{n}', env.tokenStack.length);
+              });
+              env.element.innerHTML = code;
+              code = env.element.textContent;
+              code = code.replace(/^(?:\r?\n|\r)/, '');
 
-        env.code = code;
-      });
+              env.code = code;
+            });
 
-      Prism.hooks.add('after-highlight', function (env) {
-        if (!env.keepTags) {
-          return;
-        }
-        for (var i = 0, t; t = env.tokenStack[i]; i++) {
+            Prism.hooks.add('after-highlight', function (env) {
+              if (!env.keepTags) {
+                return;
+              }
+              for (var i = 0, t; t = env.tokenStack[i]; i++) {
 
-          t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
-            div.innerHTML = inside;
-            inside = div.textContent;
-            return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                  div.innerHTML = inside;
+                  inside = div.textContent;
+                  return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                });
+
+                env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                env.element.innerHTML = env.highlightedCode;
+              }
+            });
+
+          }());
+
+          Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+            v.classList.add("language-sql");
           });
+          Prism.highlightAll();
 
-          env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
-          env.element.innerHTML = env.highlightedCode;
-        }
-      });
-
-    }());
-
-    Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
-      v.classList.add("language-sql");
-    });
-    Prism.highlightAll();
-
-  </script>
+        </script>
 </body>
 
 </html>
