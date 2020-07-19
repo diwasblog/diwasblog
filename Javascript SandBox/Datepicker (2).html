@@ -1,0 +1,83 @@
+<html>
+
+<head>
+
+    <script
+        src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+
+    <style>
+        xmp.prettyprint {
+            font-size: 12pt;
+            font-family: monospace;
+
+        }
+    </style>
+
+
+
+
+</head>
+
+
+<body>
+
+    <h2>flatpickr datepciker</h2>
+
+    <div class="row">
+        <div class="col-lg-6">
+            //Jquery independent Date picker
+
+            <xmp class="prettyprint">
+
+                <textarea name="editor1"></textarea>
+
+
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+                <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
+
+                $( document ).ready(function() {
+                flatpickr('#invoice_date', {
+                dateFormat: "Y-m-d",
+                });
+                });
+
+
+            </xmp>
+        </div>
+
+        <div class="col-lg-6">
+            //In VUe js
+
+            <xmp class="prettyprint">
+
+                <textarea name="editor1"></textarea>
+
+
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+                <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
+                mounted: function () {
+                let vm = this;
+
+
+                flatpickr('#invoice_date', {
+                dateFormat: "Y-m-d",
+                });
+
+                }
+
+
+            </xmp>
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>

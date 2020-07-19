@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+<style>
+    kbd {
+        background: black
+    }
+</style>
+
+<body>
+
+    <h2>Table Attribute</h2>
+
+    <div class="row">
+        <div class="col-lg-6">
+
+            <pre class="limit-15">
+        <code class='language-csharp'>
+            [Table("StudentMaster")]
+            public class Student
+            {
+                public int StudentID { get; set; }
+                public string StudentName { get; set; }
+            }
+
+        </code>
+        </pre>
+        </div>
+        <div class="col-lg-6">
+            <img src="https://www.entityframeworktutorial.net/images/codefirst/table-attribute.png">
+        </div>
+    </div>
+
+    <h2>Table Attribute with Schema</h2>
+
+    <div class="row">
+        <div class="col-lg-6">
+
+            <pre class="limit-15">
+        <code class='language-csharp'>
+            [Table("StudentMaster", Schema="Admin")]
+            public class Student
+            {
+                public int StudentID { get; set; }
+                public string StudentName { get; set; }
+            }
+
+        </code>
+        </pre>
+        </div>
+        <div class="col-lg-6">
+            <img src="https://www.entityframeworktutorial.net/images/codefirst/table-attribute-2.png">
+        </div>
+    </div>
+    <hr>
+    <h2>Column Attribute</h2>
+
+    <div class="row">
+        <div class="col-lg-6">
+
+            <pre class="limit-15">
+        <code class='language-csharp'>
+            public class Student
+            {
+                public int StudentID { get; set; }
+                 
+                [Column("Name")]
+                public string StudentName { get; set; }
+                public DateTime? DateOfBirth { get; set; }
+                public byte[] Photo { get; set; }
+                public decimal Height { get; set; }
+                public float Weight { get; set; }
+            }
+        </code>
+        </pre>
+        </div>
+        <div class="col-lg-6">
+            <img src="https://www.entityframeworktutorial.net/images/efcore/column-attribute1.png">
+        </div>
+    </div>
+
+    <hr>
+
+
+    <hr>
+    <h2>Using DateTime Column Attribute</h2>
+
+    <div class="row">
+        <div class="col-lg-6">
+
+            <pre class="limit-15">
+        <code class='language-csharp'>
+            public class Student
+            {
+                public int StudentID { get; set; }
+                
+                [Column("Name")]
+                public string StudentName { get; set; }
+                [Column("DoB", TypeName="DateTime2")]
+                public DateTime DateOfBirth { get; set; }
+                public byte[] Photo { get; set; }
+                public decimal Height { get; set; }
+                public float Weight { get; set; }
+            }
+        </code>
+        </pre>
+        </div>
+        <div class="col-lg-6">
+            <img src="https://www.entityframeworktutorial.net/images/efcore/column-attribute2.png">
+        </div>
+    </div>
+    <p><span style="font-size: 14pt;"><span style="color: #2dc26b;"><strong>datetime2</strong>&nbsp;</span><span
+                style="color: #000000;">wins in most aspects except (old apps Compatibility)</span></span></p>
+    <ol style="list-style-type: decimal;">
+        <li><span style="color: #000000; font-size: 14pt;">larger&nbsp;<span style="color: #e03e2d;"><strong>range of
+                        values</strong></span></span></li>
+        <li><span style="color: #000000; font-size: 14pt;">better&nbsp;<span
+                    style="color: #e03e2d;"><strong>Accuracy</strong></span></span></li>
+        <li><span style="color: #000000; font-size: 14pt;">smaller&nbsp;<span style="color: #e03e2d;"><strong>storage
+                        space</strong></span>&nbsp;(if optional user-specified precision is specified)</span></li>
+    </ol>
+    <img src="https://i.stack.imgur.com/hNRsj.png">
+    <hr>
+    <h2>Using DateTime Column Attribute</h2>
+
+    <div class="row">
+        <div class="col-lg-6">
+
+            <pre class="limit-15">
+        <code class='language-csharp'>
+            public class Student
+            {
+                [Column(Order = 0)]
+                public int StudentID { get; set; }
+                
+                [Column("Name", Order = 1)]
+                public string StudentName { get; set; }
+                
+                [Column("DoB", Order = 5)]
+                public DateTime DateOfBirth { get; set; }
+                [Column(Order = 3)]
+                public byte[] Photo { get; set; }
+                [Column(Order = 2)]
+                public decimal Height { get; set; }
+                [Column(Order = 4)]
+                public float Weight { get; set; }
+            }
+        </code>
+        </pre>
+        </div>
+        <div class="col-lg-6">
+            <img src="https://www.entityframeworktutorial.net/images/efcore/column-attribute3.png">
+        </div>
+    </div>
+    <hr>
+
+    <h2>Timestamp</h2>
+    eg. 2017-01-01 00:00:00
+    <div class="row">
+        <div class="col-lg-6">
+            <pre>
+            <code class="language-csharp">
+        public class Student
+        {
+            public int StudentId { get; set; }
+            public string StudentName { get; set; }
+                
+            [Timestamp]
+            public byte[] RowVersion { get; set; }
+        }
+            </code>
+        </pre>
+        </div>
+
+        <div class="col-lg-6">
+            <img src="https://www.entityframeworktutorial.net/images/codefirst/timestamp-attribute.png">
+        </div>
+    </div>
+
+    <h2>Key Attribute</h2>
+
+    <div class="row">
+        <div class="col-lg-6">
+
+            <pre class="limit-15">
+            <code class='language-csharp'>
+                public class Student
+                {
+                    [Key]
+                    public int StudentKey { get; set; }
+                    public string StudentName { get; set; }
+                }
+               
+
+            </code>
+            </pre>
+        </div>
+        <div class="col-lg-6">
+            <img src="https://www.entityframeworktutorial.net/images/codefirst/primary-key.png">
+        </div>
+    </div>
+    <hr>
+    <h2>Key Attribute with Order</h2>
+
+    <div class="row">
+        <div class="col-lg-6">
+            IDENTITY column in the database for all the id (key) properties of the entity
+            <pre class="limit-15">
+            <code class='language-csharp'>
+public class Student
+{
+    [Key]
+    [Column(Order=1)]
+    public int StudentKey { get; set; }
+     
+    [Key]
+    [Column(Order=2)]
+    public int AdmissionNum { get; set; }
+     
+    public string StudentName { get; set; }
+}
+            </code>
+            </pre>
+        </div>
+        <div class="col-lg-6">
+            <img src="https://www.entityframeworktutorial.net/images/codefirst/composite-key.png">
+        </div>
+    </div>
+    <hr>
+
+    <h2>Non Mappped</h2>
+
+    <div class="row">
+        <div class="col-lg-6">
+
+            <pre class="limit-15">
+            <code class='language-csharp'>
+                public class Student
+                {
+                    public int StudentId { get; set; }
+                    public string StudentName { get; set; }
+                        
+                    [NotMapped]
+                    public int Age { get; set; }
+                }
+            </code>
+            </pre>
+        </div>
+        <div class="col-lg-6">
+            <img src="https://www.entityframeworktutorial.net/images/codefirst/notmapped-attribute.png">
+        </div>
+    </div>
+    <hr>
+    <h2>Foreign Key Relationship ( 3 ways)</h2>
+
+    <div class="row">
+        <div class="col-lg-4">
+
+            <pre class="limit-15">
+            <code class='language-csharp'>
+public class Student
+{
+    public int StudentID { get; set; }
+    public string StudentName { get; set; }
+        
+    [ForeignKey("Standard")]
+    public int StandardRefId { get; set; }
+    public Standard Standard { get; set; }
+}
+
+public class Standard
+{
+    public int StandardId { get; set; }
+    public string StandardName { get; set; }
+    
+    public ICollection&lt;Student> Students { get; set; }
+}
+            </code>
+            </pre>
+        </div>
+        <div class="col-lg-4">
+
+            <pre class="limit-15">
+            <code class='language-csharp'>
+public class Student
+{
+    public int StudentID { get; set; }
+    public string StudentName { get; set; }
+        
+    public int StandardRefId { get; set; }
+    
+    [ForeignKey("StandardRefId")]
+    public Standard Standard { get; set; }
+}
+
+public class Standard
+{
+    public int StandardId { get; set; }
+    public string StandardName { get; set; }
+    
+    public ICollection&lt;Student> Students { get; set; }
+}
+            </code>
+            </pre>
+        </div>
+        <div class="col-lg-4">
+
+            <pre class="limit-15">
+            <code class='language-csharp'>
+public class Student
+{
+    public int StudentID { get; set; }
+    public string StudentName { get; set; }
+        
+    public int StandardRefId { get; set; }
+    public Standard Standard { get; set; }
+}
+
+public class Standard
+{
+    public int StandardId { get; set; }
+    public string StandardName { get; set; }
+    
+    [ForeignKey("StandardRefId")]
+    public ICollection&lt;Student> Students { get; set; }
+}
+            </code>
+            </pre>
+        </div>
+
+    </div>
+
+    <img src="https://www.entityframeworktutorial.net/images/codefirst/foreignkey-attribute-2.png">
+    <hr>
+    Here Created index for RegistrationNumber
+    <div class="row">
+        <div class="col-lg-6">
+
+            <pre class="limit-15">
+            <code class='language-csharp'>
+                class Student
+                {
+                    public int Student_ID { get; set; }
+                    public string StudentName { get; set; }
+                        
+                    [Index]
+                    public int RegistrationNumber { get; set; }
+                }
+            </code>
+            </pre>
+        </div>
+
+    </div>
+    <hr>
+    <h2>Required</h2>
+
+    <div class="row">
+        <div class="col-lg-6">
+
+            <pre class="limit-15">
+            <code class='language-csharp'>
+                public class Student
+                {
+                    public int StudentID { get; set; }
+                    [Required]
+                    public string StudentName { get; set; }
+                }
+            </code>
+            </pre>
+        </div>
+        <div class="col-lg-6">
+            <img src="https://www.entityframeworktutorial.net/images/codefirst/required-attribute.png">
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-6">
+
+            <pre class="limit-15">
+            <code class='language-csharp'>
+                public class Student
+                {
+                    public int StudentID { get; set; }
+                    [Required (ErrorMessage = "{0} is a mandatory field")]
+                    public string StudentName { get; set; }
+                    //ie Custom error msg. StudentName is a mandatory field
+                }
+            </code>
+            </pre>
+        </div>
+        <div class="col-lg-6">
+
+        </div>
+    </div>
+    <h2>Range Attribute</h2>
+    <div class="row">
+        <div class="col-lg-12">
+
+            <pre class="limit-15">
+            <code class='language-csharp'>
+                public class Customer
+                {
+                    public string Name { get; set; }
+                
+                    [Range(typeof(DateTime), "01/01/1900", "01/01/2014",ErrorMessage = "Valid dates for the Property {0} between {1} and {2}")]
+                    public DateTime EntryDate { get; set; }
+                
+                    public string Password { get; set; }
+                    [Compare("Customer.Password", ErrorMessage = "The fields Password and PasswordConfirmation should be equals")]
+                    public string PasswordConfirmation { get; set; }
+                
+                    [Range(0, 150, ErrorMessage = "The Age should be between 0 and 150 years")]
+                    public int Age { get; set; }
+                }
+            </code>
+            </pre>
+        </div>
+
+    </div>
+    <hr>
+    <h2>Maxlength</h2>
+
+    <div class="row">
+        <div class="col-lg-6">
+
+            <pre class="limit-15">
+            <code class='language-csharp'>
+                public class Student
+                {
+                    public int StudentID { get; set; }
+                    [MaxLength(50)]
+                    public string StudentName { get; set; }
+                        
+                }
+            </code>
+            </pre>
+        </div>
+        <div class="col-lg-6">
+            <img src="https://www.entityframeworktutorial.net/images/codefirst/maxlength.png">
+        </div>
+    </div>
+    <h2>Maxlength with {} attribute</h2>
+    <div class="row">
+        <div class="col-lg-6">
+
+            <pre class="limit-15">
+            <code class='language-csharp'>
+                public class Student
+                {
+                    public int StudentID { get; set; }
+                   
+                    public string StudentName { get; set; }
+                        
+                    [MaxLength(100, "{0} can have a max of {1} characters")]
+                    public string Address { get; set; }
+                }
+            </code>
+            </pre>
+        </div>
+        <div class="col-lg-6">
+            Will output the following if it is over the character limit: "<b>Address</b>> can have a max of <b>100</b>
+            characters"
+            <br>
+            The placeholders I am aware of are:<br>
+            <br>
+            {0} = Property Name <br>
+            {1} = Max Length<br>
+            {2} = Min Length<br>
+        </div>
+    </div>
+    <h2>Database Generated</h2>
+    Note: <b>EF creates an IDENTITY column (Auto Increment) in the database for all the id (key) properties of the
+        entity, by
+        default</b><br>
+    DatabaseGenerated attribute takes one out of the following three DatabaseGeneratedOption enum values:
+    <br><br>
+    <b> DatabaseGeneratedOption.None</b><br>
+    <b>DatabaseGeneratedOption.Identity</b><br>
+    <b> DatabaseGeneratedOption.Computed</b><br>
+    <div class="row">
+        <div class="col-lg-6">
+
+            <pre class="limit-15" data-keep-tags="kbd, em">
+            <code class='language-csharp'>
+public class Course
+{
+    //CourseId is Primary Key for Course
+    //DatabaseGeneratedOption.None disable auto increment and 
+    //set CourseId via Code
+
+    <kbd>[DatabaseGenerated(DatabaseGeneratedOption.None)]</kbd>
+    public int CourseId { get; set; }
+    public string CourseName { get; set; }
+}
+            </code>
+            </pre>
+        </div>
+        <div class="col-lg-6">
+
+            <pre class="limit-15" data-keep-tags="kbd, em">
+            <code class='language-csharp'>
+using (var context = new SchoolContext())
+{
+    // you must provide the unique CourseId value
+    var maths = new Course(){<kbd> CourseId=1 </kbd>,  CourseName="Maths"};
+    context.Courses.Add(maths);
+
+    // you must provide the unique CourseId value
+    var eng = new Course(){ <kbd>CourseId=2</kbd>,  CourseName="English"};
+    context.Courses.Add(eng);
+
+    // the following will throw an exception as CourseId has duplicate value
+    //var sci = new Course(){ <kbd>CourseId=2</kbd>,  CourseName="sci"};
+
+    context.SaveChanges();
+}
+            </code>
+            </pre>
+        </div>
+
+        Note: EF will throw an <b>exception</b> if you do not provide unique values each time because CourseId is a
+        primary key
+        property.
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+
+            <pre class="limit-15" data-keep-tags="kbd, em">
+            <code class='language-csharp'>
+                public class Course
+                {
+                    public int CourseId { get; set; }
+                    public string CourseName { get; set; }
+                
+                    //Set Auto Increment For Non Primary Key 
+                    <kbd>[DatabaseGenerated(DatabaseGeneratedOption.Identity)]</kbd>
+                    public int RecordNum { get; set; }
+                }
+            </code>
+            </pre>
+        </div>
+        <div class="col-lg-6">
+
+
+        </div>
+
+
+    </div>
+    <script src="js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+
+
+        (function () {
+            if (!self.Prism) {
+                return;
+            }
+
+            var div = document.createElement('div');
+
+            Prism.hooks.add('before-highlight', function (env) {
+                var elt = env.element;
+                if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                    elt = elt.parentNode;
+                }
+                var tags = elt.getAttribute('data-keep-tags');
+                if (!tags) {
+                    return;
+                }
+                var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+                env.keepTags = true;
+                env.keepTagsPlaceholder = placeholder;
+
+                tags = tags.split(/\s*,\s*/).join('|');
+                var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+                env.keepTagsRegex = tags_regex;
+
+                env.tokenStack = [];
+                env.backupCode = env.code;
+
+                var code = env.element.innerHTML;
+                code = code.replace(tags_regex, function (match) {
+                    env.tokenStack.push(match);
+                    return placeholder.replace('{n}', env.tokenStack.length);
+                });
+                env.element.innerHTML = code;
+                code = env.element.textContent;
+                code = code.replace(/^(?:\r?\n|\r)/, '');
+
+                env.code = code;
+            });
+
+            Prism.hooks.add('after-highlight', function (env) {
+                if (!env.keepTags) {
+                    return;
+                }
+                for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                    t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                        div.innerHTML = inside;
+                        inside = div.textContent;
+                        return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                    });
+
+                    env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                    env.element.innerHTML = env.highlightedCode;
+                }
+            });
+
+        }());
+
+        Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+            v.classList.add("language-sql");
+        });
+        Prism.highlightAll();
+
+    </script>
+</body>
+
+</html>
