@@ -545,6 +545,12 @@ using (var context = new SchoolContext())
                 {
                     public int CourseId { get; set; }
                     public string CourseName { get; set; }
+
+                    //Each Time it will generate Unique Guid5   
+                    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+                    public Guid Unique { get; set; }
+                    
+
                 
                     //Set Auto Increment For Non Primary Key 
                     <kbd>[DatabaseGenerated(DatabaseGeneratedOption.Identity)]</kbd>
@@ -558,6 +564,75 @@ using (var context = new SchoolContext())
 
         </div>
 
+
+    </div>
+
+
+
+    <h2>Phone Number Validation</h2>
+
+    <div class="row">
+        <div class="col-lg-6">
+
+            <pre class="limit-15">
+            <code class='language-csharp'>
+                [StringLength(13, MinimumLength=10)]
+                [Required(ErrorMessage = "You must provide a phone number")]
+                public string MobileNo { get; set; }
+                //Allow 10 digit min and max 13 
+            </code>
+            </pre>
+        </div>
+
+    </div>
+
+    <h2>Employee Name between 3 to 100 </h2>
+
+    <div class="row">
+        <div class="col-lg-6">
+
+            <pre class="limit-15">
+            <code class='language-csharp'>
+                [DisplayName("Employee Name")]
+                [Required(ErrorMessage = "Employee Name is required")]
+                [StringLength(100,MinimumLength=3)]
+                public String EmpName { get; set; } 
+            </code>
+            </pre>
+        </div>
+
+    </div>
+
+
+
+    <h2>Image Type Validation </h2>
+
+    <div class="row">
+        <div class="col-lg-6">
+
+            <pre class="limit-15">
+            <code class='language-csharp'>
+                [FileExtensions("png|jpg|jpeg|gif")]
+                public string ProfilePictureLocation { get; set; }
+            </code>
+            </pre>
+        </div>
+
+    </div>
+
+
+    <h2>Allow Only Text to Enter </h2>
+
+    <div class="row">
+        <div class="col-lg-6">
+
+            <pre class="limit-15">
+            <code class='language-csharp'>
+                [DataType(DataType.Text)]
+                public string LastName { get; set; }
+            </code>
+            </pre>
+        </div>
 
     </div>
     <script src="js/prism.js"></script>

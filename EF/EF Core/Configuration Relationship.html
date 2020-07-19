@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 </head>
 <meta charset="utf-8">
@@ -12,10 +13,11 @@
 <link rel="stylesheet" href="../css/dracula.css">
 <link rel="stylesheet" href="../css/dracula-prism.css">
 <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+
 <body>
 
-====================================================================================================
-<h2>One to One Relationship Configuration</h2>
+  ====================================================================================================
+  <h2>One to One Relationship Configuration</h2>
   <pre>
     <code class="language-csharp">
       public class Student
@@ -33,7 +35,7 @@ public class Grade
     public string GradeName { get; set; }
     public string Section { get; set; }
 
-    public ICollection<Student> Students { get; set; }
+    public ICollection&lt;Student> Students { get; set; }
 }
     </code>
   </pre>
@@ -50,14 +52,14 @@ public class Grade
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Student>()
-            .HasOne<Grade>(s => s.Grade)
+        modelBuilder.Entity&lt;Student>()
+            .HasOne&lt;Grade>(s => s.Grade)
             .WithMany(g => g.Students)
             .HasForeignKey(s => s.CurrentGradeId);
     }
 
-    public DbSet<Grade> Grades { get; set; }
-    public DbSet<Student> Students { get; set; }
+    public DbSet&lt;Grade> Grades { get; set; }
+    public DbSet&lt;Student> Students { get; set; }
 }
     </code>
   </pre>
@@ -101,20 +103,20 @@ public class Grade
       
           protected override void OnModelCreating(ModelBuilder modelBuilder)
           {
-              modelBuilder.Entity<Student>()
-                  .HasOne<StudentAddress>(s => s.Address)
+              modelBuilder.Entity&lt;Student>()
+                  .HasOne&lt;StudentAddress>(s => s.Address)
                   .WithOne(ad => ad.Student)
-                  .HasForeignKey<StudentAddress>(ad => ad.AddressOfStudentId);
+                  .HasForeignKey&lt;StudentAddress>(ad => ad.AddressOfStudentId);
           }
       
-          public DbSet<Student> Students { get; set; }
-          public DbSet<StudentAddress> StudentAddresses { get; set; }
+          public DbSet&lt;Student> Students { get; set; }
+          public DbSet&lt;StudentAddress> StudentAddresses { get; set; }
       }
     </code>
   </pre>
-=================================================================================================================================     
-<img src="img/manytomany.PNG">
-<h2>Many to Many Relationship Configuration</h2>
+  =================================================================================================================================
+  <img src="img/manytomany.PNG">
+  <h2>Many to Many Relationship Configuration</h2>
   <pre>
     <code class="language-csharp">
       public class Student
@@ -140,16 +142,16 @@ public class Grade
       }
     </code>
   </pre>
-Then Configure One to Many Relationship 
-<br>
-<pre>
+  Then Configure One to Many Relationship
+  <br>
+  <pre>
   <code class="language-csharp">
     public class Student
 {
     public int StudentId { get; set; }
     public string Name { get; set; }
 
-    public IList<StudentCourse> StudentCourses { get; set; }
+    public IList&lt;StudentCourse> StudentCourses { get; set; }
 }
 
 public class Course
@@ -158,7 +160,7 @@ public class Course
     public string CourseName { get; set; }
     public string Description { get; set; }
 
-    public IList<StudentCourse> StudentCourses { get; set; }
+    public IList&lt;StudentCourse> StudentCourses { get; set; }
 }
   </code>
 </pre>
@@ -174,7 +176,7 @@ public class Course
       
           protected override void OnModelCreating(ModelBuilder modelBuilder)
           {
-              modelBuilder.Entity<StudentCourse>().HasKey(sc => new { sc.StudentId, sc.CourseId });
+              modelBuilder.Entity&lt;StudentCourse>().HasKey(sc => new { sc.StudentId, sc.CourseId });
 
                   modelBuilder.Entity<StudentCourse>().HasKey(sc => new { sc.SId, sc.CId });
 
@@ -195,21 +197,22 @@ public class Course
           public DbSet<StudentCourse> StudentCourses { get; set; }
       }
     </code>
-  </pre>   
-<script src="../js/prism.js"></script>
-<script type="text/javascript">
-  Prism.plugins.NormalizeWhitespace.setDefaults(
-    {
-      'remove-trailing': true,
-      'remove-indent': true,
-      'left-trim': true,
-      'right-trim': true,
-      // 'break-lines': 10,
-      // 'indent': 2,
-      // 'remove-initial-line-feed': false,
-      // 'tabs-to-spaces': 4,
-      // 'spaces-to-tabs': 4
-    });
-</script>
+  </pre>
+  <script src="../js/prism.js"></script>
+  <script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+      {
+        'remove-trailing': true,
+        'remove-indent': true,
+        'left-trim': true,
+        'right-trim': true,
+        // 'break-lines': 10,
+        // 'indent': 2,
+        // 'remove-initial-line-feed': false,
+        // 'tabs-to-spaces': 4,
+        // 'spaces-to-tabs': 4
+      });
+  </script>
 </body>
+
 </html>

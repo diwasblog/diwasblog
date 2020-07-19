@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../css/dracula.css">
+    <link rel="stylesheet" href="../css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+
+<body>
+    </head>
+    <style>
+        kbd {
+            background: black
+        }
+    </style>
+
+    <body>
+
+
+        <h2>Step 1 ) Create asp.net coreapplication (3.1 +) ==> Name it</h2>
+        <h2>Step 2 ) Then select API Project</h2>
+        <h2>Step 3) Run Below command in Package Manager:</h2>
+        <div class="row">
+            <div class="col-lg-6">
+
+                <pre class="limit-15">
+        <code class='language-csharp'>
+            install-package Microsoft.EntityFrameworkCore.SqlServer
+            install-package Microsoft.EntityFrameworkCore.Tools
+            install-package Microsoft.EntityFrameworkCore.Design
+        </code>
+        </pre>
+            </div>
+
+        </div>
+
+        <h2>Step 4) Create Model</h2>
+
+        <div class="row">
+            <div class="col-lg-6">
+                Model/Country.cs
+                <pre class="limit-15" data-keep-tags="kbd, em">
+        <code class='language-csharp'>
+            public class <kbd>Country</kbd>
+            {
+                [Column("CountryId")]
+                [Key]
+                [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+                [Required]
+                public int CountryId { get; set; }
+        
+                [Column("CountryName")]
+                [Required]
+                [StringLength(50)]
+                public string Name { get; set; }
+        
+                [Column("Population")]
+                [Required]
+                public Int64 Population { get; set; }
+        
+            }
+
+        </code>
+        </pre>
+            </div>
+            <div class="col-lg-6">
+                Model/Developer.cs
+                <pre class="limit-15" data-keep-tags="kbd, em">
+        <code class='language-csharp'>
+            public class <kbd>Developer</kbd>
+            {
+                [Column("DeveloperId")]
+                [Key]
+                [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+                [Required]
+                public int DeveloperId { get; set; }
+        
+                [Column("DeveloperName")]
+                [Required]
+                [StringLength(50)]
+                public string FirstName { get; set; }
+        
+                [Column("Skills")]
+                [Required]
+                [StringLength(500)]
+                public string Skills { get; set; }
+        
+                <kbd>[ForeignKey("CountryID")]</kbd>
+                public virtual Country Country { get; set; }
+            }
+
+        </code>
+        </pre>
+            </div>
+        </div>
+        <h2>Step 5) Create DbContext === > DataLayer/DeveloperDbContext.cs</h2>
+        <pre class="limit-15" data-keep-tags="kbd, em">
+            <code class='language-csharp'>
+    public class DeveloperDbContext : DbContext
+    {
+        public DeveloperDbContext(DbContextOptions
+    &lt;<kbd>DeveloperDbContext</kbd>> options) : base(options)
+        {
+        }
+        public DbSet&lt;Developer> Developer { get; set; }
+        public DbSet&lt;Country> Country { get; set; }
+    }
+
+            </code>
+            </pre>
+
+
+        <h2>Step 6) Create Connection Strings</h2>
+        <pre class="limit-15" data-keep-tags="kbd, em">
+                <code class='language-csharp'>
+       
+{
+   <kbd> "ConnectionStrings": {
+      "DeveloperDatabase": "data source=.; initial catalog=DeveloperDb;integrated security=true"
+    },</kbd>
+    "Logging": {
+      "LogLevel": {
+        "Default": "Information",
+        "Microsoft": "Warning",
+        "Microsoft.Hosting.Lifetime": "Information"
+      }
+    },
+    "AllowedHosts": "*"
+  }
+  
+    
+                </code>
+                </pre>
+
+
+
+        <h2>7) Add in Startup.cs</h2>
+        <pre class="limit-15" data-keep-tags="kbd, em">
+    <code class='language-csharp'>
+
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+           <kbd> services.AddControllersWithViews();
+            services.AddDbContext&lt;DeveloperDbContext>
+           (o => o.UseSqlServer(Configuration.
+            GetConnectionString("DeveloperDatabase")));
+        </kbd>
+            services.AddControllers();
+        }
+
+
+
+
+    </code>
+    </pre>
+
+
+        <br>
+        Now to create migration and database we have 3 methods: <br>
+
+        <h2> Method 1) Creation of Db by running the application </h2>
+        When you run the applicaiton for the first time then database will automatically created
+
+
+        <h2>Method 1 --- Step 1 : In Startup in Configure() method</h2>
+
+        <pre class="limit-15" data-keep-tags="kbd, em">
+            <code class='language-csharp'>
+        
+                public void Configure(IApplicationBuilder app, IWebHostEnvironment env,<kbd> DeveloperDbContext db</kbd>)
+                {
+                    if (env.IsDevelopment())
+                    {
+                        app.UseDeveloperExceptionPage();
+                    }
+        
+                //if database is not present in sql server then it will create it else escape this steps automatically
+                    <kbd>db.Database.EnsureCreated();</kbd>
+        
+                    app.UseHttpsRedirection();
+        
+                    app.UseRouting();
+        
+                    app.UseAuthorization();
+        
+                    app.UseEndpoints(endpoints =>
+                    {
+                        endpoints.MapControllers();
+                    });
+                }
+        
+            </code>
+            </pre>
+
+        <h2>Method 1 Step2 ) Just build and run the project</h2>
+
+        <br>
+        <hr>
+        <h2>Method 2) Using Migration Script</h2>
+
+        First follow upto step 7 <br>
+        Then, in Package Manager Console Type this:<br>
+        <pre>
+                <code class="language-csharp">
+                    add-migration developerdbmigration                 ===> Generate Migration Scripts in migration folder
+
+                    update-database                                    ===> This will add to database
+                </code>
+            </pre>
+
+        <hr>
+        <hr>
+
+        <hr>
+        <h2>Method 3) reation of Db by adding table configuration</h2>
+        <br>
+        <h2>Step 1) Remove Data Annotation from Model Step 4</h2></br>
+        <h2> Step 2) Then now model look like this:</h2>
+        <div class="row">
+            <div class="col-lg-6">
+                <pre>
+                    <code class="language-csharp">
+                        public class Country
+                        {
+                            public int CountryId { get; set; }
+                            public string Name { get; set; }
+                            public Int64 Population { get; set; }
+                    
+                        }
+                    </code>
+                </pre>
+
+            </div>
+
+            <div class="col-lg-6">
+                <pre>
+                    <code class="language-csharp">
+                        public class Developer
+                        {
+                            public int DeveloperId { get; set; }
+                            public string FirstName { get; set; }
+                            public string Skills { get; set; }
+                            public virtual Country Country { get; set; }
+                        }
+                    </code>
+                </pre>
+
+            </div>
+        </div>
+
+        <h2>Step 3. Update DeveloperDbContext and add this line</h2>
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+                public class DeveloperDbContext : DbContext
+    {
+        public DeveloperDbContext(DbContextOptions
+    &lt;DeveloperDbContext> options) : base(options)
+        {
+        }
+        public DbSet&lt;Developer> Developer { get; set; }
+        public DbSet&lt;Country> Country { get; set; }
+
+        <kbd>
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new DeveloperEntityConfiguration());
+        }
+    </kbd>
+    }
+
+            </code>
+        </pre>
+
+
+        <h2>Step 4 ) Create DeveloperEntityConfiguration.cs</h2>
+        Create DeveloperEntityConfiguration.cs inside DataLayer/DeveloperEntityConfiguration.cs
+
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+              
+public class DeveloperEntityConfiguration
+    : IEntityTypeConfiguration&lt;Developer>
+ {
+
+     public void Configure(EntityTypeBuilder&lt;Developer> developerConfiguration)
+     {
+         developerConfiguration.Property(b => b.DeveloperId)
+             .UseIdentityColumn();
+
+         developerConfiguration.Ignore(b => b.Skills);
+
+         developerConfiguration.Property(b => b.FirstName)
+             .HasMaxLength(50)
+             .IsRequired();
+
+         developerConfiguration.HasOne(o => o.Country)
+           .WithMany()
+           .IsRequired(true)
+           .HasForeignKey("CountryId");
+
+     }
+ }
+
+            </code>
+        </pre>
+
+        <h2>Step 5 Add and Update Migration</h2>
+        add-migration developerdbmigration
+
+        update-database
+        <pre>
+            <code class="language-csharp">
+                
+            </code>
+        </pre>
+        <script src="../js/prism.js"></script>
+        <script type="text/javascript">
+            Prism.plugins.NormalizeWhitespace.setDefaults(
+                {
+                    'remove-trailing': true,
+                    'remove-indent': true,
+                    'left-trim': true,
+                    'right-trim': true,
+                    // 'break-lines': 10,
+                    // 'indent': 2,
+                    // 'remove-initial-line-feed': false,
+                    // 'tabs-to-spaces': 4,
+                    // 'spaces-to-tabs': 4
+                });
+
+
+            (function () {
+                if (!self.Prism) {
+                    return;
+                }
+
+                var div = document.createElement('div');
+
+                Prism.hooks.add('before-highlight', function (env) {
+                    var elt = env.element;
+                    if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                        elt = elt.parentNode;
+                    }
+                    var tags = elt.getAttribute('data-keep-tags');
+                    if (!tags) {
+                        return;
+                    }
+                    var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+                    env.keepTags = true;
+                    env.keepTagsPlaceholder = placeholder;
+
+                    tags = tags.split(/\s*,\s*/).join('|');
+                    var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+                    env.keepTagsRegex = tags_regex;
+
+                    env.tokenStack = [];
+                    env.backupCode = env.code;
+
+                    var code = env.element.innerHTML;
+                    code = code.replace(tags_regex, function (match) {
+                        env.tokenStack.push(match);
+                        return placeholder.replace('{n}', env.tokenStack.length);
+                    });
+                    env.element.innerHTML = code;
+                    code = env.element.textContent;
+                    code = code.replace(/^(?:\r?\n|\r)/, '');
+
+                    env.code = code;
+                });
+
+                Prism.hooks.add('after-highlight', function (env) {
+                    if (!env.keepTags) {
+                        return;
+                    }
+                    for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                        t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                            div.innerHTML = inside;
+                            inside = div.textContent;
+                            return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                        });
+
+                        env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                        env.element.innerHTML = env.highlightedCode;
+                    }
+                });
+
+            }());
+
+            Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+                v.classList.add("language-sql");
+            });
+            Prism.highlightAll();
+
+        </script>
+    </body>
+
+</html>
