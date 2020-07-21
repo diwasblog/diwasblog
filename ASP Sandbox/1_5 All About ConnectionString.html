@@ -49,15 +49,15 @@
   <code class='language-html'>
     Server=myServerAddress;Database=databaseName;Trusted_Connection=True;
   </code>
-</pre>
+</pre> <br>
   Note: When used trusted connection then it is <b>using windows credential or Windows Authentication</b> and if used
   userid and password then it
   will
   ask for sql credential(SQL Server authentication mode). <br>
-
+  <br><br><br>
   Integrated Security=true <=====> Integrated Security=SSPI <========> Integrated Security=true/SSPI <======>
-        Trusted_Connection=True; <br>
-
+        Trusted_Connection=True; <br><br><br><br>
+        <br><br>
         If Trusted_Connection=True; and User Id=myUsername;Password=myPassword; both used then UserId and password (SQL
         Credential ) will get ignored because SQL Server using windows authentication.
         ==========================================================================================================

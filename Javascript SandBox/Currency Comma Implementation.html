@@ -2,101 +2,184 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
-        integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
-    <title>Bootstrap Sandbox</title>
-
-    <script
-        src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
-    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
-
-    <style>
-        xmp.prettyprint {
-            font-size: 12pt;
-            font-family: monospace;
-        }
-    </style>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
 </head>
 
 <body>
 
 
-    <h1>Javascrip</h1>
 
+    <h1>Javascript</h1>
+    <h4>1. Requrired Jquery</h4>
+    <h4>2. Use Script</h4>
+    <h4>3. Run In input field </h4>
     <div class="row">
         <div class="col-lg-12">
-
-            <xmp class="prettyprint">
-
-                String.prototype.replaceAll = function(search, replacement) {
-                var target = this;
-                return target.replace(new RegExp(search, 'g'), replacement);
-                };
-
-                $('input.Stylednumber').keyup(function() {
-                var input = $(this).val().replaceAll(',', '');
-                if (input.length < 1) $(this).val(''); else { var val=parseFloat(input); var formatted=inrFormat(input);
-                    if (formatted.indexOf('.')> 0) {
-                    var split = formatted.split('.');
-                    formatted = split[0] + '.' + split[1].substring(0, 2);
-                    }
-                    $(this).val(formatted);
-                    }
-                    });
-
-                    function inrFormat(val) {
-                    var x = val;
-                    x = x.toString();
-                    var afterPoint = '';
-                    if (x.indexOf('.') > 0)
-                    afterPoint = x.substring(x.indexOf('.'), x.length);
-                    x = Math.floor(x);
-                    x = x.toString();
-                    var lastThree = x.substring(x.length - 3);
-                    var otherNumbers = x.substring(0, x.length - 3);
-                    if (otherNumbers != '')
-                    lastThree = ',' + lastThree;
-                    var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + afterPoint;
-                    return res;
-                    }
-
-
-
-                    function isNumberKey(element,evt)
-                    {
-                    var charCode = (evt.which) ? evt.which : event.keyCode
-                    if (charCode > 31 && (charCode < 48 || charCode> 57) && !(charCode == 46 || charCode == 8))
-                        return false;
+            <pre>
+                <code class="language-javascript">
+                    String.prototype.replaceAll = function (search, replacement) {
+                        var target = this;
+                        return target.replace(new RegExp(search, 'g'), replacement);
+                    };
+                    
+                    $('input.currencyFormatter').keyup(function () {
+                        var input = $(this).val().replaceAll(',', '');
+                        if (input.length < 1)
+                            $(this).val('');
                         else {
-                        var len = $(element).val().length;
-                        var index = $(element).val().indexOf('.');
-                        if (index > 0 && charCode == 46) {
-                        return false;
+                            var val = parseFloat(input);
+                            var formatted = inrFormat(input);
+                            if (formatted.indexOf('.') > 0) {
+                                var split = formatted.split('.');
+                                formatted = split[0] + '.' + split[1].substring(0, 2);
+                            }
+                            $(this).val(formatted);
                         }
-                        if (index > 0) {
-                        var CharAfterdot = (len + 1) - index;
-                        if (CharAfterdot > 3) {
-                        return false;
-                        }
-                        }
-
+                    });
+                    
+                    function inrFormat(val) {
+                        var x = val;
+                        x = x.toString();
+                        var afterPoint = '';
+                        if (x.indexOf('.') > 0)
+                            afterPoint = x.substring(x.indexOf('.'), x.length);
+                        x = Math.floor(x);
+                        x = x.toString();
+                        var lastThree = x.substring(x.length - 3);
+                        var otherNumbers = x.substring(0, x.length - 3);
+                        if (otherNumbers != '')
+                            lastThree = ',' + lastThree;
+                        var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + afterPoint;
+                        return res;
+                    }
+                    
+                    function isNumberKey(element, evt) {
+                        var charCode = (evt.which) ? evt.which : event.keyCode
+                        if (charCode > 31 && (charCode < 48 || charCode > 57) && !(charCode == 46 || charCode == 8))
+                            return false;
+                        else {
+                            var len = $(element).val().length;
+                            var index = $(element).val().indexOf('.');
+                            if (index > 0 && charCode == 46) {
+                                return false;
+                            }
+                            if (index > 0) {
+                                var CharAfterdot = (len + 1) - index;
+                                if (CharAfterdot > 3) {
+                                    return false;
+                                }
+                            }
+                    
                         }
                         return true;
-                        }
+                    }
+                    
+                    
+                    
+                </code>
+                </pre>
 
-            </xmp>
+
+
         </div>
     </div>
-    <div class="col-lg-12">
-        <input name="txtMSExMarCardFee" onkeypress="return isNumberKey(this,event)" maxlength="8" type="text"
-            id="txtMSExMarCardFee" class="Stylednumber">
 
-    </div>
-    </div>
 
+    <pre>
+      <code class="language-javascript">
+        &lt;input type="text" class="curr form-control required currencyFormatter clear" onkeypress="return isNumberKey(this,event)" placeholder="Planned Budget" maxlength="10" id="PlannedBudget" name="PlannedBudget">
+      </code>
+  </pre>
+
+
+    <input type="text" class="curr form-control required currencyFormatter clear"
+        onkeypress="return isNumberKey(this,event)" placeholder="Planned Budget" maxlength="10" id="PlannedBudget"
+        name="PlannedBudget">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script> String.prototype.replaceAll = function (search, replacement) {
+            var target = this;
+            return target.replace(new RegExp(search, 'g'), replacement);
+        };
+
+        $('input.currencyFormatter').keyup(function () {
+            var input = $(this).val().replaceAll(',', '');
+            if (input.length < 1)
+                $(this).val('');
+            else {
+                var val = parseFloat(input);
+                var formatted = inrFormat(input);
+                if (formatted.indexOf('.') > 0) {
+                    var split = formatted.split('.');
+                    formatted = split[0] + '.' + split[1].substring(0, 2);
+                }
+                $(this).val(formatted);
+            }
+        });
+
+        function inrFormat(val) {
+            var x = val;
+            x = x.toString();
+            var afterPoint = '';
+            if (x.indexOf('.') > 0)
+                afterPoint = x.substring(x.indexOf('.'), x.length);
+            x = Math.floor(x);
+            x = x.toString();
+            var lastThree = x.substring(x.length - 3);
+            var otherNumbers = x.substring(0, x.length - 3);
+            if (otherNumbers != '')
+                lastThree = ',' + lastThree;
+            var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + afterPoint;
+            return res;
+        }
+
+        function isNumberKey(element, evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57) && !(charCode == 46 || charCode == 8))
+                return false;
+            else {
+                var len = $(element).val().length;
+                var index = $(element).val().indexOf('.');
+                if (index > 0 && charCode == 46) {
+                    return false;
+                }
+                if (index > 0) {
+                    var CharAfterdot = (len + 1) - index;
+                    if (CharAfterdot > 3) {
+                        return false;
+                    }
+                }
+
+            }
+            return true;
+        }
+    </script>
+
+
+    <script src="js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+    </script>
 </body>
 
 </html>

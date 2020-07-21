@@ -1,34 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
-    <link rel="stylesheet" href="../Ef/css/bootstrap.css">
-    <link rel="stylesheet" href="../Ef/css/bootstrap-grid.css">
-    <link rel="stylesheet" href="../Ef/css/bootstrap-reboot.css">
-    <link rel="stylesheet" href="../Ef/css/dracula.css">
-    <link rel="stylesheet" href="../Ef/css/dracula-prism.css">
-    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
-  </head>
-  <body>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+  <link rel="stylesheet" href="../Ef/css/bootstrap.css">
+  <link rel="stylesheet" href="../Ef/css/bootstrap-grid.css">
+  <link rel="stylesheet" href="../Ef/css/bootstrap-reboot.css">
+  <link rel="stylesheet" href="../Ef/css/dracula.css">
+  <link rel="stylesheet" href="../Ef/css/dracula-prism.css">
+  <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
 
 
-      <ul>
-          <li><strong><span style="font-size: 24pt; color: #ff0000;">Git development began in April 2005</span></strong></li>
-          </ul>
-          <br>
-          =====================================================================================================================
-          <br>
-          ===========================================================================
+  <ul>
+    <li><strong><span style="font-size: 24pt; color: #ff0000;">Git development began in April 2005</span></strong></li>
+  </ul>
+  <br>
+  =====================================================================================================================
+  <br>
+  ===========================================================================
 
-master====>Shared===>DiwasDev
+  master====>Shared===>DiwasDev
 
-<br>
-<h3>A) Create Project and Push into Git</h3>
-<pre class="limit-10">
+  <br>
+  <h3>A) Create Project and Push into Git</h3>
+  <pre class="limit-10">
     <code class='language-sql'>
       Goto Project Folder  eg:TestFolder
       git init
@@ -39,45 +40,53 @@ master====>Shared===>DiwasDev
   </code>
 </pre>
 
-<h3>B) Create branch 'shared' and put all contain of master to shared</h3>
-<pre class="limit-10">
+  <h3>B) Create branch 'shared' and put all contain of master to shared</h3>
+  <pre class="limit-10">
     <code class='language-sql'>
       git clone "repo link of master"
       git checkout -b shared    //or git branch shared     git checkout shared
   </code>
 </pre>
 
-<h3>OR B) If you are  already in master branch then do this</h3>
-<pre class="limit-10">
+  <h3>OR B) If you are already in master branch then do this</h3>
+  <pre class="limit-10">
     <code class='language-sql'>
       git pull master
       git checkout -b shared    //So we have all contain of master branch to shared branch
   </code>
 </pre>
 
-==========================================================
-==============================================================================
-<h3>C) Merging Concept </h3>
-Create branch from Shared branch and make changes to DiwasDev branch and add merge changes of DiwasDev to Shared branch so Shared contains upto date content
-of itself and DiwasDev
-<pre>
+  ==========================================================
+  ==============================================================================
+  <h3>C) Merging Concept </h3>
+  Create branch from Shared branch and make changes to DiwasDev branch and add merge changes of DiwasDev to Shared
+  branch so Shared contains upto date content
+  of itself and DiwasDev
+  <pre>
   <code class="language-csharp">
     git checkout Shared   //Merging content of DiwasDev to Shared Branch
     git merge DiwasDev
   </code>
 </pre>
-<b>Then don't forget to pull Shared branch :)</b>
-==========================================================
-<h2>Merge Conflict Resolving</h2>
+  <b>Then don't forget to pull Shared branch :)</b>
+  ==========================================================
+  <h2>Merge Conflict Resolving</h2>
 
-<p><span style="color: #ff0000;"><strong><span style="font-size: 14pt;">Resolving Merge Conflicts</span></strong></span></p>
-<p><span style="font-size: 12pt;"><strong>Conflicts regularly appear when merging branches or pulling someone else's work.</strong> </span><span style="font-size: 12pt;">Sometimes conflicts are handled automatically by git, but other times the person dealing with them has to decide (and usually handpick) what code stays and what is removed.</span></p>
-<p><span style="font-size: 12pt;">Let's look at an example where we're trying to merge two branches called<span style="color: #ff0000;"><strong> john_branch</strong></span> and <span style="color: #ff0000;"><strong>tim_branch</strong></span>. </span></p>
-<p><span style="font-size: 12pt;">Both John and Tim are writing in the same file a function that displays all the elements in an array.</span></p>
+  <p><span style="color: #ff0000;"><strong><span style="font-size: 14pt;">Resolving Merge
+          Conflicts</span></strong></span></p>
+  <p><span style="font-size: 12pt;"><strong>Conflicts regularly appear when merging branches or pulling someone else's
+        work.</strong> </span><span style="font-size: 12pt;">Sometimes conflicts are handled automatically by git, but
+      other times the person dealing with them has to decide (and usually handpick) what code stays and what is
+      removed.</span></p>
+  <p><span style="font-size: 12pt;">Let's look at an example where we're trying to merge two branches called<span
+        style="color: #ff0000;"><strong> john_branch</strong></span> and <span
+        style="color: #ff0000;"><strong>tim_branch</strong></span>. </span></p>
+  <p><span style="font-size: 12pt;">Both John and Tim are writing in the same file a function that displays all the
+      elements in an array.</span></p>
 
-<p><span style="font-size: 12pt;"><strong>John is using a for loop in prism.js as below</strong></span></p>
+  <p><span style="font-size: 12pt;"><strong>John is using a for loop in prism.js as below</strong></span></p>
 
-<pre>
+  <pre>
   <code class="language-csharp">
       // Use a for loop to console.log contents.
       for( var i=0; i&lt;arr.length; i++)
@@ -86,10 +95,10 @@ of itself and DiwasDev
       }
   </code>
 </pre>
-<br>
-<span style="font-size: 12pt;"><strong>Tim preferred to use forEach loop in prism.js as below</strong></span></p>
+  <br>
+  <span style="font-size: 12pt;"><strong>Tim preferred to use forEach loop in prism.js as below</strong></span></p>
 
-<pre>
+  <pre>
   <code class="language-csharp">
       // Use a for loop to console.log contents.
       for( var i=0; i&lt;arr.length; i++)
@@ -98,10 +107,11 @@ of itself and DiwasDev
       }
   </code>
 </pre>
-<p><strong><span style="font-size: 12pt;">They both commit their code on their respective branch. Now if they try to merge the two branches they will see the following error message:</span></strong></p>
-<br>
+  <p><strong><span style="font-size: 12pt;">They both commit their code on their respective branch. Now if they try to
+        merge the two branches they will see the following error message:</span></strong></p>
+  <br>
 
-<pre>
+  <pre>
   <code class="language-csharp">
       $ git merge tim_branch 
 
@@ -111,9 +121,11 @@ of itself and DiwasDev
   </code>
 </pre>
 
-<p><strong><span style="font-size: 12pt;">Git wasn't able to merge the branches automatically, so now it's up to the devs to manually resolve the conflict. If they open the file where the conflict resides, they'll see that Git has inserted a marker on the conflicting lines.</span></strong></p>
+  <p><strong><span style="font-size: 12pt;">Git wasn't able to merge the branches automatically, so now it's up to the
+        devs to manually resolve the conflict. If they open the file where the conflict resides, they'll see that Git
+        has inserted a marker on the conflicting lines.</span></strong></p>
 
-<pre>
+  <pre>
   <code class="language-csharp">
       <<<<<<< HEAD
       // Use a for loop to console.log contents.
@@ -129,8 +141,9 @@ of itself and DiwasDev
   </code>
 </pre>
 
-<p><strong><span style="font-size: 12pt;">If you want to keep forEach loop then just remove head , &gt;&gt;&gt;&gt; and ==== and for loop as below</span></strong></p>
-<pre>
+  <p><strong><span style="font-size: 12pt;">If you want to keep forEach loop then just remove head , &gt;&gt;&gt;&gt;
+        and ==== and for loop as below</span></strong></p>
+  <pre>
     <code class="language-csharp">
         // Use forEach to console.log contents.
         arr.forEach(function(item) {
@@ -139,7 +152,8 @@ of itself and DiwasDev
     </code>
   </pre>
 
-  <p><strong><span style="font-size: 12pt;">When everything is set, a merge commit has to be done to finish the process.</span></strong></p>
+  <p><strong><span style="font-size: 12pt;">When everything is set, a merge commit has to be done to finish the
+        process.</span></strong></p>
 
   <pre>
     <code class="language-csharp">
@@ -148,17 +162,28 @@ of itself and DiwasDev
     </code>
   </pre>
 
-  <p><span style="font-size: 18pt; color: #ff0000;"><strong>Git Rebase vs Git Merge (Which to use When ?)</strong></span></p>
+  <p><span style="font-size: 18pt; color: #ff0000;"><strong>Git Rebase vs Git Merge (Which to use When
+        ?)</strong></span></p>
 
   <ul class="postList">
-      <li id="7536" class="graf graf--li graf-after--p"><span style="font-size: 14pt;"><strong class="markup--strong markup--li-strong"><span style="color: #ff0000;">You&rsquo;re developing locally:</span>&nbsp;</strong>If you have not shared your work with anyone else. At this point, you should prefer rebasing over merging to keep your history tidy. If you&rsquo;ve got your personal fork of the repository and that is not shared with other developers, you&rsquo;re safe to rebase even after you&rsquo;ve pushed to your branch.</span></li>
-      <li id="8a78" class="graf graf--li graf-after--li"><span style="font-size: 14pt;"><span style="color: #ff0000;"><strong class="markup--strong markup--li-strong">Your code is ready for review:</strong></span>&nbsp;You created a pull request. Others are reviewing your work and are potentially fetching it into their fork for local review. At this point, you should not rebase your work. You should create &lsquo;rework&rsquo; commits and update your feature branch. This helps with traceability in the pull request and prevents the accidental history breakage</span></li>
-      </ul>
+    <li id="7536" class="graf graf--li graf-after--p"><span style="font-size: 14pt;"><strong
+          class="markup--strong markup--li-strong"><span style="color: #ff0000;">You&rsquo;re developing
+            locally:</span>&nbsp;</strong>If you have not shared your work with anyone else. At this point, you should
+        prefer rebasing over merging to keep your history tidy. If you&rsquo;ve got your personal fork of the repository
+        and that is not shared with other developers, you&rsquo;re safe to rebase even after you&rsquo;ve pushed to your
+        branch.</span></li>
+    <li id="8a78" class="graf graf--li graf-after--li"><span style="font-size: 14pt;"><span
+          style="color: #ff0000;"><strong class="markup--strong markup--li-strong">Your code is ready for
+            review:</strong></span>&nbsp;You created a pull request. Others are reviewing your work and are potentially
+        fetching it into their fork for local review. At this point, you should not rebase your work. You should create
+        &lsquo;rework&rsquo; commits and update your feature branch. This helps with traceability in the pull request
+        and prevents the accidental history breakage</span></li>
+  </ul>
 
-All other steps are same in both git rebase and git merge but things only different is as below
+  All other steps are same in both git rebase and git merge but things only different is as below
 
-<div class="row">
-  <div class="col">
+  <div class="row">
+    <div class="col">
       <pre>
           <code class="langauge-csharp">
             git checkout Shared
@@ -166,10 +191,10 @@ All other steps are same in both git rebase and git merge but things only differ
           </code>
             </pre>
 
-            Here content of DiwasDev  gets merge into Shared branch and all history of commit of DiwasDev will exists
-  </div>
+      Here content of DiwasDev gets merge into Shared branch and all history of commit of DiwasDev will exists
+    </div>
 
-  <div class="col">
+    <div class="col">
       <pre>
           <code class="langauge-csharp">
             git  checkout Shared
@@ -177,99 +202,118 @@ All other steps are same in both git rebase and git merge but things only differ
           </code>
             </pre>
 
-            Here content of DiwasDev gets merge into Shared Branch but all branch history of DiwasDev gets removes 
-  </div>
-</div>
-
-<div class="row">
-  <div class="col">
-    <img src="img/create_branch_from_master.PNG">
+      Here content of DiwasDev gets merge into Shared Branch but all branch history of DiwasDev gets removes
+    </div>
   </div>
 
-  <div class="col">
+  <div class="row">
+    <div class="col">
+      <img src="img/create_branch_from_master.PNG">
+    </div>
+
+    <div class="col">
       <img src="img/merge.PNG">
       Actually Merge has two branch as parent
     </div>
 
     <div class="col">
       <img src="img/rebase.PNG">
-      Rebase has one parent branch. Here rebase means changing the base 
-      </div>
-</div>
+      Rebase has one parent branch. Here rebase means changing the base
+    </div>
+  </div>
 
 
-================================================================================================================
+  ================================================================================================================
 
-<h2>Git Ignore</h2>
-While Create Git Repository always include gitignore file of Visual Studio so that git will ignore this vs file 
-<img src="img/gitignore.PNG">
+  <h2>Git Ignore</h2>
+  While Create Git Repository always include gitignore file of Visual Studio so that git will ignore this vs file
+  <img src="img/gitignore.PNG">
 
-=======
-<h2>Adding Git Ignore in Existing Project</h2>
-Team Explorer>>RepositorySetting>>>>Ignore File(Add) ==> Then it will auto add git ignore file
-==============================================================================================================
-<br>
-From Git Version 2.0 (2014-05-28)
-<table style="border-collapse: collapse; width: 100%; height: 200px;" border="1">
+  =======
+  <h2>Adding Git Ignore in Existing Project</h2>
+  Team Explorer>>RepositorySetting>>>>Ignore File(Add) ==> Then it will auto add git ignore file
+  ==============================================================================================================
+  <br>
+  From Git Version 2.0 (2014-05-28)
+  <table style="border-collapse: collapse; width: 100%; height: 200px;" border="1">
     <tbody>
-    <tr style="height: 51px;">
-    <td style="width: 20%; height: 51px;">&nbsp;</td>
-    <td style="width: 10.566%; height: 51px;"><span style="font-size: 12pt;">New Files</span></td>
-    <td style="width: 13.6059%; height: 51px;"><span style="font-size: 12pt;">Modified Files</span></td>
-    <td style="width: 13.3962%; height: 51px;"><span style="font-size: 12pt;">Deleted Files</span></td>
-    <td style="width: 42.4319%; height: 51px;">&nbsp;</td>
-    </tr>
-    <tr style="height: 51px;">
-    <td style="width: 20%; height: 51px;"><span style="color: #ff0000; font-size: 14pt;"><strong>git add -A</strong></span></td>
-    <td style="width: 10.566%; height: 51px;">Yes</td>
-    <td style="width: 13.6059%; height: 51px;">Yes</td>
-    <td style="width: 13.3962%; height: 51px;">Yes</td>
-    <td style="width: 42.4319%; height: 51px;"><span style="font-family: 'comic sans ms', sans-serif;"><strong>Stages all (<span style="color: #ff00ff;">new,modified and delete files</span>)</strong></span></td>
-    </tr>
-    <tr style="height: 49px;">
-    <td style="width: 20%; height: 49px;"><span style="font-size: 14pt; color: #ff0000;"><strong>git add .</strong></span></td>
-    <td style="width: 10.566%; height: 49px;">yes</td>
-    <td style="width: 13.6059%; height: 49px;">Yes</td>
-    <td style="width: 13.3962%; height: 49px;">Yes</td>
-    <td style="width: 42.4319%; height: 49px;"><span style="font-family: 'comic sans ms', sans-serif;"><strong>Stages all (<span style="color: #ff00ff;">new,modified and delete files</span>)</strong></span></td>
-    </tr>
-    <tr style="height: 49px;">
-    <td style="width: 20%; height: 49px;"><span style="color: #ff0000; font-size: 14pt;"><strong>git add -u</strong></span></td>
-    <td style="width: 10.566%; height: 49px;">No</td>
-    <td style="width: 13.6059%; height: 49px;">Yes&nbsp;</td>
-    <td style="width: 13.3962%; height: 49px;">Yes</td>
-    <td style="width: 42.4319%; height: 49px;"><span style="font-family: 'comic sans ms', sans-serif;"><strong><span style="color: #ff00ff;">Stages modifeid and deleted files only</span></strong></span></td>
-    </tr>
+      <tr style="height: 51px;">
+        <td style="width: 20%; height: 51px;">&nbsp;</td>
+        <td style="width: 10.566%; height: 51px;"><span style="font-size: 12pt;">New Files</span></td>
+        <td style="width: 13.6059%; height: 51px;"><span style="font-size: 12pt;">Modified Files</span></td>
+        <td style="width: 13.3962%; height: 51px;"><span style="font-size: 12pt;">Deleted Files</span></td>
+        <td style="width: 42.4319%; height: 51px;">&nbsp;</td>
+      </tr>
+      <tr style="height: 51px;">
+        <td style="width: 20%; height: 51px;"><span style="color: #ff0000; font-size: 14pt;"><strong>git add
+              -A</strong></span></td>
+        <td style="width: 10.566%; height: 51px;">Yes</td>
+        <td style="width: 13.6059%; height: 51px;">Yes</td>
+        <td style="width: 13.3962%; height: 51px;">Yes</td>
+        <td style="width: 42.4319%; height: 51px;"><span
+            style="font-family: 'comic sans ms', sans-serif;"><strong>Stages all (<span
+                style="color: #ff00ff;">new,modified and delete files</span>)</strong></span></td>
+      </tr>
+      <tr style="height: 49px;">
+        <td style="width: 20%; height: 49px;"><span style="font-size: 14pt; color: #ff0000;"><strong>git add
+              .</strong></span></td>
+        <td style="width: 10.566%; height: 49px;">yes</td>
+        <td style="width: 13.6059%; height: 49px;">Yes</td>
+        <td style="width: 13.3962%; height: 49px;">Yes</td>
+        <td style="width: 42.4319%; height: 49px;"><span
+            style="font-family: 'comic sans ms', sans-serif;"><strong>Stages all (<span
+                style="color: #ff00ff;">new,modified and delete files</span>)</strong></span></td>
+      </tr>
+      <tr style="height: 49px;">
+        <td style="width: 20%; height: 49px;"><span style="color: #ff0000; font-size: 14pt;"><strong>git add
+              -u</strong></span></td>
+        <td style="width: 10.566%; height: 49px;">No</td>
+        <td style="width: 13.6059%; height: 49px;">Yes&nbsp;</td>
+        <td style="width: 13.3962%; height: 49px;">Yes</td>
+        <td style="width: 42.4319%; height: 49px;"><span style="font-family: 'comic sans ms', sans-serif;"><strong><span
+                style="color: #ff00ff;">Stages modifeid and deleted files only</span></strong></span></td>
+      </tr>
     </tbody>
-    </table>
-    <ul>
-        <li><span style="font-size: 14pt;"><span style="color: #ff0000;"><code>git add -A</code>&nbsp;</span>is equivalent to&nbsp;<span style="color: #ff00ff;"><code>git add --all</code></span></span></li>
-        <li><span style="font-size: 14pt;"><code><span style="color: #ff0000;">git add -u</span></code><span style="color: #ff0000;">&nbsp;</span>is equivalent to<span style="color: #ff00ff;">&nbsp;<code>git add --update</code></span></span></li>
-        </ul>
+  </table>
+  <ul>
+    <li><span style="font-size: 14pt;"><span style="color: #ff0000;"><code>git add -A</code>&nbsp;</span>is equivalent
+        to&nbsp;<span style="color: #ff00ff;"><code>git add --all</code></span></span></li>
+    <li><span style="font-size: 14pt;"><code><span style="color: #ff0000;">git add -u</span></code><span
+          style="color: #ff0000;">&nbsp;</span>is equivalent to<span
+          style="color: #ff00ff;">&nbsp;<code>git add --update</code></span></span></li>
+  </ul>
 
-        =========================================================================================================================
-        <br>
-        <ul>
-            <li>
-            <div class="tutorial-hero">
-            <div class="g-column g-12-12 text-center">
-            <div class="g-column g-12-12 t-12-12 m-12-12 breadcrumbs"><strong><span style="font-size: 18pt; color: #ff0000;"><a class="cms-link cms-link--text" style="color: #ff0000;" href="https://www.atlassian.com/git/tutorials/what-is-version-control#benefits-of-version-control">Benefits of version control</a></span></strong></div>
-            </div>
-            </div>
-            <div class="g-row">
-            <div class="g-column g-12-12 g-centered">
-            <p><span style="font-size: 14pt;">Version control systems are a category of software tools that help a software team manage changes to source code over time. Version control software keeps track of every modification to the code in a special kind of database. If a mistake is made, developers can turn back the clock and compare earlier versions of the code to help fix the mistake while minimizing disruption to all team members.</span></p>
-            </div>
-            </div>
-            </li>
-            </ul>
+  =========================================================================================================================
+  <br>
+  <ul>
+    <li>
+      <div class="tutorial-hero">
+        <div class="g-column g-12-12 text-center">
+          <div class="g-column g-12-12 t-12-12 m-12-12 breadcrumbs"><strong><span
+                style="font-size: 18pt; color: #ff0000;"><a class="cms-link cms-link--text" style="color: #ff0000;"
+                  href="https://www.atlassian.com/git/tutorials/what-is-version-control#benefits-of-version-control">Benefits
+                  of version control</a></span></strong></div>
+        </div>
+      </div>
+      <div class="g-row">
+        <div class="g-column g-12-12 g-centered">
+          <p><span style="font-size: 14pt;">Version control systems are a category of software tools that help a
+              software team manage changes to source code over time. Version control software keeps track of every
+              modification to the code in a special kind of database. If a mistake is made, developers can turn back the
+              clock and compare earlier versions of the code to help fix the mistake while minimizing disruption to all
+              team members.</span></p>
+        </div>
+      </div>
+    </li>
+  </ul>
 
-            =======================================================================================================================
-     <h2>Merging and Deleting</h2>
-     Suppose I have a master branch and I have certain code their <br>
-     From their I have created diwas/nextbranch and made change their and I want to merge content of nextbranch to master branch.
-     <br>Step 1 : First push content of nextbranch in remote
-     <pre>
+  =======================================================================================================================
+  <h2>Merging and Deleting</h2>
+  Suppose I have a master branch and I have certain code their <br>
+  From their I have created diwas/nextbranch and made change their and I want to merge content of nextbranch to master
+  branch.
+  <br>Step 1 : First push content of nextbranch in remote
+  <pre>
       <code class="langauge-csharp">
         git add .
         git commit -m " content on nextbranch"
@@ -277,11 +321,11 @@ From Git Version 2.0 (2014-05-28)
       </code>
         </pre>
 
-<br>
-====================================================================
-<br>
-        Now merging data of nextbranch to master branch.
-        <pre>
+  <br>
+  ====================================================================
+  <br>
+  Now merging data of nextbranch to master branch.
+  <pre>
           <code class="language-csharp">
         
             git checkout master
@@ -291,9 +335,9 @@ From Git Version 2.0 (2014-05-28)
             git push origin master
           </code>
         </pre>
-     
-        Now Deleting that diwas/nextbranch from local as well as global
-        <pre>
+
+  Now Deleting that diwas/nextbranch from local as well as global
+  <pre>
           <code class="language-csharp">
             git branch --merged
             git branch -d diwas/nextbranch
@@ -301,24 +345,27 @@ From Git Version 2.0 (2014-05-28)
             git push origin --delete diwas/nextbranch
           </code>
         </pre>
-        <h2>End</h2>
-     
-     ==============================================================================
-            <script src="../EF/js/prism.js"></script>
-      <script type="text/javascript">
-        Prism.plugins.NormalizeWhitespace.setDefaults(
-          {
-            'remove-trailing': true,
-            'remove-indent': true,
-            'left-trim': true,
-            'right-trim': true,
-            // 'break-lines': 10,
-            // 'indent': 2,
-            // 'remove-initial-line-feed': false,
-            // 'tabs-to-spaces': 4,
-            // 'spaces-to-tabs': 4
-          });
-      </script>
-      </body>
-      </html>
-      
+  <h2>End</h2>
+
+  ======================================================================================================================================
+
+  <h2>Goto Different Commit in Git</h2>
+
+  <script src="../EF/js/prism.js"></script>
+  <script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+      {
+        'remove-trailing': true,
+        'remove-indent': true,
+        'left-trim': true,
+        'right-trim': true,
+        // 'break-lines': 10,
+        // 'indent': 2,
+        // 'remove-initial-line-feed': false,
+        // 'tabs-to-spaces': 4,
+        // 'spaces-to-tabs': 4
+      });
+  </script>
+</body>
+
+</html>

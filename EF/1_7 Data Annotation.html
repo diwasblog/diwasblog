@@ -216,7 +216,9 @@
 
     <div class="row">
         <div class="col-lg-6">
-            IDENTITY column in the database for all the id (key) properties of the entity
+            IDENTITY column in the database for all the id (key) properties of the entity <br>
+            Note: If<b> multiple primary key </b> then we have to give "<b>column order property</b>" otherwise will
+            arise error.
             <pre class="limit-15">
             <code class='language-csharp'>
 public class Student
@@ -635,6 +637,142 @@ using (var context = new SchoolContext())
         </div>
 
     </div>
+
+    <hr>
+    <h2>Primary Key Convention</h2>
+    <p><span style="font-size: 18pt; color: #000000;"><strong>Code First Primary Key convention</strong> is: Property
+            with the name <span style="color: #e03e2d;">"<strong>Id</strong>"</span> or<strong><span
+                    style="color: #e03e2d;"> {class name} + "Id"</span></strong> will act as the primary key for that
+            entity.</span></p>
+    <div class="row">
+        <div class="col-lg-6">
+
+            <pre class="limit-15" data-keep-tags="kbd, em">
+            <code class='language-csharp'>
+                
+public class Student
+{
+    <kbd>public int Id {get;set;}</kbd>  
+    //Will be Primary Key
+    public string Name {get;set;}
+}
+            </code>
+            </pre>
+        </div>
+        <div class="col-lg-6">
+
+            <pre class="limit-15" data-keep-tags="kbd, em">
+            <code class='language-csharp'>
+public class Student
+{
+    <kbd>public int StudentId {get;set;}</kbd>
+    //Will be Primary Key
+    public string Name {get;set;}
+}
+            </code>
+            </pre>
+        </div>
+    </div>
+    <hr>
+
+    <h4>If both Id and StudentId used</h4>
+    According to convention, Id will be primary key
+    <div class="row">
+        <div class="col-lg-6">
+
+            <pre class="limit-15" data-keep-tags="kbd, em">
+            <code class='language-csharp'>
+public class Student
+{
+    <kbd>public int Id {get;set;}</kbd>  
+    //Will be Primary Key
+    public string Name {get;set;}
+}
+            </code>
+            </pre>
+        </div>
+
+    </div>
+    <hr>
+
+    <h4>If both Id and StudentId used and key in StudentId</h4>
+    Data Annotation is taking first prority
+    <div class="row">
+        <div class="col-lg-6">
+
+            <pre class="limit-15" data-keep-tags="kbd, em">
+            <code class='language-csharp'>
+public class Student
+{
+    public int Id {get;set;}  
+
+    <kbd>[key]</kbd>
+    public string Name {get;set;}
+    //will be primary key
+}
+            </code>
+            </pre>
+        </div>
+
+    </div>
+    <hr>
+
+    <h4>If Data Annotation and Fluent API is used </h4>
+    In this case, Fluent API gets first priority so PK will be 'Id'
+    <div class="row">
+        <div class="col-lg-6">
+
+            <pre class="limit-15" data-keep-tags="kbd, em">
+            <code class='language-csharp'>
+public class Student
+{  <kbd>[key]</kbd>
+    public int StudentId {get;set;}  
+  
+    public string Name {get;set;}
+}
+            </code>
+            </pre>
+        </div>
+        <div class="col-lg-6">
+
+            <pre class="limit-15" data-keep-tags="kbd, em">
+            <code class='language-csharp'>
+public class EducationContext : DbContext
+{
+    public DbSet<Student> Students { get; set; }
+    public DbSet<Passport> Passports { get; set; } 
+
+    public EducationContext()
+    : base("EducationEntities")
+    {
+    }
+
+    //Using Fluent API , setting PK to Id
+    protected override void OnModelCreating(DbModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Student>().HasKey(s => s.<kbd>Id</kbd>);
+        base.OnModelCreating(modelBuilder);
+    }
+}
+            </code>
+            </pre>
+        </div>
+    </div>
+    <h3><strong><span style="color: #e03e2d;">Note</span></strong></h3>
+    <p style="text-align: justify;"><span style="font-size: 14pt;"><span style="color: #000000;">The convention for
+                creating the primary key is </span><strong><span
+                    style="color: #e03e2d;">case&nbsp;<em>insensitive</em></span></strong>, <span
+                style="color: #000000;">i.e., if you will change the case of the properties to lowercase</span>
+            (e.g.,&nbsp;<strong><span style="color: #2dc26b;"><code>studentid</code></span></strong>), uppercase
+            (<strong><span style="color: #2dc26b;"><code>STUDENTID</code></span></strong>) or mixedcase
+            (e.g.,&nbsp;<span style="color: #2dc26b;"><strong><code>STuDentiD</code></strong></span>),<span
+                style="color: #000000;"> then it will still treat that property as the primary key but the name of the
+                column in the database will be in a property case. So if you will name the property like</span> <span
+                style="color: #2dc26b;"><code><strong>STudenTiD</strong></code></span>, <span
+                style="color: #000000;">then in</span>&nbsp;<strong><span
+                    style="color: #2dc26b;"><code><em>Students</em></code>&nbsp;</span></strong><span
+                style="color: #000000;">table, it will be the primary key and the column name will be</span>&nbsp;<span
+                style="color: #2dc26b;"><code><strong>STudenTiD</strong></code></span>.</span></p>
     <script src="js/prism.js"></script>
     <script type="text/javascript">
         Prism.plugins.NormalizeWhitespace.setDefaults(
