@@ -196,11 +196,18 @@ END
 
     <pre>
     <code class="language-csharp">
-            Where ((qa.createdon::date between to_date($1,'yyyy-mm-dd') and to_date($2,'yyyy-mm-dd')) or ($1='' and $2='')) 
-            and ( c.stateid = $3 or ($3=0))
-            and ( c.districtid = $4 or ($4 = 0))
-            and ( c.palikaid = $5 or ($5 = 0))
-            and ( c.wardno = $6 or ($6 = 0))
+
+        CREATE OR REPLACE FUNCTION public.fn_report_excel_case_status(
+            startDate text,   // eg. '2017-10-25'
+            endDate text,     // eg. '2018-05-28'
+            province integer
+           )
+
+             --------
+             //Here Createdon may be timestamp so we must convert it into date only
+            Where ((qa.createdon::date between to_date(startDate,'yyyy-mm-dd') and to_date(endDate,'yyyy-mm-dd')) or (startDate='' and endDate='')) 
+            and ( c.provinceid = province or (province=0))
+
     </code>
 </pre>
     ================================================================================
