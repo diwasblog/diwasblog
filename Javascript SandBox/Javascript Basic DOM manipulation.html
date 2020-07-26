@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../SQL SandBox/css/bootstrap.css">
+    <link rel="stylesheet" href="../SQL SandBox/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../SQL SandBox/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../SQL SandBox/css/dracula.css">
+    <link rel="stylesheet" href="../SQL SandBox/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+    <img src="http://www.javascriptkit.com/complete/images/objhier.gif">
+
+    <h2>If many forms</h2>
+    <pre>
+    <code class="language-html">
+        &lt;form action="/signup" method="post" id="signup"> 
+        &lt;/form>
+
+        &lt;form action="/login" method="post" id="login"> 
+        &lt;/form>
+
+
+        //return collection of forms on the document:
+
+       var formCollection = document.forms
+    </code>
+</pre>
+
+
+    <hr>
+    <h2>Accesssing First Form</h2>
+    <pre>
+        <code class="language-html">
+            &lt;form action="/signup" method="post" id="signup"> 
+            &lt;/form>
+    
+            &lt;form action="/login" method="post" id="login"> 
+            &lt;/form>
+    
+    
+            //return collection of forms on the document:
+    
+           var formFirst = document.forms[0]
+        </code>
+    </pre>
+
+    <h2>Submitting Form</h2>
+    <h2>Input type Button and Submit</h2>
+    <div class="row">
+        Then you cannot extend submitNotice() function.because as soon as you click submit then form will be posted to
+        that
+        action("notice/add" ) but
+        in button we explicitly post and submit later as above.
+        <div class="col-lg-6">
+            <p><strong><span style="font-size: 18pt; color: #ff00ff;">&lt;input type="button"&gt;</span></strong></p>
+            <p><span style="font-size: 12pt;">The&nbsp;<code>&lt;input type="button"&gt;</code>&nbsp;is just a button
+                    and
+                    won't do anything by itself.</span></p>
+
+            <pre>
+       <code class="language-csharp">
+        &lt;form method="post" action="/notice/add"  id="noticeForm" >
+        &lt;input type="text" name="Title"   class="form-control" />
+        &lt;input type="button" value="Add" onclick="submitNotice" class="btn btn-default" />
+        &lt;/form>
+  
+        Then you can call click event below to post
+      
+       function   submitNotice(){
+              document.querySelector('#noticeForm').submit();
+        }
+
+
+        //Alternatively
+        let form  = document.getElementById('noticeForm');
+
+        form.addEventListener('submit', (event) => {
+            // handle the form data
+        });
+       </code>
+     </pre>
+        </div>
+        <div class="col-lg-6">
+            <p><span style="color: #ff00ff;"><strong><span style="font-size: 18pt;">&lt;input
+                            type="submit"&gt;</span></strong></span></p>
+            <p><span style="font-size: 12pt;"> The&nbsp;<code>&lt;input type="submit"&gt;</code>, when inside a form
+                    element,
+                    will submit the form when clicked.</span></p>
+
+
+            <pre>
+          <code class="language-csharp">
+           &lt;form method="post" action="/notice/add"    id="noticeForm" >
+           &lt;input type="text" name="Title"   class="form-control" />
+           &lt;input type="submit" value="Add" />
+           &lt;/form>
+     
+          
+          </code>
+        </pre>
+        </div>
+    </div>
+
+
+    <hr>
+    <h2>Prevent Form From loading on submitting</h2>
+    <pre>
+        <code class="language-javascript">
+            form.addEventListener('submit', (event) => {
+                // ...
+                // stop form submission
+                event.preventDefault();
+            });
+        </code>
+    </pre>
+
+
+
+    <div class="row">
+        <div class="col-lg-6">
+            <h2>How Get Form Transform Date</h2>
+            <pre>
+            <code class="language-javascript">
+                &lt;form method="GET" action="example/message.html">
+                &lt;p>Name: <input type="text" name="name">&lt;/p>
+                &lt;p>Message:<br><textarea name="message">&lt;/textarea>&lt;/p>
+                    &lt;p>&lt;button type="submit">Send</button>&lt;/p>
+                    &lt;/form>
+    
+    
+    
+                    //Output:
+                    GET /example/message.html?name=Jean&message=Yes%3F HTTP/1.1
+            </code>
+        </pre>
+        </div>
+
+        <div class="col-lg-6">
+            <h2>How Get Form Transform Date</h2>
+            <pre>
+            <code class="language-javascript">
+                &lt;form method="POST" action="example/message.html">
+                &lt;p>Name: <input type="text" name="name">&lt;/p>
+                &lt;p>Message:<br><textarea name="message">&lt;/textarea>&lt;/p>
+                    &lt;p>&lt;button type="submit">Send</button>&lt;/p>
+                    &lt;/form>
+    
+    
+    
+                    //Output:
+                    //form will use the POST method and put the query string in body of the request, rather than adding it to the URL.
+                    POST /example/message.html HTTP/1.1
+                    Content-length: 24
+                    Content-type: application/x-www-form-urlencoded
+                    
+                    name=Jean&message=Yes%3F
+            </code>
+        </pre>
+        </div>
+    </div>
+
+
+    <br>
+    <h2>Url Encode and Decode</h2>
+    <pre>
+        <code class="language-javascript">
+console.log(encodeURIComponent("Hello & goodbye"));
+// → Hello%20%26%20goodbye
+console.log(decodeURIComponent("Hello%20%26%20goodbye"));
+// → Hello & goodbye
+        </code>
+    </pre>
+    <script src="../SQL SandBox/js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+    </script>
+</body>
+
+</html>

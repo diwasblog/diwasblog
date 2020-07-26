@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+
+    <div class="row">
+        <div class="col-lg-6">
+            <pre>
+                <code class="language-csharp">
+                    namespace WebAPIPrac.ApiControllers
+                    {
+                        public class StudentDataController : ApiController
+                        {
+                            [HttpGet]
+                            public int GetData1()
+                            {
+                                return 10;
+                            }
+                    
+                            [HttpGet]
+                            public int GetData2(int a, int b) //Get data from query string
+                            {
+                                return a + b;
+                            }
+                    
+                            [HttpPost]
+                            public String Save(StudentDTO dto) //Get data from body
+                            {
+                                return dto.name + "-testing";
+                            }
+                    
+                        }
+                    
+                        public class StudentDTO
+                        {
+                            public int id { get; set; }
+                            public String name { get; set; }
+                        }
+                    }
+                </code>
+            </pre>
+        </div>
+
+        <div class="col=lg-6">
+            <pre>
+                <code class="language-html">
+                    
+                    &lt;h1>Web API&lt;/h1>
+
+
+&lt;a href="#" id="lnkGET1">Get 1 Request&lt;/a> &lt;br />
+&lt;a href="#" id="lnkGET2">Get 2 Request&lt;/a> &lt;br />
+&lt;a href="#" id="lnkPost">Post Request&lt;/a>
+
+
+@section scripts{
+
+    &lt;script type="text/javascript">
+        $(document).ready(function () {
+
+            var basePath = '@Url.Content("~")';
+
+            $("#lnkGET1").click(function () {
+
+                var settings = {
+                    type: "GET",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    url: basePath + "api/StudentData/GetData1",
+                    data: {},
+                    success: function (result) {
+                        alert(result);
+                    },
+                    error : function(error) {
+
+                    }
+                };
+
+                $.ajax(settings);
+
+                return false;
+            });
+
+            $("#lnkGET2").click(function () {
+
+                var settings = {
+                    type: "GET",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    url: basePath + "api/StudentData/GetData2?a=10&b=20",
+                    data: {},
+                    success: function (result) {
+                        alert(result);
+                    },
+                    error : function(error) {
+
+                    }
+                };
+
+                $.ajax(settings);
+
+                return false;
+            });
+
+            $("#lnkPost").click(function () {
+
+                var dataToSend = { id: 1, name: "abc" };
+
+                var settings = {
+                    type: "POST",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    url: basePath + "api/StudentData/Save",
+                    data: dataToSend,
+                    success: function (result) {
+                        alert(result);
+                    }
+                };
+
+                $.ajax(settings);
+                return false;
+            });
+        });
+        &lt;/script>
+}
+                </code>
+            </pre>
+        </div>
+    </div>
+
+    <p><span style="font-family: 'comic sans ms', sans-serif;"><strong><span
+                    style="font-size: 24pt; color: #e03e2d;">Content Type <span
+                        style="color: #000000; font-size: 14pt;">(default:
+                        <code>'application/x-www-form-urlencoded; charset=UTF-8'</code>&nbsp;)</span></span></strong></span>
+    </p>
+    <p><span style="font-size: 18pt; font-family: 'comic sans ms', sans-serif;"><span
+                style="color: #000000;"><strong><code>contentType</code></strong></span>&nbsp;is the<strong><span
+                    style="color: #2dc26b;"> type of data you're sending</span></strong>, so&nbsp;<strong><span
+                    style="color: #000000;"><code>application/json; charset=utf-8</code></span></strong>&nbsp;is a
+            common one, as is&nbsp;<span
+                style="color: #000000;"><strong><code>application/x-www-form-urlencoded; charset=UTF-8</code></strong></span>,
+            which is the default.</span></p>
+    <p>&nbsp;</p>
+    <p><span style="color: #e03e2d; font-family: 'comic sans ms', sans-serif;"><strong><span
+                    style="font-size: 24pt;">dataType <span
+                        style="font-size: 14pt;">(default:&nbsp;<code>Intelligent Guess (xml, json, script, or html)</code>)
+                    </span></span></strong></span></p>
+    <p><span style="font-family: 'comic sans ms', sans-serif;"><strong><span
+                    style="font-size: 18pt; color: #000000;"><span style="color: #2dc26b;"><code>dataType</code>
+                    </span>is <span style="color: #2dc26b;">what you're expecting back from the server.</span> It can be
+                    <span
+                        style="color: #2dc26b;"><code>json</code>,&nbsp;<code>html</code>,&nbsp;<code>text</code></span>,
+                    etc.</span></strong></span></p>
+    <p><span style="font-size: 18pt; color: #000000;">If none is specified, jQuery will try to infer it based on the
+            MIME type of the response </span></p>
+
+
+    <div class="row">
+        <div class="col-lg-3">
+            <pre>
+                <code class="language-csharp">
+                    //If request is :
+
+                    {"name":"John Doe"}
+                </code>
+            </pre>
+        </div>
+
+        <div class="col-lg-3">
+            <pre>
+                <code class="language-csharp">
+                    //If response is  :
+
+                    {"success":true} 
+                </code>
+            </pre>
+        </div>
+
+        <div class="col-lg-6">
+            <pre>
+                <code class="language-csharp">
+
+                    //Result is :
+
+var data = {"name":"John Doe"}
+$.ajax({
+    dataType : "json",
+    contentType: "application/json; charset=utf-8",
+    data : JSON.stringify(data),
+    success : function(result) {
+        alert(result.success); // result is an object which is created from the returned JSON
+    },
+});
+
+// stringify() method : It converts a JavaScript object or value to a JSON string
+                </code>
+            </pre>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    <div class="row">
+        <div class="col-lg-3">
+            <pre>
+                <code class="language-csharp">
+                    {"name":"John Doe"}
+                </code>
+            </pre>
+        </div>
+
+        <div class="col-lg-3">
+            <pre>
+                <code class="language-csharp">
+                    <div>SUCCESS!!!</div>
+                </code>
+            </pre>
+        </div>
+
+        <div class="col-lg-6">
+            <pre>
+                <code class="language-csharp">
+var data = {"name":"John Doe"}
+$.ajax({
+    dataType : "json",
+    contentType: "application/json; charset=utf-8",
+    data : JSON.stringify(data),
+    success : function(result) {
+        alert(result.success); // result is an object which is created from the returned JSON
+    },
+});
+                </code>
+            </pre>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+    <div class="row">
+        <div class="col-lg-3">
+            <pre>
+                <code class="language-csharp">
+                    name=John&age=34
+                </code>
+            </pre>
+        </div>
+
+        <div class="col-lg-3">
+            <pre>
+                <code class="language-csharp">
+                    <div>SUCCESS!!!</div>
+                </code>
+            </pre>
+        </div>
+
+        <div class="col-lg-6">
+            <pre>
+                //Donot stringify datahere.
+                <code class="language-csharp">
+                    var data = {"name":"John", "age": 34}
+                    $.ajax({
+                        dataType : "html",
+                        contentType: "application/x-www-form-urlencoded; charset=UTF-8", // this is the default value, so it's optional
+                        data : data,
+                        success : function(result) {
+                            jQuery("#someContainer").html(result); // result is the HTML text
+                        },
+                    });
+                </code>
+            </pre>
+        </div>
+    </div>
+
+
+    <br>
+    <h2>Backend will be like:</h2>
+    <pre>
+    <code class="language-csharp">
+        [HttpPost]public JsonResult user(Person postedPerson)
+         { 
+            /* Save postedPerson to DB */ 
+            return Json(new { success = true }); 
+        }
+    </code>
+</pre>
+    <script src="../ASP Sandbox/js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+    </script>
+</body>
+
+</html>

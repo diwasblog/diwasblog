@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <pre>
+                <code class="language-html">
+                    &lt;form id="CreateProductionPlan">
+
+                        &lt;div class="row">
+                        &lt;input type="hidden" name="Id" id="ProductionPlanId" />
+                            
+                        &lt;div class="form-group col-md-2">
+                            &lt;label>Production Area&lt;/label>
+                                &lt;input type="text" class="required form-control" id="ProductionArea" name="ProductionArea" />
+                        &lt;/div>
+                           
+                
+                        &lt;div class="form-group col-md-2">
+                            &lt;label>Production Quantity&lt;/label>
+                                &lt;input type="text" class="form-control"  name="ProductionQuantity" id="ProductionQuantity"> 
+                        &lt;/div>
+                
+                    &lt;/form>
+                   
+                
+                &lt;div class="table-responsive">
+                    &lt;table class="table table-bordered table-hover" name="tblProductionPlan" id="tblProductionPlan">
+                        &lt;thead>
+                            &lt;tr>
+                                &lt;th>Production Area &lt;/th>
+                                &lt;th>Production Quantity &lt;/th>
+                            &lt;/tr>
+                        &lt;/thead>
+                
+                        &lt;tfoot>
+                        &lt;/tfoot>
+                    &lt;/table>
+                &lt;/div>
+                
+                
+                
+                &lt;script type="text/javascript">
+
+                    $(document).ready()
+                    {
+                        loadProduction();
+                    }
+
+
+                    function loadProduction() {
+
+                        const ajax = request();
+
+                        function request() {
+
+                            const url = '/farmer_diary/production_plan/memberinfos/';
+
+                            return window.getAjaxRequest(url, "Get", @Model.MemberDetailView.Id);
+                        }
+
+
+                        ajax.done(function (response) {
+
+                            addProductionPlanListToTable(response);
+                        });
+
+                        ajax.fail(function (xhr) {
+                            ShowMessage("error", xhr.responseText);
+                        });
+
+                    }
+                    function addProductionPlanListToTable(response) {
+
+                        $('#tblProductionPlan tbody > tr').remove();
+                        $('#tblProductionPlan tfoot > tr').remove();
+
+                        var table = $("#tblProductionPlan tbody");
+
+                        response.forEach(function (x) {
+
+                            var row = "&lt;tr>";
+
+                            row += "&lt;td>" + x.productionquantity + "&lt;/td>";
+                            row += "&lt;td>" + x.productionarea + " &lt;/td>";
+                            row += "&lt;td>" + "&lt;a onclick=editProductionPlanForm(" + x.id + ") >&lt;i  class='fa fa-edit'>&lt;/i >"
+                                + "&lt;/a >&nbsp;&nbsp;&lt;a   onclick=deleteProductionPlan(" + x.id + ") >&lt;i class='fa fa-trash'>&lt;/i >&lt;/a>"
+                                + "&lt;/td>";
+
+                            table.append(row);
+                        })
+
+                        var tblFooter = $("#tblProductionPlan tfoot");
+                        var footerRow = `&lt;tr>
+                                        &lt;td >Total : 5000 Hectare&lt;/td >&lt;/tr>`;
+                        tblFooter.append(footerRow);
+                    }
+
+
+                    function editProductionPlanForm(productionId) {
+                        const ajax = request(productionPlanId);
+
+                        function request(productionPlanId) {
+
+                            const url = '/farmer_diary/production_plan/' + productionPlanId;
+
+                            return window.getAjaxRequest(url, "Get", productionPlanId);
+
+
+                        }
+                        ajax.done(function (response) {
+                            $('#ProductionPlanId').val(response.Id);
+                            $('#ProductionArea').val(response.ProductionArea);
+                            $('#ProductionQuantity').val(response.ProductionUnit);
+                        });
+
+                        ajax.fail(function (xhr) {
+                            ShowMessage("error", xhr.responseText);
+                        });
+                    }
+
+            function getAjaxRequest(){
+                var getAjaxRequest = function (url, type, data) {
+                    if (!type) {
+                        type = "GET";
+                    }
+                    var ajax = $.ajax({
+                        type: type,
+                        url: url,
+                        headers: getHeaders(),
+                        data: data,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json"
+                    });
+                    return ajax;
+                };
+            }
+
+                &lt;/script>
+                    
+                    
+
+                    </code>
+                    </pre>
+        </div>
+    </div>
+    <script src="../ASP Sandbox/js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+    </script>
+</body>
+
+</html>

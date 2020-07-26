@@ -100,10 +100,44 @@
       </code>
   </pre>
 
-
     <input type="text" class="curr form-control required currencyFormatter clear"
         onkeypress="return isNumberKey(this,event)" placeholder="Planned Budget" maxlength="10" id="PlannedBudget"
         name="PlannedBudget">
+    <hr>
+    <br>
+    <h2>Get Number with Comma ===> if 250000 then return 2,50,000</h2>
+    Getting number in nepali comma <br>
+    Use Case: For Displaying purpose , convert number to string with comma.
+    <pre>
+        <code class="language-javascript">
+            function getNumberWithComma(value) {
+                value = value || 0;
+                return Number(parseFloat(value).toFixed(2)).toLocaleString("en-IN", { minimumFractionDigits: 0 })
+            }
+
+
+            var data = getNumberWithComma(25000); // 25,000
+        </code>
+
+    </pre>
+    <hr>
+    <br>
+    <h2>Remove Comma From NUmber</h2>
+    Remove comma from string <br>
+    Use Case: Required to remove comma before saving to database.
+    <pre>
+        <code class="language-javascript">
+            function getNumberWithComma(value) {
+                value = value || 0;
+                return Number(parseFloat(value).toFixed(2)).toLocaleString("en-IN", { minimumFractionDigits: 0 })
+            }
+
+
+            var data = getNumberWithComma(25000); // 25,000
+        </code>
+
+    </pre>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script> String.prototype.replaceAll = function (search, replacement) {

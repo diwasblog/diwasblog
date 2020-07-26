@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+
+    <h1>Step 1 :Create Frontend</h1>
+    <div class="row">
+
+        <div class="col-lg-6">
+            <h2>From Jquery in webapi</h2>
+            <pre>
+<code class="language-csharp">
+                &lt;div>
+                &lt;br />
+                    Remarks: &lt;input type="text" id="txtRemarks" /> <br />
+                    Picture: &lt;input type="file" id="myfile" /> <br />
+                    &lt;input type="button" id="btnUpload" value="Upload" />
+                    &lt;/div>
+
+                &lt;script>
+                    $("#btnUpload").click(function () {
+
+                        var data = new FormData();
+                        var files = $("#myfile").get(0).files;
+
+                        // Add the uploaded image content to the form data collection
+                        if (files.length > 0) {
+                            data.append("UploadedImage", files[0]);
+                        }
+
+                        data.append("Remarks", $("#txtRemarks").val());  //Other data
+
+                        var ajaxRequest = $.ajax({
+                            type: "POST",
+                            url: "/api/FilesData/UploadFile",
+                            contentType: false,
+                            processData: false,
+                            data: data,
+                            success: function (response) {
+                                alert('file uploaded');
+                                console.log(response);
+                            }
+                        });
+                        return false;
+                    });
+                    &lt;/script>
+
+               </code>
+           </pre>
+        </div>
+        <div class="col-lg-6">
+            <h2>From Postman or Mobile</h2>
+            <img src="https://i.ibb.co/mHxRm7G/postimage.jpg" style="width:100%;height:auto">
+        </div>
+    </div>
+
+    <hr>
+    <h1>Step2 : Backend in API</h1>
+
+    <pre>
+        <code class="language-csharp">
+            public class HomeController : ApiController
+            {
+                [Route("api/FilesData/UploadFile")]
+                [HttpPost]
+                public async System.Threading.Tasks.Task&lt;IHttpActionResult> CreateCallAsync()
+                {
+                    try
+                    {
+                        string filePath = ConfigurationManager.AppSettings["webAPIUrl"];
+        
+                        // Check if the request contains multipart/form-data ie. multipart MIME part message
+                        // If not, the controller returns HTTP status code 415 (Unsupported Media Type).
+                        if (!Request.Content.IsMimeMultipartContent())
+                            throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+        
+                        string path = HttpContext.Current.Server.MapPath("~/Attachments/CallRecord");
+        
+        
+                        if (!Directory.Exists(path))
+                            Directory.CreateDirectory(path);
+        
+
+                        var provider = new CustomMultipartFormDataStreamProvider(path);
+        
+                        try
+                        {
+                            // // Read the form data and return an async task.
+                            var uploadFiles = await Request.Content.ReadAsMultipartAsync(provider);
+                            var result = CallService.CreateCall(uploadFiles,provider);
+                            return Ok(result);
+                        }
+                        catch (Exception ex)
+                        {
+                            return this.BadRequest(ex.Message);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        return this.BadRequest(ex.Message);
+                    }
+                }
+        </code>
+    </pre>
+
+
+    <hr>
+    <h1>Step2 : Helper/CustomMultipartFormDataStreamProvider.cs</h1>
+    <p><span style="font-size: 18pt; color: #000000; font-family: 'book antiqua', palatino;">Now, suppose we use
+            default
+            <span style="color: #2dc26b;">MultipartFormDataStreamProvider</span> then <span style="color: #e03e2d;">we
+                cannot save the filename provided by the client</span> and filename can be auto-generated like
+            this:&nbsp;<strong><span style="color: #e03e2d;"> d</span><span
+                    style="color: #e03e2d;"><strong>e</strong>d3dfb-40be-3153-b589-3401f93e90af.png</span></strong>.
+            So
+            if we want to use filename same as provided by the client then we create <strong><span
+                    style="color: #169179;">CustomMultipartFormDataStreamProvider</span></strong>, which inherit
+            from
+            <strong><span style="color: #169179;">MultipartFormDataStreamProvider</span></strong>.</span></p>
+    <p>&nbsp;</p>
+    <p><span style="font-size: 18pt; color: #000000; font-family: 'book antiqua', palatino;">Here, we are telling
+            the
+            framework to pull out the name of the file from the <strong><span
+                    style="color: #169179;"><em>Content-Disposition</em></span></strong> part of the request. this,
+            in
+            turn, will be the original name of the file as provided by the client. eg.<strong><span
+                    style="color: #169179;"> picture.png</span></strong></span></p>
+    <pre>
+    <code class="language-csharp">
+        public class CustomMultipartFormDataStreamProvider : MultipartFormDataStreamProvider
+		{
+			public string Message { get; set; }
+			public CustomMultipartFormDataStreamProvider(string path)
+				   : base(path)
+			{
+			}
+			public override string GetLocalFileName(HttpContentHeaders headers)
+			{
+				string originalFileName = headers.ContentDisposition.FileName.Replace("\"", string.Empty);
+				FileInfo fileInfo = new FileInfo(originalFileName);
+				string ext = fileInfo.Extension;
+
+				if (!GlobalValue.AcceptedFiles.Contains(ext))
+				{
+					this.Message = ext + " not supported";
+					throw new Exception("");
+				}
+				originalFileName = Guid.NewGuid() + ext;
+				return originalFileName;
+			}
+		}
+    </code>
+</pre>
+
+
+    <h2>GlobalValue.cs inside core/constant/GlobalValue.cs</h2>
+
+    <pre>
+<code class="language-csharp">
+public class GlobalValue 
+	{
+		public static List<string> AcceptedFiles
+		{
+			get
+			{
+				return new List<string> {
+			 ".mp3",".png"
+		};
+			}
+		}
+	}
+</code>
+</pre>
+    <h2>CallService.cs</h2>
+    <pre>
+    <code class="language-csharp">
+        public static string CreateCall(CustomMultipartFormDataStreamProvider uploadFiles, CustomMultipartFormDataStreamProvider provider)
+		{
+			try
+			{
+				using (CallRepository callRepo = new CallRepository())
+				{
+					CallRecordDTO callRecords = new CallRecordDTO();
+
+					#region Check file type
+					if (uploadFiles.FileData.Count() != 0)
+					{
+                            var contentType = uploadFiles.FileData.FirstOrDefault().Headers.ContentType; 
+                            
+                            //File Name
+                            var fileName = uploadFiles.FileData.FirstOrDefault().Headers.ContentDisposition.FileName;
+                            
+							if (contentType.MediaType.ToLower().StartsWith("i"))
+								callRecords.Type = "Image";
+
+							else if (contentType.MediaType.ToLower().StartsWith("application/"))
+								callRecords.Type = "File";
+							else if (contentType.MediaType.ToLower().StartsWith("audio"))
+								callRecords.Type = "Audio";
+							else if (contentType.MediaType.ToLower().StartsWith("video"))
+                                callRecords.Type = "Video";
+                                
+							int pos = uploadFiles.FileData.FirstOrDefault().LocalFileName.LastIndexOf("\\") + 1;
+							var data = uploadFiles.FileData.FirstOrDefault().LocalFileName.Substring(pos, uploadFiles.FileData.FirstOrDefault().LocalFileName.Length - pos);
+							callRecords.VoiceRecordFilePath = data;
+					}
+					#endregion
+
+					#region Check the object with data
+					foreach (var key in provider.FormData.AllKeys)
+					{
+						var data = provider.FormData[key];
+						if (key == "Remarks")
+                            callRecords.Remarks = data;
+						
+					}
+					#endregion
+                    
+                    
+                    //So, callRecords contains : Remarks , TypeOfFile, FileName  and these are saved in DB
+
+					 callRepo.CreateCall(callRecords);
+					return "successful";
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+
+		}
+    </code>
+</pre>
+
+
+    <p><span style="font-size: 18pt; color: #000000; font-family: 'book antiqua', palatino;"><span
+                style="color: #2dc26b;">MultipartFormDataStreamProvider Class</span></span></p>
+    <p><span style="font-size: 18pt; color: #000000; font-family: 'book antiqua', palatino;">The stream provider looks
+            at the&nbsp;<span style="color: #2dc26b;"><strong>Content-Disposition</strong></span>&nbsp;header field and
+            determines an output Stream based on the presence of a&nbsp;<strong>filename</strong>&nbsp;parameter. If
+            a&nbsp;<strong>filename</strong>&nbsp;parameter is present in the&nbsp;<strong>Content-Disposition</strong>
+            header field then the body part is written to a FileStream, otherwise, it is written to a <strong><span
+                    style="color: #e03e2d;">MemoryStream</span></strong>. This makes it convenient to process MIME
+            Multipart HTML Form data which is a combination of form data and file content. </span></p>
+    <p><span style="font-size: 18pt; color: #000000; font-family: 'book antiqua', palatino;">This <span
+                style="color: #2dc26b;">MultipartFormDataStreamProvider&nbsp; depends on </span>HttpContext.Current
+            which is part of the monolithic System.Web, and it is going away in future versions of ASP.NET. Web API is
+            designed to be forward-compatible with ASP.NET vNext.</span></p>
+    <p>&nbsp;</p>
+    <h1>C# - Stream</h1>
+    <p><span style="font-size: 18pt;">It is used to transfer bytes (read, write, etc.) to the source.</span></p>
+    <p><span style="font-size: 18pt;"><span style="color: #2dc26b;"><strong>FileStream</strong>&nbsp;</span><span
+                style="color: #000000;">reads or writes bytes from/to a physical file whether it is a .txt, .exe, .jpg
+                or any other file. FileStream is derived from the Stream class. </span></span></p>
+    <p><span style="font-size: 18pt;"><strong><span style="color: #2dc26b;">MemoryStream</span>:</strong>&nbsp;<span
+                style="color: #000000;">MemoryStream reads or writes bytes that are stored in memory. </span></span></p>
+    <p><span style="font-size: 18pt;"><strong><span style="color: #2dc26b;">BufferedStream</span>:</strong>&nbsp;<span
+                style="color: #000000;">BufferedStream reads or writes bytes from other Streams to improve the
+                performance of certain I/O operations.</span></span></p>
+    <p><span style="color: #000000;"><img
+                src="https://www.tutorialsteacher.com/Content/images/csharp/stream-heirarchy.png" /></span></p>
+    <p><strong><span style="color: #2dc26b; font-size: 18pt;">MemoryStream vs FileStream</span></strong></p>
+    <p><span style="font-size: 14pt; color: #000000;">They're not really interchangeable. Memory stream reads from
+            memory and a &nbsp;file stream reads from disk(unless the file contents have been cached by the operating
+            system) .</span><br /><span style="font-size: 14pt; color: #000000;">From a performance standpoint,
+            read/write to memory is always going to be<strong><span style="color: #e03e2d;"> faster than</span></strong>
+            reading/writing to disk.</span></p>
+    <p><span style="font-size: 14pt; color: #000000;">Let us assume you want to read binary data from the database, you
+            would go in for a MemoryStream. However, if you want to read a file on your system, you would go in for a
+            FileStream.</span></p>
+    <p><span style="font-size: 14pt; color: #000000;">One quick advantage of a MemoryStream is that there is no need to
+            create temporary buffers and files in an application.</span></p>
+    <script src="../ASP Sandbox/js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+    </script>
+</body>
+
+</html>
