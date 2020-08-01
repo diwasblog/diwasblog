@@ -149,6 +149,37 @@
             </pre>
         </div>
     </div>
+
+
+    <h2>Using Case SUM</h2>
+    <div class="row">
+        <div class="col-lg-6">
+            <pre>
+                <code class="language-sql">
+                    SELECT 
+                    SUM(case when p.total_points BETWEEN 0 AND 20 then 1 else 0 end),0) as ultrapoor,
+                    SUM(case when p.total_points BETWEEN 21 AND 40 then 1 else 0 end),0) as poor,
+                    SUM(case when p.total_points BETWEEN 41 AND 60 then 1 else 0 end),0) as activepoor
+                     from member_cte p
+                </code>
+            </pre>
+        </div>
+    </div>
+
+    <h2>Using Case COUNT</h2>
+    <div class="row">
+        <div class="col-lg-6">
+            <pre>
+                <code class="language-sql">
+                    SELECT 
+                    COUNT(case when p.total_points BETWEEN 0 AND 20 then p.total_points else 0 end),0) as ultrapoor,
+                    COUNT(case when p.total_points BETWEEN 21 AND 40 then p.total_points else 0 end),0) as poor,
+                    COUNT(case when p.total_points BETWEEN 41 AND 60 then p.total_points else 0 end),0) as activepoor
+                     from member_cte p
+                </code>
+            </pre>
+        </div>
+    </div>
     <script src="../ASP Sandbox/js/prism.js"></script>
     <script type="text/javascript">
         Prism.plugins.NormalizeWhitespace.setDefaults(

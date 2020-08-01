@@ -747,6 +747,36 @@
   </pre>
 
 
+  <h2>3 JOIN Order in EF</h2>
+  And you should probably add orderby clause, to make sure Top(10) returns correct top ten items.
+  <pre>
+  <code class="language-csharp">
+    var entryPoint = (from ep in dbContext.tbl_EntryPoint
+                 join e in dbContext.tbl_Entry on ep.EID equals e.EID
+                 join t in dbContext.tbl_Title on e.TID equals t.TID
+                 where e.OwnerID == user.UID
+                 select new {
+                     UID = e.OwnerID,
+                     TID = e.TID,
+                     Title = t.Title,
+                     EID = e.EID
+                 }).Take(10);
+  </code>
+</pre>
+
+  <h2>JOIN with Where</h2>
+
+  <pre>
+<code class="language-csharp">
+  var robotDogs = (from d in context.RobotDogs
+join f in context.RobotFactories
+on d.RobotFactoryId equals f.RobotFactoryId
+where f.Location == "Texas"
+select d).ToList();
+</code>
+</pre>
+
+
   <h2>Alternative Inner Join Ways</h2>
 
   <div class="row">

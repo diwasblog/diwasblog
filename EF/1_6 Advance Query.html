@@ -12,43 +12,221 @@
     <link rel="stylesheet" href="css/dracula.css">
     <link rel="stylesheet" href="css/dracula-prism.css">
     <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+    <style>
+        kbd {
+            background: black
+        }
+    </style>
 </head>
+
 
 <body>
 
-    <h2>Prevent Duplicate using entity framework ( Use of Any)</h2>
+    <h2>Group By and Count</h2>
 
-    Eg. Example prevent user with duplicate email to insert
-    <pre class="limit-15">
+    <div class="row">
+        <div class="col-lg-4">
+            <pre class="limit-15" data-keep-tags="kbd, em">
             <code class='language-csharp'>
+var robotFactories = context
+.RobotFactories.GroupBy(x => x.Location)
+.Select(x => new { Location = x.Key, Buildings = x.Count() });
+    </code>
+    </pre>
+        </div>
 
-               
+        <div class="col-lg-4">
+            <pre class="limit-15" data-keep-tags="kbd, em">
+            <code class='language-csharp'>
+var query = from r in context.RobotFactories
+group r by r.Location into g
+select new
+{
+    Location = g.Key,
+    Buildings = g.Count()
+};
+    </code>
+    </pre>
+        </div>
 
-                    if (ModelState.IsValid)
-                    {
-                        if(db.User.Any(u => u.Email == userData.Email))
-                        { //returns bools and satisfy if exists
-                            ModelState.AddModelError("Email Already Exists","Email already exists.");
-                        }
-                        else
-                        {
-                            db.User.Add(userData);
-                            db.SaveChanges();
-                            return RedirectToAction("Index");
-                        }
-                    }
+        <div class="col-lg-4">
+            <img src="https://debuxing.com/static/783cb41aec25c59d3757b8e8553219f3/d5cbe/Screenshot_1.jpg"
+                style="width:100%;height:auto">
+        </div>
+    </div>
+    <hr>
 
+    <h2>Group By and Sum</h2>
 
-                    Alternatively
+    <div class="row">
+        <div class="col-lg-4">
+            <pre class="limit-15" data-keep-tags="kbd, em">
+            <code class='language-csharp'>
+                SELECT Name, SUM(Guns)
+                FROM RobotDog
+                GROUP BY Name
+    </code>
+    </pre>
+        </div>
 
-                    var objectExists = db.User.Find(a => a.Email== userData.Email);
-                    if (objectExists == null)
-                    {
-                    db.User.Add(userData);
-                    }
-            </code>
+        <div class="col-lg-4">
+            <pre class="limit-15" data-keep-tags="kbd, em">
+            <code class='language-csharp'>
+                var robotDogs = context.RobotDogs
+                .GroupBy(x => x.Name)
+                .Select(g => new { Name = g.Key, Guns = g.Sum(x => x.Guns) });
+    </code>
+    </pre>
+        </div>
+
+        <div class="col-lg-4">
+            <pre>
+                <code class="language-csharp">
+SELECT f.Location, SUM(d.Guns) AS Guns
+FROM RobotFactories f
+JOIN RobotDog d
+ON f.RobotFactoryId = d.RobotFactoryId
+GROUP BY (b.Location)
+                </code>
             </pre>
+        </div>
+    </div>
+    <hr>
 
+    <h2>Group By and MAX</h2>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <pre class="limit-15" data-keep-tags="kbd, em">
+            <code class='language-csharp'>
+                SELECT f.Location, MAX(d.Guns) AS Guns
+                FROM RobotFactories f
+                JOIN RobotDog d
+                ON f.RobotFactoryId= d.RobotFactoryId
+                GROUP BY (b.Location)
+    </code>
+    </pre>
+        </div>
+
+        <div class="col-lg-4">
+            <pre class="limit-15" data-keep-tags="kbd, em">
+            <code class='language-csharp'>
+                var robotDogs = from d in context.RobotDogs
+                join f in context.RobotFactories
+                on d.RobotFactoryId equals f.RobotFactoryId
+                select new { f.Location, d.RobotDogId } into x
+                group x by new { x.Location } into g
+                select new
+                {
+                    Location = g.Key.Location,
+                    Guns = g.Select(x => x.RobotDogId).Max()
+                };
+    </code>
+    </pre>
+        </div>
+
+        <div class="col-lg-4">
+            <pre>
+                <code class="language-csharp">
+SELECT f.Location, SUM(d.Guns) AS Guns
+FROM RobotFactories f
+JOIN RobotDog d
+ON f.RobotFactoryId = d.RobotFactoryId
+GROUP BY (b.Location)
+                </code>
+            </pre>
+        </div>
+    </div>
+    <hr>
+    <h2>Group By and Getting Top Row Data</h2>
+    <pre class="limit-15" data-keep-tags="kbd, em">
+                <code class='language-csharp'>
+    
+        public dynamic GetServiceProviderShortInfo(int clientId)
+        {
+            return (from clientSP in _context.ClientServiceProvider.Where(x => x.ClientId == clientId)
+                                   join sp in _context.ServiceProviders on clientSP.ServiceProviderId equals sp.Id
+                                   select new 
+                                   {
+                                       Name = sp.Name ,
+                                       Id = sp.Id
+                                   }).GroupBy(x => x.Id).Select(x => x.<kbd>FirstOrDefault()</kbd>).ToList();
+        }
+                </code>
+                </pre>
+    <hr>
+    <h2>Summing Data of Particular Column (If null then 0)</h2>
+    <pre class="limit-15" data-keep-tags="kbd, em">
+                            <code class='language-csharp'>
+                
+public decimal GetClientRemainingAmount(int clientId, int serviceProviderId, int planCategoryId)
+{
+
+    var totalUsed = _context.ServiceProviderGrants.Where(x => x.ClientId == clientId.ToString() && x.ServiceProviderId == serviceProviderId && x.PlanCategoryId == planCategoryId).Sum(x =>(Decimal?) x.Amount)??0M;
+
+    return (amount - totalUsed);
+
+}
+                            </code>
+                            </pre>
+
+
+    <h2>Check Email Exists on Insert</h2>
+    <pre class="limit-15" data-keep-tags="kbd, em">
+    <code class='language-csharp'>
+        public void InsertClientServiceProvider(UserVM viewModel)
+        {
+            dynamic chkEmailExists ="";
+            try
+            {
+                 //chkEmailExists = _context.User.Where(<kbd>x => x.EmailId == viewModel.EmailId</kbd>).FirstOrDefault();
+                 //OR
+                 //chkEmailExists = _context.User.<kbd>Any</kbd>(<kbd>x => x.EmailId == viewModel.EmailId</kbd>).FirstOrDefault();
+                if (chkEmailExists != null )
+                {
+                    throw new Exception("Email Already Exists");
+                }
+                _context.User.Add(viewModel);
+                _context.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                    throw new Exception(ex.Message);
+            }
+        }
+
+
+    </code>
+    </pre>
+
+
+    <h2>Check Email Exists on Edit </h2>
+    <pre class="limit-15" data-keep-tags="kbd, em">
+        <code class='language-csharp'>
+            public void InsertClientServiceProvider(UserVM viewModel)
+            {
+                dynamic chkEmailExists ="";
+                try
+                {    
+                    // diwas@gmail.com  ==>edited to diwash@gmail.com     and if diwas@gmail.com is already in db so we must skip that so we use skip  UserId
+
+                     chkEmailExists = _context.User.Where(x => x.EmailId == viewModel.EmailId && <kbd>x.UserId != viewModel.UserId</kbd>).FirstOrDefault();
+                    if (chkEmailExists != null )
+                    {
+                        throw new Exception("Email Already Exists");
+                    }
+                    _context.User.Update(viewModel);
+                    _context.SaveChanges();
+                }
+                catch(Exception ex)
+                {
+                        throw new Exception(ex.Message);
+                }
+            }
+    
+    
+        </code>
+        </pre>
     <script src="js/prism.js"></script>
     <script type="text/javascript">
         Prism.plugins.NormalizeWhitespace.setDefaults(
@@ -63,6 +241,71 @@
                 // 'tabs-to-spaces': 4,
                 // 'spaces-to-tabs': 4
             });
+
+        (function () {
+            if (!self.Prism) {
+                return;
+            }
+
+            var div = document.createElement('div');
+
+            Prism.hooks.add('before-highlight', function (env) {
+                var elt = env.element;
+                if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                    elt = elt.parentNode;
+                }
+                var tags = elt.getAttribute('data-keep-tags');
+                if (!tags) {
+                    return;
+                }
+                var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+                env.keepTags = true;
+                env.keepTagsPlaceholder = placeholder;
+
+                tags = tags.split(/\s*,\s*/).join('|');
+                var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+                env.keepTagsRegex = tags_regex;
+
+                env.tokenStack = [];
+                env.backupCode = env.code;
+
+                var code = env.element.innerHTML;
+                code = code.replace(tags_regex, function (match) {
+                    env.tokenStack.push(match);
+                    return placeholder.replace('{n}', env.tokenStack.length);
+                });
+                env.element.innerHTML = code;
+                code = env.element.textContent;
+                code = code.replace(/^(?:\r?\n|\r)/, '');
+
+                env.code = code;
+            });
+
+            Prism.hooks.add('after-highlight', function (env) {
+                if (!env.keepTags) {
+                    return;
+                }
+                for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                    t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                        div.innerHTML = inside;
+                        inside = div.textContent;
+                        return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                    });
+
+                    env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                    env.element.innerHTML = env.highlightedCode;
+                }
+            });
+
+        }());
+
+        Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+            v.classList.add("language-sql");
+        });
+        Prism.highlightAll();
     </script>
 </body>
 

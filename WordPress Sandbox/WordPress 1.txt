@@ -30,3 +30,17 @@ http://localhost:[port]/phpmyadmin
 If given access denied ( then restart server)
 
 Unable to run mysql then :  https://www.youtube.com/watch?v=3xtFmOEXwok
+
+
+
+=================================================================================
+Install Wordpress
+Login
+Change Password
+Delete Plugins (Deactivate all and then delete)
+Update Wordpress (Dashboard / Update)
+Change Permalinks ( Settings / Permalinks) ==> how url look like.
+Change Website Title and Tag Line .(Settings/General) Eg. Neil Patel is Title and "Helping to success you online" is  Tag
+Install Theme ( Apperance / Theme  eg. Astra)
+Install Starter Template ( Plugins /add ==>search for starter template and install)
+Change Page (ie. Contact, Service, Disclaimer etc)
