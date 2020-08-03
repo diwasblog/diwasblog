@@ -145,10 +145,11 @@
                 [Column(Order = 0)]
                 public int StudentID { get; set; }
                 
-                [Column("Name", Order = 1)]
+                [Column("Name", Order = 1,TypeName ="nvarchar(100)")]
+             
                 public string StudentName { get; set; }
                 
-                [Column("DoB", Order = 5)]
+                [Column("DoB", Order = 5, TypeName = "varchar(5)")]
                 public DateTime DateOfBirth { get; set; }
                 [Column(Order = 3)]
                 public byte[] Photo { get; set; }
@@ -200,6 +201,7 @@
                 {
                     [Key]
                     public int StudentKey { get; set; }
+
                     public string StudentName { get; set; }
                 }
                

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/b">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+<style>
+    kbd {
+        background: black
+    }
+</style>
+
+<body>
+
+    <h1>Accessing API from Different APp By enabling cors in another proejct</h1>
+
+    <h4>Step 1 : Create Two Project(Both MVC or (One MVC and another API)) inside One Solution</h4>
+    <div class="row">
+        <div class="col-lg-12">
+
+
+            <pre>
+            <code class="language-csharp">
+               Solution
+                   WebMVCProject              // Project ---- 1
+                   WebAPIMVCProject           // Project ---- 2
+            </code>
+          </pre>
+        </div>
+
+
+    </div>
+    <hr>
+
+    <div class="row">
+        <div class="col-lg-6">
+            //WebAPIMVCProject Struture
+            <pre data-keep-tags="kbd, em">
+                <code class="language-csharp">
+                    WebAPIMVCProject
+                         ApiControllers
+                            <kbd>StudentController</kbd>.cs
+                         Controllers
+                            HomeController.cs
+                            ValuesController.cs
+                        ...
+                        webconfig.cs    
+                </code>
+            </pre>
+        </div>
+
+        <div class="col-lg-6">
+            //WebMVCProject Struture
+            <pre data-keep-tags="kbd, em">
+                <code class="language-csharp">
+                    //WebAPIMVCProject Struture
+                    <pre>
+                        <code class="language-csharp">
+                            WebMVCProject
+                                 Controllers
+                                    HomeController.cs
+                                    ValuesController.cs
+                                 Views
+                                    Home
+                                      <kbd>index.html</kbd>  
+                                ...
+                                webconfig.cs    
+                        </code>
+                    </pre>
+            </code>
+            </pre>
+        </div>
+    </div>
+
+    Here ,we will access <b>StudentController.cs</b> action method from <b>Index.html</b> (ajax) jquery
+    in
+    WebAPIMVCProject
+    <hr>
+    <h4>Step2: Concentrate in WebAPIMVCProject project</h4>
+    For accessing API present here from WebMVCProject you have to enable CORS in WebAPIMVCProject
+
+    <h4>Step3: Add CORS in WebAPIMVCProject</h4>
+    <pre>
+        <code class="language-csharp">
+            Install-Package Microsoft.AspNet.WebApi.Cors
+        </code>
+    </pre>
+
+    <h4>Step4: Make changes in WebAPIConfig.cs</h4>
+    <pre data-keep-tags="kbd, em">
+        <code class="language-csharp">
+    public static class WebApiConfig
+    {
+        public static void Register(HttpConfiguration config)
+        {
+            // Web API configuration and services
+
+            <kbd>config.EnableCors();</kbd>
+
+            // Web API routes
+            config.MapHttpAttributeRoutes();
+
+            config.Routes.MapHttpRoute(
+                name: "DefaultApi",
+                routeTemplate: "api/{controller}/{action}/{id}",
+                defaults: new { id = RouteParameter.Optional }
+            );
+        }
+    }
+        </code>
+    </pre>
+
+
+    <h4>Step4: Add in StudentController.cs</h4>
+    <pre data-keep-tags="kbd, em">
+        <code class="language-csharp">
+    
+    namespace WebAPIPrac.ApiControllers
+    {
+
+    <kbd>[EnableCors(origins: "another project url", headers: "*", methods: "*")]</kbd>
+    public class StudentController : ApiController
+    {
+        [HttpGet]
+        public int GetData1()
+        {
+            return 10;
+        }
+
+        [HttpGet]
+        public int GetData2(int a, int b) //Get data from query string
+        {
+            return a + b;
+        }
+
+        ......
+    }
+        </code>
+    </pre>
+
+    <hr>
+    <h4>Step 5 ) Goto Next Project ie.WebMVCProject project </h4>
+    Then create HomeController and its view looks like this:
+    <pre data-keep-tags="kbd, em">
+        <code class="language-csharp">
+
+            &lt;a href="#" id="lnkGET1">Get 1 Request&lt;/a> &lt;br />
+
+            @section scripts{
+            
+                <script type="text/javascript">
+                    $(document).ready(function () {
+
+                        var basePath = 'baseurl of web api';
+
+                        $("#lnkGET1").click(function () {
+
+                            var settings = {
+                                type: "GET",
+                                dataType: "json",
+                                url: basePath + <kbd>"api/StudentData/GetData1"</kbd>,
+                                data: {},
+                                success: function (result) {
+                                    alert(result);
+                                }
+                            };
+
+                            $.ajax(settings);
+
+                            return false;
+                        });
+                    });
+                </script>
+            }
+        </code>
+    </pre>
+
+    Here we have url <b>api/StudentData/GetData1</b> which will call another project StudentController Action Method
+    ie.
+
+    <div class="row">
+        <div class="col-lg-6">
+
+            <pre data-keep-tags="kbd, em">
+                <code class="language-csharp">
+                    url: <kbd>basePath</kbd> + <kbd>"/api/StudentData/GetData1"</kbd>,
+                </code>
+            </pre>
+        </div>
+
+        <div class="col-lg-6">
+            Left Side Url form another project will hit this project action method
+            <pre data-keep-tags="kbd, em">
+                <code class="language-csharp">
+
+                [EnableCors(origins: "http://localhost:12150", headers: "*", methods: "*")]
+                public class StudentDataController : ApiController
+                {
+                    [HttpGet]
+                    public int <kbd>GetData1</kbd>()   
+                    {
+                        return 10;
+                    }
+
+                </code>
+            </pre>
+        </div>
+    </div>
+
+    <script src="js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+
+
+        (function () {
+            if (!self.Prism) {
+                return;
+            }
+
+            var div = document.createElement('div');
+
+            Prism.hooks.add('before-highlight', function (env) {
+                var elt = env.element;
+                if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                    elt = elt.parentNode;
+                }
+                var tags = elt.getAttribute('data-keep-tags');
+                if (!tags) {
+                    return;
+                }
+                var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+                env.keepTags = true;
+                env.keepTagsPlaceholder = placeholder;
+
+                tags = tags.split(/\s*,\s*/).join('|');
+                var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+                env.keepTagsRegex = tags_regex;
+
+                env.tokenStack = [];
+                env.backupCode = env.code;
+
+                var code = env.element.innerHTML;
+                code = code.replace(tags_regex, function (match) {
+                    env.tokenStack.push(match);
+                    return placeholder.replace('{n}', env.tokenStack.length);
+                });
+                env.element.innerHTML = code;
+                code = env.element.textContent;
+                code = code.replace(/^(?:\r?\n|\r)/, '');
+
+                env.code = code;
+            });
+
+            Prism.hooks.add('after-highlight', function (env) {
+                if (!env.keepTags) {
+                    return;
+                }
+                for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                    t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                        div.innerHTML = inside;
+                        inside = div.textContent;
+                        return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                    });
+
+                    env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                    env.element.innerHTML = env.highlightedCode;
+                }
+            });
+
+        }());
+
+        Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+            v.classList.add("language-sql");
+        });
+        Prism.highlightAll();
+    </script>
+</body>
+
+</html>
