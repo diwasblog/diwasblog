@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../css/dracula.css">
+    <link rel="stylesheet" href="../css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+    <style>
+        kbd {
+            background: black
+        }
+    </style>
+</head>
+
+
+<body>
+
+
+
+
+    <h2>Min ,max, count,aggregate</h2>
+    <pre class="limit-15" data-keep-tags="kbd, em">
+        <code class='language-csharp'>
+            int[] a = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };  
+            int minimumNum = a.Min();  
+    
+
+            int MaximumNum = a.Max();  
+
+            int summation = a.Sum();  
+
+            int Count = a.Count();  
+
+            double multiply = a.Aggregate((x, y) => x * y);  
+
+            //Using Method Syntax
+            var MSAverageValue = intNumbers.Average();  
+
+            //Average Query
+            var QSAverageValue = (from num in intNumbers
+            select num).Average();
+
+        </code>
+        </pre>
+    <hr>
+    <h2>Calculation with Filter</h2>
+    <pre class="limit-15" data-keep-tags="kbd, em">
+            <code class='language-csharp'>
+int[] intNumbers = new int[] { 10, 80, 50, 90, 60, 30, 70, 40, 20, 100 };
+
+//Using Method Syntax
+int MSLergestNumber = intNumbers.Where(num => num < 50).Max();
+
+//Using Query Syntax
+int QSLergestNumber = (from num in intNumbers
+                    where num < 50
+                    select num).Max();
+
+
+
+            </code>
+            </pre>
+
+
+    <h2>Using Predicate</h2>
+    <pre>
+    <code class="language-csharp">
+//Using Method Syntax
+int MSLergestNumber = intNumbers.Max(num => {
+    if (num < 50)
+        return num;
+    else
+        return 0;
+});
+    </code>
+</pre>
+    <hr>
+    <h4>Return highest Salary among all Employees</h4>
+
+
+
+    <pre>
+        <code class="language-csharp">
+    public class Employee
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public int Salary { get; set; }
+        public string Department { get; set; }
+    }
+        </code>
+    </pre>
+    <pre>
+                <code class="language-csharp">
+//Method Syntax
+var MSHighestSalary = Employee.GetAllEmployees()
+            .Max(emp => emp.Salary);
+
+//Query Syntax
+var QSHighestSalary = (from emp in Employee.GetAllEmployees()
+select emp).Max(e => e.Salary);
+                </code>
+            </pre>
+
+    <hr>
+    <h2>returns the Highest Salary of IT department.</h2>
+
+    <pre>
+        <code class="language-csharp">
+
+//Using Method Syntax
+var MSHighestSalary = Employee.GetAllEmployees()
+                    .Where(emp => emp.Department == "IT")
+                    .Max(emp => emp.Salary);
+
+//Using Query Syntax
+var QSHighestSalary = (from emp in Employee.GetAllEmployees()
+                        where emp.Department == "IT"
+                        select emp).Max(e => e.Salary);
+        </code>
+    </pre>
+
+    <hr>
+    <h2>Get Average Salary of All Employee</h2>
+    <pre>
+        <code class="language-csharp">
+//Using Method Syntax
+var MSAverageSalary = Employee.GetAllEmployees()
+                        .Average(emp => emp.Salary);
+//Using Query Syntax
+var QSAverageSalary = (from emp in Employee.GetAllEmployees()
+                        select emp).Average(e => e.Salary);
+        </code>
+    </pre>
+    <hr>
+    <h2>Get Average Salary of IT Department</h2>
+    <pre>
+        <code class="language-csharp">
+//Using Method Syntax
+var MSAverageSalary = Employee.GetAllEmployees()
+                        .Where(emp => emp.Department == "IT")
+                        .Average(emp => emp.Salary);
+//Using Query Syntax
+var QSAverageSalary = (from emp in Employee.GetAllEmployees()
+                        where emp.Department == "IT"
+                        select emp).Average(e => e.Salary);
+        </code>
+    </pre>
+    <hr>
+    <h2>Aggregate Example with and without seed</h2>
+    <div class="row">
+
+        <div class="col-lg-6">
+            <h4>Without Seed</h4>
+            <pre data-keep-tags="kbd, em">
+        <code class="language-csharp">
+            int[] intNumbers = { 3, 5, 7, 9 };
+            int result = intNumbers.<kbd>Aggregate((n1, n2) => n1 * n2)</kbd>;
+            //  3* 5  =15
+            // 15 * 7 = 105
+            //105 * 9 = 945
+        </code>
+    </pre>
+        </div>
+
+        <div class="col-lg-6">
+            <h4>With Seed</h4>
+            <pre data-keep-tags="kbd, em">
+        <code class="language-csharp">
+            int[] intNumbers = { 3, 5, 7, 9 };
+            int result = intNumbers.<kbd>Aggregate(2, (n1, n2) => n1 * n2)</kbd>;
+            //Here 2 is seed
+            //  2 * 3 = 6
+            //  6 * 5 = 30
+            //  30 * 7 = 210
+            //  210 *9 = 1890 
+        </code>
+    </pre>
+        </div>
+    </div>
+
+    <hr>
+    <h2>Complex Aggregated</h2>
+    <h4>Calculate Total Salary of Employee</h4>
+    <div class="row">
+        <div class="col-lg-6">
+            <pre>
+                <code class="language-csharp">
+                    public class Employee
+                    {
+                        public int ID { get; set; }
+                        public string Name { get; set; }
+                        public int Salary { get; set; }
+                        public string Department { get; set; }
+                    }
+                </code>
+            </pre>
+        </div>
+        <div class="col-lg-6">
+            <pre>
+            <code class="language-csharp">
+                <code class="language-csharp">
+
+                    //Here 0 is seed
+
+                    int Salary = Employee.GetAllEmployees()
+                            .Aggregate&lt;Employee, int>(0,
+                            (TotalSalary, emp) => TotalSalary += emp.Salary);
+                </code>
+            </pre>
+            </code>
+            </pre>
+        </div>
+    </div>
+    <hr>
+    <h2>Get Comma Separated Value</h2>
+    Here , Substring(0, employeeNames.Length - 1) removes comma of last string,
+    "" is just initialization of string
+    <pre>
+        <code class="language-csharp">
+string CommaSeparatedEmployeeNames = Employee.GetAllEmployees().Aggregate<Employee, string, string>(
+                                    "", 
+                                    (employeeNames, employee) => employeeNames = employeeNames + employee.Name + ",",
+                                    employeeNames => employeeNames.Substring(0, employeeNames.Length - 1));
+
+                                    //output: "diwas,dikshya,yogesh,dipesh"
+        </code>
+    </pre>
+    <script src="../js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+
+        (function () {
+            if (!self.Prism) {
+                return;
+            }
+
+            var div = document.createElement('div');
+
+            Prism.hooks.add('before-highlight', function (env) {
+                var elt = env.element;
+                if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                    elt = elt.parentNode;
+                }
+                var tags = elt.getAttribute('data-keep-tags');
+                if (!tags) {
+                    return;
+                }
+                var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+                env.keepTags = true;
+                env.keepTagsPlaceholder = placeholder;
+
+                tags = tags.split(/\s*,\s*/).join('|');
+                var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+                env.keepTagsRegex = tags_regex;
+
+                env.tokenStack = [];
+                env.backupCode = env.code;
+
+                var code = env.element.innerHTML;
+                code = code.replace(tags_regex, function (match) {
+                    env.tokenStack.push(match);
+                    return placeholder.replace('{n}', env.tokenStack.length);
+                });
+                env.element.innerHTML = code;
+                code = env.element.textContent;
+                code = code.replace(/^(?:\r?\n|\r)/, '');
+
+                env.code = code;
+            });
+
+            Prism.hooks.add('after-highlight', function (env) {
+                if (!env.keepTags) {
+                    return;
+                }
+                for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                    t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                        div.innerHTML = inside;
+                        inside = div.textContent;
+                        return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                    });
+
+                    env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                    env.element.innerHTML = env.highlightedCode;
+                }
+            });
+
+        }());
+
+        Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+            v.classList.add("language-sql");
+        });
+        Prism.highlightAll();
+    </script>
+</body>
+
+</html>

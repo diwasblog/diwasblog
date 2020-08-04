@@ -59,27 +59,20 @@ select new
     <h2>Group By and Sum</h2>
 
     <div class="row">
-        <div class="col-lg-4">
-            <pre class="limit-15" data-keep-tags="kbd, em">
-            <code class='language-csharp'>
-                SELECT Name, SUM(Guns)
-                FROM RobotDog
-                GROUP BY Name
-    </code>
-    </pre>
-        </div>
 
-        <div class="col-lg-4">
+
+
+        <div class="col-lg-6">
             <pre class="limit-15" data-keep-tags="kbd, em">
             <code class='language-csharp'>
-                var robotDogs = context.RobotDogs
+var robotDogs = context.RobotDogs
                 .GroupBy(x => x.Name)
                 .Select(g => new { Name = g.Key, Guns = g.Sum(x => x.Guns) });
     </code>
     </pre>
         </div>
 
-        <div class="col-lg-4">
+        <div class="col-lg-6">
             <pre>
                 <code class="language-csharp">
 SELECT f.Location, SUM(d.Guns) AS Guns
@@ -99,11 +92,11 @@ GROUP BY (b.Location)
         <div class="col-lg-4">
             <pre class="limit-15" data-keep-tags="kbd, em">
             <code class='language-csharp'>
-                SELECT f.Location, MAX(d.Guns) AS Guns
-                FROM RobotFactories f
-                JOIN RobotDog d
-                ON f.RobotFactoryId= d.RobotFactoryId
-                GROUP BY (b.Location)
+SELECT f.Location, MAX(d.Guns) AS Guns
+FROM RobotFactories f
+JOIN RobotDog d
+ON f.RobotFactoryId= d.RobotFactoryId
+GROUP BY (b.Location)
     </code>
     </pre>
         </div>
@@ -111,16 +104,16 @@ GROUP BY (b.Location)
         <div class="col-lg-4">
             <pre class="limit-15" data-keep-tags="kbd, em">
             <code class='language-csharp'>
-                var robotDogs = from d in context.RobotDogs
-                join f in context.RobotFactories
-                on d.RobotFactoryId equals f.RobotFactoryId
-                select new { f.Location, d.RobotDogId } into x
-                group x by new { x.Location } into g
-                select new
-                {
-                    Location = g.Key.Location,
-                    Guns = g.Select(x => x.RobotDogId).Max()
-                };
+var robotDogs = from d in context.RobotDogs
+join f in context.RobotFactories
+on d.RobotFactoryId equals f.RobotFactoryId
+select new { f.Location, d.RobotDogId } into x
+group x by new { x.Location } into g
+select new
+{
+    Location = g.Key.Location,
+    Guns = g.Select(x => x.RobotDogId).Max()
+};
     </code>
     </pre>
         </div>
@@ -142,16 +135,16 @@ GROUP BY (b.Location)
     <pre class="limit-15" data-keep-tags="kbd, em">
                 <code class='language-csharp'>
     
-        public dynamic GetServiceProviderShortInfo(int clientId)
-        {
-            return (from clientSP in _context.ClientServiceProvider.Where(x => x.ClientId == clientId)
-                                   join sp in _context.ServiceProviders on clientSP.ServiceProviderId equals sp.Id
-                                   select new 
-                                   {
-                                       Name = sp.Name ,
-                                       Id = sp.Id
-                                   }).GroupBy(x => x.Id).Select(x => x.<kbd>FirstOrDefault()</kbd>).ToList();
-        }
+public dynamic GetServiceProviderShortInfo(int clientId)
+{
+    return (from clientSP in _context.ClientServiceProvider.Where(x => x.ClientId == clientId)
+                            join sp in _context.ServiceProviders on clientSP.ServiceProviderId equals sp.Id
+                            select new 
+                            {
+                                Name = sp.Name ,
+                                Id = sp.Id
+                            }).GroupBy(x => x.Id).Select(x => x.<kbd>FirstOrDefault()</kbd>).ToList();
+}
                 </code>
                 </pre>
     <hr>
@@ -174,26 +167,26 @@ public decimal GetClientRemainingAmount(int clientId, int serviceProviderId, int
     <h2>Check Email Exists on Insert</h2>
     <pre class="limit-15" data-keep-tags="kbd, em">
     <code class='language-csharp'>
-        public void InsertClientServiceProvider(UserVM viewModel)
+public void InsertClientServiceProvider(UserVM viewModel)
+{
+    dynamic chkEmailExists ="";
+    try
+    {
+            //chkEmailExists = _context.User.Where(<kbd>x => x.EmailId == viewModel.EmailId</kbd>).FirstOrDefault();
+            //OR
+            //chkEmailExists = _context.User.<kbd>Any</kbd>(<kbd>x => x.EmailId == viewModel.EmailId</kbd>);
+        if (chkEmailExists != null )
         {
-            dynamic chkEmailExists ="";
-            try
-            {
-                 //chkEmailExists = _context.User.Where(<kbd>x => x.EmailId == viewModel.EmailId</kbd>).FirstOrDefault();
-                 //OR
-                 //chkEmailExists = _context.User.<kbd>Any</kbd>(<kbd>x => x.EmailId == viewModel.EmailId</kbd>).FirstOrDefault();
-                if (chkEmailExists != null )
-                {
-                    throw new Exception("Email Already Exists");
-                }
-                _context.User.Add(viewModel);
-                _context.SaveChanges();
-            }
-            catch(Exception ex)
-            {
-                    throw new Exception(ex.Message);
-            }
+            throw new Exception("Email Already Exists");
         }
+        _context.User.Add(viewModel);
+        _context.SaveChanges();
+    }
+    catch(Exception ex)
+    {
+            throw new Exception(ex.Message);
+    }
+}
 
 
     </code>

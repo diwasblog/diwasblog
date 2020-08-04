@@ -559,16 +559,96 @@
       var res = from dep in dev.tbl_Dept 
                 join emp in dev.tbl_Emp 
                 on dep.Did equals emp.Eid 
-                selectnew { emp.Eid, emp.EName, dep.DName };    //query
+                select new 
+                { 
+                  emp.Eid,
+                   emp.EName,
+                    dep.DName 
+              };    
+              //query
 
 
-      var res=dev.tbl_Dept.Join(dev.tbl_Emp,x=>x.Did,y=>y.Eid,(x,y)=>  _
-              new{y.Eid,y.EName,x.DName}).ToList();  //lambda
+      var res=dev.tbl_Dept
+             .Join(
+                   dev.tbl_Emp,x=>x.Did,
+                   y=>y.Eid,(x,y)=>  new  {
+                                           y.Eid,
+                                           y.EName,
+                                           x.DName
+                                          }
+                                          ).ToList();  //lambda
 
              
   </code>
   </pre>
   <br>
+
+  <h2>Using Select with Model</h2>
+  <div class="row">
+    <div class="col-lg-6">
+      <pre>
+        <code class="language-csharp">
+          //Query Syntax
+            IEnumerable&lt;Employee> selectQuery = (from emp in Employee.GetEmployees()
+                                                    select new Employee()
+                                                    {
+                                                        FirstName = emp.FirstName,
+                                                        LastName = emp.LastName,
+                                                        Salary = emp.Salary
+                                                    });
+        </code>
+
+      </pre>
+    </div>
+    <div class="col-lg-6">
+      <pre>
+        <code class="language-csharp">
+          List&lt;Employee> selectMethod = Employee.GetEmployees().
+            Select(emp => new Employee()
+            {
+                FirstName = emp.FirstName,
+                LastName = emp.LastName,
+                Salary = emp.Salary
+            }).ToList();
+        </code>
+
+      </pre>
+    </div>
+  </div>
+
+  <h2>Using Select without Model (Anonymous)</h2>
+  <div class="row">
+    <div class="col-lg-6">
+      <pre>
+        <code class="language-csharp">
+          //Query Syntax
+            var selectQuery = (from emp in Employee.GetEmployees()
+                                                    select new 
+                                                    {
+                                                        FirstName = emp.FirstName,
+                                                        LastName = emp.LastName,
+                                                        Salary = emp.Salary
+                                                    });
+        </code>
+
+      </pre>
+    </div>
+    <div class="col-lg-6">
+      <pre>
+        <code class="language-csharp">
+          var selectMethod = Employee.GetEmployees().
+            Select(emp => new
+            {
+                FirstName = emp.FirstName,
+                LastName = emp.LastName,
+                Salary = emp.Salary
+            }).ToList();
+        </code>
+
+      </pre>
+    </div>
+  </div>
+
 
   <br>
   <h4><span style="color: #ff00ff;"><strong>Get Only Partioning Data</strong></span></h4>
