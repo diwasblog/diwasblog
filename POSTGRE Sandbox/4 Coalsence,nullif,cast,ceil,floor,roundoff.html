@@ -369,6 +369,14 @@
                     SELECT ABS (113.5)    // 113
             </code>
         </pre>
+
+
+    <h2>Coalesce DateTime</h2>
+    <pre>
+            <code class="language-sql">where inch.history_datetime > coalesce(incidenttime,'0001-01-01 10:00')</code>
+
+        </pre>
+
     <script src="../Ef/js/prism.js"></script>
     <script type="text/javascript">
         Prism.plugins.NormalizeWhitespace.setDefaults(

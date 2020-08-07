@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+    <style>
+        kbd {
+            background: black
+        }
+    </style>
+</head>
+
+<h2>Pdf in Asp.net </h2>
+
+
+<h3>Step 1. Nuget Package : Rotativa</h3>
+<h3>Step2 . Create Layout For Report</h3>
+<strong>_reportlayout.cshtml</strong>
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+        @{
+            Layout = null;
+        }
+        
+        &lt;!DOCTYPE html>
+        &lt;html>
+            &lt;head>
+            &lt;title>@ViewBag.ReportTitle &lt;/title>
+            &lt;link href="/Template/assets/css/bootstrap.css" rel="stylesheet" />
+            &lt;link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+            &lt;style type="text/css">
+                .no-gutter {
+                    margin: 0;
+                    padding: 0;
+                }
+        
+                body {
+                    font-family: 'Open Sans', sans-serif;
+                    font-size: 16px;
+                }
+        
+                .breakhere {
+                    page-break-after: always;
+                }
+                &lt;/style>
+            @RenderSection("<kbd>ReportStyles</kbd>", false)
+            &lt;/head>
+        &lt;body>
+            &lt;div class="container">
+                &lt;div class="row">
+        
+                &lt;/div>
+                &lt;hr style="border-top:solid 1px #337ab7;" />
+                @RenderBody()
+            &lt;/div>
+            
+           @RenderSection("<kbd>ReportScripts</kbd>", false)
+        &lt;/body>
+    &lt;/html>
+        
+        
+    </code>
+</pre>
+
+<h3>Step 3. Create Controller</h3>
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+        #region PDF  Report
+
+        [Route("report/client/statement/pdf/{clientId}")]
+        public ActionResult PdfViewClientReport(int clientId)
+        {
+            ClientPdfReportViewModel obj = new ClientPdfReportViewModel();
+            try
+            {
+                obj.ClientInfo = _clientRepository.GetById(clientId);
+                obj.ServiceProviderGrants  = _invoiceRepository.GetServiceProviderGrants(clientId);
+
+                return new <kbd>Rotativa.ViewAsPdf</kbd>(obj) { FileName = obj.ClientInfo.Name + "_Report.pdf" };
+            }
+            catch (Exception ex)
+            {
+               
+                return View(obj);
+            }
+        }
+        #endregion
+    </code>
+</pre>
+
+
+<h3>Step 4. Pdf View</h3>
+<pre>
+    <code class="language-csharp">
+@model SupportFoundationAustralia.ViewModel.ClientPdfReportViewModel
+
+@{
+    Layout = "../shared/_reportlayout.cshtml";
+}
+@section <kbd>ReportStyles</kbd>{
+  // If want to add style
+}
+&lt;center>
+    &lt;h3>Client Report Information&lt;/h3>
+&lt;/center>
+&lt;br />
+&lt;div class="row">
+    &lt;div class="col-xs-2">
+        Client Name :
+    &lt;/div>
+    &lt;div class="col-xs-3">
+        &lt;strong>@Model.ClientInfo.FirstName @Model.ClientInfo.LastName&lt;/strong>
+    &lt;/div>
+&lt;/div>
+
+&lt;div class="row">
+    &lt;div class="col-xs-2">
+        Address :
+    &lt;/div>
+    &lt;div class="col-xs-3">
+        &lt;strong>@Model.ClientInfo.Address&lt;/strong>
+    &lt;/div>
+&lt;/div>
+<br />
+<br />
+&lt;table class="table">
+    &lt;thead>
+        &lt;tr>
+
+            &lt;th>S.N&lt;/th>
+            &lt;th>Date&lt;/th>
+            &lt;th>Invoice&lt;/th>
+            &lt;th>Service Provider&lt;/th>
+            &lt;th>Plan Category&lt;/th>
+            &lt;th>Amount&lt;/th>
+        &lt;/tr>
+
+    &lt;/thead>
+    &lt;tbody>
+        @{
+            int SN = 1;
+            decimal total = 0;
+        }
+        @foreach (var item in Model.ServiceProviderGrants)
+        {
+            &lt;tr>
+                &lt;td>1&lt;td>
+                &lt;td>@item.ModifiedDate&lt;/td>
+                &lt;td>@item.Invoice.InvoiceNumber&lt;/td>
+                &lt;td>@item.ServiceProvider.Name&lt;/td>
+                &lt;td>@item.PlanCategory.Title&lt;/td>
+                &lt;td>@item.Amount&lt;/td>
+            </tr>
+            SN++;
+            total += item.Amount;
+        }
+        &lt;tr>
+            &lt;td colspan="3" style="text-align:center">&lt;b>Total&lt;/b> &lt;td>
+            &lt;td>&lt;/td>
+            &lt;td>&lt;/td>
+            &lt;td><b>$ @total</b>&lt;/td>
+        &lt;/tr>
+     &lt;/tbody>
+&lt;/table>
+    </code>
+</pre>
+<script src="js/prism.js"></script>
+<script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true,
+            // 'break-lines': 10,
+            // 'indent': 2,
+            // 'remove-initial-line-feed': false,
+            // 'tabs-to-spaces': 4,
+            // 'spaces-to-tabs': 4
+        });
+
+    (function () {
+        if (!self.Prism) {
+            return;
+        }
+
+        var div = document.createElement('div');
+
+        Prism.hooks.add('before-highlight', function (env) {
+            var elt = env.element;
+            if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                elt = elt.parentNode;
+            }
+            var tags = elt.getAttribute('data-keep-tags');
+            if (!tags) {
+                return;
+            }
+            var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+            env.keepTags = true;
+            env.keepTagsPlaceholder = placeholder;
+
+            tags = tags.split(/\s*,\s*/).join('|');
+            var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+            env.keepTagsRegex = tags_regex;
+
+            env.tokenStack = [];
+            env.backupCode = env.code;
+
+            var code = env.element.innerHTML;
+            code = code.replace(tags_regex, function (match) {
+                env.tokenStack.push(match);
+                return placeholder.replace('{n}', env.tokenStack.length);
+            });
+            env.element.innerHTML = code;
+            code = env.element.textContent;
+            code = code.replace(/^(?:\r?\n|\r)/, '');
+
+            env.code = code;
+        });
+
+        Prism.hooks.add('after-highlight', function (env) {
+            if (!env.keepTags) {
+                return;
+            }
+            for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                    div.innerHTML = inside;
+                    inside = div.textContent;
+                    return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                });
+
+                env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                env.element.innerHTML = env.highlightedCode;
+            }
+        });
+
+    }());
+
+    Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+        v.classList.add("language-sql");
+    });
+    Prism.highlightAll();
+
+</script>
+
+</body>
+
+</html>
