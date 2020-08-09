@@ -1,0 +1,616 @@
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+<style>
+    kbd {
+        background: black
+    }
+</style>
+
+
+<body>
+
+    <h1>Note: Before starting Note that you must run each code in local server otherwise willnot work</h1>
+
+    <hr>
+    <hr>
+
+    <h2>Reading /Getting Data from File and Displaying on screen</h2>
+
+
+    <div class="row">
+        <div class="col-lg-6">
+            <h4>Ways 1 : Best uses Onload Method</h4>
+            <h4>Steps:</h4>
+            1) Create <b>Button</b> to get data <br>
+            2) Create div to load data on browser<br>
+            3) Create <b>XMLHttpRequest Object</b><br>
+            4) Open <b>sample.txt</b> file and read data<br>
+            5)Create <b>OnProgress</b> Method if required to show loader while getting data <br>
+
+            6)Create <b>Onload Method</b> and when success Load data to div element<br>
+
+            <pre data-keep-tags="kbd,em">
+                <code class="language-csharp">
+    &lt;button id="button">Get Text File&lt;/button>
+    &lt;br>&lt;br>
+    &lt;div id="loadId">&lt;/div>
+
+&lt;script>
+// Create event listener
+document.getElementById('button').addEventListener('click', loadText);
+
+function loadText() {
+    // Create XHR Object
+    var xhr = <kbd>new XMLHttpRequest()</kbd>;
+
+    // OPEN - type, url/file, async
+    xhr.<kbd>open</kbd>('GET', '<kbd>sample.txt</kbd>', true);
+
+    console.log('READYSTATE: ', xhr.readyState);
+
+    // OPTIONAL - used for loaders
+    xhr.<kbd>onprogress</kbd> = function () {
+        console.log('READYSTATE: ', xhr.readyState);
+    }
+
+    xhr.<kbd>onload</kbd> = function () {
+        console.log('READYSTATE: ', xhr.readyState);
+        if (this.status == 200) {
+            //console.log(this.responseText);
+            document.getElementById('loadId').innerHTML = <kbd>this.responseText</kbd>;
+        } else if (this.status = 404) {
+            document.getElementById('text').innerHTML = 'Not Found';
+        }
+    }
+
+    xhr.onerror = function () {
+        console.log('Request Error...');
+    }
+
+    // Sends request
+    xhr.send();
+}
+// HTTP Statuses
+// 200: "OK"
+// 403: "Forbidden"
+// 404: "Not Found"
+&lt;/script>
+
+          </code>
+          </pre>
+
+
+        </div>
+        <div class="col-lg-6">
+            <h4>Ways 1 : Old ways uses onreadystatechange Method</h4>
+            <h4>Steps:</h4>
+            1) Create <b>Button</b> to get data <br>
+            2) Create <b>div</b> to load data on browser<br>
+            3) Create <b>XMLHttpRequest</b> Object<br>
+            4) Open or Initializes a request to file <b> Sample.txt</b> file and read data<br>
+            5)Create <b>OnProgress Method</b> if required to show loader while getting data <br>
+
+            6)Create onreadystatechange Method and when success Load data to div element<br>
+            <pre data-keep-tags="kbd,em">
+            <code class="language-csharp">
+
+&lt;button id="button">Get Text File&lt;/button>
+&lt;br>&lt;br>
+&lt;div id="loadId">&lt;/div>
+
+&lt;script>
+// Create event listener
+document.getElementById('button').addEventListener('click', loadText);
+
+function loadText() {
+    // Create XHR Object
+    var xhr = new XMLHttpRequest();
+    // OPEN - type, url/file, async
+    xhr.open('GET', 'sample.txt', true);
+
+    console.log('READYSTATE: ', xhr.readyState);
+
+    // OPTIONAL - used for loaders
+    xhr.onprogress = function () {
+        console.log('READYSTATE: ', xhr.readyState);
+    }
+
+    xhr.<kbd>onreadystatechange</kbd> = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log(this.responseText);
+            document.getElementById('loadId').innerHTML = this.responseText;
+        }
+    }
+
+    xhr.onerror = function () {
+        console.log('Request Error...');
+    }
+
+
+    // Sends request
+    xhr.send();
+}
+
+    // readyState Values
+    // 0: request not initialized
+    // 1: server connection established
+    // 2: request received
+    // 3: processing request
+    // 4: request finished and response is ready
+
+    // HTTP Statuses
+    // 200: "OK"
+    // 403: "Forbidden"
+    // 404: "Not Found"
+        &lt;/script>
+
+            </code>
+            </pre>
+
+        </div>
+    </div>
+
+    <hr>
+    <hr>
+    <h3>Loading Data from json file</h3>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <pre data-keep-tags="kbd,em">
+                <code class="language-csharp">
+              
+&lt;button id="<kbd>button1</kbd>">Get User&lt;/button>
+&lt;button id="<kbd>button2</kbd>">Get Users&lt;/button>
+
+&lt;br>
+&lt;br>
+
+&lt;h1>User&lt;/h1>
+&lt;div id="user">&lt;/div>
+
+
+&lt;h1>Users&lt;/h1>
+&lt;div id="users">&lt;/div>
+
+&lt;script>
+    document.getElementById('button1').addEventListener('click', <kbd>loadUser</kbd>);
+    document.getElementById('button2').addEventListener('click', <kbd>loadUsers</kbd>);
+
+    function <kbd>loadUser</kbd>() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '<kbd>user.json</kbd>', true);
+
+        xhr.onload = function () {
+            if (this.status == 200) {
+                var user = JSON.parse(this.responseText);
+
+                var output = '';
+
+                output += '<ul>' +
+                    '<li>ID: ' + user.id + '</li>' +
+                    '<li>Name: ' + user.name + '</li>' +
+                    '<li>Email: ' + user.email + '</li>' +
+                    '</ul>';
+
+                document.getElementById('user').innerHTML = output;
+            }
+        }
+
+        xhr.send();
+    }
+
+    function <kbd>loadUsers</kbd>() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '<kbd>users.json</kbd>', true);
+
+        xhr.onload = function () {
+            if (this.status == 200) {
+                var users = JSON.parse(this.responseText);
+
+                var output = '';
+
+                for (var i in users) {
+                    output += '<ul>' +
+                        '<li>ID: ' + users[i].id + '</li>' +
+                        '<li>Name: ' + users[i].name + '</li>' +
+                        '<li>Email: ' + users[i].email + '</li>' +
+                        '</ul>';
+                }
+
+                document.getElementById('users').innerHTML = output;
+            }
+        }
+
+        xhr.send();
+    }
+&lt;/script>  
+           
+            </code>
+             </pre>
+        </div>
+
+        <div class="col-lg-4">
+            <pre class="language-csharp">
+
+<kbd>user.json</kbd>
+{
+    "id":1,
+    "name":"Rick",
+    "email":"rick@gmail.com"
+    }
+
+==============================================
+<kbd>users.json</kbd>
+[
+{
+    "id":1,
+    "name":"Rick",
+    "email":"rick@gmail.com"
+},
+{
+    "id":2,
+    "name":"Glenn",
+    "email":"glenn@gmail.com"
+},
+{
+    "id":3,
+    "name":"Negan",
+    "email":"negan@gmail.com"
+}
+]
+
+
+            </pre>
+        </div>
+    </div>
+
+
+
+    <hr>
+    <br>
+    <h2>Load Live Url :github url</h2>
+    <div class="row">
+        <div class="col-lg-8">
+            <pre data-keep-tags="kbd,em">
+            <code class="language-javascript"> 
+&lt;button id="button">Load GitHub Users&lt;/button>
+&lt;br>&lt;br>
+&lt;h1>Github Users&lt;/h1>
+&lt;div id="users">&lt;/div>
+
+&lt;script>
+document.getElementById('button').addEventListener('click', loadUsers);
+
+// Load Github Users
+function <kbd>loadUsers</kbd>() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '<kbd>https://api.github.com/users</kbd>', true);
+
+    xhr.onload = function () {
+        if (this.status == 200) {
+            var users = <kbd>JSON.parse(this.responseText);</kbd>
+
+            var output = '';
+            for (var i in users) {
+                output +=
+                    '&lt;div class="user">' +
+                    '&lt;img src="' + users[i].avatar_url + '" width="70" height="70">' +
+                    '&lt;ul>' +
+                    '&lt;li>ID: ' + users[i].id + '&lt;/li>' +
+                    '&lt;li>Login: ' + users[i].login + '&lt;/li>' +
+                    '&lt;/ul>' +
+                    '&lt;/div>';
+            }
+
+            document.getElementById('users').innerHTML = output;
+        }
+    }
+
+    xhr.send();
+}
+&lt;/script>
+            </code>
+                </pre>
+        </div>
+    </div>
+
+    <hr>
+    <br>
+    <h2>XMLHttpRequest POST METHOD to API Action Method of Controller</h2>
+    Note: <br>
+    1) Sets the value of an HTTP request header. You must call <strong>setRequestHeader() </strong>after
+    <strong>open()</strong>, but
+    before <strong>send()</strong>.
+
+    2)Here we sent data to API so "application/json" and data is passed in jsonFormat to xhr.send()
+    <div class="row">
+        <div class="col-lg-8">
+            <pre data-keep-tags="kbd,em">
+            <code  class="language-csharp">
+                &lt;button onclick="myFunction()">Click me&lt;/button>
+
+
+&lt;script type="text/javascript">
+
+    function myFunction() {
+
+        var xhr = new XMLHttpRequest();
+        var <kbd>obj</kbd> = '{ "Id": 1, "Name": "DiwasPoudel" }';
+
+        xhr.open('POST', '<kbd>/Customer/Call</kbd>', true);
+        xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+
+        xhr.onload = function () {
+            console.log('READYSTATE: ', xhr.readyState);
+            if (this.status == 200) {
+                
+                alert(this.responseText);  // output : Diwas
+            } else if (this.status = 404) {
+                alert('Not Found');
+            }
+        }
+
+        xhr.send(<kbd>obj</kbd>);
+    }
+&lt;/script>
+            </code>
+            </pre>
+        </div>
+
+        <div class="col-lg-4">
+            <pre data-keep-tags="kbd,em">
+                <code class="language-csharp">
+public class CustomerController : ControllerBase
+{
+    
+    [Route("customer")]
+    public IActionResult GetById(int id, string gender)
+    {
+        var result = Employee.GetEmployees().Where(x => x.Gender == gender);
+        return Ok(result);
+    }
+}
+
+public class Employee
+{
+    public int ID { get; set; }
+    public string Name { get; set; }
+}
+
+                </code>
+            </pre>
+        </div>
+    </div>
+
+    <hr>
+    <br>
+
+    <h2>XMLHttpRequest POST METHOD to General Action Method of Controller</h2>
+    Note: <br>
+
+
+    2)Here we sent data to API so <b>"application/x-www-form-urlencoded"</b> and data is passed in <b>urlparam</b> to
+    xhr.send()
+    <div class="row">
+        <div class="col-lg-8">
+            <pre data-keep-tags="kbd,em">
+            <code  class="language-csharp">
+                &lt;button onclick="myFunction()">Click me&lt;/button>
+
+
+&lt;script type="text/javascript">
+
+    function myFunction() {
+
+        var xhr = new XMLHttpRequest();
+
+        //You can submit forms Data here.
+        var jsonObj = { 
+            Id: 1,
+            Name: "DiwasPoudel" 
+        };
+
+
+        var params = <kbd>new URLSearchParams(jsonObj);</kbd>   //Convert to Query Parameter like this: "Id=1&Name='DiwasPoudel'" 
+
+        xhr.open('POST', '<kbd>/Customer/Call</kbd>', true);
+         xhr.setRequestHeader('Content-type', '<kbd>application/x-www-form-urlencoded</kbd>');
+
+        xhr.onload = function () {
+            console.log('READYSTATE: ', xhr.readyState);
+            if (this.status == 200) {
+                
+                alert(this.responseText);  // output : Diwas
+            } else if (this.status = 404) {
+                alert('Not Found');
+            }
+        }
+
+        xhr.send(<kbd>params</kbd>);
+    }
+&lt;/script>
+            </code>
+            </pre>
+        </div>
+
+        <div class="col-lg-4">
+            <pre data-keep-tags="kbd,em">
+                <code class="language-csharp">
+public class CustomerController : Controller
+{
+    
+
+    [Route("/Customer/Call")]
+    public IActionResult PostData(Employee emp )
+    {
+        var result = Employee.GetEmployees().Where(x => x.Gender == gender);
+        return Ok(result);
+    }
+}
+
+public class Employee
+{
+    public int ID { get; set; }
+    public string Name { get; set; }
+}
+
+                </code>
+            </pre>
+        </div>
+    </div>
+
+    <hr>
+    <h2>XMLHttpRequest GET Request </h2>
+    <div class="row">
+        <div class="col-lg-8">
+            <pre data-keep-tags="kbd,em">
+            <code  class="language-csharp">
+                &lt;button onclick="myFunction()">Click me&lt;/button>
+
+
+&lt;script type="text/javascript">
+
+function myFunction() {
+
+    var xhr = new XMLHttpRequest();
+
+
+    xhr.open('<kbd>GET</kbd>',<kbd> '/customer?id=' + 1 + '&gender='+ 'Male'</kbd>, true);
+    xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+
+    xhr.onload = function () {
+        console.log('READYSTATE: ', xhr.readyState);
+        if (this.status == 200) {
+            
+           alert(this.responseText); //Response Here
+        } else if (this.status = 404) {
+            alert('Not Found');
+        }
+    }
+
+    xhr.send();
+}
+&lt;/script>
+            </code>
+            </pre>
+        </div>
+
+        <div class="col-lg-4">
+            <pre data-keep-tags="kbd,em">
+                <code class="language-csharp">
+public class CustomerController : ControllerBase
+{
+    [Route("<kbd>customer/call</kbd>")]
+    public IActionResult Call(Employee obj)
+    {
+        return <kbd>Ok</kbd>("diwas");
+    }
+}
+
+public class Employee
+{
+    public int ID { get; set; }
+    public string Name { get; set; }
+}
+
+                </code>
+            </pre>
+        </div>
+    </div>
+
+    <script src="../ASP Sandbox/js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+
+
+
+        (function () {
+            if (!self.Prism) {
+                return;
+            }
+
+            var div = document.createElement('div');
+
+            Prism.hooks.add('before-highlight', function (env) {
+                var elt = env.element;
+                if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                    elt = elt.parentNode;
+                }
+                var tags = elt.getAttribute('data-keep-tags');
+                if (!tags) {
+                    return;
+                }
+                var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+                env.keepTags = true;
+                env.keepTagsPlaceholder = placeholder;
+
+                tags = tags.split(/\s*,\s*/).join('|');
+                var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+                env.keepTagsRegex = tags_regex;
+
+                env.tokenStack = [];
+                env.backupCode = env.code;
+
+                var code = env.element.innerHTML;
+                code = code.replace(tags_regex, function (match) {
+                    env.tokenStack.push(match);
+                    return placeholder.replace('{n}', env.tokenStack.length);
+                });
+                env.element.innerHTML = code;
+                code = env.element.textContent;
+                code = code.replace(/^(?:\r?\n|\r)/, '');
+
+                env.code = code;
+            });
+
+            Prism.hooks.add('after-highlight', function (env) {
+                if (!env.keepTags) {
+                    return;
+                }
+                for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                    t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                        div.innerHTML = inside;
+                        inside = div.textContent;
+                        return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                    });
+
+                    env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                    env.element.innerHTML = env.highlightedCode;
+                }
+            });
+
+        }());
+
+        Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+            v.classList.add("language-sql");
+        });
+        Prism.highlightAll();
+
+    </script>
+</body>
+
+</html>
