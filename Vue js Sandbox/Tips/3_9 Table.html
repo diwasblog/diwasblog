@@ -1,180 +1,206 @@
 <html>
+
 <head>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+        integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <script
+        src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
     <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
 
-<script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/vue"></script>
 
-<style>
-xmp.prettyprint{
+    <style>
+        xmp.prettyprint {
 
-    font-size:12pt;
-    font-family:"Consolas, 'Courier New', monospace";
+            font-size: 12pt;
+            font-family: "Consolas, 'Courier New', monospace";
 
-}
-</style>
- 
+        }
+    </style>
+
 </head>
+
 <body>
 
-<!--Explaination-->
+    <!--Explaination-->
 
-<!--########################Main Code######################################-->
+    <!--########################Main Code######################################-->
 
-<!--##############################################################-->
-noticeData is array of data<br>
-column name :Id,Title,DataAD, and Action
+    <!--##############################################################-->
+    noticeData is array of data<br>
+    column name :Id,Title,DataAD, and Action
 
-<!--|#########################DISPLAY############################################-->
-
-
-
-<xmp class="prettyprint">
-  <v-client-table :data="noticeData" :columns="columns" :options="options">
-
-                <template slot="Action" scope="props">
-                    <div>
-                        <a :href="'/bims/misc/notice/edit/' + props.row.Id" class="btn btn-xs btn-primary"><i class="fa fa-pencil-square-o"></i> Edit</a>
-                        <button class="btn btn-xs btn-danger" @@click="deleteNotice(props.row).prevent"><i class="fa fa-times"></i> Delete</button>
-                    </div>
-                </template>
-
-                <template slot="Id " scope="props">
-                    <span>{{props.row.Id}}</span>
-                </template>
-
-                <template slot="Title" scope="props">
-                    <span>{{props.row.Title}}</span>
-                </template>
-
-                <template slot="DateAD" scope="props">
-                    <span>{{props.row.DateAD}}</span>
-                </template>
-
-    </v-client-table>
-
-</xmp>
-
-
-<xmp class="prettyprint">
-    @section Scripts{
-    <script type="text/javascript">
-        Vue.use(ClientTable, {}, false, abc);
-        new Vue({
-            el: '#app',
-            data: {
-                noticeData: [],
-                dataAD: '',
-                columns: ['Title', 'DateAD', 'Action'],
-                options: {
-                    sortable: ['Title'],
-                    filterable: false,
-                    perPage: 5,
-                    orderBy: { column: "Id" }
-                },
-                options: {
-                    headings: {
-                        DateAD: 'Date'
-                    }
-                }
-            }
-            </script>
-</xmp>
-
-
-===========================================================================
-<xmp class="prettyprint">
-
-
-<v-client-table v-if="dartaData.length > 0" :data="dartaData" :columns="columns2" :options="options">
-<template slot="dartaNo" slot-scope="props">
-
-    <p class="text-center"><a :href="'/darta/information?id=' + props.row.dartaNo">{{props.row.dartaPrefix}}  {{props.row.dartaNo}}</a></p>
-</template>
-</v-client-table>
-
-new Vue({
-            el: '#app',
-            data: {
-                courseId: 0,
-                batchId: 0,
-                examId: 0,
-                batchData: [],
-                courseData: [],
-                examData: [],
-                studentRankReportData: [],
-                isBatchDataLoading: false,
-                isExamDataLoading: false,
-                isStudentDataLoading: false,
-                columns: ['Rank', 'StudentName', 'RollNo','office.Name', 'AdmissionNumber', 'CourseName', 'BatchName'],
-                options: {
-                    sortable: ['Rank'],
-                    filterable: false,
-                    perPage: 25,
-                    orderBy: {
-                        column: "Rank",
-                        ascending: true
-                    },
-                    headings: {
-                        'StudentName': 'Student',
-                        'CourseName': 'Course',
-                        'BatchName': 'Batch',
-                        'ExamName': 'Exam',
-                        'RollNo': 'Roll',
-                        'office.Name':'Office'
-                    }
-                }
-                }
-</xmp>    
+    <!--|#########################DISPLAY############################################-->
 
 
 
-<!--####################################################-->
-<xmp class="prettyprint">
-    thead tr:nth-child(2) th {
-  font-weight: normal;
-}
+    =============================================
 
-.VueTables__sortable {
-  cursor: pointer;
-}
+    <xmp class="prettyprint">
+        <v-client-table :data="noticeData" :columns="columns" :options="options">
 
+            <template slot="Action" scope="props">
+                <div>
+                    <a :href="'/bims/misc/notice/edit/' + props.row.Id" class="btn btn-xs btn-primary"><i
+                            class="fa fa-pencil-square-o"></i> Edit</a>
+                    <button class="btn btn-xs btn-danger" @@click="deleteNotice(props.row).prevent"><i
+                            class="fa fa-times"></i> Delete</button>
+                </div>
+            </template>
 
-</xmp>
+            <template slot="Id " scope="props">
+                <span>{{props.row.Id}}</span>
+            </template>
 
+            <template slot="Title" scope="props">
+                <span>{{props.row.Title}}</span>
+            </template>
 
-============================================================================================================
+            <template slot="DateAD" scope="props">
+                <span>{{props.row.DateAD}}</span>
+            </template>
 
-<xmp class="prettyprint">
-    <v-client-table :columns="columns" :data="data" :options="options">
-    <a slot="email" slot-scope="props" :href="`mailto:${props.row.email}`">
-      {{props.row.email}}
-    </a>
-    </v-client-table>
-</xmp>
+        </v-client-table>
 
-=========================================================================
-
-<xmp class="prettyprint">
-    <template slot="items" scope="props">
-      <td>{{ props.index }}</td>
-      <td class="text-xs-right">{{ props.item.calories }}</td>
-      <td class="text-xs-right">{{ props.item.fat }}</td>
-</xmp>
-
-====================================================================================
-
-<xmp class="prettyprint">
-    SELECT ROW_NUMBER() OVER (ORDER BY Id) AS RowNum,* FROM myTable
-</xmp>
-
-====================================================================
-<h2>Multiple Filter multiple sort</h2>
-<xmp class="prettyprint">
-    sortable: ['name', 'code'],
-      filterable: ['name', 'code']
     </xmp>
-    </body>
+
+
+    <xmp class="prettyprint">
+        @section Scripts{
+        <script type="text/javascript">
+            Vue.use(ClientTable, {}, false, abc);
+            new Vue({
+                el: '#app',
+                data: {
+                    noticeData: [],
+                    dataAD: '',
+                    columns: ['Title', 'DateAD', 'Action'],
+                    options: {
+                        sortable: ['Title'],
+                        filterable: false,
+                        perPage: 5,
+                        orderBy: { column: "Id" }
+                    },
+                    options: {
+                        headings: {
+                            DateAD: 'Date'
+                        }
+                    }
+                }
+        </script>
+    </xmp>
+
+
+    ===========================================================================
+    <xmp class="prettyprint">
+
+
+        <v-client-table v-if="dartaData.length > 0" :data="dartaData" :columns="columns2" :options="options">
+            <template slot="dartaNo" slot-scope="props">
+
+                <p class="text-center"><a :href="'/darta/information?id=' + props.row.dartaNo">{{props.row.dartaPrefix}}
+                        {{props.row.dartaNo}}</a></p>
+            </template>
+        </v-client-table>
+
+        new Vue({
+        el: '#app',
+        data: {
+        courseId: 0,
+        batchId: 0,
+        examId: 0,
+        batchData: [],
+        courseData: [],
+        examData: [],
+        studentRankReportData: [],
+        isBatchDataLoading: false,
+        isExamDataLoading: false,
+        isStudentDataLoading: false,
+        columns: ['Rank', 'StudentName', 'RollNo','office.Name', 'AdmissionNumber', 'CourseName', 'BatchName'],
+        options: {
+        sortable: ['Rank'],
+        filterable: false,
+        perPage: 25,
+        orderBy: {
+        column: "Rank",
+        ascending: true
+        },
+        headings: {
+        'StudentName': 'Student',
+        'CourseName': 'Course',
+        'BatchName': 'Batch',
+        'ExamName': 'Exam',
+        'RollNo': 'Roll',
+        'office.Name':'Office'
+        }
+        }
+        }
+    </xmp>
+
+
+
+    <!--####################################################-->
+    <xmp class="prettyprint">
+        thead tr:nth-child(2) th {
+        font-weight: normal;
+        }
+
+        .VueTables__sortable {
+        cursor: pointer;
+        }
+
+
+    </xmp>
+
+
+    ============================================================================================================
+
+    <xmp class="prettyprint">
+        <v-client-table :columns="columns" :data="data" :options="options">
+            <a slot="email" slot-scope="props" :href="`mailto:${props.row.email}`">
+                {{props.row.email}}
+            </a>
+        </v-client-table>
+    </xmp>
+
+    =========================================================================
+
+    <xmp class="prettyprint">
+        <template slot="items" scope="props">
+            <td>{{ props.index }}</td>
+            <td class="text-xs-right">{{ props.item.calories }}</td>
+            <td class="text-xs-right">{{ props.item.fat }}</td>
+    </xmp>
+
+    ====================================================================================
+
+    <xmp class="prettyprint">
+        SELECT ROW_NUMBER() OVER (ORDER BY Id) AS RowNum,* FROM myTable
+    </xmp>
+
+    ====================================================================
+    <h2>Multiple Filter multiple sort</h2>
+    <xmp class="prettyprint">
+        sortable: ['name', 'code'],
+        filterable: ['name', 'code']
+    </xmp>
+
+
+    ==================================================
+
+
+    <h2>CheckBox True False</h2>
+    <xmp class="prettyprint">
+        <template slot="isActive" slot-scope="props">
+            <center>
+                <span style="cursor:pointer;" @@click="editBlockingUnBlocking(props.row)" v-if="props.row.isActive"
+                    class="text-center text-success"><i class="fa fa-check"></i></span>
+                <span style="cursor:pointer;" @@click="editBlockingUnBlocking(props.row)" v-if="!props.row.isActive"
+                    class="text-center text-danger"><i class="fa fa-times"></i></span>
+            </center>
+
+        </template>
+    </xmp>
+</body>
 
 </html>

@@ -282,11 +282,25 @@
 </pre>
 ======================================================================
 
-<h2>For adding more field</h2>
+<h2>For adding more field via alter</h2>
 <pre>
   <code class="language-sql">
     alter table employee
     add column country text;
+  </code>
+</pre>
+
+<h2>For adding constraint via alter SIngle column</h2>
+<pre>
+  <code class="language-sql">
+    ALTER TABLE employee ADD CONSTRAINT constraint_name UNIQUE (thecolumn);
+  </code>
+</pre>
+
+<h2>For adding constraint like unique via alter Multiple Column column</h2>
+<pre>
+  <code class="language-sql">
+    ALTER TABLE the_table ADD CONSTRAINT constraint_name UNIQUE (column1, column2);
   </code>
 </pre>
 ====================================================================
