@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+    <style>
+        kbd {
+            background: black
+        }
+    </style>
+</head>
+
+Project Structure Demo
+<img src="https://i.ibb.co/w70qg1y/project.jpg">
+
+
+<h2>Step 1. Create Pager.cs Class </h2>
+
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+        public class Pager
+        {
+            public Pager(int currentPage, long totalPost = 0, int startPage = 0, int endPage = 0, int pageSize = 10)
+            {
+    
+                long tPages = (long)(Math.Ceiling((decimal)totalPost) / (decimal)pageSize);
+                int cPage = currentPage;
+                long sPage = currentPage - 5;
+                long ePage = currentPage + 4;
+                if (sPage <= 0)
+                {
+                    ePage -= (startPage - 1);
+                    sPage = 1;
+                }
+                if (ePage > tPages)
+                {
+                    ePage = (long)tPages;
+                    if (ePage > 10)
+                    {
+                        sPage = ePage - 9;
+                    }
+                }
+    
+                TotalPost = totalPost;
+                CurrentPage = cPage;
+                PageSize = pageSize;
+                TotalPages = tPages;
+                StartPage = sPage;
+                EndPage = ePage;
+            }
+    
+            public long TotalPost { get;  set; }
+            public int CurrentPage { get;  set; }
+            public long PageSize { get;  set; }
+            public long TotalPages { get;  set; }
+            public long StartPage { get;  set; }
+            public long EndPage { get;  set; }
+        }
+    </code>
+</pre>
+
+<h2>Create Employee.cs Model</h2>
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+        public class Employee
+        {
+            public int ID { get; set; }
+            public string Name { get; set; }
+            public string Gender { get; set; }
+            public int Salary { get; set; }
+    
+            public Pager Pager { get; set; }
+    
+            public static List&lt;Employee> GetEmployees()
+            {
+                List&lt;Employee> employees = new List&lt;Employee>()
+            {
+                new Employee {ID = 101, Name = "A", Gender = "Female", Salary = 60000},
+                new Employee {ID = 102, Name = "B", Gender = "Female", Salary = 50000},
+                new Employee {ID = 103, Name = "C", Gender = "Female", Salary = 40000},
+                new Employee {ID = 104, Name = "D", Gender = "Male", Salary = 450000},
+                new Employee {ID = 105, Name = "E", Gender = "Male", Salary = 550000},
+                new Employee {ID = 106, Name = "F", Gender = "Male", Salary = 700000},
+                new Employee {ID = 106, Name = "G", Gender = "Male", Salary = 7000},
+                new Employee {ID = 106, Name = "H", Gender = "Male", Salary = 700000},
+                new Employee {ID = 8654, Name = "I", Gender = "Female", Salary = 7000},
+                new Employee {ID = 106, Name = "J", Gender = "Female", Salary = 700000},
+                new Employee {ID = 106, Name = "K", Gender = "Male", Salary = 450000},
+                new Employee {ID = 106, Name = "L", Gender = "Male", Salary = 12000},
+                new Employee {ID = 777, Name = "M", Gender = "Male", Salary = 700000},
+                new Employee {ID = 106, Name = "N", Gender = "FeMale", Salary = 1500},
+                new Employee {ID = 333, Name = "O", Gender = "Male", Salary = 100000},
+                new Employee {ID = 106, Name = "P", Gender = "Male", Salary = 450000},
+                new Employee {ID = 222, Name = "Q", Gender = "FeMale", Salary = 120000},
+                new Employee {ID = 106, Name = "R", Gender = "Male", Salary = 63000},
+                new Employee {ID = 106, Name = "S", Gender = "Male", Salary = 890000},
+                new Employee {ID = 106, Name = "T", Gender = "FeMale", Salary = 700000},
+                new Employee {ID = 512, Name = "U", Gender = "Male", Salary = 700000},
+                new Employee {ID = 106, Name = "V", Gender = "FeMale", Salary = 1200000},
+                new Employee {ID = 290, Name = "Wd", Gender = "Male", Salary = 700000},
+                 new Employee {ID = 142, Name = "Wdf", Gender = "Female", Salary = 56456000},
+                  new Employee {ID = 178, Name = "Wdfg", Gender = "Female", Salary =486456000},
+                   new Employee {ID = 106, Name = "sdfgsW", Gender = "Male", Salary = 45645000},
+                    new Employee {ID = 168, Name = "Wsdfgd", Gender = "Female", Salary = 700000},
+                     new Employee {ID = 106, Name = "Wdfg", Gender = "Male", Salary = 700000},
+                      new Employee {ID = 179, Name = "dfgsW", Gender = "Female", Salary = 789000},
+                       new Employee {ID = 180, Name = "sdfgW", Gender = "Male", Salary = 4650000},
+                       new Employee {ID = 106, Name = "Wdfg", Gender = "Male", Salary = 700000},
+                      new Employee {ID = 179, Name = "dfgsW", Gender = "Female", Salary = 7545000},
+                       new Employee {ID = 180, Name = "sdfgW", Gender = "Male", Salary = 4650000},
+                       new Employee {ID = 106, Name = "Wdfg", Gender = "Male", Salary = 70500},
+                      new Employee {ID = 179, Name = "dfgsW", Gender = "Female", Salary = 7899000},
+                       new Employee {ID = 180, Name = "sdfgW", Gender = "Male", Salary = 489000},
+                        new Employee {ID = 178, Name = "Wdfg", Gender = "Female", Salary =486456000},
+                   new Employee {ID = 106, Name = "sdfgsW", Gender = "Male", Salary = 45645000},
+                    new Employee {ID = 168, Name = "Wsdfgd", Gender = "Female", Salary = 700000},
+                     new Employee {ID = 106, Name = "Wdfg", Gender = "Male", Salary = 700000},
+                      new Employee {ID = 179, Name = "dfgsW", Gender = "Female", Salary = 789000},
+                       new Employee {ID = 180, Name = "sdfgW", Gender = "Male", Salary = 4650000},
+                       new Employee {ID = 106, Name = "Wdfg", Gender = "Male", Salary = 700000},
+                      new Employee {ID = 179, Name = "dfgsW", Gender = "Female", Salary = 7545000},
+                       new Employee {ID = 180, Name = "sdfgW", Gender = "Male", Salary = 4650000},
+                       new Employee {ID = 106, Name = "Wdfg", Gender = "Male", Salary = 70500},
+                      new Employee {ID = 179, Name = "dfgsW", Gender = "Female", Salary = 7899000},
+                       new Employee {ID = 180, Name = "sdfgW", Gender = "Male", Salary = 489000},
+                        new Employee {ID = 178, Name = "Wdfg", Gender = "Female", Salary =486456000},
+                   new Employee {ID = 106, Name = "sdfgsW", Gender = "Male", Salary = 45645000},
+                    new Employee {ID = 168, Name = "Wsdfgd", Gender = "Female", Salary = 700000},
+                     new Employee {ID = 106, Name = "Wdfg", Gender = "Male", Salary = 700000},
+                      new Employee {ID = 179, Name = "dfgsW", Gender = "Female", Salary = 789000},
+                       new Employee {ID = 180, Name = "sdfgW", Gender = "Male", Salary = 4650000},
+                       new Employee {ID = 106, Name = "Wdfg", Gender = "Male", Salary = 700000},
+                      new Employee {ID = 179, Name = "dfgsW", Gender = "Female", Salary = 7545000},
+                       new Employee {ID = 180, Name = "sdfgW", Gender = "Male", Salary = 4650000},
+                       new Employee {ID = 106, Name = "Wdfg", Gender = "Male", Salary = 70500},
+                      new Employee {ID = 179, Name = "dfgsW", Gender = "Female", Salary = 7899000},
+                       new Employee {ID = 180, Name = "sdfgW", Gender = "Male", Salary = 489000},
+                        new Employee {ID = 178, Name = "Wdfg", Gender = "Female", Salary =486456000},
+                   new Employee {ID = 106, Name = "sdfgsW", Gender = "Male", Salary = 45645000},
+                    new Employee {ID = 168, Name = "Wsdfgd", Gender = "Female", Salary = 700000},
+                     new Employee {ID = 106, Name = "Wdfg", Gender = "Male", Salary = 700000},
+                      new Employee {ID = 179, Name = "dfgsW", Gender = "Female", Salary = 789000},
+                       new Employee {ID = 180, Name = "sdfgW", Gender = "Male", Salary = 4650000},
+                       new Employee {ID = 106, Name = "Wdfg", Gender = "Male", Salary = 700000},
+                      new Employee {ID = 179, Name = "dfgsW", Gender = "Female", Salary = 7545000},
+                       new Employee {ID = 180, Name = "sdfgW", Gender = "Male", Salary = 4650000},
+                       new Employee {ID = 106, Name = "Wdfg", Gender = "Male", Salary = 70500},
+                      new Employee {ID = 179, Name = "dfgsW", Gender = "Female", Salary = 7899000},
+                       new Employee {ID = 180, Name = "sdfgW", Gender = "Male", Salary = 489000},
+    
+                new Employee {ID = 101, Name = "A", Gender = "Female", Salary = 60000},
+                new Employee {ID = 102, Name = "B", Gender = "Female", Salary = 50000},
+                new Employee {ID = 103, Name = "C", Gender = "Female", Salary = 40000},
+                new Employee {ID = 104, Name = "D", Gender = "Male", Salary = 450000},
+                new Employee {ID = 105, Name = "E", Gender = "Male", Salary = 550000},
+                new Employee {ID = 106, Name = "F", Gender = "Male", Salary = 700000},
+                new Employee {ID = 106, Name = "G", Gender = "Male", Salary = 7000},
+                new Employee {ID = 106, Name = "H", Gender = "Male", Salary = 700000},
+                new Employee {ID = 8654, Name = "I", Gender = "Female", Salary = 7000},
+                new Employee {ID = 106, Name = "J", Gender = "Female", Salary = 700000},
+                new Employee {ID = 106, Name = "K", Gender = "Male", Salary = 450000},
+                new Employee {ID = 106, Name = "L", Gender = "Male", Salary = 12000},
+                new Employee {ID = 777, Name = "M", Gender = "Male", Salary = 700000},
+                new Employee {ID = 106, Name = "N", Gender = "FeMale", Salary = 1500},
+                new Employee {ID = 333, Name = "O", Gender = "Male", Salary = 100000},
+                new Employee {ID = 106, Name = "P", Gender = "Male", Salary = 450000},
+                new Employee {ID = 222, Name = "Q", Gender = "FeMale", Salary = 120000},
+                new Employee {ID = 106, Name = "R", Gender = "Male", Salary = 63000},
+                new Employee {ID = 106, Name = "S", Gender = "Male", Salary = 890000},
+                new Employee {ID = 106, Name = "T", Gender = "FeMale", Salary = 700000},
+                new Employee {ID = 512, Name = "U", Gender = "Male", Salary = 700000},
+                new Employee {ID = 106, Name = "V", Gender = "FeMale", Salary = 1200000},
+                new Employee {ID = 290, Name = "Wd", Gender = "Male", Salary = 700000},
+                 new Employee {ID = 142, Name = "Wdf", Gender = "Female", Salary = 56456000},
+                  new Employee {ID = 178, Name = "Wdfg", Gender = "Female", Salary =486456000},
+                   new Employee {ID = 106, Name = "sdfgsW", Gender = "Male", Salary = 45645000},
+                    new Employee {ID = 168, Name = "Wsdfgd", Gender = "Female", Salary = 700000},
+                     new Employee {ID = 106, Name = "Wdfg", Gender = "Male", Salary = 700000},
+                      new Employee {ID = 179, Name = "dfgsW", Gender = "Female", Salary = 789000},
+                       new Employee {ID = 180, Name = "sdfgW", Gender = "Male", Salary = 4650000},
+                       new Employee {ID = 106, Name = "Wdfg", Gender = "Male", Salary = 700000},
+                      new Employee {ID = 179, Name = "dfgsW", Gender = "Female", Salary = 7545000},
+                       new Employee {ID = 180, Name = "sdfgW", Gender = "Male", Salary = 4650000},
+                       new Employee {ID = 106, Name = "Wdfg", Gender = "Male", Salary = 70500},
+                      new Employee {ID = 179, Name = "dfgsW", Gender = "Female", Salary = 7899000},
+                       new Employee {ID = 180, Name = "sdfgW", Gender = "Male", Salary = 489000},
+                        new Employee {ID = 178, Name = "Wdfg", Gender = "Female", Salary =486456000},
+                   new Employee {ID = 106, Name = "sdfgsW", Gender = "Male", Salary = 45645000},
+                    new Employee {ID = 168, Name = "Wsdfgd", Gender = "Female", Salary = 700000},
+                     new Employee {ID = 106, Name = "Wdfg", Gender = "Male", Salary = 700000},
+                      new Employee {ID = 179, Name = "dfgsW", Gender = "Female", Salary = 789000},
+                       new Employee {ID = 180, Name = "sdfgW", Gender = "Male", Salary = 4650000},
+                       new Employee {ID = 106, Name = "Wdfg", Gender = "Male", Salary = 700000},
+                      new Employee {ID = 179, Name = "dfgsW", Gender = "Female", Salary = 7545000},
+                       new Employee {ID = 180, Name = "sdfgW", Gender = "Male", Salary = 4650000},
+                       new Employee {ID = 106, Name = "Wdfg", Gender = "Male", Salary = 70500},
+                      new Employee {ID = 179, Name = "dfgsW", Gender = "Female", Salary = 7899000},
+                       new Employee {ID = 180, Name = "sdfgW", Gender = "Male", Salary = 489000},
+                        new Employee {ID = 178, Name = "Wdfg", Gender = "Female", Salary =486456000},
+                   new Employee {ID = 106, Name = "sdfgsW", Gender = "Male", Salary = 45645000},
+                    new Employee {ID = 168, Name = "Wsdfgd", Gender = "Female", Salary = 700000},
+                     new Employee {ID = 106, Name = "Wdfg", Gender = "Male", Salary = 700000},
+                      new Employee {ID = 179, Name = "dfgsW", Gender = "Female", Salary = 789000},
+                       new Employee {ID = 180, Name = "sdfgW", Gender = "Male", Salary = 4650000},
+                       new Employee {ID = 106, Name = "Wdfg", Gender = "Male", Salary = 700000},
+                      new Employee {ID = 179, Name = "dfgsW", Gender = "Female", Salary = 7545000},
+                       new Employee {ID = 180, Name = "sdfgW", Gender = "Male", Salary = 4650000},
+                       new Employee {ID = 106, Name = "Wdfg", Gender = "Male", Salary = 70500},
+                      new Employee {ID = 179, Name = "dfgsW", Gender = "Female", Salary = 7899000},
+                       new Employee {ID = 180, Name = "sdfgW", Gender = "Male", Salary = 489000},
+                        new Employee {ID = 178, Name = "Wdfg", Gender = "Female", Salary =486456000},
+                   new Employee {ID = 106, Name = "sdfgsW", Gender = "Male", Salary = 45645000},
+                    new Employee {ID = 168, Name = "Wsdfgd", Gender = "Female", Salary = 700000},
+                     new Employee {ID = 106, Name = "Wdfg", Gender = "Male", Salary = 700000},
+                      new Employee {ID = 179, Name = "dfgsW", Gender = "Female", Salary = 789000},
+                       new Employee {ID = 180, Name = "sdfgW", Gender = "Male", Salary = 4650000},
+                       new Employee {ID = 106, Name = "Wdfg", Gender = "Male", Salary = 700000},
+                      new Employee {ID = 179, Name = "dfgsW", Gender = "Female", Salary = 7545000},
+                       new Employee {ID = 180, Name = "sdfgW", Gender = "Male", Salary = 4650000},
+                       new Employee {ID = 106, Name = "Wdfg", Gender = "Male", Salary = 70500},
+                      new Employee {ID = 179, Name = "dfgsW", Gender = "Female", Salary = 7899000},
+                       new Employee {ID = 180, Name = "sdfgW", Gender = "Male", Salary = 489000}
+            };
+                return employees;
+            }
+    </code>
+</pre>
+
+<br>
+<hr>
+
+<h2>Create EmployeeFilterVM.cs Model</h2>
+<pre data-keep-tags="kbd,em">
+    public class EmployeeFilterVM
+    {
+        //Filter Parameter
+        public string Gender { get; set; }
+        public int Salary { get; set; }
+        public int CurrentPage { get; set; }
+
+        //End Filter Parameter
+
+        public IEnumerable&lt;Employee> Employees { get; set; }
+        public Pager Pager { get; set; }
+
+        public EmployeeFilterVM()
+        {
+            Pager = new Pager(0,0,0);
+            Employees = new List&lt;Employee>();
+        }
+
+    }
+</pre>
+
+<br>
+<hr>
+<h2>EmployeeController.cs</h2>
+<pre data-keep-tags="kbd,em">
+    <code class="language-csharp">
+        public class EmployeeController : Controller
+        {
+    
+            [Route("employees")]
+            public IActionResult Employees()
+            {
+                return View();
+            }
+    
+    
+            [Route("employees/list")]
+            [HttpPost]
+            public ActionResult EmployeesList(EmployeeFilterVM emp)
+            {
+                try
+                {
+                    var pageSize = 10;
+                    EmployeeFilterVM obj = new EmployeeFilterVM();
+    
+                    obj.Employees = Employee.GetEmployees().<kbd>AsQueryable()</kbd>;
+    
+                    if (emp.Salary > 0)
+                    {
+                         obj.Employees= obj.Employees.Where(x => x.Salary >= emp.Salary).<kbd>AsQueryable()</kbd>;
+                    }
+    
+                    if (emp.Gender != null )
+                    {
+                        obj.Employees = obj.Employees.Where(x=>x.Gender == emp.Gender).AsQueryable();
+                    }
+                    else
+                    {
+                        obj.Employees = obj.Employees.ToList();
+                    }
+                    var totalPost = obj.Employees.Count();
+                    obj.Employees =  obj.Employees.<kbd>Skip</kbd>((emp.CurrentPage - 1) * pageSize).<kbd>Take</kbd>(pageSize).ToList();
+    
+    
+                    var currentPage = emp.CurrentPage;
+                    obj.Pager = new Pager(currentPage, totalPost);
+                    return PartialView("_EmployeePartialView", obj);
+                }
+                  
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }
+            }
+    </code>
+</pre>
+
+<hr>
+<pre data-keep-tags="kbd,em">
+    <code class="language-csharp">
+        
+@{
+    ViewData["Title"] = "Employees";
+}
+
+&lt;h1>Employees&lt;/h1>
+&lt;input type="hidden" name="CurrentPage" id="currentpage" />
+
+&lt;div>
+    &lt;label for="select-choice">Select Dropdown Choice:&lt;/label>
+    &lt;<kbd>select</kbd> name="select-choice" id="Gender">
+        &lt;option value="">Select&lt;/option>
+        &lt;option value="Male">Male&lt;/option>
+        &lt;option value="Female">Female&lt;/option>
+        &lt;option value="Other">Other&lt;/option>
+    &lt;/select>
+    &lt;br />
+    Salary:
+    &lt;<kbd>input</kbd> type="text" name="Salary" id="Salary">
+    &lt;br>
+
+    &lt;input type="button" id="Search" onclick="<kbd>Search()</kbd>" value="Search Result" />
+&lt;/div>
+&lt;div id="<kbd>loadEmployeesList</kbd>">&lt;/div>
+
+
+&lt;script type="text/javascript">
+    (function () {
+        getActivityReportingList();
+    })();
+
+
+    async function <kbd>Search() </kbd>{
+        document.getElementById('currentpage').value = 1;
+        await getActivityReportingList();
+    }
+
+    function <kbd>callSearchPagination(id)</kbd> {
+
+        document.getElementById('currentpage').value = id;
+        getActivityReportingList();
+    }
+
+    async function getActivityReportingList() {
+
+        var xhr = new XMLHttpRequest();
+
+        var jsonData = {
+            Salary: document.getElementById('Salary').value,
+            Gender: document.getElementById("Gender").value,
+            CurrentPage: document.getElementById('currentpage').value
+        };
+
+        var urlSearchParams = new URLSearchParams(jsonData);
+
+        xhr.open('POST', '<kbd>/employees/list</kbd>', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+        xhr.onload = function () {
+            if (this.status == 200) {
+                document.getElementById("<kbd>loadEmployeesList</kbd>").innerHTML = this.responseText;
+            }
+        }
+        xhr.send(urlSearchParams);
+    }
+
+</script>
+
+
+    </code>
+</pre>
+
+
+<h2>_EmployeeList.cshtml</h2>
+<pre data-keep-tags="kbd,em">
+<code class="language-csharp">
+    @model PConcept.Models.EmployeeFilterVM
+
+&lt;table class="table">
+    &lt;thead>
+        &lt;tr>
+            &lt;th>Gender&lt;/th>
+            &lt;th>Name&lt;/th>
+            &lt;th>Salary&lt;/th>
+        &lt;/tr>
+    &lt;/thead>
+    @foreach (var item in Model.Employees)
+    {
+        &lt;tr>
+            &lt;td>
+                @item.Gender
+
+            &lt;/td>
+            &lt;td>
+                @item.Name
+
+            &lt;/td>
+            &lt;td>
+                @item.Salary
+            &lt;/td>
+        &lt;/tr>
+    }
+&lt;/table>
+
+
+&lt;div class="pagination" id="pagination_active">
+    @if (Model.Pager.CurrentPage > 1)
+    {
+        &lt;button class="btn btn-primary" value="@(Model.Pager.CurrentPage-1)" id="@(Model.Pager.CurrentPage-1)" onclick="callSearchPagination(@(Model.Pager.CurrentPage-1))">Prev &lt;/button>
+    }
+    @for (long i = Model.Pager.StartPage; i < (Model.Pager.EndPage + 1); i++)
+    {
+        &lt;button class="btn @(Model.Pager.CurrentPage == i ? "btn-primary active" : "")" value="@i" id="@i" onclick="callSearchPagination(@i)">@i&lt;/button>
+    }
+    @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+    {
+        &lt;button class="btn btn-primary" value="@(Model.Pager.CurrentPage+1)" id="@(Model.Pager.CurrentPage+1)" onclick="callSearchPagination(@(Model.Pager.CurrentPage+1))">Next&lt;/button>
+    }
+&lt;/div>
+
+
+&lt;style>
+    .pagination {
+        display: inline-block;
+    }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+            transition: background-color .3s;
+            border: 1px solid #ddd;
+        }
+
+            .pagination a.active {
+                background-color: #4CAF50;
+                color: white;
+                border: 1px solid #4CAF50;
+            }
+
+            .pagination a:hover:not(.active) {
+                background-color: #ddd;
+            }
+
+    .td:nth-child(7) {
+        min-width: 100px;
+    }
+
+    @@media(max-width:756px) {
+        .dropdown-spacing {
+            padding-bottom: 10px;
+        }
+    }
+&lt;/style>
+
+
+</code>
+</pre>
+
+
+<h2>Final Result:</h2>
+<img src="https://i.ibb.co/sv0h41T/partialviewpagination.jpg">
+<script src="js/prism.js"></script>
+<script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true,
+            // 'break-lines': 10,
+            // 'indent': 2,
+            // 'remove-initial-line-feed': false,
+            // 'tabs-to-spaces': 4,
+            // 'spaces-to-tabs': 4
+        });
+
+    (function () {
+        if (!self.Prism) {
+            return;
+        }
+
+        var div = document.createElement('div');
+
+        Prism.hooks.add('before-highlight', function (env) {
+            var elt = env.element;
+            if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                elt = elt.parentNode;
+            }
+            var tags = elt.getAttribute('data-keep-tags');
+            if (!tags) {
+                return;
+            }
+            var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+            env.keepTags = true;
+            env.keepTagsPlaceholder = placeholder;
+
+            tags = tags.split(/\s*,\s*/).join('|');
+            var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+            env.keepTagsRegex = tags_regex;
+
+            env.tokenStack = [];
+            env.backupCode = env.code;
+
+            var code = env.element.innerHTML;
+            code = code.replace(tags_regex, function (match) {
+                env.tokenStack.push(match);
+                return placeholder.replace('{n}', env.tokenStack.length);
+            });
+            env.element.innerHTML = code;
+            code = env.element.textContent;
+            code = code.replace(/^(?:\r?\n|\r)/, '');
+
+            env.code = code;
+        });
+
+        Prism.hooks.add('after-highlight', function (env) {
+            if (!env.keepTags) {
+                return;
+            }
+            for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                    div.innerHTML = inside;
+                    inside = div.textContent;
+                    return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                });
+
+                env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                env.element.innerHTML = env.highlightedCode;
+            }
+        });
+
+    }());
+
+    Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+        v.classList.add("language-sql");
+    });
+    Prism.highlightAll();
+
+</script>
+
+</body>
+
+</html>
