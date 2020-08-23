@@ -368,7 +368,7 @@ Project Structure Demo
 
     async function getActivityReportingList() {
 
-        var xhr = new XMLHttpRequest();
+       <kbd> var xhr = new XMLHttpRequest();</kbd>
 
         var jsonData = {
             Salary: document.getElementById('Salary').value,
@@ -379,9 +379,9 @@ Project Structure Demo
         var urlSearchParams = new URLSearchParams(jsonData);
 
         xhr.open('POST', '<kbd>/employees/list</kbd>', true);
-        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.setRequestHeader('Content-type', '<kbd>application/x-www-form-urlencoded</kbd>');
 
-        xhr.onload = function () {
+        xhr.<kbd>onload</kbd> = function () {
             if (this.status == 200) {
                 document.getElementById("<kbd>loadEmployeesList</kbd>").innerHTML = this.responseText;
             }

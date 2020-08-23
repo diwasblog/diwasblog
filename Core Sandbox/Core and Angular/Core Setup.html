@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+<style>
+    kbd {
+        background: black
+    }
+</style>
+
+
+
+<body>
+
+
+    <h4>Step 1 : Check dotnet Version Installed</h4>
+    <div class="row">
+        <div class="col-lg-6">
+            <pre data-keep-tags="kbd, em">
+                <code class="language-csharp">
+1) dotnet --info
+
+
+//(Gives all .net core sdk installed and runtime)
+
+//  Note when you download .net sdk , runtime will automatically included. 
+                                   
+                </code>
+                    </pre>
+        </div>
+
+        <div class="col-lg-6">
+
+
+            <pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+.NET Core SDK (reflecting any global.json):
+Version:   3.1.301
+Commit:    7feb845744
+
+<kbd>Runtime Environment:</kbd>
+OS Name:     Windows
+OS Version:  10.0.18363
+OS Platform: Windows
+RID:         win10-x64
+Base Path:   <kbd>C:\Program Files\dotnet\sdk\3.1.301\</kbd>
+
+Host (useful for support):
+    Version: 3.1.5
+    Commit:  65cd789777
+
+.NET Core SDKs installed:
+<kbd> 2.1.801 [C:\Program Files\dotnet\sdk]
+2.2.206 [C:\Program Files\dotnet\sdk]
+3.1.301 [C:\Program Files\dotnet\sdk]</kbd>
+    </code>
+</pre>
+        </div>
+    </div>
+
+    <hr>
+    <h4>Step 2 :dotnet command help</h4>
+
+    <div class="row">
+        <div class="col-lg-3">
+            <pre data-keep-tags="kbd, em">
+                <code class="language-csharp">
+dotnet help 
+                                   
+                </code>
+                    </pre>
+        </div>
+
+        <div class="col-lg-9">
+
+
+            <pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+SDK commands:
+add               Add a package or reference to a .NET project.
+build             Build a .NET project.
+build-server      Interact with servers started by a build.
+clean             Clean build outputs of a .NET project.
+help              Show command line help.
+list              List project references of a .NET project.
+msbuild           Run Microsoft Build Engine (MSBuild) commands.
+new               Create a new .NET project or file.
+nuget             Provides additional NuGet commands.
+pack              Create a NuGet package.
+publish           Publish a .NET project for deployment.
+remove            Remove a package or reference from a .NET project.
+restore           Restore dependencies specified in a .NET project.
+run               Build and run a .NET project output.
+
+      
+    </code>
+</pre>
+        </div>
+    </div>
+
+
+    <hr>
+    <h4>Step 3 :dot net project help</h4>
+    Which project to scaffhold
+    <div class="row">
+        <div class="col-lg-3">
+            <pre data-keep-tags="kbd, em">
+                <code class="language-csharp">
+ dotnet help 
+                                   
+                </code>
+                    </pre>
+        </div>
+
+        <div class="col-lg-9">
+
+
+            <pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+       
+Templates                                         Short Name               Language          Tags
+----------------------------------------------------------------------------------------------------------------------------------
+Console Application                               console                  [C#], F#, VB      Common/Console
+Class library                                     classlib                 [C#], F#, VB      Common/Library
+WPF Application                                   wpf                      [C#]              Common/WPF
+WPF Class library                                 wpflib                   [C#]              Common/WPF
+WPF Custom Control Library                        wpfcustomcontrollib      [C#]              Common/WPF
+WPF User Control Library                          wpfusercontrollib        [C#]              Common/WPF
+Windows Forms (WinForms) Application              winforms                 [C#]              Common/WinForms
+Windows Forms (WinForms) Class library            winformslib              [C#]              Common/WinForms
+Worker Service                                    worker                   [C#]              Common/Worker/Web
+Unit Test Project                                 mstest                   [C#], F#, VB      Test/MSTest
+NUnit 3 Test Project                              nunit                    [C#], F#, VB      Test/NUnit
+NUnit 3 Test Item                                 nunit-test               [C#], F#, VB      Test/NUnit
+xUnit Test Project                                xunit                    [C#], F#, VB      Test/xUnit
+Razor Component                                   razorcomponent           [C#]              Web/ASP.NET
+Razor Page                                        page                     [C#]              Web/ASP.NET
+MVC ViewImports                                   viewimports              [C#]              Web/ASP.NET
+MVC ViewStart                                     viewstart                [C#]              Web/ASP.NET
+Blazor Server App                                 blazorserver             [C#]              Web/Blazor
+Blazor WebAssembly App                            blazorwasm               [C#]              Web/Blazor/WebAssembly
+ASP.NET Core Empty                                web                      [C#], F#          Web/Empty
+ASP.NET Core Web App (Model-View-Controller)      mvc                      [C#], F#          Web/MVC
+ASP.NET Core Web App                              webapp                   [C#]              Web/MVC/Razor Pages
+<kbd>ASP.NET Core with Angular   </kbd>                     angular                  [C#]              <kbd>Web/MVC/SPA</kbd>
+ASP.NET Core with React.js                        react                    [C#]              Web/MVC/SPA
+ASP.NET Core with React.js and Redux              reactredux               [C#]              Web/MVC/SPA
+Razor Class Library                               razorclasslib            [C#]              Web/Razor/Library/Razor Class Library
+<kbd>ASP.NET Core Web API </kbd>                           <kbd>webapi</kbd>                 [C#], F#          Web/WebAPI
+ASP.NET Core gRPC Service                         grpc                     [C#]              Web/gRPC
+dotnet gitignore file                             gitignore                                  Config
+global.json file                                  globaljson                                 Config
+NuGet Config                                      nugetconfig                                Config
+Dotnet local tool manifest file                   tool-manifest                              Config
+Web Config                                        webconfig                                  Config
+Solution File                                     sln                                        Solution
+Protocol Buffer File                              proto                                      Web/gRPC
+
+
+    </code>
+</pre>
+        </div>
+    </div>
+
+    <h4>Step 5. Create ASP.NET Core Web API Project using dotnet new command</h4>
+    <pre>
+    <code class="language-csharp">
+mkdir DatingApp                         ===> Make a Webapi Project Folder
+cd DatingApp                             ===> Move inside folder
+dotnet new webapi -h DatingApp.API       ===> Create web api project name: DatingApp.API
+cd DatingApp.API                         ===> Navigate to DatingApp.API 
+dir                                       ===> To see the content
+code .                                    ===> To open DatingApp.API in vscode
+    </code>
+</pre>
+
+
+
+    <h4>Download extension for C# to work smoothly</h4>
+    <pre>
+    <code class="language-csharp">
+      
+1) C#
+C# for Visual Studio Code (powered by OmniSharp).
+  Features
+ ==> Intellisense 
+ ==> Syntax Highlighting
+ ==> Go to Defination
+ ==> Find Reference
+
+2) C# Extensions 
+   By  Jchannon 
+
+3) Nuget Package Manager
+   By  jmrog
+    </code>
+</pre>
+
+
+    <hr>
+    <h4>Run a Project</h4>
+    Note: project start from program.cs and call main method and main calls CreateHostBuilder and then looks comment
+    there.
+
+    <pre>
+        <code class="language-csharp">
+            dotnet run
+        </code>
+    </pre>
+    app.MVC() allows routes to works in controllers.Allow Attribute Routing. <br>
+    launchSettings.json --> Setup like lauch url on startup, initial page to load, url setting ,development/production
+    mode setting. <br>
+
+    <hr>
+
+
+
+    <script src="js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+
+
+        (function () {
+            if (!self.Prism) {
+                return;
+            }
+
+            var div = document.createElement('div');
+
+            Prism.hooks.add('before-highlight', function (env) {
+                var elt = env.element;
+                if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                    elt = elt.parentNode;
+                }
+                var tags = elt.getAttribute('data-keep-tags');
+                if (!tags) {
+                    return;
+                }
+                var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+                env.keepTags = true;
+                env.keepTagsPlaceholder = placeholder;
+
+                tags = tags.split(/\s*,\s*/).join('|');
+                var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+                env.keepTagsRegex = tags_regex;
+
+                env.tokenStack = [];
+                env.backupCode = env.code;
+
+                var code = env.element.innerHTML;
+                code = code.replace(tags_regex, function (match) {
+                    env.tokenStack.push(match);
+                    return placeholder.replace('{n}', env.tokenStack.length);
+                });
+                env.element.innerHTML = code;
+                code = env.element.textContent;
+                code = code.replace(/^(?:\r?\n|\r)/, '');
+
+                env.code = code;
+            });
+
+            Prism.hooks.add('after-highlight', function (env) {
+                if (!env.keepTags) {
+                    return;
+                }
+                for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                    t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                        div.innerHTML = inside;
+                        inside = div.textContent;
+                        return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                    });
+
+                    env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                    env.element.innerHTML = env.highlightedCode;
+                }
+            });
+
+        }());
+
+        Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+            v.classList.add("language-sql");
+        });
+        Prism.highlightAll();
+
+    </script>
+</body>
+
+</html>

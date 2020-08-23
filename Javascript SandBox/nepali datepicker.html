@@ -59,5 +59,61 @@
 
             </xmp>
             <img src="https://i.ibb.co/ZLNZ9Tv/datepickernepali.jpg">
+
+            <br>
+
+            <hr>
+            <h2>Showing only on div</h2>
+            <xmp class="prettyprint">
+
+                <div id="showDateHere"></div>
+
+
+                var todayDate = new Date();
+
+                var todayNepaliDate = calendarFunctions.getBsDateByAdDate(todayDate.getFullYear(), todayDate.getMonth()
+                + 1, todayDate.getDate());
+                // bsDate: 4
+                // bsMonth: 5
+                //bsYear: 2077
+
+                var todayFormatedNepaliDate = calendarFunctions.bsDateFormat("%y-%M-%d", todayNepaliDate.bsYear,
+                todayNepaliDate.bsMonth, todayNepaliDate.bsDate);
+                //"२०७७-भदौ-४"
+
+                document.getElementById('showDateHere').value(todayFormatedNepaliDate);
+
+            </xmp>
+
         </div>
     </div>
+
+    <hr>
+    <h2>On Edit</h2>
+
+    <xmp class="prettyprint">
+        var todayDate = new Date('@Model.UserAdditionalInfo.DateOfRegistration'); //main part here
+
+        var todayNepaliDate = calendarFunctions.getBsDateByAdDate(todayDate.getFullYear(), todayDate.getMonth()
+        + 1, todayDate.getDate());
+        // bsDate: 4
+        // bsMonth: 5
+        //bsYear: 2077
+
+        var todayFormatedNepaliDate = calendarFunctions.bsDateFormat("%y-%M-%d", todayNepaliDate.bsYear,
+        todayNepaliDate.bsMonth, todayNepaliDate.bsDate);
+
+        $("#fromDatePicker").nepaliDatePicker({
+        dateFormat: "%y-%M-%d",
+        closeOnDateSelect: true
+        });
+
+        $("#fromDatePicker").val(todayFormatedNepaliDate);
+
+        $("#fromDatePicker").on("dateSelect", function (event) {
+        var datePickerData = event.datePickerData;
+        $("#DateOfRegistration").val(datePickerData.adDate.toLocaleDateString());
+        $("#DateOfRegistrationNepali").val(datePickerData.bsYear + "-" + datePickerData.bsMonth + "-" +
+        datePickerData.bsDate);
+        })
+    </xmp>

@@ -130,6 +130,118 @@ GROUP BY (b.Location)
             </pre>
         </div>
     </div>
+
+    <hr>
+    <h2>List inside List</h2>
+    <div class="row">
+        <div class="col=lg-3">
+            <table>
+                <thead>
+                    <tr>
+                        <th>SubCommodityId</th>
+                        <th>SubCommodity</th>
+                        <th>Commodity</th>
+                        <th>Code</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Tomato</td>
+                        <td>Vegetable</td>
+                        <td>@123</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Apple</td>
+                        <td>Fruit</td>
+                        <td>#125</td>
+                    </tr>
+
+                    <tr>
+                        <td>3</td>
+                        <td>Mango</td>
+                        <td>Fruit</td>
+                        <td>#8456</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Carrot</td>
+                        <td>Fruit</td>
+                        <td>#434</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Okre</td>
+                        <td>Vegetable</td>
+                        <td>#434</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <h2>Wanted</h2>
+        <div class="col-lg-3">
+            <pre>
+                <code class="language-csharp">
+                    Fruit
+                        .Apple 
+                        .Mango
+                        .Carrot
+                    Vegetable
+                        .Okre
+                        .Tomato
+                </code>
+            </pre>
+        </div>
+
+        <div class="col-lg-5">
+            <pre data-keep-tags="kbd, em">
+                <code class="language-csharp">
+                    // This contain list of list result set
+                   <kbd> List&lt;List&lt;CommoditySubCommodityModel>></kbd> groupedCommodityList = tableData
+                                        .GroupBy(u => u.Commodity)
+                                        .Select(grp => grp.ToList())
+                                        .ToList();
+                </code>
+            </pre>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <pre>
+            <code class="language-csharp">
+                public class CommoditySubCommodityModel{
+                    public int SubCommodityId {get;set;}
+                    public string SubCommodityName {get;set;}
+                    public int CommodityName  {get;set;}
+                    public int Code {get;set;} 
+
+                }
+            </code>
+        </pre>
+        </div>
+        <div class="col-lg-6">
+            <pre>
+            <code class="language-csharp">
+                @model List&lt;List&lt;CommoditySubCommodityModel>>
+
+                @foreach(var <kbd>firstList</kbd>> in Model)
+                {
+                    &lt;span>firstList[0].commodity&lt;/span>
+                    foreach(var secondList in <kbd>firstList</kbd>>)
+                    {
+                        &lt;span>secondList.SubCommodityName&lt;/span>
+                    }
+                }
+
+            </code>
+        </pre>
+        </div>
+    </div>
+
+    <hr>
     <hr>
     <h2>Group By and Getting Top Row Data</h2>
     <pre class="limit-15" data-keep-tags="kbd, em">

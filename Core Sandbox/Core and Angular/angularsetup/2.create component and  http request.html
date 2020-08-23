@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../css/dracula.css">
+    <link rel="stylesheet" href="../css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+<style>
+    kbd {
+        background: black
+    }
+</style>
+
+
+
+
+<body>
+
+<h2>Step 1 : Create Value Component</h2>
+    <pre>
+    <code class="language-javascript">
+       
+    </code>
+
+</pre>
+
+  
+    <div class="row">
+        <div class="col-lg-4">
+            <pre data-keep-tags="kbd, em">
+            <code class="language-sql">
+                src 
+                  app
+                    <kbd>value
+                      value.component.css
+                      value.component.html
+                      value.component.ts
+                      value.component.spec.ts</kbd>
+                    app.component.css
+                    app.component.html
+                    app.component.spec.ts
+                    app.module.ts  
+            </code>
+        </pre>
+
+        </div>
+        <div class="col-lg-8">
+            Auto inject component inside <h2>app.module.ts like below</h2>
+            <pre data-keep-tags="kbd, em">
+            <code class="language-sql">
+                import { BrowserModule } from '@angular/platform-browser';
+                import { NgModule } from '@angular/core';
+
+                import { AppComponent } from './app.component';
+               <kbd>import { ValueComponent } from './value/value.component';</kbd> 
+
+                @NgModule({
+                declarations: [	
+                    AppComponent,
+                    <kbd>ValueComponent</kbd>
+                ],
+                imports: [
+                    BrowserModule
+                ],
+                providers: [],
+                bootstrap: [AppComponent]
+                })
+                export class AppModule { }
+
+            </code>
+        </pre>
+
+        </div>
+    </div>
+
+
+
+<div class="row">
+<div class="col-lg-6">
+    <h2>ValueComponent.ts</h2>
+ <pre data-keep-tags="kbd, em">
+        <code class="language-javascript">
+import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+<kbd>import {HttpClientModule} from '@angular/common/http';</kbd>
+@Component({
+  selector: '<kbd>app-value</kbd>',   // Will use this name 
+  templateUrl: './value.component.html',
+  styleUrls: ['./value.component.css']
+})
+export class ValueComponent implements OnInit {
+
+  <kbd>value: any;</kbd>
+
+  constructor(<kbd>private http: HttpClient</kbd>) { }
+
+  ngOnInit() {
+    <kbd>this.getValues();</kbd>
+  }
+
+  getValues() {
+    this.http.get('https://localhost:5001/api/values').subscribe(response => {
+      this.value = response;
+      console.log(response);
+    }, error => {
+      console.log(error);
+    });
+  }
+
+}
+
+        </code>
+    </pre>
+
+</div>
+
+
+<div class="col-lg-6">
+<h2>app.module.ts</h2>
+ <pre data-keep-tags="kbd, em">
+        <code class="language-javascript">
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+<kbd>import {HttpClientModule} from '@angular/common/http';</kbd>
+
+
+import { AppComponent } from './app.component';
+import { ValueComponent } from './value/value.component';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    ValueComponent
+  ],
+  imports: [
+    BrowserModule,
+    <kbd>HttpClientModule,</kbd>
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+
+</code>
+</pre>
+
+</div>
+
+
+
+
+</div>   
+
+<div class="row">
+
+<div class="col-lg-4">
+<h2>app.module.html</h2>
+ <pre data-keep-tags="kbd, em">
+        <code class="language-javascript">
+&lt;div style="text-align: center;">
+  Welcome 
+ &lt;app-value>&lt;/app-value>
+&lt;/div>
+</code>
+</pre>
+</div>
+
+
+<div class="col-lg-4">
+<h2>valuecomponent.html</h2>
+ <pre data-keep-tags="kbd, em">
+        <code class="language-javascript">
+&lt;h2>Data List&lt;/h2>
+&lt;div *ngFor="let item of value">
+    {{item.id}} {{item.name}}
+   &lt;/div>
+</code>
+</pre>
+</div>
+
+<div class="col-lg-4">
+<h2>localhost:4200</h2>
+<img style="width:100%;height:auto" src="https://i.ibb.co/jRt0pCY/output.jpg">
+</div>
+
+</div>
+
+
+<hr>
+<hr>
+
+
+
+    <script src="../js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+
+
+        (function () {
+            if (!self.Prism) {
+                return;
+            }
+
+            var div = document.createElement('div');
+
+            Prism.hooks.add('before-highlight', function (env) {
+                var elt = env.element;
+                if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                    elt = elt.parentNode;
+                }
+                var tags = elt.getAttribute('data-keep-tags');
+                if (!tags) {
+                    return;
+                }
+                var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+                env.keepTags = true;
+                env.keepTagsPlaceholder = placeholder;
+
+                tags = tags.split(/\s*,\s*/).join('|');
+                var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+                env.keepTagsRegex = tags_regex;
+
+                env.tokenStack = [];
+                env.backupCode = env.code;
+
+                var code = env.element.innerHTML;
+                code = code.replace(tags_regex, function (match) {
+                    env.tokenStack.push(match);
+                    return placeholder.replace('{n}', env.tokenStack.length);
+                });
+                env.element.innerHTML = code;
+                code = env.element.textContent;
+                code = code.replace(/^(?:\r?\n|\r)/, '');
+
+                env.code = code;
+            });
+
+            Prism.hooks.add('after-highlight', function (env) {
+                if (!env.keepTags) {
+                    return;
+                }
+                for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                    t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                        div.innerHTML = inside;
+                        inside = div.textContent;
+                        return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                    });
+
+                    env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                    env.element.innerHTML = env.highlightedCode;
+                }
+            });
+
+        }());
+
+        Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+            v.classList.add("language-sql");
+        });
+        Prism.highlightAll();
+
+    </script>
+</body>
+
+</html>

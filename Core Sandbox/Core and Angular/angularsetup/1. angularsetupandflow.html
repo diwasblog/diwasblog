@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../css/dracula.css">
+    <link rel="stylesheet" href="../css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+<style>
+    kbd {
+        background: black
+    }
+</style>
+
+
+
+<body>
+
+
+    <pre>
+    <code class="language-javascript">
+        npm install -g @angular/cli               // will install latest angular version
+        cd 
+        ng new DatingApp-SPA                      //Create new Angular Project with latest version (skip routing and use css)
+        cd DatingApp-SPA                          
+        code .
+    </code>
+</pre>
+
+    <h2>How angular Bootstrap?</h2>
+    <b>main.ts</b> is responsible for boostraping by calling AppModule and then <b>AppModule</b>> calls
+    <b>AppComponent.ts</b>
+    and then
+    AppComponent calls
+    selector "<b>app-root</b>" and then "app-root" is set inside <b>index.html</b> file .So loads all content inside
+    <b>index.html</b>
+    file.
+    <br>
+    <br>
+    when index.html is loaded, the Angular core libraries, third-party libraries are loaded.
+    <img src="https://i.ibb.co/KbW1GVh/angularflow.png" style="width:100%;height:auto">
+
+    <hr>
+    <br>
+    <h2>Run Project</h2>
+    <pre>
+    <code class="language-javascript">
+        ng serve                   // or  npm start
+        //ng serve does build our application but does not save the compiled application to the disk. It saves it in memory and starts the development server.
+    </code>
+</pre>
+    Then look at the url "<b>localhost:4200</b>" . ===> will load <b>index.html</b> file by default because here we have
+    "app-data"
+    defined <br>
+    <b>Inspect it </b>, and you will find 5 file injected in index.html file<br>
+    <img src="https://i.ibb.co/bLrT8rM/4.jpg">
+    <br>
+    <b>runtime.js</b> : webpack generates bundle and store there. <b>webpack</b> looks for JavaScript, CSS, SASS, LESS,
+    images, HTML, & fonts and bundle it. <br>
+    <b>polyfills.js:</b> supports various format of javascript <br>
+    <b>styles.css</b> : This file contains the global style rules bundled as javascript file.<br>
+    <b>vendor.js</b> : contains the scripts from the Angular core library and any other 3rd party library.<br>
+    <b>main.js</b> : code of the application.<br> <br>
+
+
+    Here, as angular supports typescript but later finally converted into javascript because browser doesnot understand
+    typescript
+    <hr>
+    <br>
+
+
+
+    <h2>Install Angular Plugins in VsCode</h2>
+    <pre>
+        <code class="language-javascript">
+            1. angular snippets     (by John Papa) 
+            2. Angular Files        ( allow right click and create component ,services)
+            3. Angular Services     ( give features like goto defination)
+            4. Bracket Pair Colorizer 
+            5. Tslint                ( checks TypeScript code for readability, maintainability, and functionality errors.)
+            6. angular2-switcher      (switching from .ts file to html and viceversa ie. alt + o , alt+i + alt +u , alt +p )
+        
+            7. Material Icon theme   === > Displaying folder structure beutiful
+            8. auto rename tag          ==> If you rename beginning tag will auto rename end tag
+            9. Emmet                    ==> support .test ==> &lt;div class="test">&lt;/div>
+        </code>
+    </pre>
+    <script src="../js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+
+
+        (function () {
+            if (!self.Prism) {
+                return;
+            }
+
+            var div = document.createElement('div');
+
+            Prism.hooks.add('before-highlight', function (env) {
+                var elt = env.element;
+                if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                    elt = elt.parentNode;
+                }
+                var tags = elt.getAttribute('data-keep-tags');
+                if (!tags) {
+                    return;
+                }
+                var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+                env.keepTags = true;
+                env.keepTagsPlaceholder = placeholder;
+
+                tags = tags.split(/\s*,\s*/).join('|');
+                var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+                env.keepTagsRegex = tags_regex;
+
+                env.tokenStack = [];
+                env.backupCode = env.code;
+
+                var code = env.element.innerHTML;
+                code = code.replace(tags_regex, function (match) {
+                    env.tokenStack.push(match);
+                    return placeholder.replace('{n}', env.tokenStack.length);
+                });
+                env.element.innerHTML = code;
+                code = env.element.textContent;
+                code = code.replace(/^(?:\r?\n|\r)/, '');
+
+                env.code = code;
+            });
+
+            Prism.hooks.add('after-highlight', function (env) {
+                if (!env.keepTags) {
+                    return;
+                }
+                for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                    t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                        div.innerHTML = inside;
+                        inside = div.textContent;
+                        return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                    });
+
+                    env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                    env.element.innerHTML = env.highlightedCode;
+                }
+            });
+
+        }());
+
+        Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+            v.classList.add("language-sql");
+        });
+        Prism.highlightAll();
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<p><span style="color: #2dc26b;"><strong><span style="font-size: 18pt;">What is MIME types ?</span></strong></span></p>
+<p><span style="font-size: 14pt; color: #000000;">MIME stands for "<span style="color: #e03e2d;"><strong>Multipurpose Internet Mail Extensions"</strong></span>. It's a way of identifying files on the Internet according to their nature and format.&nbsp;</span></p>
+<hr />
+<h2>What is an Internet Media Type?</h2>
+<p><span style="font-size: 14pt;">"<span style="color: #e03e2d;"><strong>Internet Media Type</strong></span>" is the same as a MIME type. MIME types were originally created for emails sent using the <strong><span style="color: #2dc26b;">SMTP protocol.&nbsp;</span></strong></span></p>
+<hr />
+<h2>What does a MIME type look like?</h2>
+<p><span style="color: #000000;"><strong><span style="font-size: 18pt;">Ans :</span></strong></span></p>
+<p><span style="font-size: 18pt; color: #000000; font-family: 'comic sans ms', sans-serif;">A MIME type is a string identifier composed of two parts: a "<span style="color: #169179;">type</span>" and a "<span style="color: #169179;">subtype</span>". </span></p>
+<p><span style="font-size: 18pt; color: #000000; font-family: 'comic sans ms', sans-serif;">The "<span style="color: #169179;">type</span>" refers to a <span style="color: #2dc26b;">logical grouping of many MIME types</span> that are closely related to each other;&nbsp;</span></p>
+<p><span style="font-size: 18pt; color: #000000; font-family: 'comic sans ms', sans-serif;">The "<span style="color: #169179;">subtypes</span>" are specific to one file type within the "type".</span></p>
+<p>&nbsp;</p>
+<p><strong><span style="font-size: 18pt; color: #000000;">For example,</span></strong></p>
+<p><span style="font-size: 18pt; color: #000000;">for mime types: "<span style="color: #2dc26b;"><strong>application/XML</strong></span>" </span></p>
+<table style="border-collapse: collapse; width: 29.8548%;" border="1">
+<tbody>
+<tr>
+<td style="width: 21.6955%;"><span style="color: #e03e2d;"><strong>application</strong></span></td>
+<td style="width: 30.7704%;"><strong><span style="color: #2dc26b;">Types</span></strong></td>
+</tr>
+<tr>
+<td style="width: 21.6955%;"><strong><span style="color: #e03e2d;">XML</span></strong></td>
+<td style="width: 30.7704%;"><span style="color: #2dc26b;"><strong>SubTypes</strong></span></td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<hr />
+<h2>Why are some MIME subtypes prefixed with "x-"?</h2>
+<p><span style="font-size: 14pt; color: #000000;">The "<span style="color: #2dc26b;"><strong>x-</strong></span>" prefix of a MIME subtype simply means that<strong><span style="color: #2dc26b;"> it's non-standard</span></strong>, i.e. not registered with the "<strong><span style="color: #e03e2d;">Internet Assigned Numbers Authority" (IANA)</span></strong>.</span></p>
+<hr />
+<h2>Why are some MIME subtypes prefixed with "vnd"?</h2>
+<p><span style="font-size: 14pt;"><span style="color: #000000;">The </span>"<span style="color: #2dc26b;"><strong>vnd</strong></span>" <span style="color: #000000;">prefix means that the MIME value is <strong><span style="color: #2dc26b;">vendor-specific</span></strong>.</span></span></p>
+<hr />
+<h2>How can I set the Content-type header of .asp and C#?</h2>
+<p>It depends on the programming language you are using. Note that most language have a default "Content-type" of "text/html".</p>
+<ul style="list-style-type: disc;">
+<li>
+<h3><span style="color: #000000;"><strong>Setting the Content-type in ASP:</strong></span></h3>
+<strong><span style="color: #000000;">&lt;% response.ContentType="text/html" %&gt;</span></strong></li>
+</ul>
+<p>&nbsp;</p>
+<ul style="list-style-type: disc;">
+<li>
+<h3><strong><span style="color: #000000;">Setting the Content-type in C#:</span></strong></h3>
+// Response is of type System.Web.HttpResponse<br /><strong><span style="color: #000000;">response.ContentType = "text/plain";</span></strong></li>
+</ul>
+<hr />
+<p><span style="font-size: 18pt;"><span style="color: #000000;">How browser will know types of content ?</span></span></p>
+<ul>
+<li><strong><span style="font-size: 14pt; color: #000000;">When we set ContentType = "<span style="color: #2dc26b;">text/html</span>" in the server or on code then when this page reach the browser then browser will treat this page as html.</span></strong></li>
+<li><strong><span style="font-size: 14pt; color: #000000;">When we set ContentType="<span style="color: #2dc26b;">application/pdf</span>" in the server then when this page reach the browser then the browser will load content as pdf with proper extension/plugin.</span></strong></li>
+</ul>
+<hr />
+<p><span style="font-size: 18pt;"><strong><span style="color: #000000;">Basic and Most Used in General</span></strong></span></p>
+<ul style="list-style-type: disc;">
+<li><span style="font-size: 14pt;"><code><span style="color: #e03e2d;"><strong>text/plain</strong></span></code><span style="color: #000000;">&nbsp;is the default value for textual files. A textual file should be human-readable and must not contain binary data.</span></span></li>
+<li><span style="font-size: 14pt;"><strong><span style="color: #e03e2d;"><code>application/octet-stream</code>&nbsp;</span></strong><span style="color: #000000;">is the default value for all other cases. An unknown file type should use this type. Browsers pay a particular care when manipulating these files, attempting to safeguard the user to prevent dangerous behaviors.</span></span></li>
+</ul>
+<hr />
+<p><span style="font-size: 18pt;"><span style="color: #000000;">Where we write context type in code?</span></span></p>
+<p><span style="font-size: 14pt;"><span style="color: #000000;"><strong><span style="color: #2dc26b;">Ans: </span></strong>You'll most commonly find them in the headers of HTTP messages</span></span></p>
+<hr />
+<p><span style="font-size: 18pt;"><span style="color: #000000;">Basic Most ContentType Code?</span></span></p>
+<table style="width: 1013.6px; height: 1878px;">
+<thead>
+<tr style="height: 22px;">
+<th style="height: 22px; width: 73.6px;" scope="col">Extension</th>
+<th style="height: 22px; width: 353.6px;" scope="col">Kind of document</th>
+<th style="height: 22px; width: 544.8px;" scope="col">MIME Type</th>
+</tr>
+</thead>
+<tbody>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><code>.aac</code></td>
+<td style="height: 22px; width: 353.6px;">AAC audio</td>
+<td style="height: 22px; width: 544.8px;"><code>audio/aac</code></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><code>.abw</code></td>
+<td style="height: 22px; width: 353.6px;"><a href="https://en.wikipedia.org/wiki/AbiWord" rel="noopener">AbiWord</a>&nbsp;document</td>
+<td style="height: 22px; width: 544.8px;"><code>application/x-abiword</code></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><code>.arc</code></td>
+<td style="height: 22px; width: 353.6px;">Archive document (multiple files embedded)</td>
+<td style="height: 22px; width: 544.8px;"><code>application/x-freearc</code></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><code>.avi</code></td>
+<td style="height: 22px; width: 353.6px;">AVI: Audio Video Interleave</td>
+<td style="height: 22px; width: 544.8px;"><code>video/x-msvideo</code></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><code>.azw</code></td>
+<td style="height: 22px; width: 353.6px;">Amazon Kindle eBook format</td>
+<td style="height: 22px; width: 544.8px;"><code>application/vnd.amazon.ebook</code></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><code>.bin</code></td>
+<td style="height: 22px; width: 353.6px;">Any kind of binary data</td>
+<td style="height: 22px; width: 544.8px;"><code>application/octet-stream</code></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><code>.bmp</code></td>
+<td style="height: 22px; width: 353.6px;">Windows OS/2 Bitmap Graphics</td>
+<td style="height: 22px; width: 544.8px;"><code>image/bmp</code></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><code>.bz</code></td>
+<td style="height: 22px; width: 353.6px;">BZip archive</td>
+<td style="height: 22px; width: 544.8px;"><code>application/x-bzip</code></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><code>.bz2</code></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">BZip2 archive</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/x-bzip2</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.csh</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">C-Shell script</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/x-csh</code></span></td>
+</tr>
+<tr style="height: 23px;">
+<td style="height: 23px; width: 73.6px;"><span style="font-size: 14pt;"><code>.css</code></span></td>
+<td style="height: 23px; width: 353.6px;"><span style="font-size: 14pt;">Cascading Style Sheets (CSS)</span></td>
+<td style="height: 23px; width: 544.8px;"><span style="color: #2dc26b; font-size: 14pt;"><strong><code>text/css</code></strong></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.csv</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">Comma-separated values (CSV)</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><strong><span style="color: #2dc26b;"><code>text/csv</code></span></strong></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.doc</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">Microsoft Word</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/msword</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.docx</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">Microsoft Word (OpenXML)</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/vnd.openxmlformats-officedocument.wordprocessingml.document</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.eot</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">MS Embedded OpenType fonts</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/vnd.ms-fontobject</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.epub</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">Electronic publication (EPUB)</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/epub+zip</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.gz</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">GZip Compressed Archive</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/gzip</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.gif</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">Graphics Interchange Format (GIF)</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>image/gif</code></span></td>
+</tr>
+<tr style="height: 44px;">
+<td style="height: 44px; width: 73.6px;"><span style="font-size: 14pt;"><code>.htm<br />.html</code></span></td>
+<td style="height: 44px; width: 353.6px;"><span style="font-size: 14pt;">HyperText Markup Language (HTML)</span></td>
+<td style="height: 44px; width: 544.8px;"><span style="font-size: 14pt;"><code>text/html</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.ico</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">Icon format</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>image/vnd.microsoft.icon</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.ics</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">iCalendar format</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>text/calendar</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.jar</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">Java Archive (JAR)</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/java-archive</code></span></td>
+</tr>
+<tr style="height: 44px;">
+<td style="height: 44px; width: 73.6px;"><span style="font-size: 14pt;"><code>.jpeg</code></span><br /><span style="font-size: 14pt;"><code>.jpg</code></span></td>
+<td style="height: 44px; width: 353.6px;"><span style="font-size: 14pt;">JPEG images</span></td>
+<td style="height: 44px; width: 544.8px;"><span style="color: #2dc26b; font-size: 14pt;"><code><strong>image/</strong><strong>jpe</strong>g</code></span></td>
+</tr>
+<tr style="height: 160px;">
+<td style="height: 160px; width: 73.6px;"><span style="font-size: 14pt;"><code>.js</code></span></td>
+<td style="height: 160px; width: 353.6px;"><span style="font-size: 14pt;">JavaScript</span></td>
+<td style="height: 160px; width: 544.8px;">
+<p><span style="color: #2dc26b; font-size: 14pt;"><strong><code>text/javascript</code></strong></span></p>
+<p>&nbsp;</p>
+</td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.json</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">JSON format</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/json</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.jsonld</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">JSON-LD format</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/ld+json</code></span></td>
+</tr>
+<tr style="height: 44px;">
+<td style="height: 44px; width: 73.6px;"><span style="font-size: 14pt;"><code>.mid</code></span><br /><span style="font-size: 14pt;"><code>.midi</code></span></td>
+<td style="height: 44px; width: 353.6px;"><span style="font-size: 14pt;">Musical Instrument Digital Interface (MIDI)</span></td>
+<td style="height: 44px; width: 544.8px;"><span style="font-size: 14pt;"><code>audio/midi</code>&nbsp;<code>audio/x-midi</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.mjs</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">JavaScript module</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>text/javascript</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.mp3</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">MP3 audio</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>audio/mpeg</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.mpeg</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">MPEG Video</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>video/mpeg</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.mpkg</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">Apple Installer Package</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/vnd.apple.installer+xml</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.odp</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">OpenDocument presentation document</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/vnd.oasis.opendocument.presentation</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.ods</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">OpenDocument spreadsheet document</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/vnd.oasis.opendocument.spreadsheet</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.odt</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">OpenDocument text document</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/vnd.oasis.opendocument.text</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.oga</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">OGG audio</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>audio/ogg</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.ogv</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">OGG video</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>video/ogg</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.ogx</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">OGG</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/ogg</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.opus</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">Opus audio</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>audio/opus</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.otf</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">OpenType font</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>font/otf</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.png</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">Portable Network Graphics</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>image/png</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.pdf</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">Adobe&nbsp;<a href="https://acrobat.adobe.com/us/en/why-adobe/about-adobe-pdf.html" rel="noopener">Portable Document Format</a>&nbsp;(PDF)</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/pdf</code></span></td>
+</tr>
+<tr style="height: 23px;">
+<td style="height: 23px; width: 73.6px;"><span style="font-size: 14pt;"><code>.php</code></span></td>
+<td style="height: 23px; width: 353.6px;"><span style="font-size: 14pt;">Hypertext Preprocessor (<strong>Personal Home Page</strong>)</span></td>
+<td style="height: 23px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/x-httpd-php</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.ppt</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">Microsoft PowerPoint</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/vnd.ms-powerpoint</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.pptx</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">Microsoft PowerPoint (OpenXML)</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/vnd.openxmlformats-officedocument.presentationml.presentation</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.rar</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">RAR archive</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/vnd.rar</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.rtf</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">Rich Text Format (RTF)</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/rtf</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.sh</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">Bourne shell script</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/x-sh</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.svg</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">Scalable Vector Graphics (SVG)</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>image/svg+xml</code></span></td>
+</tr>
+<tr style="height: 44px;">
+<td style="height: 44px; width: 73.6px;"><span style="font-size: 14pt;"><code>.swf</code></span></td>
+<td style="height: 44px; width: 353.6px;"><span style="font-size: 14pt;"><a href="https://en.wikipedia.org/wiki/SWF" rel="noopener">Small web format</a>&nbsp;(SWF) or Adobe Flash document</span></td>
+<td style="height: 44px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/x-shockwave-flash</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.tar</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">Tape Archive (TAR)</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/x-tar</code></span></td>
+</tr>
+<tr style="height: 44px;">
+<td style="height: 44px; width: 73.6px;"><span style="font-size: 14pt;"><code>.tif<br />.tiff</code></span></td>
+<td style="height: 44px; width: 353.6px;"><span style="font-size: 14pt;">Tagged Image File Format (TIFF)</span></td>
+<td style="height: 44px; width: 544.8px;"><span style="font-size: 14pt;"><code>image/tiff</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.ts</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">MPEG transport stream</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>video/mp2t</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.ttf</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">TrueType Font</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>font/ttf</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.txt</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">Text, (generally ASCII or ISO 8859-<em>n</em>)</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>text/plain</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.vsd</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">Microsoft Visio</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/vnd.visio</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.wav</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">Waveform Audio Format</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>audio/wav</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.weba</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">WEBM audio</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>audio/webm</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.webm</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">WEBM video</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>video/webm</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.webp</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">WEBP image</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>image/webp</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.woff</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">Web Open Font Format (WOFF)</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>font/woff</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.woff2</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">Web Open Font Format (WOFF)</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>font/woff2</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.xhtml</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">XHTML</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/xhtml+xml</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.xls</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">Microsoft Excel</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/vnd.ms-excel</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.xlsx</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">Microsoft Excel (OpenXML)</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/vnd.openxmlformats-officedocument.spreadsheetml.sheet</code></span></td>
+</tr>
+<tr style="height: 44px;">
+<td style="height: 44px; width: 73.6px;"><span style="font-size: 14pt;"><code>.xml</code></span></td>
+<td style="height: 44px; width: 353.6px;"><span style="font-size: 14pt;"><code>XML</code></span></td>
+<td style="height: 44px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/xml&nbsp;</code>if&nbsp;<em>not</em>&nbsp;readable from casual users (<a href="https://tools.ietf.org/html/rfc3023#section-3" rel="noopener">RFC 3023</a>, section 3)</span><br /><span style="font-size: 14pt;"><code>text/xml</code>&nbsp;if readable from casual users (<a href="https://tools.ietf.org/html/rfc3023#section-3" rel="noopener">RFC 3023</a>, section 3)</span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.xul</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">XUL</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/vnd.mozilla.xul+xml</code></span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.zip</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;">ZIP archive</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/zip</code></span></td>
+</tr>
+<tr style="height: 44px;">
+<td style="height: 44px; width: 73.6px;"><span style="font-size: 14pt;"><code>.3gp</code></span></td>
+<td style="height: 44px; width: 353.6px;"><span style="font-size: 14pt;"><a href="https://en.wikipedia.org/wiki/3GP_and_3G2" rel="noopener">3GPP</a>&nbsp;audio/video container</span></td>
+<td style="height: 44px; width: 544.8px;"><span style="font-size: 14pt;"><code>video/3gpp</code></span><br /><span style="font-size: 14pt;"><code>audio/3gpp</code>&nbsp;if it doesn't contain video</span></td>
+</tr>
+<tr style="height: 44px;">
+<td style="height: 44px; width: 73.6px;"><span style="font-size: 14pt;"><code>.3g2</code></span></td>
+<td style="height: 44px; width: 353.6px;"><span style="font-size: 14pt;"><a href="https://en.wikipedia.org/wiki/3GP_and_3G2" rel="noopener">3GPP2</a>&nbsp;audio/video container</span></td>
+<td style="height: 44px; width: 544.8px;"><span style="font-size: 14pt;"><code>video/3gpp2</code></span><br /><span style="font-size: 14pt;"><code>audio/3gpp2</code>&nbsp;if it doesn't contain video</span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 73.6px;"><span style="font-size: 14pt;"><code>.7z</code></span></td>
+<td style="height: 22px; width: 353.6px;"><span style="font-size: 14pt;"><a href="https://en.wikipedia.org/wiki/7-Zip" rel="noopener">7-zip</a>&nbsp;archive</span></td>
+<td style="height: 22px; width: 544.8px;"><span style="font-size: 14pt;"><code>application/x-7z-compressed</code></span></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

@@ -129,7 +129,7 @@
 
 
 <h3>Step 4. Pdf View</h3>
-<pre>
+<pre data-keep-tags="kbd, em">
     <code class="language-csharp">
 @model SupportFoundationAustralia.ViewModel.ClientPdfReportViewModel
 
@@ -178,7 +178,7 @@
     &lt;tbody>
         @{
             int SN = 1;
-            decimal total = 0;
+          
         }
         @foreach (var item in Model.ServiceProviderGrants)
         {
@@ -191,18 +191,105 @@
                 &lt;td>@item.Amount&lt;/td>
             </tr>
             SN++;
-            total += item.Amount;
         }
-        &lt;tr>
-            &lt;td colspan="3" style="text-align:center">&lt;b>Total&lt;/b> &lt;td>
-            &lt;td>&lt;/td>
-            &lt;td>&lt;/td>
-            &lt;td><b>$ @total</b>&lt;/td>
-        &lt;/tr>
      &lt;/tbody>
 &lt;/table>
     </code>
 </pre>
+
+<hr>
+<hr>
+<h2>Using ActionAsPdf</h2>
+<div class="row">
+    <div class="col-lg-6">
+        <h4>Without Passing Parameter</h4>
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+                
+                public ActionResult Index()
+                {
+                    var emps = ctx.EmployeeInfoes.ToList();
+                    return View(emps);
+                }
+
+
+                public ActionResult PrintAllReport()
+                {
+                    var report = new <kbd>ActionAsPdf</kbd>("Index");
+                    return report;
+                }
+
+                //Create required pdf View for PrintAllReport() in html  
+            </code>
+        </pre>
+    </div>
+
+    <div class="col-lg-6">
+        <h4>With Passing Parameter</h4>
+        <pre  data-keep-tags="kbd, em">
+            <code class="language-csharp">
+                public ActionResult IndexById(int id)
+                {
+                    var emp = ctx.EmployeeInfoes.Where(e=>e.EmpNo==id).First();
+                    return View(emp);
+                }
+                public ActionResult PrintSalarySlip(int id)
+                {
+                    var report = new <kbd>ActionAsPdf</kbd>("IndexById",new  {id=id});
+                    return report;
+                }
+                //Create PrintSalarySlip.cshtml view for pdf
+            </code>
+        </pre>
+    </div>
+</div>
+<hr>
+<hr>
+<h2>Save Pdf Generated File in Folder </h2>
+<pre  data-keep-tags="kbd, em">
+<code class="language-csharp">
+    [Route("overall/clientsignoff/pdf")]
+        public void DownloadPdfClientSignOff(string fromDate, string toDate)
+        {
+            //Getting List of User
+            var clientList = _clientRepository.GetAllClientList();
+
+            DirectoryInfo DI = new DirectoryInfo(Server.MapPath("~/TempDownload/"));
+            
+            //Deleting All previouse File Present in TempDownload folder
+            foreach (FileInfo file in DI.GetFiles())
+            {
+                file.Delete();
+            }
+
+
+            foreach (var item in clientList)
+            {
+                var actionResult = new <kbd>ActionAsPdf</kbd>("PrintAllFile", new { clientId =item.ClientId ,clientName = item.ClientName  });
+                var byteArray = actionResult.BuildPdf(ControllerContext);
+
+                string path = Server.MapPath("~/TempDownload/");
+
+                string fullPath = path + item.ClientName + new Random().Next(9999, 1000000) + ".pdf";
+                var fileStream = new FileStream(fullPath, FileMode.Create, FileAccess.Write);
+                fileStream.Write(byteArray, 0, byteArray.Length);
+                fileStream.Close();
+                //Saving in each Client in folder "TempDownload"
+            }
+
+            
+        }
+
+        //Create Pdf View for this invidual Client
+        public ActionResult PrintAllFile(int clientId,string clientName)
+        {
+            var result = _clientRepository.GetIndividualClients(clientId,clientName)
+            return View(result);
+        }
+
+</code>
+</pre>
+
 <script src="js/prism.js"></script>
 <script type="text/javascript">
     Prism.plugins.NormalizeWhitespace.setDefaults(

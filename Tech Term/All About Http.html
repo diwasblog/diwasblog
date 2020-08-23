@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<p><span style="color: #2dc26b;"><strong><span style="font-size: 18pt;">Why 1 request will have only one response?</span></strong></span></p>
+<p><span style="font-size: 18pt; color: #000000;">HTTP is a request/response system. Any response has to come as a reply to a request. Given that, you can't send&nbsp;<em>multiple</em>&nbsp;responses to a single request. If nothing else, there would be no client listening for those responses (because it already got the response it was waiting for).</span></p>
+<p><span style="font-size: 18pt; color: #000000;">So essentially you have two options:</span></p>
+<ol style="list-style-type: decimal;">
+<li><span style="font-size: 18pt; color: #000000;">Issue multiple requests, one for each "file" being downloaded. This will create multiple responses for the client to expect.</span></li>
+<li><span style="font-size: 18pt; color: #000000;">Combine the files into a single file using some archiving tool (Zip libraries are pretty standard for this) in the server-side code and send&nbsp;<em>that</em>&nbsp;file as the response. The client would then need to un-archive it. (If the client is a user, they'd do it manually. A self-extracting executable Zip helps with that. If the client is an application, the same library can be used client-side to extract the contents of the archive and save the files.)</span></li>
+</ol>
+<p><span style="font-size: 18pt; color: #e03e2d;">One request = one response.</span></p>
+</body>
+</html>
