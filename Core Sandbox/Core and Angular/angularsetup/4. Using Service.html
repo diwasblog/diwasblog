@@ -24,181 +24,100 @@
 
 <body>
 
-<h2>Step 1 : Create Value Component</h2>
-    <pre>
-    <code class="language-javascript">
-       
-    </code>
+    Actually Component are auto injectable because if we create component then it will auto inject in app.module.ts 
+    but we for service we have <strong>@injectable</strong> decorator which is used for injecting and we have to do it manually in
+    app.module.ts
+    
+    
+    1. Create AuthService inside _service folder <br>
+    2. authservice.ts
+    
 
-</pre>
+
+    
+    
 
   
     <div class="row">
-        <div class="col-lg-4">
-            <pre data-keep-tags="kbd, em">
-            <code class="language-sql">
-                src 
-                  app
-                    <kbd>value
-                      value.component.css
-                      value.component.html
-                      value.component.ts
-                      value.component.spec.ts</kbd>
-                    app.component.css
-                    app.component.html
-                    app.component.spec.ts
-                    app.module.ts  
-            </code>
-        </pre>
-
-        </div>
-        <div class="col-lg-8">
-            Will Auto inject component inside <h2>app.module.ts by Angular like below</h2>
-            <pre data-keep-tags="kbd, em">
-            <code class="language-sql">
-                import { BrowserModule } from '@angular/platform-browser';
-                import { NgModule } from '@angular/core';
-
-                import { AppComponent } from './app.component';
-               <kbd>import { ValueComponent } from './value/value.component';</kbd> 
-
-                @NgModule({
-                declarations: [	
-                    AppComponent,
-                    <kbd>ValueComponent</kbd>
-                ],
-                imports: [
-                    BrowserModule
-                ],
-                providers: [],
-                bootstrap: [AppComponent]
-                })
-                export class AppModule { }
-
-            </code>
-        </pre>
-
-        </div>
-    </div>
+     
 
 
+    <div class="col-lg-6">
+        
+<h2>In nav.component.ts</h2>
 
-<div class="row">
-<div class="col-lg-6">
-    <h2>ValueComponent.ts</h2>
- <pre data-keep-tags="kbd, em">
-        <code class="language-javascript">
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-<kbd>import {HttpClientModule} from '@angular/common/http';</kbd>
-@Component({
-  selector: '<kbd>app-value</kbd>',   // Will use this name 
-  templateUrl: './value.component.html',
-  styleUrls: ['./value.component.css']
-})
-export class ValueComponent implements OnInit {
 
-  <kbd>value: any;</kbd>
-
-  constructor(<kbd>private http: HttpClient</kbd>) { }
-
-  ngOnInit() {
-    <kbd>this.getValues();</kbd>
-  }
-
-  getValues() {
-    this.http.get('https://localhost:5001/api/values').subscribe(response => {
-      this.value = response;
-      console.log(response);
-    }, error => {
-      console.log(error);
-    });
-  }
-
-}
+  
+        <pre data-keep-tags="kbd, em">
+        <code class="language-sql">
+            import { Component, OnInit } from '@angular/core';
+            import { AuthService } from '../_services/auth.service';
+            
+            @Component({
+              selector: 'app-nav',
+              templateUrl: './nav.component.html',
+              styleUrls: ['./nav.component.css']
+            })
+            export class NavComponent implements OnInit {
+            
+              model: any = {};
+            
+              constructor(private authService: AuthService) { }
+            
+              ngOnInit() {
+              }
+            
+              login() {
+                console.log(this.model);
+                this.<kbd>authService</kbd>.login(this.model).subscribe(next => {
+                  console.log('Logged in Succcessfully');
+                }, error => {
+                    console.log('Failed to Login');
+              });
+              }
+            
+            }
+            
 
         </code>
     </pre>
 
 </div>
 
-
 <div class="col-lg-6">
-<h2>app.module.ts</h2>
- <pre data-keep-tags="kbd, em">
-        <code class="language-javascript">
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-<kbd>import {HttpClientModule} from '@angular/common/http';</kbd>
+    <pre data-keep-tags="kbd, em">
+    <code class="language-sql">
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+<kbd>import { map } from 'rxjs/operators'; // for using .map
 
-
-import { AppComponent } from './app.component';
-import { ValueComponent } from './value/value.component';
-
-@NgModule({
-  declarations: [
-    AppComponent,
-    ValueComponent
-  ],
-  imports: [
-    BrowserModule,
-    <kbd>HttpClientModule,</kbd>   
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+@Injectable({
+providedIn: 'root'
 })
-export class AppModule { }
+export class AuthService {
+baseUrl = "https://localhost:44391/api/auth/";
 
+constructor(private http: HttpClient) { }
 
-</code>
+login(model: any) {
+     return this.http.post(this.baseUrl + 'login', model).pipe(
+map((response: any) => {
+const user = response;
+if (user) {
+<kbd>  localStorage.setItem('token', user.token);</kbd>
+}
+})
+);
+}
+
+}
+
+    </code>
 </pre>
 
 </div>
 
-
-
-
-</div>   
-
-<div class="row">
-
-<div class="col-lg-4">
-<h2>app.module.html</h2>
- <pre data-keep-tags="kbd, em">
-        <code class="language-javascript">
-&lt;div style="text-align: center;">
-  Welcome 
- &lt;app-value>&lt;/app-value>
-&lt;/div>
-</code>
-</pre>
 </div>
-
-
-<div class="col-lg-4">
-<h2>valuecomponent.html</h2>
- <pre data-keep-tags="kbd, em">
-        <code class="language-javascript">
-&lt;h2>Data List&lt;/h2>
-&lt;div *ngFor="let item of value">
-    {{item.id}} {{item.name}}
-   &lt;/div>
-</code>
-</pre>
-</div>
-
-<div class="col-lg-4">
-<h2>localhost:4200</h2>
-<img style="width:100%;height:auto" src="https://i.ibb.co/jRt0pCY/output.jpg">
-</div>
-
-</div>
-
-
-<hr>
-<hr>
-
-
 
     <script src="../js/prism.js"></script>
     <script type="text/javascript">
@@ -285,3 +204,5 @@ export class AppModule { }
 </body>
 
 </html>
+
+

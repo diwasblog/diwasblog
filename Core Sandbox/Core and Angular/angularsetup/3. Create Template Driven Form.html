@@ -24,179 +24,93 @@
 
 <body>
 
-<h2>Step 1 : Create Value Component</h2>
-    <pre>
-    <code class="language-javascript">
-       
-    </code>
-
-</pre>
-
   
+<h2>Step 1 Import FormModule</h2>
+To work with <strong>Template-driven forms</strong>, we must import the FormsModule in app.module.ts like below.
     <div class="row">
-        <div class="col-lg-4">
-            <pre data-keep-tags="kbd, em">
-            <code class="language-sql">
-                src 
-                  app
-                    <kbd>value
-                      value.component.css
-                      value.component.html
-                      value.component.ts
-                      value.component.spec.ts</kbd>
-                    app.component.css
-                    app.component.html
-                    app.component.spec.ts
-                    app.module.ts  
-            </code>
-        </pre>
-
-        </div>
-        <div class="col-lg-8">
-            Will Auto inject component inside <h2>app.module.ts by Angular like below</h2>
+        <div class="col-lg-12">
             <pre data-keep-tags="kbd, em">
             <code class="language-sql">
                 import { BrowserModule } from '@angular/platform-browser';
                 import { NgModule } from '@angular/core';
-
+                import {HttpClientModule} from '@angular/common/http';
+               <kbd> import { FormsModule } from '@angular/forms'; </kbd>
+                
                 import { AppComponent } from './app.component';
-               <kbd>import { ValueComponent } from './value/value.component';</kbd> 
-
+                import { ValueComponent } from './value/value.component';
+                import { NavComponent } from './nav/nav.component';
+                
                 @NgModule({
-                declarations: [	
+                  declarations: [	
                     AppComponent,
-                    <kbd>ValueComponent</kbd>
-                ],
-                imports: [
-                    BrowserModule
-                ],
-                providers: [],
-                bootstrap: [AppComponent]
+                    ValueComponent,
+                      NavComponent
+                   ],
+                  imports: [
+                    BrowserModule,
+                    HttpClientModule,
+                   <kbd>FormsModule</kbd>
+                  ],
+                  providers: [],
+                  bootstrap: [AppComponent]
                 })
                 export class AppModule { }
-
+                
             </code>
         </pre>
 
         </div>
+       
     </div>
 
 
 
-<div class="row">
-<div class="col-lg-6">
-    <h2>ValueComponent.ts</h2>
- <pre data-keep-tags="kbd, em">
-        <code class="language-javascript">
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-<kbd>import {HttpClientModule} from '@angular/common/http';</kbd>
-@Component({
-  selector: '<kbd>app-value</kbd>',   // Will use this name 
-  templateUrl: './value.component.html',
-  styleUrls: ['./value.component.css']
-})
-export class ValueComponent implements OnInit {
-
-  <kbd>value: any;</kbd>
-
-  constructor(<kbd>private http: HttpClient</kbd>) { }
-
-  ngOnInit() {
-    <kbd>this.getValues();</kbd>
-  }
-
-  getValues() {
-    this.http.get('https://localhost:5001/api/values').subscribe(response => {
-      this.value = response;
-      console.log(response);
-    }, error => {
-      console.log(error);
-    });
-  }
-
-}
-
-        </code>
-    </pre>
-
-</div>
+    <br>
+    <br>
+    <h2>Step2. Form with templating form in Nav.component.html</h2>
+<pre  data-keep-tags="kbd, em">
+    <code class="language-javascript">
+        //If ngForm is used, all the input fields which has [(ngModel)]="" must have an attribute name with a value.
+        &lt;form <kbd>#loginForm="ngForm"</kbd> class="form-inline my-2 my-lg-0" <kbd>(ngSubmit)="login()"</kbd>>
+        &lt;input class="form-control mr-sm-2" type="text" placeholder="Username" <kbd>name="username"</kbd> required aria-label="Username" <kbd>[(ngModel)]="model.username"</kbd>>
+        &lt;input class="form-control mr-sm-2" type="text" placeholder="Password" required <kbd>name="password"</kbd> aria-label="Password" <kbd>[(ngModel)]="model.password"</kbd>>
+        &lt;button <kbd>[disabled]="!loginForm.valid"</kbd> class="btn btn-outline-success my-2 my-sm-0" type="submit">Login&lt;/button>
+        &lt;/form>
 
 
-<div class="col-lg-6">
-<h2>app.module.ts</h2>
- <pre data-keep-tags="kbd, em">
-        <code class="language-javascript">
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-<kbd>import {HttpClientModule} from '@angular/common/http';</kbd>
-
-
-import { AppComponent } from './app.component';
-import { ValueComponent } from './value/value.component';
-
-@NgModule({
-  declarations: [
-    AppComponent,
-    ValueComponent
-  ],
-  imports: [
-    BrowserModule,
-    <kbd>HttpClientModule,</kbd>   
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
-export class AppModule { }
-
-
-</code>
+    </code>
 </pre>
 
-</div>
+<h2>Step 3 in nav.component.ts</h2>
+<pre  data-keep-tags="kbd, em">
+    <code class="language-javascript">
+        import { Component, OnInit } from '@angular/core';
 
+        @Component({
+          selector: 'app-nav',
+          templateUrl: './nav.component.html',
+          styleUrls: ['./nav.component.css']
+        })
+        export class NavComponent implements OnInit {
+        
+          <kbd>model: any = {};</kbd>
+        
+          constructor() { }
+        
+          ngOnInit() {
+          }
+        
+          login() {
+            console.log(this.model);
+            //Accessing model and will get:
+            {username:'diwas',password:'mypassword'}
+          }
+        
+        }
+        
 
-
-
-</div>   
-
-<div class="row">
-
-<div class="col-lg-4">
-<h2>app.module.html</h2>
- <pre data-keep-tags="kbd, em">
-        <code class="language-javascript">
-&lt;div style="text-align: center;">
-  Welcome 
- &lt;app-value>&lt;/app-value>
-&lt;/div>
-</code>
+    </code>
 </pre>
-</div>
-
-
-<div class="col-lg-4">
-<h2>valuecomponent.html</h2>
- <pre data-keep-tags="kbd, em">
-        <code class="language-javascript">
-&lt;h2>Data List&lt;/h2>
-&lt;div *ngFor="let item of value">
-    {{item.id}} {{item.name}}
-   &lt;/div>
-</code>
-</pre>
-</div>
-
-<div class="col-lg-4">
-<h2>localhost:4200</h2>
-<img style="width:100%;height:auto" src="https://i.ibb.co/jRt0pCY/output.jpg">
-</div>
-
-</div>
-
-
-<hr>
-<hr>
 
 
 

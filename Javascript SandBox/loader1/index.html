@@ -1,0 +1,95 @@
+
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>modalLoading Demo</title>
+<style>
+
+
+.loader-wrap {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99999;
+    position: fixed;
+    display: none;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+
+.loading-spinner {
+   width:50px;
+   height:50px;
+   display:inline-block;
+   padding:0px;
+   text-align:left;
+}
+.loading-spinner span {
+   position:absolute;
+   display:inline-block;
+   width:50px;
+   height:50px;
+   border-radius:100%;
+   background:rgba(135, 211, 124,1);
+   -webkit-animation:loader3 1.5s linear infinite;
+   animation:loader3 1.5s linear infinite;
+}
+.loading-spinner span:last-child {
+   animation-delay:-0.9s;
+   -webkit-animation-delay:-0.9s;
+}
+@keyframes loading-spinner {
+   0% {transform: scale(0, 0);opacity:0.8;}
+   100% {transform: scale(1, 1);opacity:0;}
+}
+@-webkit-keyframes loader3 {
+   0% {-webkit-transform: scale(0, 0);opacity:0.8;}
+   100% {-webkit-transform: scale(1, 1);opacity:0;}
+}
+
+
+.loading-spinner { position: absolute; top: 50%; right: 0; bottom: 0; left: 50%; margin: -15px 0 -15px;}
+
+
+</style>
+</head>
+
+<body>
+  <div class="loader-wrap">
+    <div class="loading-spinner"><span></span><span></span><span></span><span></span><span></span></div>
+</div>
+<input type="submit" onclick="callme()" value="click Me">
+
+
+<script src="workforce.js"></script>
+
+<script>
+
+   
+ async function callme(){
+  WorkForce.loader.show();
+    
+    let delayres = await delay(3000);
+
+    WorkForce.loader.hide();
+ } 
+ 
+ function delay(delayInms) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(2);
+    }, delayInms);
+  });
+}
+
+</script>
+
+
+</body>
+</html>

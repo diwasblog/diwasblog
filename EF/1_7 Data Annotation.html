@@ -775,6 +775,75 @@ public class EducationContext : DbContext
                     style="color: #2dc26b;"><code><em>Students</em></code>&nbsp;</span></strong><span
                 style="color: #000000;">table, it will be the primary key and the column name will be</span>&nbsp;<span
                 style="color: #2dc26b;"><code><strong>STudenTiD</strong></code></span>.</span></p>
+    
+    <h2>Regex Expression in Data Annotation</h2>
+    <pre>
+        <code class="language-csharp">
+            //In C#
+        [RegularExpression("^9+([7-8][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]+)$", ErrorMessage = "Phone Number Must be in Proper Format.")]
+        public string MobileNumber { get; set; }
+
+
+
+        [Required( ErrorMessage = "Email is a Required field." )]
+        [DataType( DataType.EmailAddress )]
+        [RegularExpression( "^[A-Za-z0-9._%+-]*@[A-Za-z0-9.-]*\\.[A-Za-z0-9-]{2,}$", ErrorMessage = "Email is required and must be properly formatted.")]
+         public string Email {get;set;}
+
+
+
+         [Required( ErrorMessage = "Zip is a Required field." )]
+         [DataType( DataType.Text )]
+         [RegularExpression( "\\d{5}", ErrorMessage = "Zip Code is required and must be properly formatted.")]
+         public String Zip { get; set; }
+
+
+
+        //Catch All Error
+        
+        try
+        {
+
+            if (!ModelState.IsValid)
+            {
+                var allErrors = string.Join("; ", ModelState.Values
+                                    .SelectMany(x => x.Errors)
+                                    .Select(x => x.ErrorMessage));
+                FlashMessage.Danger(allErrors);
+
+                return Redirect("/contactus");
+            }
+
+
+            ContactService.ContactUsCreate(contactus);
+            FlashMessage.Confirmation("Thank you for your Inquiry. We will get you back very soon.");
+
+            return Redirect("/contactus");
+        }
+        catch (Exception ex)
+        {
+            FlashMessage.Danger("Unable to Send Mail Currently");
+            return Redirect("/contactus");
+        }
+        
+      
+    }
+}        
+
+
+
+        //In html
+        var dateReg = /^9+([7-8][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]+)$/;
+        if (!dateReg.test(inputVal)) {
+            $(this).after('<span class="error error-keyup-5" style="color:#cc5965">Invalid Mobile Number <br></span>');
+        }
+
+        </code>
+    </pre>
+    
+    
+    
+    
     <script src="js/prism.js"></script>
     <script type="text/javascript">
         Prism.plugins.NormalizeWhitespace.setDefaults(

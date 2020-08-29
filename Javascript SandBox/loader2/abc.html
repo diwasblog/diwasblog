@@ -1,0 +1,46 @@
+
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>modalLoading Demo</title>
+<style>
+body { text-align:center;}
+h1 { margin:50px auto;}
+.btn { display:inline-block; margin-top:50px; padding:20px 10px; background-color:#9FD477; border-bottom:3px solid #8BC163; color:#fff; text-decoration:none;}
+</style>
+</head>
+
+<body>
+
+<input type="submit" onclick="callme()" value="click Me">
+<a href='javascript:WorkForce.init(true);' class="btn">Show modalLoading</a>
+<script src="workforce.js"></script>
+
+<script>
+
+   
+ async function callme(){
+     debugger;
+    WorkForce.init(true);
+    
+    let delayres = await delay(3000);
+
+    WorkForce.init(false);
+ } 
+ 
+ function delay(delayInms) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(2);
+    }, delayInms);
+  });
+}
+
+</script>
+
+
+</body>
+</html>
