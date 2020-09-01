@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<p><span style="color: #000000;"><strong><span style="font-size: 18pt;">If no angular CLI?</span></strong></span></p>
+<p><span style="font-size: 14pt; color: #000000;">If we donot have CLI then&nbsp;we have to create all main.ts, index.html, app module ourselves, bootstrap component, all annotations for creating components manually?</span></p>
+<p><span style="font-size: 14pt; color: #000000;">Angular CLI is a command-line interface which helps to create </span></p>
+<ul>
+<li><span style="font-size: 14pt; color: #000000;"><span style="color: #e03e2d;">angular </span><strong><span style="color: #e03e2d;">application faster</span></strong></span></li>
+<li><span style="font-size: 14pt; color: #000000;">&nbsp;<span style="color: #e03e2d;"><strong>create boilerplate code</strong></span></span></li>
+<li><span style="font-size: 14pt; color: #000000;">follow<strong><span style="color: #e03e2d;"> angular best practices.</span></strong></span></li>
+<li><span style="font-size: 14pt; color: #000000;">unit test and an </span><span style="font-size: 14pt; color: #000000;">end to end tests, </span></li>
+<li><span style="font-size: 14pt; color: #000000;">optimized builds for deployment to productions.</span></li>
+<li>&nbsp;</li>
+</ul>
+<p><strong><span style="font-size: 18pt; color: #000000;">What happens when you run ngserve --open?</span></strong></p>
+<p><br /><span style="font-size: 14pt;">When you do this Angular CLI runs Webpack to build and bundle all Javascript and CSS Code.</span></p>
+<p><span style="font-size: 14pt;">main.bundle.js ==&gt; all application code that we write. services, components, directives.</span><br /><span style="font-size: 14pt;">polyfills.bundle.js:&nbsp;</span><br /><span style="font-size: 14pt;">styles.bundles.js</span><br /><span style="font-size: 14pt;">vendor.bundle.js&nbsp;</span></p>
+<ul>
+<li>&nbsp;</li>
+</ul>
+<p>======================<br /><span style="color: #e03e2d;"><strong><span style="font-size: 14pt;">What is bundling and why is it important for performance?</span></strong></span></p>
+<p><br /><span style="font-size: 14pt; color: #000000;">A typical real-world angular application is made up of many components. Each component code is in its own .ts file which gets transpiled to JavaScript i.e to a .js file. Along the same lines, a component may also have its own .css file for styles. So our angular application code is in many small files. In addition to our application code files, we also have vendor code files like Angular, jQuery, etc.&nbsp;</span></p>
+<p><span style="font-size: 14pt; color: #000000;">Web browsers have a limit on how many scripts or CSS files they can download simultaneously.&nbsp;</span></p>
+<p><span style="font-size: 14pt; color: #000000;">Because of this browser limitation, your application may suffer from a performance perspective, if it has many JavaScript and CSS files to download.&nbsp;</span></p>
+<p><span style="font-size: 14pt; color: #000000;">Bundling can solve this problem by combining many small applications and library files into a few bundles. As mentioned before,&nbsp;</span><br /><span style="font-size: 14pt; color: #000000;">Angular CLI runs WebPack for building and bundling angular applications.</span></p>
+<hr />
+<p><br />=========================<br /><span style="font-size: 18pt; color: #000000;">Other optimization techniques to improves angular application performance.</span><br /><span style="font-size: 18pt; color: #e03e2d;">1)Ahead-of-time(AOT) compilation</span><br /><span style="font-size: 18pt; color: #e03e2d;">2) Minification</span><br /><span style="font-size: 18pt; color: #e03e2d;">3) Uglification</span><br /><span style="font-size: 18pt; color: #e03e2d;">4)TreeShaking</span></p>
+<hr />
+<p><span style="color: #000000;"><strong><span style="font-size: 18pt;">ng serve</span></strong></span></p>
+<p><br />ng serve&nbsp;<br />ng serve --open<br />ng serve --port 4800</p>
+<p>&nbsp;</p>
+<ul>
+<li><span style="font-size: 14pt; color: #000000;">The<strong><span style="color: #2dc26b;"> ng serve</span></strong> command builds and serves the application<span style="color: #2dc26b;"> <strong>from memor</strong>y </span>for faster development experience.</span></li>
+<li><span style="font-size: 14pt; color: #000000;">But <strong><span style="color: #2dc26b;">ng build </span></strong>will save to a folder /disk. So, it takes time.</span></li>
+</ul>
+<p><br />===============================================================</p>
+<p><span style="font-size: 18pt; color: #169179;"><strong>By Deployment to the server for testing?</strong></span></p>
+<p><span style="font-size: 18pt; color: #000000;"><strong>ng build &nbsp; or&nbsp; &nbsp;ng build -dev</strong></span></p>
+<p><br /><span style="font-size: 14pt; color: #000000;">By default, the ng build command does a development build and will build in the <span style="color: #169179;">dist </span>folder in the project which is defined in <strong><span style="color: #169179;">angular.json</span></strong> file.</span><br /><span style="font-size: 14pt; color: #000000;">The development build is not optimized and used for testing only.</span><br /><span style="font-size: 14pt; color: #000000;">In this case, we will have a <span style="color: #e03e2d;"><strong>source map file</strong></span> for all js files. Source map file helps to easily debug our application even after compressed file.</span></p>
+<p><img src="https://2.bp.blogspot.com/-66Qz1Z5xelo/Whci46gcb4I/AAAAAAAAnkA/CGdEr9Hs4uMjnl0nJzLlkckx3qRscNTngCLcBGAs/s1600/ng%2Bbuild%2Bdevelopment.png" /><br />===========================================<br /><span style="color: #169179; font-size: 18pt;">For deployment application to server for production :</span></p>
+<p><strong><span style="font-size: 18pt; color: #000000;">ng build --prod</span></strong></p>
+<p><span style="font-size: 14pt; color: #000000;">Will do production build and has done all optimization techniques like aot,jit , tree shaking, and uglification and will have a much much smaller file.</span><br /><span style="font-size: 14pt; color: #000000;">In this case, we do not&nbsp;have source map files because it is not needed on the production server.</span></p>
+<p><img src="https://3.bp.blogspot.com/-dAKWYrPEh34/Whcj47qtBOI/AAAAAAAAnkM/pG_inWwGJ98Lwkyzh36qSNxYLH4Js_WJgCLcBGAs/s1600/angular%2Bproduction%2Bbuild.png" /></p>
+<p><span style="color: #000000;"><strong>Looks these files.</strong></span></p>
+<p>&nbsp;</p>
+<p><span style="color: #000000;"><strong><span style="font-size: 18pt;">Then you make changes in <span style="color: #2dc26b;">angular.json </span>file then you have to restart the <span style="color: #2dc26b;">angular application</span></span></strong></span></p>
+<hr />
+<p>Other differences:</p>
+<p><strong><span style="color: #000000; font-size: 14pt;">ng serve</span></strong></p>
+<ul style="list-style-type: disc;">
+<li><span style="font-size: 14pt; color: #000000;">Compiles and serves the application from memory</span></li>
+<li><span style="font-size: 14pt; color: #000000;">Does not write the build files to the disk</span></li>
+<li><span style="font-size: 14pt; color: #000000;">Typically used to run the application on local development machine</span></li>
+<li><span style="font-size: 14pt; color: #000000;">Cannot be used for deploying the build to another server (Ex. Testing, Staging or Production server)</span></li>
+</ul>
+<p>&nbsp;</p>
+<p><span style="font-size: 14pt; color: #000000;"><strong>ng build</strong><br /></span></p>
+<ul style="list-style-type: disc;">
+<li><span style="font-size: 14pt; color: #000000;">Compiles the application to the "<strong>dist</strong>" folder</span></li>
+<li><span style="font-size: 14pt; color: #000000;">Can be used to produce both development &amp; production builds</span></li>
+<li><span style="font-size: 14pt; color: #000000;">Typically used to deploy the application on another server.</span></li>
+</ul>
+<table style="border-collapse: collapse; width: 28.8027%;" border="1">
+<tbody>
+<tr>
+<td style="width: 5.36685%;">Development Build</td>
+<td style="width: 2.14318%;">Production Build</td>
+</tr>
+<tr>
+<td style="width: 5.36685%;">ng build&nbsp; &nbsp;or&nbsp; &nbsp; ng build --dev</td>
+<td style="width: 2.14318%;">ng build --prod</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<hr />
+<table border="1">
+<tbody>
+<tr>
+<th>Feature</th>
+<th>Development Build</th>
+<th>Production Build</th>
+</tr>
+<tr>
+<td>Source Maps</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Extracts CSS</td>
+<td>.js file</td>
+<td>.css file</td>
+</tr>
+<tr>
+<td>Minifaction</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Uglification</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Tree Shaking</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>AOT</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<p><span style="font-size: 14pt;"><span style="color: #000000;"><strong><span style="font-size: 18pt;">Minification</span></strong></span>&nbsp;</span></p>
+<p><span style="font-size: 14pt; color: #000000;">The process of removing excess whitespace, comments, and optional tokens like curly brackets and semicolons is called Minification.&nbsp; </span></p>
+<hr />
+<p><span style="font-size: 18pt; color: #000000;"><strong>What is Uglification ?</strong></span></p>
+<p><br /><span style="font-size: 14pt; color: #000000;">The process of transforming code to use short variable and function names is called uglification.</span><br /><br /><span style="font-size: 14pt; color: #000000;">The minified and uglified version of the file is smaller in size than the full version, resulting in faster response times and lower bandwidth costs.</span><br /><br /><span style="font-size: 14pt; color: #000000;">If you look at the bundles generated by the prod build, you will notice that they are minified and uglified. Notice, extra whitespaces, comments, and optional tokens like curly brackets and semicolons are removed. Also notice, the code is transformed by using short variable and function names. On the other hand, the bundles generated by the dev build, are not minified and uglified.</span></p>
+<hr />
+<p><strong><span style="font-size: 18pt; color: #000000;">What is treeshaking ?</span></strong></p>
+<p><strong><span style="font-size: 14pt; color: #000000;">what happens when you shake the tree? All the branches which are dead will get removed right? In the same way in js terminology tree shaking refers to removing all unused/unreferenced functions termed as dead code from library or JavaScript file. So that file size decreases. </span></strong></p>
+<p>&nbsp;</p>
+</body>
+</html>

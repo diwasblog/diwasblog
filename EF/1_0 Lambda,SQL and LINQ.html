@@ -864,8 +864,7 @@ select d).ToList();
       <pre>
         <code class="language-csharp">
           var authors =  from a in context.Authors 
-                         join c in context.Courses 
-                         on a.Id equals c.AuthorId
+                         join c in context.Courses on a.Id equals c.AuthorId
                          new {
                           AuthorName = author.Name,
                           CourseName = course.Name
@@ -890,13 +889,80 @@ select d).ToList();
   </div>
   <br>
   <h2>Left Join</h2>
+Here two table are joined , then stored result in temporary variable "studies"
+and then use DefaultIfEmpty in "studies variable"
+
+
   <pre>
   <code class="language-csharp">
    
     var query =   from p in db.Patients
                   join s in db.Studies on p.Id equals s.PatientId into studies
+
                   from s in studies.DefaultIfEmpty()
                   select new { Patient = p, Study = s };
+  </code>
+</pre>
+
+<hr>
+<h2>Left Join </h2>
+<div class="row">
+<div class="col-lg-6">
+  <pre>
+    <code class="language-csharp">
+     
+      var result = from e in Employee.GetAllEmployees() // Donot add ToList()
+                      join d in Department.GetAllDepartments() // Donot add ToList()
+                      on e.DepartmentID equals d.ID into eGroup 
+  
+                      from tmp in eGroup.DefaultIfEmpty()
+                      select new 
+                      {
+                           EmployeeName = e.Name,
+                           DepartmentName = d == null ? "No Department" : d.Name
+                      };
+    </code>
+  </pre>
+</div>
+<div class="col-lg-6">
+  <pre>
+    <code class="language-csharp">
+     
+      var result = from e in Employee.GetAllEmployees()   // Donot add ToList()
+                   from d in Department.GetAllDepartments()
+                      .Where (d => d.ID == e.DepartmentID)
+                      .DefaultIfEmpty()
+                  select new 
+                  {
+                    EmployeeName = e.Name,
+                    DepartmentName = d == null ? "No Department" : d.Name
+                   };
+    </code>
+  </pre>
+</div>
+ </div> 
+
+Output as :
+
+<pre>
+  <code class="language-csharp">
+   
+    SELECT 
+    [Extent1].[EmployeeName]
+    [Extent1].[DepartmentName]
+    FROM  [Employee].[Employee] AS [Extent1]
+    LEFT OUTER JOIN [Employee].[Department] AS [Extent2] ON [Extent1].[DepartmentID] = [Extent2].[ID]
+ 
+
+  </code>
+</pre>
+<br>
+<hr>
+
+<h2>Add this line and debug and will get on output section</h2>
+<pre>
+  <code class="language-csharp">
+    _context.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
   </code>
 </pre>
   <script src="js/prism.js"></script>

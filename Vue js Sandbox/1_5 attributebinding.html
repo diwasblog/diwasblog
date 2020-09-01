@@ -115,7 +115,16 @@ const app=new Vue({
    </html>
 </xmp>
 <!--####################################################-->
-
+<xmp class="prettyprint">
+  
+  <template slot="imageName" scope="props">
+    <center>
+      //{{props}}  ==> Check Props
+        <img :src="`/Content/HeroCarousel/${props.row.imageName}`" height="32" width="32" />
+    </center>
+  
+</template>
+</xmp>
 
     </body>
 

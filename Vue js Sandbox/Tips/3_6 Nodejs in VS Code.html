@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
 </head>
 <body>
   <p>1<strong><span style="font-size: 14pt;">)<span style="color: #ff0000;">intsall node.js</span></span></strong></p>
@@ -32,10 +35,14 @@ href="https://www.codeproject.com/KB/aspnet/1214885/Webpack_Grunt_Example_1.jpg"
 <p><img class="img-responsive" src="https://www.codeproject.com/KB/aspnet/1214885/Webpack_Grunt_Example_2.jpg" alt="" /></p>
 <h4><span style="color: #ff0000;">Babel</span></h4>
 <p>Babel is also a JavaScript transpiler that compiles and converts old ES5 JavaScript to make browser compatible.</p>
+<hr>
 
+<h2>Webpack Production build</h2>
+<xmp class="prettyprint">
+  webpack -p --config ./webpack.production.config.js
 
-
-
+  //The -p tells webpack to generate a production build. You have to change the build script in package.json to include the production flag.
+</xmp>
 
 
 

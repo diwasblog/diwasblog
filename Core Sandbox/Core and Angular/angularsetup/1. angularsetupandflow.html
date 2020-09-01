@@ -26,13 +26,43 @@
 
     <pre>
     <code class="language-javascript">
-        npm install -g @angular/cli               // will install latest angular version
+        npm install -g @angular/cli       or npm install -g @angular/cli@latest         // will install latest angular cli version
         cd 
         ng new DatingApp-SPA                      //Create new Angular Project with latest version (skip routing and use css)
         cd DatingApp-SPA                          
         code .
     </code>
 </pre>
+
+<h2>What is angular CLI ?</h2>
+Angular cli is command line interface for running angular project. Generally we install it globally by setting -g ,
+because it installs the Angular CLI system-wide so that you can use it in your all projects.
+<h4><u>Check Angular CLI Version</u></h4>
+<pre>
+<code class="language-javascript">
+    ng --version
+
+    //Output:
+Angular CLI: 10.0.7
+Node: 10.16.3
+OS: win32 x64
+
+</code>
+</pre>
+<hr>
+<h4>Angular Helpful Commands</h4>
+<pre>
+    <code class="language-javascript">
+        ng help
+
+
+    --> ng new
+    -->  ng generate
+    --> ng server
+    --> ng test , ng run , ng build, ng e2e  , ng config etc.
+    </code>
+</pre>
+
 
     <h2>How angular Bootstrap?</h2>
     <b>main.ts</b> is responsible for boostraping by calling AppModule and then <b>AppModule</b>> calls
