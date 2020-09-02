@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../css/dracula.css">
+    <link rel="stylesheet" href="../css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+<style>
+    kbd {
+        background: black
+    }
+</style>
+<body>
+<table style="border-collapse: collapse; width: 80.5851%; height: 467px;" border="1">
+<tbody>
+<tr style="height: 33px;">
+<td style="width: 19.2021%; height: 33px;">&nbsp;</td>
+<td style="width: 19.2021%; height: 33px;"><span style="color: #2dc26b; font-size: 18pt;"><strong>constructor</strong></span></td>
+<td style="width: 40.3191%; height: 33px;"><span style="font-size: 18pt;"><strong><span style="color: #2dc26b;">ngOnInit</span></strong></span></td>
+</tr>
+<tr style="height: 100px;">
+<td style="width: 19.2021%; height: 100px;"><span style="font-size: 18pt; color: #000000;">Concept of&nbsp;</span></td>
+<td style="width: 19.2021%; height: 100px;"><span style="font-size: 18pt; color: #000000;">It is the concept of Typescript and Javascirpt. It is called by Javascript Library.</span></td>
+<td style="width: 40.3191%; height: 100px;"><span style="font-size: 18pt; color: #000000;">It is the concept of Angular. It is called by Angular framework</span></td>
+</tr>
+<tr style="height: 134px;">
+<td style="width: 19.2021%; height: 134px;"><span style="font-size: 18pt; color: #000000;">Binding State</span></td>
+<td style="width: 19.2021%; height: 134px;"><span style="font-size: 18pt; color: #000000;">Binding has not happened till this moment so only class variables are accessible.</span></td>
+<td style="width: 40.3191%; height: 134px;"><span style="font-size: 18pt; color: #000000;">Binding with UI has been done so the class variable has a value set from UI</span></td>
+</tr>
+<tr style="height: 100px;">
+<td style="width: 19.2021%; height: 100px;"><span style="font-size: 18pt; color: #000000;">DOM</span></td>
+<td style="width: 19.2021%; height: 100px;"><span style="font-size: 18pt; color: #000000;">The component is not initialized. So, <strong><span style="color: #2dc26b;">DOM is not accessible.</span></strong></span></td>
+<td style="width: 40.3191%; height: 100px;"><span style="font-size: 18pt; color: #000000;">The component is initialized,<strong><span style="color: #2dc26b;"> DOM is ready and accessible. <span style="color: #000000;">If you are doing any manipulation of the component's DOM via e.g.&nbsp;<span style="color: #e03e2d;">ViewChildren</span>,&nbsp;<span style="color: #e03e2d;">ContentChildren&nbsp;</span>or&nbsp;<span style="color: #e03e2d;">ElementRef</span>, your native elements will be available during the this phase. </span></span></strong></span></td>
+</tr>
+<tr style="height: 100px;">
+<td style="width: 19.2021%; height: 100px;"><span style="font-size: 18pt; color: #000000;">Initialization Logic</span></td>
+<td style="width: 19.2021%; height: 100px;"><span style="font-size: 18pt; color: #000000;">Initialization of the class variable and <strong><span style="color: #e03e2d;"><span style="color: #2dc26b;">dependency injection is done here</span>.</span></strong></span></td>
+<td style="width: 40.3191%; height: 100px;"><span style="font-size: 18pt; color: #000000;">Mainly done for the <span style="color: #2dc26b;"><strong>child-parent data passing concept here.</strong></span></span></td>
+</tr>
+</tbody>
+</table>
+<h2>Showing constructor called first then after ngOnInit Called</h2>
+
+<pre data-keep-tags="kbd, em">
+    <code class="language-javascript">
+        export class AppComponent <kbd>implements OnInit</kbd> {
+  
+            <kbd>constructor</kbd>() {
+              console.log("AppComponent:Constructor");
+            }
+           
+            <kbd>ngOnInit</kbd>() {
+              console.log("AppComponent:OnInit");
+            }
+
+
+
+            //output
+            AppComponent:Constructor                 <--- first
+            AppComponent:OnInit                      <--- second
+    </code>
+</pre>
+
+
+<script src="../js/prism.js"></script>
+<script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true,
+            // 'break-lines': 10,
+            // 'indent': 2,
+            // 'remove-initial-line-feed': false,
+            // 'tabs-to-spaces': 4,
+            // 'spaces-to-tabs': 4
+        });
+
+
+    (function () {
+        if (!self.Prism) {
+            return;
+        }
+
+        var div = document.createElement('div');
+
+        Prism.hooks.add('before-highlight', function (env) {
+            var elt = env.element;
+            if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                elt = elt.parentNode;
+            }
+            var tags = elt.getAttribute('data-keep-tags');
+            if (!tags) {
+                return;
+            }
+            var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+            env.keepTags = true;
+            env.keepTagsPlaceholder = placeholder;
+
+            tags = tags.split(/\s*,\s*/).join('|');
+            var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+            env.keepTagsRegex = tags_regex;
+
+            env.tokenStack = [];
+            env.backupCode = env.code;
+
+            var code = env.element.innerHTML;
+            code = code.replace(tags_regex, function (match) {
+                env.tokenStack.push(match);
+                return placeholder.replace('{n}', env.tokenStack.length);
+            });
+            env.element.innerHTML = code;
+            code = env.element.textContent;
+            code = code.replace(/^(?:\r?\n|\r)/, '');
+
+            env.code = code;
+        });
+
+        Prism.hooks.add('after-highlight', function (env) {
+            if (!env.keepTags) {
+                return;
+            }
+            for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                    div.innerHTML = inside;
+                    inside = div.textContent;
+                    return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                });
+
+                env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                env.element.innerHTML = env.highlightedCode;
+            }
+        });
+
+    }());
+
+    Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+        v.classList.add("language-sql");
+    });
+    Prism.highlightAll();
+
+</script>
+</body>
+
+</html>
