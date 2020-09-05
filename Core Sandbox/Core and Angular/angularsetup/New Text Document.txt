@@ -1,0 +1,43 @@
+https://www.youtube.com/watch?v=T4Df5_cojAs&list=PLShDm2AZYnK3cWZpOjV7nOpL7plH2Ztz0
+https://www.youtube.com/watch?v=2PPSXonhIck
+https://medium.com/platform-engineer/web-api-design-35df8167460
+
+In HTTP
+- Message transfer will be in plain text.
+- Vulnerable to Hackers.
+- If doesnot pass any sensitive data then http is OK.
+
+So HTTPS is developed
+-HTTP with a security features.
+- ANy things transfer between server to client then it is encrypted and even hacker tapped the data then that data makes no sense to him.
+
+
+HTTPS protects the data by one of two protocal .
+1)SSL: Secure Socket Layer
+- Uses Public Key encryption
+
+Here, what happens is : if you required a sites which uses SSL, then when you hit on browser and will reached server, then server will send SSL certificate of the websites then this 
+certificate reached browser and then browser will check is this certificate real ? If yes then communication between them continue in encrypted fashion.
+
+
+2)TLS
+Latest version of SSL.
+
+
+Lots of sites nowadays uses https by default as provided by hosting provider.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

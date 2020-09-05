@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../css/dracula.css">
+    <link rel="stylesheet" href="../css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+<style>
+    kbd {
+        background: black
+    }
+</style>
+<body>
+ 
+
+<h2>Attribute vs Property </h2>
+
+<h2>In Angular All the things is property ie . bind via html object</h2>
+
+<p><span style="font-size: 14pt;"><img src="https://dotnettutorials.net/wp-content/uploads/2018/09/Understanding-HTML-Attribute-and-DOM-Property-in-Angular-Application.png" /></span></p>
+<p><span style="font-size: 14pt; color: #000000;">When above HTML is loaded by the browser, then it creates the Document Object Model (DOM) as shown in the below image.&nbsp;</span></p>
+<p><img src="https://dotnettutorials.net/wp-content/uploads/2018/09/Document-Object-Model.png" /></p>
+<p><span style="font-size: 14pt; color: #000000;">So in simple words, we can say that the DOM is an<span style="color: #2dc26b;"> application programming interface (API) for the HTML</span>, and we can use the programming languages like JavaScript or JavaScript frameworks like Angular to access and manipulate the HTML using their corresponding DOM objects.&nbsp;</span></p>
+<p><span style="font-size: 14pt; color: #000000;">In other words, we can say that the DOM contains the<strong><span style="color: #2dc26b;"> HTML elements as <span style="color: #e03e2d;">objects</span></span></strong>, their properties, methods, and events and it is a standard for accessing, modifying, adding or deleting HTML elements.</span></p>
+<p><span style="font-size: 14pt; color: #000000;">Angular Interpolation and property binding targets the DOM element of the HTML tag.</span></p>
+<p><span style="font-size: 14pt; color: #000000;">
+    <br>
+    <strong>Interpolation example:&nbsp;&lt;button disabled='{{IsDisabled}}&rsquo;&gt;Click Me&lt;/button&gt;</strong><br />
+    
+    <strong>Property binding example:&nbsp;&lt;button [disabled]=&rsquo;IsDisabled&rsquo;&gt;Click Me&lt;/button&gt;</strong> </span></p>
+<p><span style="font-size: 14pt; color: #000000;">Here , it is not doing :</span></p>
+<p><span style="font-size: 14pt; color: #000000;">&lt;button disabled=true&gt;CLick Me &lt;/button&gt;</span></p>
+<p><span style="font-size: 14pt; color: #000000;">But is acessing disabled property of button via object.</span></p>
+<p><span style="font-size: 14pt; color: #000000;">ie. button.disabled = true</span></p>
+<p>&nbsp;</p>
+
+
+
+<body>
+    <h3 id="html-attribute-dom-property"><strong><span style="color: #236fa1;">Difference between HTML attribute and DOM property</span></strong></h3>
+    <p><span style="font-size: 14pt; color: #000000;">Template binding works with properties and events but not attributes. In angular framework, attribute binding is achieved using prefix&nbsp;<strong>attr.</strong>&nbsp;such as<strong><span style="color: #e03e2d;">&nbsp;[attr.colspan].</span></strong> Let us understand the differences between HTML attribute and DOM property.</span><br /><span style="font-size: 14pt; color: #000000;">1. <span style="color: #2dc26b;">Attributes </span>are defined by HTML and <span style="color: #2dc26b;">properties </span>are defined by DOM.</span><br /><span style="font-size: 14pt; color: #000000;">2. The responsibility of <strong><span style="color: #2dc26b;">HTML attributes</span></strong> is just to initialize DOM properties. And then later DOM properties can change but HTML attributes cannot.</span><br /><span style="font-size: 14pt; color: #000000;">3. There are some <strong><span style="color: #2dc26b;">HTML attributes</span></strong> that have corresponding DOM property and those DOM properties have corresponding HTML attributes such as&nbsp;<strong>id</strong>.</span><br /><span style="font-size: 14pt; color: #000000;">4. There are also some<span style="color: #2dc26b;"> HTML attributes</span> that do not have corresponding <span style="color: #2dc26b;">DOM property</span> such as&nbsp;<span style="color: #2dc26b;"><strong>colspan</strong></span>.</span><br /><span style="font-size: 14pt; color: #000000;">5. There are also some <span style="color: #2dc26b;">DOM properties</span> that do not have corresponding <strong><span style="color: #2dc26b;">HTML attributes </span></strong>such as&nbsp;<span style="color: #2dc26b;"><strong>textContent</strong></span>.</span><br /><span style="font-size: 14pt; color: #000000;">6. The HTML attribute&nbsp;<strong>value</strong> contains the initial value whereas the DOM property&nbsp;<strong>value</strong> contains the current value. </span></p>
+
+<script src="../js/prism.js"></script>
+<script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true,
+            // 'break-lines': 10,
+            // 'indent': 2,
+            // 'remove-initial-line-feed': false,
+            // 'tabs-to-spaces': 4,
+            // 'spaces-to-tabs': 4
+        });
+
+
+    (function () {
+        if (!self.Prism) {
+            return;
+        }
+
+        var div = document.createElement('div');
+
+        Prism.hooks.add('before-highlight', function (env) {
+            var elt = env.element;
+            if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                elt = elt.parentNode;
+            }
+            var tags = elt.getAttribute('data-keep-tags');
+            if (!tags) {
+                return;
+            }
+            var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+            env.keepTags = true;
+            env.keepTagsPlaceholder = placeholder;
+
+            tags = tags.split(/\s*,\s*/).join('|');
+            var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+            env.keepTagsRegex = tags_regex;
+
+            env.tokenStack = [];
+            env.backupCode = env.code;
+
+            var code = env.element.innerHTML;
+            code = code.replace(tags_regex, function (match) {
+                env.tokenStack.push(match);
+                return placeholder.replace('{n}', env.tokenStack.length);
+            });
+            env.element.innerHTML = code;
+            code = env.element.textContent;
+            code = code.replace(/^(?:\r?\n|\r)/, '');
+
+            env.code = code;
+        });
+
+        Prism.hooks.add('after-highlight', function (env) {
+            if (!env.keepTags) {
+                return;
+            }
+            for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                    div.innerHTML = inside;
+                    inside = div.textContent;
+                    return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                });
+
+                env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                env.element.innerHTML = env.highlightedCode;
+            }
+        });
+
+    }());
+
+    Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+        v.classList.add("language-sql");
+    });
+    Prism.highlightAll();
+
+</script>
+</body>
+
+</html>

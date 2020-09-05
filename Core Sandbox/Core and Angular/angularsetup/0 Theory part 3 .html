@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../css/dracula.css">
+    <link rel="stylesheet" href="../css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+<style>
+    kbd {
+        background: black
+    }
+</style>
+<body>
+  
+
+<img src="https://miro.medium.com/max/661/1*XsogWxJjfx0K3KJ412Jo6g.png">
+<ol style="list-style-type: decimal;">
+    <li><span style="font-size: 14pt; color: #e03e2d;"><a style="color: #e03e2d;" href="https://www.tektutorialshub.com/angular/angular-data-binding/">Interpolation <span style="color: #2dc26b;">{{}}</span></a></span><br /><strong><span style="font-size: 14pt; color: #000000;">Data is bind from component to View</span></strong></li>
+    <li><strong><span style="font-size: 14pt; color: #e03e2d;"><a style="color: #e03e2d;" href="https://www.tektutorialshub.com/angular/angular-data-binding/">Property Binding <span style="color: #2dc26b;">[ ]</span></a></span></strong><br /><span style="color: #000000;"><strong><span style="font-size: 14pt;">Data is bind from component to the property of an HTML control in the view like</span></strong></span></li>
+    <li><strong><span style="font-size: 14pt; color: #e03e2d;"><a style="color: #e03e2d;" href="https://www.tektutorialshub.com/angular/angular-data-binding/">Event Binding&nbsp;<span style="color: #2dc26b;"> (click)</span></a></span></strong><br /><strong><span style="font-size: 14pt; color: #000000;">The DOM Events are bind from View to a method in the Component</span></strong></li>
+    <li><strong><span style="font-size: 14pt; color: #e03e2d;"><a style="color: #e03e2d;" href="https://www.tektutorialshub.com/angular/angular-data-binding/">Two-way Binding</a>/Model Binding&nbsp; <span style="color: #2dc26b;">[(ngModel)]</span></span></strong><br /><strong><span style="font-size: 14pt; color: #000000;">The data flow in both directions from view to component or from component to view</span></strong></li>
+    </ol>
+    <ul>
+        <li><span style="font-size: 18pt;"><span style="color: #2dc26b;"><strong>{{ templateExpression }}</strong> </span>&nbsp;====&gt; <span style="color: #000000;">The content inside the double braces is called <span style="color: #e03e2d;">Template Expression</span></span></span></li>
+        <li><span style="font-size: 18pt; color: #000000;">&nbsp;<strong><span style="color: #2dc26b;"><code>{{ }}</code></span></strong> is called interpolation.&nbsp;</span></li>
+        <li><span id="interpolation-is-one-way-binding" style="font-size: 18pt;"><span style="color: #2dc26b;">Interpolation is one-way binding</span>: <span style="font-size: 14pt; color: #000000;">when <span style="color: #3598db;">component changes</span> then <span style="color: #e03e2d;">view change</span>, but when view change component value does not&nbsp;change</span></span></li>
+        </ul>
+ <br>
+ <div class="row">
+    <div class="col-lg-6">
+        app.component.html
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+
+
+import { Component } from '@angular/core';
+    
+@Component({
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+    <kbd>firstName: string</kbd>= 'Sachin';
+    <kbd>lastName: string</kbd>=”Tendulkar”;   // or simply lastName = "Tendulkar"
+ 
+}
+            </code>
+        </pre>
+    </div>
+
+    <div class="col-lg-6">
+        
+app.component.html
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+... 
+{{<kbd>firstName</kbd>}}
+{{<kbd>lastName</kbd>}}
+
+            </code>
+        </pre>
+    </div>
+</div>
+
+<h2>Invoke a method in the component</h2>
+We can invoke the component’s methods using interpolation.
+
+<div class="row">
+    <div class="col-lg-6">
+        app.component.html
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+
+
+import { Component } from '@angular/core';
+    
+@Component({
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+
+    title = 'Angular Interpolation Example';
+
+    <kbd>getTitle()</kbd>: string {
+         return this.title;
+     }
+
+
+ 
+}
+            </code>
+        </pre>
+    </div>
+
+    <div class="col-lg-6">
+        
+app.component.html
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+
+{{<kbd>getTitle()</kbd>}}
+
+            </code>
+        </pre>
+    </div>
+</div>
+
+
+
+
+
+<hr>
+<h2>Bind to an element property</h2>
+We can bind to any property that accepts a <strong>string</strong>.
+<div class="row">
+    <div class="col-lg-6">
+        app.component.html
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+
+//component
+
+giveMeRed :string = "red";
+itemImageUrl : string = "/google.com/a.png";   // string so we can bind to html
+
+            </code>
+        </pre>
+    </div>
+
+    <div class="col-lg-6">
+        
+app.component.ts
+        <pre data-keep-tags="kbd, em">
+            < class="language-javascript">
+&lt;p>Show me &lt;span class = "{{giveMeRed}}">red&lt;/span>&lt;/p>
+&lt;p style.color={{<kbd>giveMeRed</kbd>}}>This is red&lt;/p>
+&lt;div>&lt;img src="{{<kbd>itemImageUrl</kbd>}}">&lt;/div>
+            </code>
+        </pre>
+    </div>
+</div>
+<hr>
+<h2>Property Binding  ===>   []</h2>
+With property binding, the value is passed from the component to the specified property.
+<div class="row">
+    <div class="col-lg-6">
+        Using Property Binding for disabling button property <strong>Use it</strong>
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+
+                &lt;button [disabled]='<kbd>isDisabled</kbd>'>Disable me&lt;/button> 
+
+
+                import { Component } from '@angular/core';  
+                @Component({  
+                    selector: 'my-app',  
+                    template: '...'  
+                    
+                })  
+                export class AppComponent {  
+                <kbd>isDisabled</kbd>: boolean = true;  
+                }  
+            </code>
+        </pre>
+    </div>
+
+    <div class="col-lg-6">
+        
+Will always disable even for true or false using interpolation <strong style="color:red">Dont use</strong>
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+
+
+                &lt;button disabled='<kbd>{{isDisabled}}</kbd>'>Disable Me&lt;/button> 
+
+
+import { Component } from '@angular/core';  
+@Component({  
+    selector: 'my-app',  
+    template: ''  
+     
+    &lt;/div>`  
+})  
+export class AppComponent {  
+<kbd>isDisabled</kbd>: boolean = true/false;  
+}  
+
+            </code>
+        </pre>
+    </div>
+</div>
+
+<h2>Property Binding Examples</h2>
+
+<div class="row">
+    <div class="col-lg-6">
+       
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+
+                sitecomponent.ts
+
+                import {Component} from '@angular/core';
+                @Component({
+                    selector: 'app-root',
+                    templateUrl: './site.component.html', 
+                    styleUrls: ['./site.component.css']
+                })
+                export class SiteComponent {
+                    flag = true;
+                    website = {
+                         name : 'ConcretePage',
+                         url : 'http://www.concretepage.com',
+                         logo : '/assets/images/logo.jpg',
+                         description: 'Learn angular 2 property binding.'
+                    }
+                } 
+            </code>
+        </pre>
+        sitecomponent.css
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+
+                .one {
+                    color: green;
+                }
+                .two {
+                    font-size: 20px;
+                } 
+            </code>
+        </pre>
+    </div>
+
+    <div class="col-lg-6">
+        sitecomponent.html
+      <pre  data-keep-tags="kbd, em">
+          <code class="language-javascript">
+
+           
+
+        Logo: &lt;img [src]="website.logo"/&gt;         
+
+    &lt;br/&gt;Logo: &lt;img bind-src="website.logo"/&gt;
+    
+    &lt;br/&gt;Logo: &lt;img src="{{website.logo}}"/&gt;
+    
+    &lt;br/&gt;Url: &lt;a [href]="website.url" [textContent]="website.name"&gt; &lt;/a&gt;
+    
+    &lt;br/&gt;Url: &lt;a bind-href="website.url" bind-textContent="website.name"&gt; &lt;/a&gt;
+    
+    &lt;br/&gt;Url: &lt;a href="{{website.url}}" textContent="{{website.name}}"&gt; &lt;/a&gt;
+    
+    &lt;p [textContent]="website.description"&gt; &lt;/p&gt;
+    
+    &lt;p bind-textContent="website.description"&gt; &lt;/p&gt;
+    
+    &lt;p textContent="{{website.description}}"&gt; &lt;/p&gt;
+    
+    &lt;br/&gt;&lt;button [disabled]="flag"&gt;Submit&lt;/button&gt;
+    
+    &lt;br/&gt;&lt;button bind-disabled="!flag"&gt;Submit&lt;/button&gt;
+    
+    &lt;p [ngClass]="'one two'"&gt; Angular 2 Property Binding Example &lt;/p&gt;
+    
+    &lt;p bind-ngClass="'one two'"&gt; Angular 2 Property Binding Example &lt;/p&gt;
+    
+    &lt;p ngClass="{{'one two'}}"&gt; Angular 2 Property Binding Example &lt;/p&gt;
+        
+    &lt;br/&gt;&lt;my-msg  prefixMsg= "Website name is " [siteName] = "website.name"&gt; &lt;/my-msg&gt; 
+    
+    &lt;br/&gt;&lt;my-msg  prefixMsg= "Website name is " bind-siteName = "website.name"&gt; &lt;/my-msg&gt;
+    
+    &lt;br/&gt;&lt;my-msg  prefixMsg= "Website name is " siteName = "{{website.name}}"&gt; &lt;/my-msg&gt; 
+
+
+            </code>
+        </pre>
+    </div>
+</div>
+
+
+<h2>Colspan</h2>
+In most of the case : there is 1:1 mapping between HTML attribute and DOM property(object of html) , but sometimes these doesnot works like in the case 
+of Colspan
+
+<div class="row">
+    <div class="col-lg-6">
+       
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+
+                &lt;tr&gt;&lt;td <kbd>colspan</kbd>="{{1 + 1}}"&gt;Three-Four&lt;/td&gt;&lt;/tr&gt;
+
+                //Will give error 
+                Template parse errors: Can't bind to 'colspan' since it isn't a known native property 
+                //Because here colspan is not native Property But colSpan is native object property of td tag
+            </code>
+        </pre>
+        
+    </div>
+
+    <div class="col-lg-6">
+        sitecomponent.html
+      <pre  data-keep-tags="kbd, em">
+          <code class="language-javascript">
+
+            //Pure property binding
+            &lt;tr>&lt;td <kbd>[colSpan]</kbd>="1 + 1">Three-Four&lt;/td>&lt;/tr>
+
+
+            //OR 
+            &lt;td <kbd>[attr.colspan]</kbd>="1+1">three&lt;/td>
+            //In angular framework, attribute binding is achieved using prefix attr. such as [attr.colspan].
+            </code>
+        </pre>
+    </div>
+</div>
+
+<h5><strong><span style="font-size: 18pt;">Attribute binding</span></strong></h5>
+<p><span style="font-size: 14pt; color: #000000;"><span style="color: #2dc26b;"><strong>Sometimes there is no HTML element property to bind to</strong></span>. The examples are&nbsp;<strong><span style="color: #e03e2d;"><a style="color: #e03e2d;" href="https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA">aria</a>&nbsp;</span></strong>(accessibility) Attributes &amp;&nbsp;<a style="color: #000000;" href="https://developer.mozilla.org/en-US/docs/Web/SVG">SVG</a>. In such cases, you can make use of attribute binding</span></p>
+<p><span style="font-size: 14pt; color: #000000;">The attribute syntax starts with&nbsp;<code>attr</code>&nbsp;followed by a&nbsp;<code>dot</code>&nbsp;and then the name of the attribute as shown below</span></p>
+
+Example:
+<pre data-keep-tags="kbd, em">
+    <code class="language-sql">
+        &lt;button [attr.aria-label]="closeLabel" (onclick)="closeMe()">X&lt;/button>
+    </code>
+</pre>
+
+<h2>Style Property Binding</h2>
+<pre data-keep-tags="kbd, em">
+    <code class="language-sql">
+        &lt;button style='color:red' [<kbd>style.font-weight</kbd>]="isBold" ? 'bold':'normal' ">My Button &lt;/button>
+
+
+        .... 
+        isBold = true;
+    </code>
+</pre>
+
+<pre>
+    <code class="language-sql">
+        &lt;button style='color:red'  [<kbd>style.font-size.px</kbd>]="fontSize">My Button &lt;/button>
+
+
+        .... 
+        fontSize: number = 30;
+    </code>
+</pre>
+<h2>Grouping Style and getting from css</h2>
+<pre data-keep-tags="kbd, em">
+    <code class="language-sql">
+       //app.component.html
+       &lt;p <kbd>[class]</kbd>="'ownStyle'">
+       paragraph changes color
+        &lt;/p>
+
+
+        //app.component.css
+        .ownStyle {
+            color:red;
+            font-size:25px;
+          }
+    </code>
+</pre>
+<h2>Grouping Style from ts file</h2>
+<pre data-keep-tags="kbd, em">
+    <code class="language-sql">
+       //app.component.html
+       &lt;p <kbd>[ngStyle]</kbd>="<kbd>addStyles</kbd>()">
+       paragraph changes color
+        &lt;/p>
+
+
+        //app.component.ts
+        export class AppComponent {
+            isBold: boolean = true;
+            fontSize: number = 30;
+            isItalic: boolean = true;
+        
+            <kbd>addStyles</kbd>() {
+                let styles = {
+                    'font-weight': this.isBold ? 'bold' : 'normal',
+                    'font-style': this.isItalic ? 'italic' : 'normal',
+                    'font-size.px': this.fontSize
+                };
+        
+                return styles;
+            }
+        }
+    </code>
+</pre>
+<hr>
+<h2>Event Binding Angular</h2>
+<p><span style="font-size: 14pt; color: #000000;"><strong>Event binding</strong> allows us to bind events such as <span style="color: #2dc26b;"><strong>keystroke, clicks, hover, touche</strong></span>, etc to a method in component.</span></p>
+<p><span style="font-size: 14pt; color: #000000;"> It is one way from <span style="color: #2dc26b;"><strong>view </strong></span>to <strong><span style="color: #2dc26b;">component</span></strong>.&nbsp; </span></p>
+
+<div class="row">
+    <div class="col-lg-6">
+        sitecomponent.html
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+              
+                &lt;button (click)="clickMe()">Click Me&lt;/&lt;button>             //  on-click="clickMe()"
+                &lt;p>You have clicked {{clickCount}}&lt;/p>
+            </code>
+        </pre>
+        
+    </div>
+
+    <div class="col-lg-6">
+        sitecomponent.ts
+      <pre  data-keep-tags="kbd, em">
+          <code class="language-javascript">
+            clickCount=0
+            clickMe() {
+              this.clickCount++;
+            }
+            </code>
+        </pre>
+    </div>
+</div>
+
+<h2>Passing Event to Function</h2>
+
+<div class="row">
+    <div class="col-lg-6">
+        appComponent.html
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+              
+                &lt;input (input)="handleInput(<kbd>$event</kbd>)">
+                &lt;p>You have entered {{value}}&lt;/p>
+            </code>
+        </pre>
+        
+    </div>
+
+    <div class="col-lg-6">
+        appComponent.ts
+      <pre  data-keep-tags="kbd, em">
+          <code class="language-javascript">
+            export class AppComponent {
+            value=""
+
+            <kbd>handledInput</kbd>(event) {
+               this.value=event.target.value;
+             }
+              
+            </code>
+        </pre>
+    </div>
+</div>
+
+
+<script src="../js/prism.js"></script>
+<script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true,
+            // 'break-lines': 10,
+            // 'indent': 2,
+            // 'remove-initial-line-feed': false,
+            // 'tabs-to-spaces': 4,
+            // 'spaces-to-tabs': 4
+        });
+
+
+    (function () {
+        if (!self.Prism) {
+            return;
+        }
+
+        var div = document.createElement('div');
+
+        Prism.hooks.add('before-highlight', function (env) {
+            var elt = env.element;
+            if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                elt = elt.parentNode;
+            }
+            var tags = elt.getAttribute('data-keep-tags');
+            if (!tags) {
+                return;
+            }
+            var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+            env.keepTags = true;
+            env.keepTagsPlaceholder = placeholder;
+
+            tags = tags.split(/\s*,\s*/).join('|');
+            var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+            env.keepTagsRegex = tags_regex;
+
+            env.tokenStack = [];
+            env.backupCode = env.code;
+
+            var code = env.element.innerHTML;
+            code = code.replace(tags_regex, function (match) {
+                env.tokenStack.push(match);
+                return placeholder.replace('{n}', env.tokenStack.length);
+            });
+            env.element.innerHTML = code;
+            code = env.element.textContent;
+            code = code.replace(/^(?:\r?\n|\r)/, '');
+
+            env.code = code;
+        });
+
+        Prism.hooks.add('after-highlight', function (env) {
+            if (!env.keepTags) {
+                return;
+            }
+            for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                    div.innerHTML = inside;
+                    inside = div.textContent;
+                    return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                });
+
+                env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                env.element.innerHTML = env.highlightedCode;
+            }
+        });
+
+    }());
+
+    Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+        v.classList.add("language-sql");
+    });
+    Prism.highlightAll();
+
+</script>
+</body>
+
+</html>

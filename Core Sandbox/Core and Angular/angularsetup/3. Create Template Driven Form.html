@@ -68,50 +68,115 @@ To work with <strong>Template-driven forms</strong>, we must import the FormsMod
     <br>
     <br>
     <h2>Step2. Form with templating form in Nav.component.html</h2>
+    <p><span style="font-size: 14pt; color: #000000;">We can export the&nbsp;<span style="color: #2dc26b;"><code>ngForm</code>&nbsp;</span>instance into a local template variable using&nbsp;<span style="color: #2dc26b;"><code>ngForm</code>&nbsp;</span>as the key (ex:&nbsp;<code>#<span style="color: #2dc26b;">registerForm</span>="ngForm"</code>). This allows us to access the many properties and methods of&nbsp;<code>ngForm</code> using the template variable <code><span style="color: #2dc26b;">registerForm.</span></code></span></p>
+<p><span style="font-size: 14pt; color: #000000;">We can access json of form as : registerForm.value, registerForm.valid</span></p>
+<hr />
+<p><span style="font-size: 14pt; color: #000000;">We can export <span style="color: #2dc26b;">ngModel </span>instance into a local template variable as #<span style="color: #2dc26b;">name </span>= <span style="color: #2dc26b;">ngModel</span>. Then allow us to access any property of that field like value, valid and so on.</span></p>
+<p><span style="font-size: 14pt; color: #000000;"><code></code></span></p>
+<hr />
+<p><span style="font-size: 14pt; color: #000000;"><code></code></span></p>
 <pre  data-keep-tags="kbd, em">
     <code class="language-javascript">
-        //If ngForm is used, all the input fields which has [(ngModel)]="" must have an attribute name with a value.
-        &lt;form <kbd>#loginForm="ngForm"</kbd> class="form-inline my-2 my-lg-0" <kbd>(ngSubmit)="login()"</kbd>>
-        &lt;input class="form-control mr-sm-2" type="text" placeholder="Username" <kbd>name="username"</kbd> required aria-label="Username" <kbd>[(ngModel)]="model.username"</kbd>>
-        &lt;input class="form-control mr-sm-2" type="text" placeholder="Password" required <kbd>name="password"</kbd> aria-label="Password" <kbd>[(ngModel)]="model.password"</kbd>>
-        &lt;button <kbd>[disabled]="!loginForm.valid"</kbd> class="btn btn-outline-success my-2 my-sm-0" type="submit">Login&lt;/button>
-        &lt;/form>
+        &lt;form #<kbd>registerForm</kbd>="<kbd>ngForm</kbd>" (ngSubmit)="register(<kbd>user</kbd>)">
+          &lt;div class="row">
+            &lt;div class="col-md-4">
+                &lt;div class="form-group">
+                  &lt;label for="inputName"> Name</label>
+                  &lt;input type="text" name="name" placeholder="name" [(ngModel)]="user.name" class="form-control" #name="ngModel">
+                  //OR Simply
+                  // &lt;input type="text" name="name" placeholder="name" [(ngModel)]="user.name" class="form-control" <kbd>ngModel</kbd>> 
+                  //Simply Take ngModel as "name" property
+                &lt;/div>
+    
+            &lt;/div>
+              &lt;div class="col-md-4">
+                &lt;div class="form-group">
+                  &lt;label for="inputName">Password&lt;/label>
+                  &lt;input type="text" name="password" placeholder="password" [(ngModel)]="user.password"  class="form-control" #password="ngModel">
+                &lt;/div>
+    
+            &lt;/div>
 
+    
+            &lt;/div>
+            &lt;div class="row">
+            &lt;div class="col-12">
+                &lt;button class="btn btn-success" type="submit" [disabled]="registerForm.invalid">Register User&lt;/button>
+             
+                &lt;/div>
+            &lt;/div>
+          &lt;/form>
 
+          Angular Generated Form Model : {{registerForm.value | json}}
+
+            //Angular Generated Forom Model : { "name": "diwas",  "password": null }
+
+          
+
+          Our User Model : {{ user | json}}
+
+          //  Our Employee Model : { "id": null, "name": "diwas", "password": null }
+          ---------------------------------
+
+        // Angular Generated Form can access these form
+        Value : {{registerForm.value | json }} 
+        Valid : {{registerForm.valid}}
+        Touched : {{registerForm.touched  }}
+        Submitted : {{registerForm.submitted  }} 
+          
     </code>
 </pre>
 
-<h2>Step 3 in nav.component.ts</h2>
+<div class="row">
+<div class="col-lg-6">
+    <h2>Step 3 in nav.component.ts</h2>
 <pre  data-keep-tags="kbd, em">
     <code class="language-javascript">
+        import { User } from './../../../../models/HRMS/User';
         import { Component, OnInit } from '@angular/core';
-
-        @Component({
-          selector: 'app-nav',
-          templateUrl: './nav.component.html',
-          styleUrls: ['./nav.component.css']
-        })
-        export class NavComponent implements OnInit {
         
-          <kbd>model: any = {};</kbd>
+        @Component({
+          selector: 'app-employee',
+          templateUrl: './employee.component.html',
+          styleUrls: ['./employee.component.css']
+        })
+        export class EmployeeComponent implements OnInit {
+        
+          user: User = {
+            id: null,
+            userName: 'diwas',
+            password: null
+          };
         
           constructor() { }
         
+          
           ngOnInit() {
           }
         
-          login() {
-            console.log(this.model);
-            //Accessing model and will get:
-            {username:'diwas',password:'mypassword'}
-          }
+          register(user: <kbd>User</kbd>) {
         
+            console.log(user);
+          }
         }
         
 
     </code>
 </pre>
-
+<div class="col-lg-6">
+    <pre  data-keep-tags="kbd, em">
+        <code class="language-javascript">
+            export interface User {
+                id: number;
+                userName: string;
+                password: string;
+            }
+            
+        </code>
+    </pre>
+</div>
+</div>
+</div>    
 
 
     <script src="../js/prism.js"></script>
