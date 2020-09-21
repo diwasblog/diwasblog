@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../css/dracula.css">
+    <link rel="stylesheet" href="../css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+<style>
+    kbd {
+        background: black
+    }
+</style>
+<body>
+ 
+    <p><span style="color: #000000;"><strong><span style="font-size: 18pt;">Types of Angular Form </span></strong></span></p>
+    <p><strong><span style="font-size: 18pt; color: #2dc26b;">1 ) Template Driven Form&nbsp; &nbsp;</span></strong></p>
+    <p><strong><span style="font-size: 18pt; color: #2dc26b;">2 ) Reactive Form</span></strong></p>
+    <table style="border-collapse: collapse; width: 100%; height: 304px;" border="1">
+    <tbody>
+    <tr style="background: black; color: white;">
+    <td style="width: 49.0426%; height: 22px;">Template Driven Form</td>
+    <td style="width: 49.0957%; height: 22px;">Reactive Form / Model Driven Form</td>
+    </tr>
+    <tr style="height: 26px;">
+    <td style="width: 49.0426%; height: 26px;"><span style="font-size: 14pt; color: #000000;">Make Use of "<span style="color: #169179;">FormModule</span>"</span></td>
+    <td style="width: 49.0957%; height: 26px;"><span style="font-size: 14pt; color: #000000;">Make Use of "<strong><span style="color: #169179;">ReactiveFormsModule</span></strong> "</span></td>
+    </tr>
+    <tr style="height: 25px;">
+    <td style="width: 49.0426%; height: 25px;"><span style="font-size: 14pt; color: #000000;">Asynchronous in nature&nbsp;</span></td>
+    <td style="width: 49.0957%; height: 25px;"><span style="font-size: 14pt; color: #000000;">Synchronous in nature</span></td>
+    </tr>
+    <tr style="height: 26px;">
+    <td style="width: 49.0426%; height: 26px;"><span style="color: #169179;"><strong><span style="font-size: 14pt;">Easy to build and understand</span></strong></span></td>
+    <td style="width: 49.0957%; height: 26px;"><span style="font-size: 14pt; color: #000000;">More <span style="color: #169179;">scalable</span>, <strong><span style="color: #169179;">reusable</span></strong>, and <strong><span style="color: #169179;">testable&nbsp;</span></strong></span></td>
+    </tr>
+    <tr style="height: 77px;">
+    <td style="width: 49.0426%; height: 77px;"><span style="font-size: 14pt; color: #000000;">Template-driven form can be used for basic form requirements such as <strong><span style="color: #169179;">login form</span></strong>. It is not recommended to create complex forms using template-driven form because the HTML part will be complex and messy.</span></td>
+    <td style="width: 49.0957%; height: 77px;"><span style="font-size: 14pt; color: #000000;">Used for complex forms with more fields.</span></td>
+    </tr>
+    <tr style="height: 26px;">
+    <td style="width: 49.0426%; height: 26px;"><span style="font-size: 14pt; color: #000000;">the template-driven form is created using <strong><span style="color: #169179;">directive</span></strong></span></td>
+    <td style="width: 49.0957%; height: 26px;"><span style="font-size: 14pt; color: #000000;">Reactive forms are created in the <strong><span style="color: #169179;">component class&nbsp;</span></strong></span></td>
+    </tr>
+    <tr style="height: 26px;">
+    <td style="width: 49.0426%; height: 26px;"><span style="font-size: 14pt; color: #000000;">template-driven forms are validated using <strong><span style="color: #169179;">directives</span></strong></span></td>
+    <td style="width: 49.0957%; height: 26px;"><span style="font-size: 14pt; color: #000000;">Reactive forms can be validated using <strong><span style="color: #169179;">functions&nbsp;</span></strong></span></td>
+    </tr>
+    <tr style="height: 25px;">
+    <td style="width: 49.0426%; height: 25px;"><span style="font-size: 14pt; color: #000000;"><span style="color: #e03e2d;">Difficult to do the unit tes</span>t because most of the code is written in an HTML file</span></td>
+    <td style="width: 49.0957%; height: 25px;"><span style="font-size: 14pt; color: #000000;">Easy to unit test because most of the code is written in the component ts file.</span></td>
+    </tr>
+    <tr style="height: 25px;">
+    <td style="width: 49.0426%; height: 25px;"><span style="color: #000000;"><strong><span style="font-size: 14pt;">We completely build a form in HTML.</span></strong></span></td>
+    <td style="width: 49.0957%; height: 25px;"><strong><span style="font-size: 14pt; color: #000000;">We completely build a form in code.</span></strong></td>
+    </tr>
+    <tr style="height: 26px;">
+    <td style="width: 49.0426%; height: 26px;">&nbsp;</td>
+    <td style="width: 49.0957%; height: 26px;"><span style="font-size: 14pt; color: #000000;"><span style="color: #169179;"><strong>Only Downside</strong></span>: It required more code then template-driven form.</span></td>
+    </tr>
+    </tbody>
+    </table>
+    <p>&nbsp;</p>
+
+
+    
+
+
+    <h2>Building Block of Model Driven Form</h2>
+
+    <img src="https://www.tektutorialshub.com/wp-content/uploads/2016/12/Building-Blocks-of-Angular-Forms.png">
+
+<br>
+<h2><span id="how-to-use-reactive-forms">How to use Reactive Forms</span></h2>
+<ol style="list-style-type: decimal;">
+<li><span style="font-size: 18pt; color: #000000;">Import&nbsp;<strong><code>ReactiveFormsModule</code></strong></span></li>
+<li><span style="font-size: 18pt; color: #000000;">Create Form Model in component class using Form Group, Form Control &amp; Form Arrays</span></li>
+<li><span style="font-size: 18pt; color: #000000;">Create the HTML Form resembling the Form Model.</span></li>
+<li><span style="font-size: 18pt; color: #000000;">Bind the HTML Form to the Form Model</span></li>
+</ol>
+<br>
+<hr>
+<div class="row">
+    <div class="col-lg-12">
+       
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+                <kbd>import { ReactiveFormsModule } from '@angular/forms';</kbd>
+
+                @NgModule({
+                      imports: [
+                            ------
+                            <kbd>ReactiveFormsModule</kbd>
+                      ],
+                      ------
+                })
+                export class AppModule { } 
+            </code>
+        </pre>
+        
+    </div>
+
+
+    </div>
+    <hr>
+    <h2>Using Form Group</h2>
+<div class="row">
+    <div class="col-lg-8">
+        Note: [formControl]  Is FormControlDirective <br>
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+                 
+&lt;form [formGroup]="<kbd>employeeForm</kbd>" (ngSubmit)="<kbd>onSubmitForm</kbd>()">
+ 
+&lt;p>
+    &lt;label for="firstName">First Name &lt;/label>
+    &lt;input type="text" id="firstName" name="firstName" <kbd>formControlName</kbd>="firstName">
+    // Binding to general so we donot need formControlName within square bracket
+    &lt;/p>
+   
+    &lt;p>
+        &lt;label for="lastName">Last Name &lt;/label>
+        &lt;input type="text" id="lastName" name="lastName" formControlName="lastName">
+    &lt;/p>
+   
+    &lt;p>
+        &lt;label for="email">Email &lt;/label>
+        &lt;input type="text" id="email" name="email" formControlName="email">
+    &lt;/p>
+   
+    &lt;p>
+        &lt;label for="gender">Geneder &lt;/label>
+        &lt;input type="radio" value="male" id="gender" name="gender" formControlName="gender"> Male
+        &lt;input type="radio" value="female" id="gender" name="gender" formControlName="gender"> Female
+    &lt;/p>
+   
+    &lt;p>
+        &lt;label for="isMarried">Married </label>
+        &lt;input type="checkbox" id="isMarried" name="isMarried" formControlName="isMarried">
+    &lt;/p>
+   
+    &lt;p>
+        &lt;label for="country">country </label>
+        &lt;select id="country" name="country"  formControlName="country">
+            &lt;option [ngValue]="c.id" *ngFor="let c of countryList">
+                {{c.name}}
+            &lt;/option>
+        &lt;/select>
+    &lt;/p>
+   
+    &lt;p>
+        &lt;button type="submit">Submit</button>
+    &lt;/p>
+   
+
+    &lt;/form>
+
+    //Test
+    // {{ employeeForm.value| json }}        
+    //  {{employeeForm.get('firstName').dirty}}
+    //  {{employeeForm.get('firstName').valid}}
+    //  {{employeeForm.get('firstName').touched}}
+
+            </code>
+        </pre>
+    </div>
+    <div class="col-lg-4">
+<pre  data-keep-tags="kbd, em">
+    <code class="language-javascript">
+
+        employeeForm: FormGroup;
+
+        ngOnInit() {
+
+        this.<kbd>employeeForm</kbd> = new FormGroup({
+            firstName: new FormControl(),
+            lastName: new FormControl(),
+            email: new FormControl(),
+            gender: new FormControl(),
+            isMarried: new FormControl(),
+            country: new FormControl(),
+            address:new FormGroup({
+            city: new FormControl(),
+            street: new FormControl(),
+            pincode:new FormControl()
+            })
+          })
+
+        }
+
+        onSubmitForm():void{
+            console.log(this.employeeForm);
+            console.log(this.employeeForm.value);
+            console.log(this.employeeForm.touched);
+            console.log(this.employeeForm.controls.firstName.touched);
+            //OR
+            console.log(this.employeeForm.get('firstName'));
+        
+        }
+        
+    </code>
+</pre>
+    </div>
+</div>
+//Note:
+        <b>firstName:new FormControl()</b> binds directly to <b>formControlName</b>. Name and Id property doesnot matters.
+
+
+        <hr>
+        <hr>
+        <h2>Using Form Control and  Form Group</h2>
+<div class="row">
+    <div class="col-lg-6">
+        <pre  data-keep-tags="kbd, em">
+            <code class="language-javascript">
+&lt;form [formGroup]="bioSection" (ngSubmit)="callingFunction()">
+    &lt;h3>Bio Details&lt;/h3>
+
+    &lt;label>
+    First Name:
+        &lt;input type="text" formControlName="firstName">
+    &lt;/label> &lt;br>
+    &lt;label>
+    Last Name:
+        &lt;input type="text" formControlName="lastName">
+    &lt;/label> &lt;br>
+    &lt;label>
+    Age:
+        &lt;input type="text" formControlName="age">
+    &lt;/label>
+    &lt;div <kbd>formGroupName</kbd>="<kbd>stackDetails</kbd>">
+    &lt;h3>Stack Details&lt;/h3>
+
+    &lt;label>
+        Stack:
+            &lt;input type="text" formControlName="stack">
+    &lt;/label> &lt;br>
+
+    &lt;label>
+        Experience:
+            &lt;input type="text" formControlName="experience">
+    &lt;/label>
+    &lt;/div>
+&lt;div <kbd>formGroupName</kbd>="<kbd>address</kbd>">
+    &lt;h3>Address&lt;/h3>
+
+    &lt;label>
+        Country:
+            &lt;input type="text" formControlName="country">
+        &lt;/label> &lt;br>
+
+        &lt;label>
+        City:
+            &lt;input type="text" formControlName="city">
+        &lt;/label>
+        &lt;/div>
+        &lt;button type="submit">Submit Application</button>
+    &lt;/form>
+            </code>
+        </pre>
+
+    </div>
+
+    <div class="col-lg-6">
+        <pre  data-keep-tags="kbd, em">
+            <code class="language-javascript">
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms'
+@Component({
+  selector: 'app-employee',
+  templateUrl: './employee.component.html',
+  styleUrls: ['./employee.component.css']
+})
+export class EmployeeComponent implements OnInit {
+
+bioStudentForm: FormGroup;
+constructor() { }
+ngOnInit() {
+
+    this.bioSection = new FormGroup({
+        firstName: new FormControl(''),
+        lastName: new FormControl(''),
+        age: new FormControl(''),
+
+        <kbd>stackDetails:</kbd> new FormGroup({
+          stack: new FormControl(''),
+          experience: new FormControl('')
+        }),
+
+        <kbd>address:</kbd> new FormGroup({
+            country: new FormControl(''),
+            city: new FormControl('')
+        })
+      });
+
+  }
+  callingFunction() {
+    console.log(this.bioSection.value);
+   }
+}
+            </code>
+        </pre>
+        <img src="https://i0.wp.com/blog.logrocket.com/wp-content/uploads/2019/08/angular-job-board-form-bio-e1567003921989.png?resize=730%2C456&ssl=1">
+    </div>
+</div>
+
+<hr>
+<h2>Using FormBuilder</h2>
+Same as Previous , No need to make changes on .html 
+<br>
+<p><span style="font-size: 18pt; color: #000000;">It is used to create a big reactive form with <strong>minimum code</strong> in Angular.</span></p>
+<p><span style="font-size: 18pt; color: #000000;"><code>FormBuilder</code>&nbsp;has methods as&nbsp;<strong><span style="color: #2dc26b;"><code>group()</code></span></strong>,&nbsp;<strong><span style="color: #2dc26b;"><code>control()</code>&nbsp;</span></strong>and&nbsp;<strong><span style="color: #2dc26b;"><code>array()</code>&nbsp;</span></strong>that returns&nbsp;<strong><span style="color: #2dc26b;"><code>FormGroup</code></span></strong>,&nbsp;<strong><span style="color: #2dc26b;"><code>FormControl</code>&nbsp;</span></strong>and&nbsp;<strong><span style="color: #2dc26b;"><code>FormArray</code>&nbsp;</span></strong>respectively. </span></p>
+<div class="row">
+    <div class="col-lg-6">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+                import { FormGroup, FormControl, <kbd>FormBuilder</kbd> } from '@angular/forms';
+
+                export class EmployeeDocumentComponent implements OnInit {
+                
+                
+                  employeeDocuments: FormGroup;
+                  constructor(<kbd>private fb: FormBuilder</kbd>) { }
+                
+                  ngOnInit() {
+                     this.employeeForm = this.fb.group({
+                                    fullName: ['',Validate.Required],
+                                    email: [''],
+                                  });
+                
+                
+                  }
+                
+                }
+                
+            </code>
+        </pre>
+    </div>
+    <div class="col-lg-6">
+          <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+import { FormGroup, FormControl } from '@angular/forms';
+
+export class EmployeeDocumentComponent implements OnInit {
+
+
+    employeeForm: FormGroup;
+    constructor() { }
+
+    ngOnInit() {
+        this.employeeForm = new FormGroup({
+            firstName: new FormControl('',Validate.Required),
+            lastName: new FormControl()
+
+        });
+
+
+    }
+
+}
+                
+
+            </code>
+        </pre>
+    </div>
+</div>
+
+
+<script src="../js/prism.js"></script>
+<script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true,
+            // 'break-lines': 10,
+            // 'indent': 2,
+            // 'remove-initial-line-feed': false,
+            // 'tabs-to-spaces': 4,
+            // 'spaces-to-tabs': 4
+        });
+
+
+    (function () {
+        if (!self.Prism) {
+            return;
+        }
+
+        var div = document.createElement('div');
+
+        Prism.hooks.add('before-highlight', function (env) {
+            var elt = env.element;
+            if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                elt = elt.parentNode;
+            }
+            var tags = elt.getAttribute('data-keep-tags');
+            if (!tags) {
+                return;
+            }
+            var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+            env.keepTags = true;
+            env.keepTagsPlaceholder = placeholder;
+
+            tags = tags.split(/\s*,\s*/).join('|');
+            var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+            env.keepTagsRegex = tags_regex;
+
+            env.tokenStack = [];
+            env.backupCode = env.code;
+
+            var code = env.element.innerHTML;
+            code = code.replace(tags_regex, function (match) {
+                env.tokenStack.push(match);
+                return placeholder.replace('{n}', env.tokenStack.length);
+            });
+            env.element.innerHTML = code;
+            code = env.element.textContent;
+            code = code.replace(/^(?:\r?\n|\r)/, '');
+
+            env.code = code;
+        });
+
+        Prism.hooks.add('after-highlight', function (env) {
+            if (!env.keepTags) {
+                return;
+            }
+            for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                    div.innerHTML = inside;
+                    inside = div.textContent;
+                    return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                });
+
+                env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                env.element.innerHTML = env.highlightedCode;
+            }
+        });
+
+    }());
+
+    Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+        v.classList.add("language-sql");
+    });
+    Prism.highlightAll();
+
+</script>
+</body>
+
+</html>

@@ -182,6 +182,29 @@
                   
               </code>
             </pre>
+<br>
+<h2>String to desire datetime</h2>
+<pre>
+  <code class="language-csharp">
+    string dateInStr = "25-09-2020";
+    DateTime tDate = DateTime.ParseExact(dateInStr, "dd-MM-yyyy", CultureInfo.InvariantCulture);
+     //Here  string date of "dd-MM-yyyy" into DateTime ("yyyy-MM-dd") by default
+  </code>
+</pre>
+<h2>Datetime to String</h2>
+<pre>
+  <code class="language-csharp">
+    DateTime result  = result.DateSubmitted.ToString("dd-MM-yyyy");
+  </code>
+</pre>
+
+<h2>Reverse String in javascript</h2>
+<pre>
+  <code class="language-csharp">
+var date = "03-11-2014";
+var newdate = date.split("-").reverse().join("-");   // 2014-11-03
+  </code>
+</pre>
 
 <script src="js/prism.js"></script>
 <script type="text/javascript">

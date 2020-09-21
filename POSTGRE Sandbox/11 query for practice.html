@@ -527,7 +527,7 @@ END
 
     <br>
     <hr>
-    <h2>Use of union all
+    <>Use of union all
         <div class="row">
             <div class="col-lg-6">
                 <pre>
@@ -777,6 +777,63 @@ ORDER  BY customer ,createdon desc;
         Select count()
     </code>
 </pre>
+
+
+===================================================================================================
+<br>
+
+<pre>
+    <code class="language-sql">
+      
+  
+  CREATE OR REPLACE FUNCTION public.fn_work_plan_self_activity_reporting
+  (
+  userid integer,
+  yearid integer,
+  monthid integer,
+  pageno integer,
+  pagesize integer.
+  startdate text,
+  enddate text
+  )
+  RETURNS TABLE
+      (
+        total_count bigint,
+        user_name text, 
+        role_name character varying,
+        first_week text, 
+       ) 
+  LANGUAGE 'sql'
+  COST 100
+  STABLE 
+  ROWS 1000
+  AS $BODY$
+  
+  select count(wps.id) OVER() AS totalcount,
+  user_name,
+  r.role_name,
+  wps.nepali_year,
+  m.month_name
+  from work_plan_selves wps 
+  join users u on u.user_id = wps.user_id
+  join roles r on r.role_id = u.role_id
+  join months m on m.id = wps.nepali_month::integer
+  where 
+  Where ((wps.createdon::date between to_date(startdate,'yyyy-mm-dd') and to_date(enddate,'yyyy-mm-dd')) or (startdate='' and enddate=''))
+  (wps.user_id = userid or (userid = 0))
+  and    (wps.nepali_year::integer = yearid or (yearid = 0))
+  and  (wps.nepali_month::integer = monthid or (monthid = 0))
+  order by m.id 
+  OFFSET ((pageno-1)*10) rows FETCH NEXT (10) ROWS ONLY
+  $BODY$;
+  
+
+  // Say: ===> createdon Format : 2020-10-25   
+  //So , startDate and endDate are converted to "yyyy-mm-dd" format and then compared to createdon
+    </code>
+  </pre>
+  
+
 
         <script src="../ASP Sandbox/js/prism.js"></script>
         <script type="text/javascript">

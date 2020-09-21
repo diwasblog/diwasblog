@@ -13,6 +13,11 @@
     <link rel="stylesheet" href="css/dracula-prism.css">
     <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
   </head>
+  <style>
+    kbd {
+        background: black
+    }
+</style>
   <body>
 
     <p><span style="font-size: 14pt;"><span style="color: #ff0000; font-size: 24pt;"><code>Base64</code></span>&nbsp;is a common way to convert <span style="color: #ff0000;">binary data into a text form.</span></span><span style="color: #ff0000;">&nbsp;</span></p>
@@ -48,7 +53,74 @@
         public static byte[] FromBase64String (string s);
       </code>
     </pre>
+<br>
+<div class="row">
+  <div class="col-lg-8">
+    <pre data-keep-tags="kbd, em">
+      <code class="language-csharp">
+        [Route("timesheet/save")]
+        public IHttpActionResult SaveTimesheet(Timesheet timesheet)
+        {
+          Guid guid = Guid.NewGuid();
+          string savedFileName = guid.ToString()+timesheet.Image.Replace(' ','_');
+          timesheetDetail.ImageName = savedFileName;
+          string path = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~/Images/TimesheetImages"), savedFileName);
+          var image = <kbd>Base64ToImage</kbd>(timesheetDetail.Image.Split(',')[1]);
+          image.Save(path);
+    
+        }
+      </code>
+    </pre>
+  </div>
 
+  <div class="col-lg-4">
+    <pre data-keep-tags="kbd, em">
+      <code class="language-csharp">
+        public class Timesheet
+        {
+            public int Id { get; set; }
+            public string Image {get;set;}
+            public string ImageName {get;set;}
+        }
+
+        
+        public Image <kbd>Base64ToImage</kbd>(string base64String)
+        {
+            // Convert base 64 string to byte[]
+            byte[] imageBytes = Convert.FromBase64String(base64String);
+            // Convert byte[] to Image
+            var stream = new MemoryStream(imageBytes);
+            return Image.FromStream(stream);
+        }
+      </code>
+    </pre>
+  </div>
+</div>
+
+<pre data-keep-tags="kbd, em">
+<code class="language-csharp">
+  &lt;input @@change="<kbd>onFileChange</kbd>($event)" style="width:200px;" type="file" name="file" />
+
+  onFileChange(e) {
+    var files = e.target.files || e.dataTransfer.files;
+    if (!files.length)
+        return;
+    this.createImage(files[0]);
+},
+createImage(file) {
+    var image = new Image();
+    var reader = new FileReader();
+    var vm = this;
+    reader.onload = (e) => {
+        <kbd>vm.timesheet.image</kbd> = e.target.result;   // On submit image bind to Image( base64 string), name as ImageName 
+        <kbd>vm.timesheet.imageName</kbd> = file.name;
+    };
+    var temp = reader.readAsDataURL(file);
+}
+
+
+</code>
+</pre>  
 
     <script src="js/prism.js"></script>
 <script type="text/javascript">
@@ -64,6 +136,47 @@
       // 'tabs-to-spaces': 4,
       // 'spaces-to-tabs': 4
     });
+
+    
+        (function () {
+            if (!self.Prism) {
+                return;
+            }
+
+            var div = document.createElement('div');
+
+            Prism.hooks.add('before-highlight', function (env) {
+                var elt = env.element;
+                if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                    elt = elt.parentNode;
+                }
+                var tags = elt.getAttribute('data-keep-tags');
+                if (!tags) {
+                    return;
+                }
+                var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+                env.keepTags = true;
+                env.keepTagsPlaceholder = placeholder;
+
+                tags = tags.split(/\s*,\s*/).join('|');
+                var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g'); env.keepTagsRegex = tags_regex;
+                env.tokenStack = []; env.backupCode = env.code; var code = env.element.innerHTML; code = code.replace(tags_regex,
+                    function (match) { env.tokenStack.push(match); return placeholder.replace('{n}', env.tokenStack.length); });
+                env.element.innerHTML = code; code = env.element.textContent; code = code.replace(/^(?:\r?\n|\r)/, '');
+                env.code = code;
+            }); Prism.hooks.add('after-highlight', function (env) {
+                if (!env.keepTags) { return; } for (var
+                    i = 0, t; t = env.tokenStack[i]; i++) {
+                    t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                        div.innerHTML = inside; inside = div.textContent; return '<' + tag + '>' + Prism.highlight(inside, env.grammar,
+                            env.language) + '</' + tag + '>';
+                    });
+                    env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                    env.element.innerHTML = env.highlightedCode;
+                }
+            });
+        }());s
 </script>
 </body>
 </html>

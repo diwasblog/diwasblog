@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+.box{
+    background:red;
+    border:1px solid;
+    padding:10px;
+}
+
+.fifty-percent{
+    width: 50%;
+}
+
+.one-hundred-pixels{
+    width: 100px;
+}
+
+.parent {
+    width: 135px;
+    border:1px solid;
+}
+    
+        
+    </style>
+
+
+</head>
+<body>
+    <div class="box fifty-percent">50%</div>
+    <div class="box one-hundred-pixels">100px</div>
+    <hr>
+
+    <div class="parent">
+        <div class="box fifty-percent">50%</div>
+        <div class="box one-hundred-pixels">100px</div>
+    </div>
+
+<h2>For Percent</h2>
+<strong>First Image </strong>Parent is fullwidth , so , 50% will 50% of whole screen in all screen type. ===> <strong>Relative to parent</strong> <br>
+<strong>Third Image </strong>Parent is 135px , so , 50% will 50% of 135px in all screen type ==> <strong> Relative to parent </strong> <br>
+
+
+
+
+<h2>For Pixel</h2>
+<strong>Second Image </strong>Parent is fullwidth , so ,100px and doesnot depends on screen width ===> <strong>Absolute to parent</strong> <br>
+<strong>Fourth Image </strong>Parent is 135px , and 100px doesnot depends on parent so,  ==> <strong> Absolute to parent </strong> <br>
+</body>
+</html>

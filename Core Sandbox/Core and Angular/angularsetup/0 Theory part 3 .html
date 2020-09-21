@@ -23,10 +23,10 @@
 
 <img src="https://miro.medium.com/max/661/1*XsogWxJjfx0K3KJ412Jo6g.png">
 <ol style="list-style-type: decimal;">
-    <li><span style="font-size: 14pt; color: #e03e2d;"><a style="color: #e03e2d;" href="https://www.tektutorialshub.com/angular/angular-data-binding/">Interpolation <span style="color: #2dc26b;">{{}}</span></a></span><br /><strong><span style="font-size: 14pt; color: #000000;">Data is bind from component to View</span></strong></li>
-    <li><strong><span style="font-size: 14pt; color: #e03e2d;"><a style="color: #e03e2d;" href="https://www.tektutorialshub.com/angular/angular-data-binding/">Property Binding <span style="color: #2dc26b;">[ ]</span></a></span></strong><br /><span style="color: #000000;"><strong><span style="font-size: 14pt;">Data is bind from component to the property of an HTML control in the view like</span></strong></span></li>
-    <li><strong><span style="font-size: 14pt; color: #e03e2d;"><a style="color: #e03e2d;" href="https://www.tektutorialshub.com/angular/angular-data-binding/">Event Binding&nbsp;<span style="color: #2dc26b;"> (click)</span></a></span></strong><br /><strong><span style="font-size: 14pt; color: #000000;">The DOM Events are bind from View to a method in the Component</span></strong></li>
-    <li><strong><span style="font-size: 14pt; color: #e03e2d;"><a style="color: #e03e2d;" href="https://www.tektutorialshub.com/angular/angular-data-binding/">Two-way Binding</a>/Model Binding&nbsp; <span style="color: #2dc26b;">[(ngModel)]</span></span></strong><br /><strong><span style="font-size: 14pt; color: #000000;">The data flow in both directions from view to component or from component to view</span></strong></li>
+    <li><span style="font-size: 14pt; color: #e03e2d;"><a style="color: #e03e2d;" href="https://www.tektutorialshub.com/angular/angular-data-binding/">Interpolation <span style="color: #2dc26b;">{{}} </span></a></span><br /><strong><span style="font-size: 14pt; color: #000000;">Data is bind from component to View</span></strong></li>
+    <li><strong><span style="font-size: 14pt; color: #e03e2d;"><a style="color: #e03e2d;" href="https://www.tektutorialshub.com/angular/angular-data-binding/">Property Binding <span style="color: #2dc26b;">[ ] or  "bind-"</span></a></span></strong><br /><span style="color: #000000;"><strong><span style="font-size: 14pt;">Data is bind from component to the property of an HTML control in the view like</span></strong></span></li>
+    <li><strong><span style="font-size: 14pt; color: #e03e2d;"><a style="color: #e03e2d;" href="https://www.tektutorialshub.com/angular/angular-data-binding/">Event Binding&nbsp;<span style="color: #2dc26b;"> (click) or "on- "</span></a></span></strong><br /><strong><span style="font-size: 14pt; color: #000000;">The DOM Events are bind from View to a method in the Component</span></strong></li>
+    <li><strong><span style="font-size: 14pt; color: #e03e2d;"><a style="color: #e03e2d;" href="https://www.tektutorialshub.com/angular/angular-data-binding/">Two-way Binding</a>/Model Binding&nbsp; <span style="color: #2dc26b;">[(ngModel)] or "bindon-"</span></span></strong><br /><strong><span style="font-size: 14pt; color: #000000;">The data flow in both directions from view to component or from component to view</span></strong></li>
     </ol>
     <ul>
         <li><span style="font-size: 18pt;"><span style="color: #2dc26b;"><strong>{{ templateExpression }}</strong> </span>&nbsp;====&gt; <span style="color: #000000;">The content inside the double braces is called <span style="color: #e03e2d;">Template Expression</span></span></span></li>
@@ -462,6 +462,57 @@ Example:
         </pre>
     </div>
 </div>
+
+
+<h2>Two Way Binding / Model Binding</h2>
+<img src="https://www.tektutorialshub.com/wp-content/uploads/2020/03/two-way-binding.png">
+
+<div id="crayon-5f538afb32891632388246-4"><span style="font-size: 14pt; color: #000000;"><span style="color: #e03e2d;"><strong>Two-way data binding</strong> </span>means that changes made to our model in the component are propagated to the view and that any changes made in the view are immediately updated in the underlying component data. </span></div>
+
+<h4>Notes</h4>
+<p><span style="color: #000000;"><strong><span style="font-size: 14pt;"><span style="color: #000000;">Angular uses </span><span style="color: #2dc26b;">NgModel </span><span style="color: #000000;">for two way </span><span style="color: #2dc26b;">data binding</span><span style="color: #000000;">.</span></span></strong></span></p>
+<p><span style="color: #000000;"><strong><span style="font-size: 14pt;">To use <span style="color: #2dc26b;"><code>NgModel</code>&nbsp;</span>we need to import&nbsp;<span style="color: #2dc26b;"><code>FormsModule</code>&nbsp;</span>and add it to&nbsp;<span style="color: #2dc26b;"><code>imports</code></span>&nbsp;attribute of&nbsp;<span style="color: #2dc26b;"><code>@NgModule</code></span> in our module file.</span></strong></span></p>
+
+<h2>Using NgModel with Text Field</h2>
+
+<div class="row">
+    <div class="col-lg-6">
+        appComponent.html
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+                &lt;input [(ngModel)] ="myMsg"/> 
+                {{myMsg}}
+
+
+                // Or 
+                &lt;input bindon-ngModel ="myMsg"/> 
+                //OR 
+                &lt;input [value] ="myMsg" (input)="myMsg=$event.target.value"/> 
+                //OR
+                &lt;input [ngModel] ="myMsg" (ngModelChange) ="myMsg=$event"/>
+            </code>
+        </pre>
+        
+    </div>
+
+    <div class="col-lg-6">
+        appComponent.ts
+      <pre  data-keep-tags="kbd, em">
+          <code class="language-javascript">
+....
+
+export class AppComponent  {
+    myMsg = 'Hello World!';
+}
+
+              
+            </code>
+        </pre>
+    </div>
+</div>
+
+
+
 
 
 <script src="../js/prism.js"></script>

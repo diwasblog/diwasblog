@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../css/dracula.css">
+    <link rel="stylesheet" href="../css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+<style>
+    kbd {
+        background: black
+    }
+</style>
+<body>
+  
+    <p><span style="color: #000000;"><strong><span style="font-size: 18pt;">HTTP&nbsp;</span></strong></span></p>
+    <ul>
+    <li><span style="font-size: 14pt; color: #000000;">HTTP Client is created on <span style="color: #2dc26b;"><strong>angular 4.3</strong></span></span></li>
+    <li><span style="font-size: 14pt; color: #000000;">Available under <strong><span style="color: #2dc26b;">@angular/common/http</span></strong> package so we have to import it.</span></li>
+    <li><span style="font-size: 14pt; color: #000000;">The HTTP Client makes use of the&nbsp;<code><strong><span style="color: #2dc26b;">RxJs Observables</span></strong>.</code></span></li>
+    <li><span style="color: #000000;"><span style="font-size: 14pt;">The Response from the&nbsp;<span style="color: #2dc26b;"><strong><code>HttpClient</code> </strong></span>is <strong><span style="color: #e03e2d;">observable</span></strong>, hence it needs to be <strong><span style="color: #e03e2d;">Subscribed </span></strong>otherwise willnot work.</span><code></code></span></li>
+    </ul>
+
+<h2></h2>
+Step 1. Importing HttpClientModule and injecting in constructor
+<div class="row">
+    <div class="col-lg-6">
+        app.module.ts
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+               
+                import { NgModule } from '@angular/core';
+                <kbd>import { HttpClientModule } from '@angular/common/http';</kbd>
+                 
+                @NgModule({
+                    declarations: [
+                        AppComponent
+                    ],
+                    imports: [
+                        <kbd>HttpClientModule</kbd>
+                    ],
+                    providers: [],
+                    bootstrap: [AppComponent]
+                })
+                export class AppModule { }
+
+
+            </code>
+        </pre>
+        
+    </div>
+
+    <div class="col-lg-6">
+        appComponent.ts
+      <pre  data-keep-tags="kbd, em">
+          <code class="language-javascript">
+            constructor(public http: HttpClient) {
+
+            }
+
+            </code>
+        </pre>
+    </div>
+</div>
+
+inside appComponent.ts
+<div class="row">
+    <div class="col-lg-8">
+        <pre  data-keep-tags="kbd, em">
+            <code class="language-javascript">
+
+            ngOnInit() {
+                this.getRepos()
+                }   
+
+              constructor(public httpService: HttpClient) {
+  
+              }
+              ...
+
+              public getRepos() {
+ 
+                return this.httpService.get&lt;<kbd>&lt;Repos>[]</kbd>>(this.baseURL + 'users/' + this.userName + '/repos')
+                  .<kbd>subscribe</kbd>(
+                    (response) => {                           //Next callback
+                      console.log('response received')
+                      console.log(response);
+                      this.repos = response; 
+                    },
+                    (<kbd>error</kbd>) => {                              //Error callback
+                      console.error('Request failed with error')
+                      alert(error);
+                    },
+                    () => {                                   //Complete callback
+                      console.log('Request completed')
+                    })
+              } 
+
+  
+              </code>
+          </pre>
+    </div>
+    <div class="col-lg-4">
+        <pre  data-keep-tags="kbd, em">
+            <code class="language-javascript">
+                export class Repos {
+                    id: string;
+                    name: string;
+                    html_url: string;
+                    description: string;
+                  }
+  
+              </code>
+          </pre>
+    </div>
+</div>
+<div><span style="font-size: 14pt;">Here&nbsp;we&nbsp;are&nbsp;<strong><span style="color: #e03e2d;">calling&nbsp;api&nbsp;</span></strong>and&nbsp;api get/post/put/delete/patch/any&nbsp;will&nbsp;<span style="color: #2dc26b;">return&nbsp;observable</span>&nbsp;,&nbsp;and&nbsp;observable&nbsp;is&nbsp;<strong><span style="color: #3598db;">subscribed</span></strong>&nbsp;<span style="color: #000000;">as&nbsp;shown&nbsp;above.If&nbsp;we&nbsp;donot subscribed then will not get any data from server(look at network tab by removing subscribe).So, after subscribing we get value at <strong><span style="color: #f1c40f;">response </span></strong>back from server and </span></span><span style="font-size: 14pt; color: #000000;">is&nbsp;bind&nbsp;to&nbsp;<strong><span style="color: #2dc26b;">List&nbsp;of&nbsp;Repos</span></strong></span></div>
+
+Note:
+Get Http 
+<pre data-keep-tags="kbd, em">
+    <code class="language-javascript">
+        get(url: string, 
+      options: {
+          headers?: HttpHeaders | { [header: string]: string | string[]; };
+          params?: HttpParams | { [param: string]: string | string[]; };
+          observe?: "body|events|response|";
+          responseType: "arraybuffer|json|blob|text";
+          reportProgress?: boolean; 
+          withCredentials?: boolean;}
+     ): <kbd>Observable</kbd>&lt;>
+    </code>
+</pre>
+
+<hr>
+<hr>
+<h2>HttpPost</h2>
+<div class="row">
+    <div class="col-lg-6">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+post(url: string, 
+     body: any, 
+     options: { 
+        headers?: HttpHeaders | { [header: string]: string | string[]; }; 
+        observe?: "body|events|response|"; 
+        params?: HttpParams | { [param: string]: string | string[]; }; 
+        reportProgress?: boolean; 
+        responseType: "arraybuffer|json|blob|text"; 
+        withCredentials?: boolean; 
+     }
+): Observable
+            </code>
+        </pre>
+    </div>
+    <div class="col-lg-6">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+addPerson(person:Person): Observable&lt;any> {
+    const headers = { 'content-type': 'application/json'}  
+    const body=JSON.stringify(person);
+    this.http.post(this.baseURL + 'people', body,{'headers':headers , observe: 'response'})
+        .<kbd>subscribe</kbd>(
+        response=> {
+            console.log("POST completed sucessfully. The response received "+response);
+        },
+        <kbd>error</kbd> => {
+            console.log("Post failed with the errors");
+        },
+        () => {
+            console.log("Post Completed");
+        }
+}
+            </code>
+        </pre>
+    </div>
+</div>
+
+<hr><hr><hr>
+<h2>Using Service and Component for HttpClient</h2>
+
+<div class="row">
+ 
+    <div class="col-lg-6">
+        //tutorial.component.ts
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+
+export class AddTutorialComponent implements OnInit {
+
+<kbd>tutorial</kbd> = {
+        title: '',
+        description: '',
+        published: false
+    };     
+
+constructor(
+        private tutorialService: <kbd>TutorialService</kbd>,
+        private route: ActivatedRoute,
+        private router: Router) { }
+
+ngOnInit(): void {
+    this.<kbd>retrieveTutorials</kbd>();
+}
+              
+
+<kbd>saveTutorial</kbd>(contactData): void {
+
+this.tutorialService.<kbd>create</kbd>(contactData)
+    .subscribe(
+    response => {
+        console.log(response);
+        this.submitted = true;
+    },
+    error => {
+        console.log(error);
+    });
+}
+
+<kbd>getTutorial(id)</kbd>: void {
+    this.tutorialService.<kbd>get</kbd>(id)
+        .subscribe(
+        data => {
+            this.currentTutorial = data;
+            console.log(data);
+        },
+        error => {
+            console.log(error);
+        });
+    }
+
+<kbd>updateTutorial</kbd>(tutorial): void {
+this.tutorialService.<kbd>update</kbd>(tutorial.id, tutorial)
+    .subscribe(
+    response => {
+        console.log(response);
+        this.message = 'The tutorial was updated successfully!';
+    },
+    error => {
+        console.log(error);
+    });
+}
+
+<kbd>deleteTutorial</kbd>(): void {
+    this.tutorialService.<kbd>delete</kbd>(this.currentTutorial.id)
+        .subscribe(
+        response => {
+            console.log(response);
+            this.router.navigate(['/tutorials']);
+        },
+        error => {
+            console.log(error);
+        });
+    }
+
+
+<kbd>retrieveTutorials()</kbd>: void {
+this.tutorialService.<kbd>getAll()</kbd>
+    .subscribe(
+    data => {
+        this.tutorials = data;
+        console.log(data);
+    },
+    error => {
+        console.log(error);
+    });
+}
+
+<kbd>removeAllTutorials()</kbd>: void {
+    this.tutorialService.<kbd>deleteAll()</kbd>
+        .subscribe(
+        response => {
+            console.log(response);
+            this.refreshList();
+        },
+        error => {
+            console.log(error);
+        });
+    }
+    
+<kbd>searchTitle()</kbd>: void {
+    this.tutorialService.<kbd>findByTitle</kbd>(this.title)
+        .subscribe(
+        data => {
+            this.tutorials = data;
+            console.log(data);
+        },
+        error => {
+            console.log(error);
+        });
+    }
+
+            </code>
+        </pre>
+    </div>
+    <div class="col-lg-6">
+        //tutorial.service.ts
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+const baseUrl = 'http://localhost:8080/api/tutorials';
+
+@Injectable({
+    providedIn: 'root'
+})
+export class TutorialService {
+
+    constructor(private http: HttpClient) { }
+
+    <kbd>getAll()</kbd>: Observable&lt;any> {
+    return this.http.get(baseUrl);
+    }
+
+    <kbd>get(id)</kbd>: Observable&lt;any> {
+    return this.http.get(`${baseUrl}/${id}`);
+    }
+
+    <kbd>create(data)</kbd>: Observable&lt;any> {
+    return this.http.post(baseUrl, data);
+    }
+
+    <kbd>update(id, data):</kbd> Observable&lt;any> {
+    return this.http.put(`${baseUrl}/${id}`, data);
+    }
+
+    <kbd>delete(id):</kbd> Observable&lt;any> {
+    return this.http.delete(`${baseUrl}/${id}`);
+    }
+
+    <kbd>deleteAll():</kbd> Observable&lt;any> {
+    return this.http.delete(baseUrl);
+    }
+
+    <kbd>findByTitle(title):</kbd> Observable&lt;any> {
+    return this.http.get(`${baseUrl}?title=${title}`);
+    }
+}
+                
+            </code>
+        </pre>
+    </div>
+</div>
+
+<br>
+<hr>
+<h2>Accessing .json file directly from component</h2>
+<div class="row">
+    <div class="col-lg-6">
+        <pre>
+            <code class="language-javascript">
+                export class PropertyListComponent implements OnInit{
+                    properties: any;
+        
+                    constructor(private http: HttpClient){}
+        
+                    ngOnInit(): void {
+                        this.http.get('data/properties.json').subscribe(
+                            data =>{
+                                this.properties = data;
+                                console.log(data);
+                            }
+                        )
+                    }
+                }
+            </code>
+        </pre>
+        
+    </div>
+    <div class="col-lg-6">
+        <pre>
+            <code class="language-javascript">
+               1) This resource will not call and give Not Found Error
+               2) Any file which is outside app folder must be defined in angular.json assets file
+               3) angular.json
+                   assets:{
+                       ...,
+                       "src/data"
+                   }
+               4) As we are editing angular.json file so we must restart using "ng serve"
+            </code>
+        </pre>
+        
+    </div>
+</div>
+
+<hr>
+<br>
+<h2>Accessing .json file using service and component </h2>
+<div class="row">
+    <div class="col-lg-6">
+        <pre>
+            <code class="language-javascript">
+                export class PropertyListComponent implements OnInit{
+                    properties: any;
+        
+                    constructor(private propertyServices: PropertyService){}
+        
+                    ngOnInit(): void {
+                        this.propertyServices.getAllProperties.subscribe(
+                            data =>{
+                                this.properties = data;
+                                console.log(data);
+                            }
+                        )
+                    }
+                }
+            </code>
+        </pre>
+        
+    </div>
+    <div class="col-lg-6">
+        <pre>
+            <code class="language-javascript">
+
+            @Injectable({
+                providedIn:'root' 
+                // as we have injectable root so we inject ProviderService in provider section of root component ie . app.component.ts 
+            })
+
+             export class PropertyService {
+                 constructor(private http:HttpClient){}
+
+                 getAllProperties(){
+                     return this.http.getget('data/properties/json');
+                 }
+             }
+            </code>
+        </pre>
+        
+    </div>
+</div>
+
+
+<script src="../js/prism.js"></script>
+<script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true,
+            // 'break-lines': 10,
+            // 'indent': 2,
+            // 'remove-initial-line-feed': false,
+            // 'tabs-to-spaces': 4,
+            // 'spaces-to-tabs': 4
+        });
+
+
+    (function () {
+        if (!self.Prism) {
+            return;
+        }
+
+        var div = document.createElement('div');
+
+        Prism.hooks.add('before-highlight', function (env) {
+            var elt = env.element;
+            if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                elt = elt.parentNode;
+            }
+            var tags = elt.getAttribute('data-keep-tags');
+            if (!tags) {
+                return;
+            }
+            var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+            env.keepTags = true;
+            env.keepTagsPlaceholder = placeholder;
+
+            tags = tags.split(/\s*,\s*/).join('|');
+            var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+            env.keepTagsRegex = tags_regex;
+
+            env.tokenStack = [];
+            env.backupCode = env.code;
+
+            var code = env.element.innerHTML;
+            code = code.replace(tags_regex, function (match) {
+                env.tokenStack.push(match);
+                return placeholder.replace('{n}', env.tokenStack.length);
+            });
+            env.element.innerHTML = code;
+            code = env.element.textContent;
+            code = code.replace(/^(?:\r?\n|\r)/, '');
+
+            env.code = code;
+        });
+
+        Prism.hooks.add('after-highlight', function (env) {
+            if (!env.keepTags) {
+                return;
+            }
+            for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                    div.innerHTML = inside;
+                    inside = div.textContent;
+                    return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                });
+
+                env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                env.element.innerHTML = env.highlightedCode;
+            }
+        });
+
+    }());
+
+    Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+        v.classList.add("language-sql");
+    });
+    Prism.highlightAll();
+
+</script>
+</body>
+
+</html>

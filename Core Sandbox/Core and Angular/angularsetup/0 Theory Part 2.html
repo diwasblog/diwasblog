@@ -71,6 +71,275 @@
 </pre>
 
 
+<h2>NgFor</h2>
+
+Single List
+<div class="row">
+    <div class="col-lg-6">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+&lt;div class='table-responsive'>
+    &lt;table class='table'>
+        &lt;thead>
+            &lt;tr>
+                &lt;th>Title&lt;/th>
+                &lt;th>Director&lt;/th>
+                &lt;th>Cast&lt;/th>
+                &lt;th>Release Date&lt;/th>
+            &lt;/tr>
+        &lt;/thead>
+        &lt;tbody>
+            &lt;tr <kbd>*ngFor="let movie of movies;"</kbd>>
+                &lt;td>{{movie.title}}&lt;/td>
+                &lt;td>{{movie.director}}&lt;/td>
+                &lt;td>{{movie.cast}}&lt;/td>
+                &lt;td>{{movie.releaseDate}}&lt;/td>
+            &lt;/tr>
+        &lt;/tbody>
+    &lt;/table>
+&lt;/div>
+            </code>
+        </pre>
+    </div>
+
+    <div class="col-lg-6">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+export class AppComponent {
+
+    movies: Movie[] =[
+    
+    {title:'Zootopia',director:'Byron Howard, Rich Moore',cast:'Idris Elba, Ginnifer Goodwin, Jason Bateman',releaseDate:'March 4, 2016'},
+    {title:'Batman v Superman: Dawn of Justice',director:'Zack Snyder',cast:'Ben Affleck, Henry Cavill, Amy Adams',releaseDate:'March 25, 2016'},
+    {title:'Captain American: Civil War',director:'Anthony Russo, Joe Russo',cast:'Scarlett Johansson, Elizabeth Olsen, Chris Evans',releaseDate:'May 6, 2016'},
+    {title:'X-Men: Apocalypse',director:'Bryan Singer',cast:'Jennifer Lawrence, Olivia Munn, Oscar Isaac',releaseDate:'May 27, 2016'},
+    {title:'Warcraft',director:'Duncan Jones',cast:'Travis Fimmel, Robert Kazinsky, Ben Foster',releaseDate:'June 10, 2016'},
+    ]
+}
+
+class Movie {
+    title : string;
+    director : string;
+    cast : string;
+    releaseDate : string;
+    }
+            </code>
+        </pre>
+    </div>
+</div>
+
+<h2>NgFor Nested List</h2>
+<div class="row">
+    <div class="col-lg-5">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+&lt;div class='table-responsive'>
+    &lt;table class='table table-bordered table-sm '>
+        &lt;thead class="thead-dark">
+            &lt;tr>
+                &lt;th>Name &lt;/th>
+                &lt;th>Mail &lt;/th>
+                &lt;th>Skills &lt;/th>
+            &lt;/tr>
+        &lt;/thead>
+            &lt;tbody>
+                &lt;tr <kbd>*ngFor="let employee of employees;"</kbd>>
+                &lt;td>{{employee.name}} &lt;/td>
+                &lt;td>{{employee.email}} &lt;/td>
+                &lt;td>
+                &lt;table class='table table-sm '>
+        &lt;tbody>
+            &lt;tr *ngFor="let skill of <kbd>employee.skills;</kbd>">
+                &lt;td>{{skill.skill}}/td>
+                &lt;td>{{skill.exp}}/td>
+                &lt;/tr>
+        &lt;/tbody>
+    &lt;/table>
+    
+&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+            </code>
+        </pre>
+    </div>
+
+    <div class="col-lg-7">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+export class AppComponent {
+    employees = [
+        {
+        name: "Rahul", email: "rahul@gmail.com",
+        skills: [{ skill: 'Angular', exp: '2' },{ skill: 'Javascript', exp: '7' },{ skill: 'TypeScript', exp: '3' }
+        ]
+        },
+        {
+        name: "Sachin", email: "sachin@gmail.com",
+        skills: [{ skill: 'Angular', exp: '1' },{ skill: 'Android', exp: '3' },{ skill: 'React', exp: '2' }
+        ]
+        },
+        {
+        name: "Laxmna", email: "laxman@gmail.com",
+        skills: [{ skill: 'HTML', exp: '2' },{ skill: 'CSS', exp: '2' },{ skill: 'Javascript', exp: '1' }
+        ]
+        }
+    ]
+
+}
+
+            </code>
+        </pre>
+    </div>
+</div>
+
+<h2>Index</h2>
+<div class="row">
+    <div class="col-lg-12">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+&lt;div class='table-responsive'>
+    &lt;table class='table'>
+        &lt;thead>
+            &lt;tr>
+                &lt;th>Title&lt;/th>
+                &lt;th>Director&lt;/th>
+                &lt;th>Cast&lt;/th>
+                &lt;th>Release Date&lt;/th>
+            &lt;/tr>
+        &lt;/thead>
+        &lt;tbody>
+            &lt;tr <kbd>*ngFor="let movie of movies;<kbd>let i=index;</kbd>"</kbd>>
+                &lt;td><kbd>{{i}}</kbd>&lt;/td>
+                &lt;td>{{movie.title}}&lt;/td>
+                &lt;td>{{movie.director}}&lt;/td>
+                &lt;td>{{movie.cast}}&lt;/td>
+                &lt;td>{{movie.releaseDate}}&lt;/td>
+            &lt;/tr>
+        &lt;/tbody>
+    &lt;/table>
+&lt;/div>
+            </code>
+        </pre>
+    </div>
+</div>
+<hr>
+<h2>Formatting Odd and Even</h2>
+<div class="row">
+    <div class="col-lg-12">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+
+//app.component.html
+
+&lt;div class='table-responsive'>
+    &lt;table class='table'>
+        &lt;thead>
+            &lt;tr>
+                &lt;th>Title&lt;/th>
+                &lt;th>Director&lt;/th>
+                &lt;th>Cast&lt;/th>
+                &lt;th>Release Date&lt;/th>
+            &lt;/tr>
+        &lt;/thead>
+        &lt;tbody>
+        &lt;tr *ngFor="let movie of movies; <kbd>let i=index; let o= odd; let e=even;"</kbd> <kbd>[ngClass]="{ odd: o, even: e }"</kbd>>
+            &lt;td> {{i}}  &lt;/td>
+            &lt;td>{{movie.title}} &lt;/td>
+            &lt;td>{{movie.director}} &lt;/td>
+            &lt;td>{{movie.cast}} &lt;/td>
+            &lt;td>{{movie.releaseDate}} &lt;/td>
+        &lt;/tr>
+        &lt;/tbody>
+    &lt;/table>
+&lt;/div>
+
+//app.component.css
+.even { background-color: azure; }
+.odd { background-color: floralwhite; }
+
+            </code>
+        </pre>
+    </div>
+    </div>
+
+<h2>Formatting even-odd old style</h2>
+<br>
+<div class="row">
+    <div class="col-lg-12">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+
+//app.component.html
+
+&lt;div *ngFor="let person of allPersons; <kbd>index as i; even as isEven; odd as isOdd"</kbd>>
+    &lt;font color="<kbd>blue</kbd>" <kbd>*ngIf="isEven"</kbd>>{{i + 1}}: {{person.personId}} - {{person.name}} - {{person.age}} &lt;/font>   
+    &lt;font color="<kbd>red</kbd>" <kbd>*ngIf="isOdd"</kbd>>{{i + 1}}: {{person.personId}} - {{person.name}} - {{person.age}} &lt;/font>  
+&lt;/div> 
+
+
+
+            </code>
+        </pre>
+    </div>
+    </div>
+    <hr>
+<h2>TrackBy</h2>
+<p><span style="font-size: 14pt;"><span style="color: #000000;"><strong>Track By </strong></span>clause allows you to specify your own key to <strong><span style="color: #000000;">identify objects</span></strong>.</span></p>
+<p><span style="font-size: 14pt;">Angular uses the<em>&nbsp;<span style="color: #000000;"><strong>object identity</strong></span></em><span style="color: #000000;"><strong>&nbsp;</strong></span>to compare the elements in the collection to the DOM nodes. Hence when you <strong><span style="color: #000000;">add an item</span></strong> or <strong><span style="color: #000000;">remove an item</span></strong>, the Angular will track it and update <strong><span style="color: #2dc26b;">only the modified items in the DOM.</span><span style="color: #2dc26b;"> It does not render the entire list.</span></strong></span></p>
+<p><span style="font-size: 14pt;"><strong><span style="color: #2dc26b;">But this fails if we update the list from the back end server. </span></strong><span style="color: #000000;">That is because the retrieved objects cannot be compared with the existing objects in the list as the reference has changed. The Angular to simply remove these elements from DOM and recreates the new elements from the new data. This has&nbsp;a huge performance implication.</span></span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 14pt; color: #000000;">So, when the backend row added/ deleted then DOM will not fully reload if used <span style="color: #e03e2d;"><strong>trackby </strong></span> as we are tracking by unique id of the table as shown below.</span></p>
+
+
+So, here even new row is added /delete from database then also whole table willnot be refreshed by that particular row get refreshed
+<pre data-keep-tags="kbd, em">
+    <code class="language-javascript">
+        //app.component.html
+        &lt;tr *ngFor="let movie of movies; <kbd>trackBy</kbd>:<kbd>trackByUniqueField</kbd>>;">
+            &lt;td>{{movie.title}}</&lt;td>
+            &lt;td>{{movie.director}}&lt;/td>
+            &lt;td>{{movie.cast}}&lt;/td>
+            &lt;td>{{movie.releaseDate}}&lt;/td>
+        &lt;/tr>
+
+
+        //app.component.ts
+
+
+        <kbd>trackByUniqueField</kbd>(index, item) {
+            return item.title;    //consider title as unique field
+          }
+
+          The trackBy takes a function that has two arguments: index and the current item. 
+          <kbd>It must return a id that uniquely identifies the item. </kbd>
+    </code>
+</pre>
+<hr>
+<h2>Track by Multiple Field</h2>
+<pre data-keep-tags="kbd, em">
+    <code class="language-javascript">
+        //app.component.html
+        &lt;tr *ngFor="let movie of movies; <kbd>trackBy</kbd>:<kbd>trackByUniqueMultipleField</kbd>>;">
+            &lt;td>{{movie.title}}</&lt;td>
+            &lt;td>{{movie.director}}&lt;/td>
+            &lt;td>{{movie.cast}}&lt;/td>
+            &lt;td>{{movie.releaseDate}}&lt;/td>
+        &lt;/tr>
+
+
+        //app.component.ts
+
+
+        trackByUniqueMultipleField(index, item) {
+            return item.title + item.cast;    //consider title and cast makes unique field
+          }
+
+          The trackBy takes a function that has two arguments: index and the current item. 
+          <kbd>It must return a id that uniquely identifies the item. </kbd>
+    </code>
+</pre>
+
 <script src="../js/prism.js"></script>
 <script type="text/javascript">
     Prism.plugins.NormalizeWhitespace.setDefaults(

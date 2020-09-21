@@ -1,0 +1,7 @@
+<i onclick="myFunction(this)" class="fa fa-arrow-up"></i>
+
+<script>
+function myFunction(x) {
+  x.classList.toggle("fa-arrow-down");
+}
+</script>

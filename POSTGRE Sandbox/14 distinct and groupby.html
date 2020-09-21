@@ -155,6 +155,92 @@
             </pre>
         </div>
     </div>
+
+<h2>Get Data Without Group BY</h2>
+<div class="row">
+    <div class="col-lg-4">
+        <h5>Not Works</h5>
+        <pre>
+            <code class="language-sql">
+            SELECT 
+                ProductNumber
+              , Name
+              , COUNT(*) AS Count
+            FROM Product
+            </code>
+        </pre>
+        
+    </div>
+
+    <div class="col-lg-4">
+        <h5> Works But required GroupBY</h5>
+        <pre>
+            <code class="language-sql">
+                SELECT 
+                ProductNumber
+              , Name
+              , COUNT(*) AS Count
+                FROM Product
+                group by ProductNumber,Name,Count
+               
+            </code>
+        </pre>
+    </div>
+
+    <div class="col-lg-4">
+        <h5> Works Without GroupBy </h5>
+        Using windowing function Over
+        <pre>
+            <code class="language-sql">
+                SELECT 
+                ProductNumber
+              , Name
+              , COUNT(*) OVER() AS Count
+                FROM Product
+
+                //Result
+                PRODUCTNUMBER	      NAME	       COUNT
+                AR-5381	Adjustable    Race	        4
+                BA-8327	Bearing       Ball	        4
+                BE-2349	BB Ball       Bearing	    4
+                BE-2908	Headset Ball  Bearings	    4
+               
+            </code>
+        </pre>
+    </div>
+</div>
+
+
+<h3>Grouping on the basis of Name and Counting it </h3>
+<div class="row">
+    <div class="col-lg-6">
+        <pre>
+            <code class="language-sql">
+                SELECT 
+                ProductNumber
+              , Name
+              , COUNT(*) OVER (PARTITION BY t.Name) AS Count
+                FROM Product
+            </code>
+        </pre>
+    </div>
+</div>
+
+<h3>Grouping on the basis of Name and Filtering it</h3>
+<div class="row">
+    <div class="col-lg-6">
+        <pre>
+            <code class="language-sql">
+                SELECT 
+                ProductNumber
+              , Name
+              , COUNT(*) FILTER (WHERE ProductNumber > 5)   OVER (PARTITION BY t.Name) AS Count
+                FROM Product
+            </code>
+        </pre>
+    </div>
+</div>
+
     <script src="../ASP Sandbox/js/prism.js"></script>
     <script type="text/javascript">
         Prism.plugins.NormalizeWhitespace.setDefaults(

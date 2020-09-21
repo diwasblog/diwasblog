@@ -302,6 +302,50 @@
 </pre>
 
 
+  <h2>Accept Alphabet, Space and backspace</h2>
+  <pre>
+  <d rea class="language-csharp">
+    &lt;input type="text" onkeydown="onkeydownAlphabetValidate()" class="required form-control" id="LocalLevelEmployeeName" name="LocalLevelEmployeeName" />
+  
+    function onkeydownAlphabetValidate() {
+      var ch = String.fromCharCode(event.keyCode);
+      var filter = /<kbd>[a-zA-Z\s\b]</kbd>/;
+    
+      if (!filter.test(ch)) {
+          event.returnValue = false;
+      }
+  }
+  
+  
+  </code>
+</pre>
+
+<h2>Accept only Alphabet but not _ and other symbol</h2>
+<pre>
+  <code class="language-csharp">
+    &lt;input type="text" id="uname" name="uname" pattern="[a-zA-Z0-9]+" minlength="4" maxlength="10">
+
+    Valid: monty42, 42monty, MON42ty,  mon42ty
+    Invalid:  monty_42
+  </code>
+</pre>
+
+<h2>Always start with _</h2>
+<pre>
+  <code class="language-csharp">
+    &lt;input type="text" id="uname" name="uname" pattern="_[a-zA-Z0-9]+" minlength="4" maxlength="10">
+
+  </code>
+</pre>
+
+<h2>Email always ends with tutsplus.com , envato.com</h2>
+<pre>
+  <code class="language-csharp">
+    &lt;input type="email" id="email" pattern=".+@tutsplus\.com|.+@envato\.com">
+
+  </code>
+</pre>
+
 
 <script src="js/prism.js"></script>
 <script type="text/javascript">

@@ -1,0 +1,6 @@
+1) Publish the file and inside that run below script
+2)
+
+python -m http.server  9999
+
+3) localhost:9999

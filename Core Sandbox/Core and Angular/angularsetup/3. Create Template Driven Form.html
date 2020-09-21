@@ -178,7 +178,91 @@ To work with <strong>Template-driven forms</strong>, we must import the FormsMod
 </div>
 </div>    
 
+<hr>
+<h2>Directly Bound to name </h2>
+<div class="row">
+    <div class="col-lg-6">
+        <h2>Step 3 in nav.component.ts</h2>
+    <pre  data-keep-tags="kbd, em">
+        <code class="language-javascript">
+            &lt;form #contactForm="ngForm" (ngSubmit)="onSubmit(contactForm)">
+ 
+            &lt;p>
+            &lt;label for="firstname">First Name&lt;/label>
+            &lt;input type="text" name="firstname" ngModel>
+            &lt;/p>
+               
+            &lt;p>
+            &lt;label for="lastname">Last Name&lt;/label>
+            &lt;input type="text" name="lastname" ngModel>
+            &lt;/p>
+               
+            &lt;p>
+            &lt;label for="email">Email &lt;/label>
+            &lt;input type="text" id="email" name="email" ngModel>
+            &lt;/p>
+            &lt;p>
+            &lt;button type="submit">Submit&lt;button>
+            &lt;/p>
+                  
+            &lt;/form>
+        </code>
+    </pre>
+    </div>
+    <div class="col-lg-6">
+        <pre  data-keep-tags="kbd, em">
+            <code class="language-javascript">
+                onSubmit(contactForm) {
+                    console.log(contactForm.value);
+                  }
+                
 
+                  console output:
+                  country: "1"
+                  firstname: "Sachin"
+                  email:"sachin@gmail.com"
+            </code>
+        </pre>
+    </div>
+    </div>
+  
+
+    <h2>Form Validation in Template Driven</h2>
+    <p><span style="font-size: 14pt; color: #000000;">To use Angular validations<span style="color: #e03e2d;"><strong> we need to disable HTML 5 validation </strong></span>in our form using&nbsp;<span style="color: #e03e2d;"><strong><code>novalidate</code> </strong></span>an attribute. Find the text box with&nbsp; &nbsp;Angular required and minlength validations.&nbsp;</span></p>
+    <div class="row">
+        <div class="col-lg-6">
+            <h2>Step 3 in nav.component.ts</h2>
+        <pre  data-keep-tags="kbd, em">
+            <code class="language-javascript">
+                &lt;form #userForm="ngForm" (ngSubmit)="onFormSubmit(userForm)" <kbd>novalidate</kbd>>
+                    &lt;input name="userName" <kbd>required</kbd> <kbd>minlength="5"</kbd> ngModel #userName="ngModel">
+                    &lt;div *ngIf="userName.errors" class="error">
+                        &lt;div *ngIf="userName.errors.required">
+                            <kbd>Username required.</kbd>
+                        &lt;/div>
+                        &lt;div *ngIf="userName.errors.minlength">
+                            <kbd>Minimum length 5 characters.</kbd>
+                        &lt;/div>
+                    &lt;/div>
+                ------
+                &lt;/form> 
+            </code>
+        </pre>
+        </div>
+        <div class="col-lg-6">
+            <pre  data-keep-tags="kbd, em">
+                <code class="language-javascript">
+                    onFormSubmit(userForm) {
+                        console.log(contactForm.value);
+                      }
+                    
+    
+                     
+                </code>
+            </pre>
+            <p><span style="font-size: 14pt; color: #000000;">To get form control object, we need to export&nbsp;<code>ngModel</code>&nbsp;into local template variable as&nbsp;<span style="color: #2dc26b;"><strong><code>#userName="ngModel"</code></strong>.</span> Now using&nbsp;<code>userName</code>&nbsp;we can get form control value, validity status and error object. Error object is obtained as&nbsp;<code>userName.errors</code>&nbsp;and to get particular validation such as&nbsp;<code>required</code>&nbsp;and&nbsp;<code>minlength</code>, we write code as&nbsp;<code>userName.errors.required</code>&nbsp;and&nbsp;<code>userName.errors.minlength</code>&nbsp;to display error message accordingly. </span></p>
+        </div>
+        </div>
     <script src="../js/prism.js"></script>
     <script type="text/javascript">
         Prism.plugins.NormalizeWhitespace.setDefaults(

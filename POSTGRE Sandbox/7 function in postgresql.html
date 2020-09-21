@@ -265,6 +265,66 @@ offset ((pageno-1)*pagesize) rows  fetch next (pagesize) rows only;
       }
   </code>
 </pre>
+
+
+==============================================
+
+
+<pre>
+  <code class="language-sql">
+    
+
+CREATE OR REPLACE FUNCTION public.fn_work_plan_self_activity_reporting
+(
+userid integer,
+yearid integer,
+monthid integer,
+pageno integer,
+pagesize integer
+)
+RETURNS TABLE
+    (
+      total_count bigint,
+      user_name character varying, 
+      role_name character varying,
+      first_week text, 
+      second_week text,
+      third_week text,
+      fourth_week text,
+      first_week_progress text,
+      second_week_progress text,
+      third_week_progress text,
+      fourth_week_progress text,
+      nepali_year text,
+      month_name text
+     ) 
+LANGUAGE 'sql'
+COST 100
+STABLE 
+ROWS 1000
+AS $BODY$
+
+select count(wps.id) OVER() AS totalcount,
+user_name,
+r.role_name,
+wps.nepali_year,
+m.month_name
+from work_plan_selves wps 
+join users u on u.user_id = wps.user_id
+join roles r on r.role_id = u.role_id
+join months m on m.id = wps.nepali_month::integer
+where (wps.user_id = userid or (userid = 0))
+and    (wps.nepali_year::integer = yearid or (yearid = 0))
+and  (wps.nepali_month::integer = monthid or (monthid = 0))
+order by m.id 
+OFFSET ((pageno-1)*10) rows FETCH NEXT (10) ROWS ONLY
+$BODY$;
+
+  </code>
+</pre>
+
+
+
   <script src="../ASP Sandbox/js/prism.js"></script>
   <script type="text/javascript">
     Prism.plugins.NormalizeWhitespace.setDefaults(

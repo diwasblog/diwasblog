@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+.box{
+    background:red;
+    border:1px solid;
+    padding:10px;
+}
+
+.fifty-percent{
+    width: 50%;
+}
+
+.fifty-vw{
+    width: 50vw;
+}
+
+.twenty-five-vh{
+    width: 25vh;
+}
+
+.parent {
+    width: 135px;
+    border:1px solid;
+}
+    
+        
+    </style>
+
+
+</head>
+<body>
+    <div class="box fifty-percent">50%</div>
+    <div class="box fifty-vw">50vw</div>
+    <div class="box twenty-five-vh">25vh</div>
+    <hr>
+
+    <div class="parent">
+        <div class="box fifty-percent">50%</div>
+        <div class="box fifty-vw">50vw</div>
+        <div class="box twenty-five-vh">25vh</div>
+    </div>
+
+    <p><span style="font-size: 18pt; color: #000000;"><strong><span style="color: #2dc26b;">Percent size</span></strong> always depends upon <span style="color: #e03e2d;">its parent. <span style="color: #000000;">(first % image parent = whole width ,second % image parent is "parent" div)</span></span></span></p>
+    <p><span style="font-size: 18pt; color: #000000;"><span style="color: #2dc26b;"><strong>View Width </strong></span>always depends upon the<strong><span style="color: #e03e2d;"> whole width screen</span></strong>. (1vw = 1% screen size, 100vw = full width screen)</span></p>
+    <p><span style="font-size: 18pt; color: #000000;"><span style="color: #2dc26b;"><strong>View Height </strong></span>always depends upon the <span style="color: #e03e2d;"><strong>whole height screen</strong></span>.. (1vh = 1% screen height size, 100vh = full height screen) </span></p>
+</body>
+</html>
