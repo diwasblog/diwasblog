@@ -43,12 +43,18 @@
 	<script>
 		window.addEventListener('load', function(){
 			document.getElementById('sampleeditor').setAttribute('contenteditable', 'true');
-			document.getElementById('sampleeditor2').setAttribute('contenteditable', 'true');
+
+
+			var errorMsg = "<ul><li><b>dfsa afsdf</b></li></ul>"
+			document.getElementById("sampleeditor").innerHTML = errorMsg;
+
         });
 
 		function format(command, value) {
 			document.execCommand(command, false, value);
 		}
+
+		
 
 	</script>
 </body>
