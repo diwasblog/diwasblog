@@ -1,0 +1,72 @@
+<html>
+
+<head>
+    <script
+        src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+    <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+    integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
+    crossorigin="anonymous"
+  />
+
+
+    <style>
+        xmp.prettyprint {
+            font-size: 12pt;
+            font-family: monospace;
+
+        }
+    </style>
+</head>
+
+<body>
+
+<xmp class="prettyprint">
+    <!DOCTYPE html>
+<html>
+<head>
+    <title>Show Hide DIV in JavaScript</title>
+</head>
+<body>
+    <p>
+    	<input type="button" 
+            value="Show DIV" 
+            id="bt" 
+            onclick="toggle(this)">
+    </p>
+
+    <!--The DIV element to toggle visibility. Its "display" property is set as "none". -->
+
+    <div style="border:solid 1px #ddd; 
+        padding:10px; 
+        display:none;" 
+        id="cont">
+
+        <div>
+            <label>Name:</label>
+            <div><input id="name" name="yourname" /></div>
+        </div>
+        <div>
+            <label>Age:</label>
+            <div><input name="age" id="yourage" /></div></div>
+        <div>
+            <label>Additional Information (optional):</label>
+            <div><textarea style="width:100%;" rows="5" cols="46"></textarea></div>
+        </div>
+
+    </div>
+</body>
+<script>
+    function toggle(ele) {
+        var cont = document.getElementById('cont');
+        cont.style.display = cont.style.display == 'none' ? 'block' : 'none';
+    }
+</script>
+</html>
+</xmp>
+
+    </body>
+
+    </html>

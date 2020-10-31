@@ -1,0 +1,124 @@
+<html>
+
+<head>
+    <script
+        src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+    <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+    integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
+    crossorigin="anonymous"
+  />
+
+
+    <style>
+        xmp.prettyprint {
+            font-size: 12pt;
+            font-family: monospace;
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Creating Any Dynamic Element</h2>
+
+    <h2>Step 1 : Find which tagname you want to create</h2>
+  <xmp class="prettyprint">
+      let newElement = document.createElement(tagName); 
+      console.log(newElement);
+      console.dir(newElement);
+  </xmp>
+
+  <h2>Step 2 : Where to append this tag</h2>
+<xmp class="prettyprint">
+    // append generated data to div, body etc
+</xmp>
+
+
+
+<hr>
+<h2>Generate Input Tag Dynamically and add to Body</h2>
+
+<xmp class="prettyprint">
+
+    <body>
+        ...
+    </body>
+
+   <script>
+        let newElement = document.createElement('input'); 
+    document.body.appendChild(newElement);
+   </script>
+</xmp>
+
+<hr>
+<h2>Generate Image Tag Dynamically and add to Container Div</h2>
+<xmp class="prettyprint">
+    <div id="container"></div>
+<script>
+    var url = 'https://avatarfiles.alphacoders.com/822/82242.png';
+ 
+ var image = new Image();
+ image.src = url;
+ document.getElementById('container').appendChild(image);
+</script>
+</xmp>
+
+
+    <h2>Create List Dynamically</h2>
+<div class="row">
+    <div class="col-lg-6">
+        <xmp class="prettyprint">
+
+    <div id='container'></div>
+
+    <script>
+    var arr = ['alpha', 'bravo', 'charlie', 'delta', 'echo'];
+    var cont = document.getElementById('container');
+
+    // create ul element and set the attributes.
+    var ul = document.createElement('ul');                      
+    ul.setAttribute('style', 'padding: 0; margin: 0;');           
+    ul.setAttribute('id', 'theList');                            
+
+    for (i = 0; i <= arr.length - 1; i++) {
+        var li = document.createElement('li');     // create li element.                           
+        li.innerHTML = arr[i];      // assigning text to li using array value.                        
+        li.setAttribute('style', 'display: block;');    // remove the bullets.                   
+
+        ul.appendChild(li);     // append li to ul.
+    }
+
+    cont.appendChild(ul);       // add list to the container.
+</script>
+
+        </xmp>
+    </div>
+
+    <div class="col-lg-6">
+      
+        //Final Generated Output
+        <xmp class="prettyprint">
+
+        
+       
+        <div id="container">
+            <ul style="padding: 0; margin: 0;" id="theList">
+                <li style="display: block;">alpha</li>
+                <li style="display: block;">bravo</li>
+                <li style="display: block;">charlie</li>
+                <li style="display: block;">delta</li>
+                <li style="display: block;">echo</li>
+            </ul>
+        </div>
+        
+        </xmp>
+    </div>
+</div>
+
+</body>
+</html>    
+

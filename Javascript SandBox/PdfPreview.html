@@ -1,0 +1,51 @@
+<html>
+
+<head>
+    <script
+        src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+    <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+    integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
+    crossorigin="anonymous"
+  />
+
+
+    <style>
+        xmp.prettyprint {
+            font-size: 12pt;
+            font-family: monospace;
+
+        }
+    </style>
+</head>
+
+<body>
+<h2>Pdf Preview in IFrame and Save it </h2>
+<xmp class="prettyprint">
+    <body>
+        <iframe 
+            src='../sample.pdf' id='myFrame' 
+                frameborder='0' style='border:0;' 
+                    width='300' height='300'>
+        </iframe>
+        <p>
+            <input type="button" id="bt" onclick="print()" value="Print PDF" />
+        </p>
+    </body>
+    
+    <script>
+        let print = () => {
+            let objFra = document.getElementById('myFrame');
+            objFra.contentWindow.focus();
+            objFra.contentWindow.print();
+        }
+        
+
+    </script>
+</xmp>
+
+    </body>
+
+    </html>
