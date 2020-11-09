@@ -1,0 +1,104 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+<h2>ASP.Net Core LogLevel Configuration</h2>
+LogLevel indicates the severity of the logged message
+
+
+
+<xmp class="prettyprint">
+    //Logging Levels
+    Trace = 0
+    Debug = 1
+    Information = 2
+    Warning = 3
+    Error = 4
+    Critical = 5
+    None = 6
+    
+</xmp>   
+<hr>
+<h4>appsetting.json</h4>
+
+<xmp class="prettyprint">
+    {
+        "Logging": {
+          "LogLevel": {
+            "Default": "Trace",
+            "Microsoft": "Warning",
+            "Microsoft.Hosting.Lifetime": "Information"
+          }
+        },
+        "AllowedHosts": "*"
+      }
+      
+</xmp>
+<p><span style="font-size: 18pt; color: #000000;">All log that we made can be logged from the <span style="color: #e03e2d;"><strong>information log </strong></span>to a <strong><span style="color: #e03e2d;">higher level log</span></strong>.So, information, warning, error, critical , none types of error made by our code gets logged</span></p>
+<p><span style="font-size: 18pt; color: #000000;">From <span style="color: #e03e2d;"><strong>Microsoft namespace</strong></span>, only warning and higher Microsoft namespace logs get recorded.ie. warning,error, critical , none</span></p>
+
+
+<hr>
+<h2>HomeController.cs</h2>
+<xmp class="prettyprint">
+    public class HomeController : Controller
+    {
+        private readonly ILogger<HomeController> _logger;
+
+        public HomeController(ILogger<HomeController> logger)
+        {
+            _logger = logger;
+           
+        }
+
+        public IActionResult Index()
+        {
+            _logger.LogTrace("Trace Log");
+            _logger.LogDebug("Debug Log");
+            _logger.LogInformation("Information Log");
+            _logger.LogWarning("Warning Log");
+            _logger.LogError("Error Log");
+            _logger.LogCritical("Critical Log");
+
+            return View();
+        }
+}
+</xmp>
+<hr>
+Now, when called index method , all log gets recorded in debug 
+<xmp class="prettyprint">
+    info: Microsoft.Hosting.Lifetime[0]
+      Now listening on: https://localhost:5001
+info: Microsoft.Hosting.Lifetime[0]
+      Now listening on: http://localhost:5000
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: C:\Users\Pathway\source\repos\PracticeCore\PracticeCore
+info: PracticeCore.Controllers.HomeController[0]
+      Information Log
+warn: PracticeCore.Controllers.HomeController[0]
+      Warning Log
+fail: PracticeCore.Controllers.HomeController[0]
+      Error Log
+crit: PracticeCore.Controllers.HomeController[0]
+      Critical Log
+</xmp>
+    </body>
+    </html>

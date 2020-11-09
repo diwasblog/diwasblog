@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+<link rel="stylesheet" href="../css/bootstrap.css">
+<link rel="stylesheet" href="../css/bootstrap-grid.css">
+<link rel="stylesheet" href="../css/bootstrap-reboot.css">
+<link rel="stylesheet" href="../css/dracula.css">
+<link rel="stylesheet" href="../css/dracula-prism.css">
+<link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+<body>
+  <table class="table table-striped table-bordered table-condensed" style="width: 594px;">
+    <tbody>
+    <tr style="background-color: black; color: red;">
+    <th class="col-xs-4" style="width: 286px;">C# Data Type</th>
+    <th class="col-xs-8" style="width: 306px;">Mapping to SQL Server Data Type</th>
+    </tr>
+    <tr>
+    <td style="width: 286px;">int</td>
+    <td style="width: 306px;">int</td>
+    </tr>
+    <tr>
+    <td style="width: 286px;">string</td>
+    <td style="width: 306px;">nvarchar(Max)</td>
+    </tr>
+    <tr>
+    <td style="width: 286px;">decimal</td>
+    <td style="width: 306px;">decimal(18,2) , not null</td>
+    </tr>
+    <tr>
+      <td style="width: 286px;">decimal?</td>
+      <td style="width: 306px;">decimal(18,2) , null</td>
+      </tr>
+    <tr>
+    <td style="width: 286px;">float</td>
+    <td style="width: 306px;">real , not null</td>
+    </tr>
+    <tr>
+    <td style="width: 286px;">byte[]</td>
+    <td style="width: 306px;">varbinary(Max)</td>
+    </tr>
+    <tr>
+    <td style="width: 286px;">datetime</td>
+    <td style="width: 306px;">datetime , notnull</td>
+    </tr>
+    <tr>
+    <td style="width: 286px;">bool</td>
+    <td style="width: 306px;">bit , not null</td>
+    </tr>
+    <tr>
+    <td style="width: 286px;">byte</td>
+    <td style="width: 306px;">tinyint</td>
+    </tr>
+    <tr>
+    <td style="width: 286px;">short</td>
+    <td style="width: 306px;">smallint</td>
+    </tr>
+    <tr>
+    <td style="width: 286px;">long</td>
+    <td style="width: 306px;">bigint</td>
+    </tr>
+    <tr>
+    <td style="width: 286px;">double</td>
+    <td style="width: 306px;">float</td>
+    </tr>
+    <tr>
+    <td style="width: 286px;">char</td>
+    <td style="width: 306px;">No mapping</td>
+    </tr>
+    <tr>
+    <td style="width: 286px;">sbyte</td>
+    <td style="width: 306px;">No mapping (throws exception)</td>
+    </tr>
+    <tr>
+    <td style="width: 286px;">object</td>
+    <td style="width: 306px;">No mapping</td>
+    </tr>
+    </tbody>
+    </table>
+    
+  <p><span style="color: #ff00ff;"><strong><span style="font-size: 18pt;">Two ways of Configuring Model</span></strong></span></p>
+  <p><span style="font-size: 14pt; color: #ff0000;">1)Data Annotation  2) Fluent API</span></p>
+  
+  
+
+
+<h2>Relationship</h2>
+
+<p><span style="font-size: 18pt; color: #ff0000;"><strong class="">Different Term in Relationship</strong></span></p>
+<ul class="">
+<li>
+<p class=""><span style="font-size: 12pt;"><strong class="">Dependent entity:</strong>&nbsp;This is the entity that contains the<span style="color: #ff0000;"> foreign key property(</span>s). Sometimes referred to as the<span style="color: #ff0000;"> 'child'</span> of the relationship.(Post)</span></p>
+</li>
+<li>
+<p><span style="font-size: 12pt;"><strong>Principal entity:</strong>&nbsp;This is the entity that contains the<span style="color: #ff0000;"> primary/alternate key</span> property(s). Sometimes referred to as the <span style="color: #ff0000;">'parent</span>' of the relationship.(Blog)</span></p>
+</li>
+<li>
+<p><span style="font-size: 12pt;"><strong>Foreign key:</strong>&nbsp;The property(s) in the dependent entity that is used to store the values of the principal key property that the entity is related to.(Post.BlogId)</span></p>
+</li>
+<li>
+<p><span style="font-size: 12pt;"><strong>Principal key:</strong>&nbsp;The property(s) that uniquely identifies the principal entity. This may be the <span style="color: #ff0000;">primary key or an alternate key.(Blog.BlogId)</span></span></p>
+</li>
+<li>
+<p><span style="font-size: 12pt;"><strong>Navigation property:</strong>&nbsp;A property defined on the principal and/or dependent entity that contains a reference(s) to the related entity(s). </span></p>
+<ul>
+<li>
+<p><span style="font-size: 12pt;"><strong>Collection navigation property:</strong>&nbsp;A navigation property that contains references to many related entities.(Post.Blog)</span></p>
+</li>
+<li>
+<p><span style="font-size: 12pt;"><strong>Reference navigation property:</strong>&nbsp;A navigation property that holds a reference to a single related entity.(Blog.Posts)</span></p>
+</li>
+<li>
+<p><span style="font-size: 12pt;"><strong>Inverse navigation property:</strong>&nbsp;When discussing a particular navigation property, this term refers to the navigation property on the other end of the relationship.(Post.Blog)</span></p>
+</li>
+</ul>
+</li>
+</ul>
+===================================================================================================================================
+<img src="img/entityrelation2.png">
+Note: <p><span style="font-size: 14pt; color: #000000;">Entity Framework Code First does not allow you to create the tables without the primary key. It follows the convention to identify the candidate for the Primary Key. It searches any property with the name<strong><span style="color: #2dc26b;">&nbsp;<em>ID</em>&nbsp;</span></strong>or&nbsp;<span style="color: #2dc26b;"><em>&lt;className&gt;ID</em></span> and uses it as a <strong><span style="color: #e03e2d;">Primary Key. </span></strong></span></p>
+<h3>One to One Relationship</h3>
+Generally One to One relationship usually doesnot exists because in most of case we combine those into one table.
+<div class="row">
+  <div class="col">
+    <pre>
+      <code class="language-csharp">
+    public class Student
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+       
+    public StudentAddress Address { get; set; }
+}
+
+public class StudentAddress
+{
+    public int StudentAddressId { get; set; }
+    public string Address { get; set; }
+    public string City { get; set; }
+    public string State { get; set; }
+    public string Country { get; set; }
+
+    public int StudentId { get; set; }
+    public Student Student { get; set; }
+}
+</code>
+</pre>
+  </div>
+</div>
+=======================================================================================================================================
+<h2>One To Many Relationship</h2>
+
+
+<div class="row">
+  <div class="col">
+    <pre>
+      <code class="language-csharp">
+        public class Student
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            
+            public Grade Grade { get; set; }
+        }
+        
+        public class Grade
+        {
+            public int GradeID { get; set; }
+            public string GradeName { get; set; }
+            
+            public ICollection&lt;Student> Students { get; set; }
+        }
+      </code>
+    </pre>
+  </div>
+
+  <div class="col">
+    <pre>
+      <code class="language-csharp">
+        public class Student
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+        
+            public int GradeId { get; set; }
+            public Grade Grade { get; set; }
+        }
+        
+        public class Grade
+        {
+            public int GradeId { get; set; }
+            public string GradeName { get; set; }
+        
+            public ICollection&lt;Student> Students { get; set; }
+        }
+      </code>
+    </pre>
+  </div>
+</div>
+
+<h2>Many To Many Relationship</h2>
+
+
+<div class="row">
+  <div class="col">
+    <pre>
+      <code class="language-csharp">
+        public class Employee
+        {
+            public int EmployeeID { get; set; }
+            public string Name { get; set; }
+            public  ICollection&lt;Project> Projects { get; set; }
+        }
+        public class Project
+        {
+            public int ProjectID { get; set; }
+            public string Name { get; set; }
+            public  ICollection&lt;Employee> Employees { get; set; }
+        }
+      </code>
+    </pre>
+  </div>
+
+  
+</div>
+
+
+<h2>With Virtual and Without Virtual</h2>
+<div class="row">
+  <div class="col-lg-6">
+<pre>
+  <code class="language-sql">
+    public class Blog
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+
+    public virtual ICollection&lt;Post> Posts { get; set; }
+}
+
+public class Post
+{
+    public int Id { get; set; }
+    public string Title { get; set; }
+    public string Content { get; set; }
+
+    public virtual Blog Blog { get; set; }
+}
+    </code>
+</pre>
+  </div>
+  <div class="col-lg-6">
+    <pre>
+      <code class="language-sql">
+        public class Blog
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+
+    public  ICollection&lt;Post> Posts { get; set; }
+}
+
+public class Post
+{
+    public int Id { get; set; }
+    public string Title { get; set; }
+    public string Content { get; set; }
+
+    public  Blog Blog { get; set; }
+}
+        </code>
+    </pre>
+  </div>
+</div>
+
+<p><span style="font-size: 14pt; color: #e03e2d;"><strong>1. if you declare your property virtual :</strong></span></p>
+<p><span style="font-size: 14pt; color: #000000;">Your virtual property (by default) won't be loaded right away when querying the main object. It will be retreive from the database ONLY if you try to access it, or access one of it's components.</span></p>
+<p><span style="font-size: 14pt;">And this is called <strong><span style="color: #2dc26b;">lazy loading.</span></strong></span></p>
+<hr />
+<p><span style="font-size: 14pt; color: #e03e2d;"><strong>2. if you declare it non-virtual :</strong></span></p>
+<p><span style="font-size: 14pt; color: #000000;">Your property will (by default) be loaded right away along with all the other property in your main entity. This means your property will be ready to access : it has already been retrieved. An entity won't have to query again the database because you access this property.</span></p>
+<p><span style="font-size: 14pt;">This is called <strong><span style="color: #2dc26b;">eagerly loading</span></strong>.</span></p>
+
+For lazy load , we must have defined public and virtual.
+
+<hr />
+<p><span style="font-size: 14pt;"><strong>My opinion :</strong></span></p>
+<p><span style="font-size: 14pt; color: #000000;">More often I choose eagerly loading (non-virtual) because most of the time, I need every property of every entity to be used along without having to query back (faster in the case you really want everything quick) but if you access this property only once in a while (your not listing anything) and you want more often just the rest of the informations exept THIS one, then make it virtual so this property won't slow down the rest of the query just for a few access.</span></p>
+<hr />
+<p>&nbsp;</p>
+<hr>
+<h4>Example</h4>
+<div class="row">
+  <div class="col-lg-6">
+    Use Eager Loading
+    <pre>
+      <code class="language-csharp">
+        foreach(var line in query)
+        {
+            var v = line.NotVirtual; // I access the property for every line
+        }
+      </code>
+    </pre>
+  </div>
+  <div class="col-lg-6">
+    Use Lazy Loading (virtual)
+
+    <pre>
+      <code class="language-csharp">
+        foreach(var line in query)
+        {
+          if(line.ID == 509)        // because of this condition
+          var v = line.Virtual;     // I access the property only once in a while
+        }
+      </code>
+    </pre>
+  </div>
+</div>
+
+
+<script src="../js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+</html>

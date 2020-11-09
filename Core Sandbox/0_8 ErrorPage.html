@@ -20,16 +20,25 @@ xmp.prettyprint{
 <xmp class="prettyprint">
   public void Configure(IApplicationBuilder app, IHostingEnvironment env)
   {
-      app.UseStatusCodePagesWithReExecute("/error/{0}"); //this line and should be at top
+      if(env.IsDevelopment()){
+
+      }
+      else{
+        app.UseStatusCodePagesWithReExecute("/error/{0}"); //this line and should be at top  , denotes in production
+      }
+
+
       app.UseHttpsRedirection();
       app.UseStaticFiles();
       app.UseCookiePolicy();
 
       app.UseAuthentication();
       .........................
+      mvc mapping ...
 
   }
 </xmp>
+Here , anythings inside configure is in pipeline , so which is on the first will execute at last.
 =======================================================================
 <h2>Create Error Method with attribute routing : error/{code}</h2>
 <xmp class="prettyprint">
@@ -56,5 +65,21 @@ xmp.prettyprint{
       return View(data);
   }
 </xmp>
+
+
+<h2>Check it in production</h2>
+launchsetting.json
+<pre>
+  <code class="language-csharp">
+    "profiles": {
+      "IIS Express": {
+        "commandName": "IISExpress",
+        "launchBrowser": true,
+        "environmentVariables": {
+          "ASPNETCORE_ENVIRONMENT": "Production"          // Here set Production
+        }
+      },
+  </code>
+</pre>
   </body>
   </html>

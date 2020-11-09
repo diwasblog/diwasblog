@@ -28,13 +28,13 @@
         <h2>Step 2 ) Then select API Project</h2>
         <h2>Step 3) Run Below command in Package Manager:</h2>
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-12">
 
                 <pre class="limit-15">
         <code class='language-csharp'>
             install-package Microsoft.EntityFrameworkCore.SqlServer
-            install-package Microsoft.EntityFrameworkCore.Tools
-            install-package Microsoft.EntityFrameworkCore.Design
+            install-package Microsoft.EntityFrameworkCore.Tools  // For using package manager console
+            install-package Microsoft.EntityFrameworkCore.Design  //Includes command like add-migration,update migration and scaffholding
         </code>
         </pre>
             </div>
@@ -136,6 +136,11 @@
   }
   
     
+//Trusted_Connection=True;
+//Integrated Security=SSPI;
+//Integrated Security=true;   all gives same result as we are using windows authentication instead of sql server authentication
+
+
                 </code>
                 </pre>
 
@@ -148,8 +153,10 @@
 
         public void ConfigureServices(IServiceCollection services)
         {
-           <kbd> services.AddControllersWithViews();
-            services.AddDbContext&lt;DeveloperDbContext>
+           <kbd> 
+            services.AddControllersWithViews();
+            //services.AddDbContext&lt;DeveloperDbContext>
+            services.AddDbContextPool&lt;DeveloperDbContext> // For Performance use AddDbContextPool instead of AddDbContext
            (o => o.UseSqlServer(Configuration.
             GetConnectionString("DeveloperDatabase")));
         </kbd>
@@ -170,7 +177,7 @@
         When you run the applicaiton for the first time then database will automatically created
 
 
-        <h2>Method 1 --- Step 1 : In Startup in Configure() method</h2>
+        <h2>Step 1 : In Startup in Configure() method</h2>
 
         <pre class="limit-15" data-keep-tags="kbd, em">
             <code class='language-csharp'>
@@ -200,7 +207,7 @@
             </code>
             </pre>
 
-        <h2>Method 1 Step2 ) Just build and run the project</h2>
+        <h2>Step2 ) Just build and run the project</h2>
 
         <br>
         <hr>

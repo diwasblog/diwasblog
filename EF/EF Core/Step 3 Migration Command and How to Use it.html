@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../css/dracula.css">
+    <link rel="stylesheet" href="../css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+
+<body>
+    </head>
+    <style>
+        kbd {
+            background: black
+        }
+    </style>
+
+    <body>
+
+
+<h2>Please follow this : https://www.youtube.com/watch?v=MhvOKHUWgiY&list=PL6n9fhu94yhVkdrusLaQsfERmL_Jh4XmU&index=52</h2>
+
+<h2>Migration Command and Comparision</h2>
+
+<table style="border-collapse: collapse; width: 51.4894%; height: 132px;" border="1">
+    <tbody>
+        <tr style="height: 22px; background-color: black; color: white;">
+            <td style="width: 20.5452%; height: 22px;">Package Manager</td>
+            <td style="width: 49.4209%; height: 22px;">Command Line Interface</td>
+        </tr>
+        <tr style="height: 44px;">
+            <td style="width: 20.5452%; height: 44px;"><strong><span style="color: #000000;">Add-Migration
+                        InitialCreate&nbsp;</span></strong></td>
+            <td style="width: 49.4209%; height: 44px;"><strong><span style="color: #000000;">&nbsp;dotnet ef migration
+                        add InitialCreate</span></strong></td>
+            <td style="width: 49.4209%; height: 22px;"><strong><span style="color: #000000;">Add a New
+                        Migration</span></strong></td>
+        </tr>
+        <tr style="height: 22px;">
+            <td style="width: 20.5452%; height: 22px;"><strong><span
+                        style="color: #000000;">Update-Datebase&nbsp;</span></strong></td>
+            <td style="width: 49.4209%; height: 22px;"><strong><span style="color: #000000;">dotnet ef database
+                        update</span></strong></td>
+        </tr>
+        <tr style="height: 22px;">
+            <td style="width: 20.5452%; height: 22px;"><strong><span
+                        style="color: #000000;">Remove-Migration</span></strong></td>
+            <td style="width: 49.4209%; height: 22px;"><strong><span style="color: #000000;">dotnet ef migrations
+                        remove</span></strong></td>
+            <td style="width: 49.4209%; height: 22px;"><strong><span style="color: #000000;">Remove last migrations
+                    </span></strong></td>
+        </tr>
+        <tr style="height: 22px;">
+            <td style="width: 20.5452%; height: 22px;"><strong><span
+                        style="color: #000000;">Drop-Database</span></strong></td>
+            <td style="width: 49.4209%; height: 22px;"><strong><span style="color: #000000;">dotnet ef database drop
+                    </span></strong></td>
+        </tr>
+        <tr style="height: 22px;">
+            <td style="width: 20.5452%; height: 22px;"><strong><span style="color: #000000;">Update-Database
+                        LastGoodMigration &nbsp;</span></strong></td>
+            <td style="width: 49.4209%; height: 22px;"><strong><span style="color: #000000;">&nbsp;dotnet ef database
+                        update LastGoodMigration</span></strong></td>
+        </tr>
+        <tr>
+            <td style="width: 20.5452%;"><strong><span style="color: #000000;">Script-Migration &nbsp;</span></strong>
+            </td>
+            <td style="width: 49.4209%;"><strong><span style="color: #000000;">dotnet ef migrations
+                        script</span></strong></td>
+            <td style="width: 49.4209%;"><strong><span style="color: #000000;">Generates a SQL script from
+                        migrations.</span></strong></td>
+        </tr>
+
+        <tr>
+            <td style="width: 20.5452%;"><strong><span style="color: #000000;">Get-DbContext &nbsp;</span></strong>
+            </td>
+            <td style="width: 49.4209%;"><strong><span style="color: #000000;">dotnet ef dbcontext info</span></strong>
+            </td>
+            <td style="width: 49.4209%;"><strong><span style="color: #000000;">Gets information about a DbContext
+                        type.</span></strong></td>
+        </tr>
+    </tbody>
+</table>
+
+<hr>
+<p><span style="color: #000000; font-size: 18pt;">Suppose we have added a <span style="color: #e03e2d;"><strong>model </strong></span>/<strong><span style="color: #e03e2d;"> added&nbsp; field</span></strong> then to apply the changes we run the migration</span></p>
+<p>&nbsp;</p>
+
+<pre>
+<code class="language-csharp">
+public class Post{
+    public int Id {get;set;}
+    public string Name {get;set;}
+}    
+</code>
+</pre>    
+
+Then lets add migration:
+<pre>
+
+    <code class="language-csharp">
+        add-migration "new_model_added" 
+    </code>
+</pre>
+Doing this will make following changes <br>
+<p><span style="font-size: 18pt; color: #000000;">1) <strong><span style="color: #2dc26b;">[TimeStap]_new_model_added.cs</span></strong> &nbsp;: It has two method.<span style="color: #e03e2d;"><strong>Up()</strong></span> and <span style="color: #e03e2d;"><strong>Down()</strong></span>. </span></p>
+<ul>
+<li><span style="font-size: 18pt; color: #000000;"><strong><span style="color: #2dc26b;">Up() method </span></strong>contains code to apply the changes made to the model class to the underlying database schema.</span></li>
+<li><span style="font-size: 18pt; color: #000000;"><span style="color: #2dc26b;"> Down() method </span>contains code to undo the changes.</span></li>
+</ul>
+<p><br /><span style="font-size: 18pt; color: #000000;">2)<strong><span style="color: #2dc26b;">[DbContextClassName]ModelSnapshot.cs</span></strong> - As the name implies this file contains the snapshot of your current model. This file is created when the first migration is added and updated with each subsequent migration. EF core migrations API uses this file to determine what has changed when adding the next migration.</span></p>
+
+<br>
+
+Upto Now we havenot applied to database now lets update to a database
+
+<pre>
+    <code class="language-csharp">
+        update-database
+    </code>
+</pre>
+<br>
+<p><span style="font-size: 18pt; color: #000000;">Now, go and look at the database,<span style="color: #2dc26b;"><strong> Post </strong></span>table will be created&nbsp;</span></p>
+<p><br /><span style="font-size: 18pt; color: #000000;">Also, the <span style="color: #2dc26b;"><strong>__EFMigrationsHistory </strong></span>table is created in the database, when the first migration is executed. This table is used to keep track of the migrations that are applied to the database. There will be an entry for every migration that is applied.</span></p>
+
+
+<br>
+<h2>Now lets add a field</h2>
+<pre>
+    <code class="language-csharp">
+        public class Post{
+            public int Id {get;set;}
+            public string Name {get;set;}
+            public string PhotoPat {get;set;}
+            }
+    </code>
+</pre>
+
+<pre>
+    <code class="language-sql">
+        add-migration "added_column_in_posts"                      // Will add this migration and update snapshot.
+    </code>
+</pre>
+<p><span style="font-size: 18pt; color: #000000;">Now, we realize the spelling is incorrect of <span style="color: #e03e2d;">PhotoPat</span>. <strong><span style="color: #2dc26b;">As we have not applied to the database</span></strong> so let's <strong><span style="color: #e03e2d;">delete this migration</span></strong>.</span></p>
+<p><span style="font-size: 18pt; color: #000000;">To delete the latest migration just use: <strong>remove-migration</strong></span></p>
+<pre>
+    <code class="language-csharp">
+        remove-migration
+    </code>
+</pre>
+
+<p><span style="font-size: 18pt; color: #000000;">Suppose we have already applied migration to the database. So, in this case, if we use remove-migration we may get the below error:</span></p>
+<p><strong><span style="font-size: 18pt; color: #e03e2d;">The migration 'Latest_Migration_Name' has already been applied to the database. Revert it and try again.</span></strong></p>
+<p><br /><span style="color: #000000;"><strong><span style="font-size: 18pt;">Reverting Migration</span></strong></span></p>
+<p><br /><strong><span style="font-size: 18pt; color: #2dc26b;">Now let's revert the migration which is already applied to the database</span></strong></p>
+
+
+<p><span style="font-size: 24pt; color: #000000;"><strong>Removing a migration that is already applied to the database</strong></span><br /><br /><span style="font-size: 18pt; color: #000000;">Let us understand how to remove a migration that has already been applied to the database with an example. Let us say we have the following&nbsp;3 migrations already applied to the database.</span></p>
+<ul style="list-style-type: disc;">
+<li><span style="font-size: 18pt; color: #000000;">Migration_One</span></li>
+<li><span style="font-size: 18pt; color: #000000;">Migration_Two</span></li>
+<li><span style="font-size: 18pt; color: #000000;">Migration_Three</span></li>
+</ul>
+<p><span style="font-size: 18pt; color: #000000;">We want to remove both migration&nbsp;Migration_Two&nbsp;and&nbsp;Migration_Three. Since all these 3 migrations are already applied to the database, executing Remove-Migration command will throw an error like this:</span></p>
+<p><span style="font-size: 18pt; color: #e03e2d;">The migration 'Latest_Migration_Name' has already been applied to the database. Revert it and try again. </span></p>
+<p><br /><span style="font-size: 18pt; color: #000000;">To be able to remove a migration that is already applied to the database, we first have to undo the changes the migration made to the database. The way we do this is by executing&nbsp;Update-Database&nbsp;command with a migration name.&nbsp;</span><br /><br /><span style="font-size: 18pt; color: #000000;">If we relate this to our example, we want to undo the changes done by&nbsp;Migration_Two&nbsp;and&nbsp;Migration_Three&nbsp;and bring the database state to the state it was in, when&nbsp;Migration_One&nbsp;was executed. To achieve this we execute&nbsp;Update-Database&nbsp;command with&nbsp;Migration_One&nbsp;name as shown below.</span><br /><br /></p>
+<div><span style="color: #000000; font-size: 18pt;"><strong>Update-Database&nbsp;Migration_One</strong></span></div>
+<p><br /><span style="color: #000000; font-size: 18pt;">Executing the above command will undo the changes made by&nbsp;Migration_Two&nbsp;and&nbsp;Migration_Three. EF core will also remove the entries for these 2 migrations from&nbsp;__EFMigrationsHistory&nbsp;table.</span><br /><br /><span style="color: #000000; font-size: 18pt;">However, the migration code files will still be there in the&nbsp;<strong>Migrations&nbsp;</strong>folder. To remove the code files use&nbsp;Remove-Migration&nbsp;command. Since we want to remove both&nbsp;Migration_Three&nbsp;and&nbsp;Migration_Two&nbsp;code files, we want to execute&nbsp;Remove-Migration&nbsp;command twice. </span></p>
+<script src="../js/prism.js"></script>
+<script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true,
+            // 'break-lines': 10,
+            // 'indent': 2,
+            // 'remove-initial-line-feed': false,
+            // 'tabs-to-spaces': 4,
+            // 'spaces-to-tabs': 4
+        });
+
+
+    (function () {
+        if (!self.Prism) {
+            return;
+        }
+
+        var div = document.createElement('div');
+
+        Prism.hooks.add('before-highlight', function (env) {
+            var elt = env.element;
+            if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                elt = elt.parentNode;
+            }
+            var tags = elt.getAttribute('data-keep-tags');
+            if (!tags) {
+                return;
+            }
+            var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+            env.keepTags = true;
+            env.keepTagsPlaceholder = placeholder;
+
+            tags = tags.split(/\s*,\s*/).join('|');
+            var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+            env.keepTagsRegex = tags_regex;
+
+            env.tokenStack = [];
+            env.backupCode = env.code;
+
+            var code = env.element.innerHTML;
+            code = code.replace(tags_regex, function (match) {
+                env.tokenStack.push(match);
+                return placeholder.replace('{n}', env.tokenStack.length);
+            });
+            env.element.innerHTML = code;
+            code = env.element.textContent;
+            code = code.replace(/^(?:\r?\n|\r)/, '');
+
+            env.code = code;
+        });
+
+        Prism.hooks.add('after-highlight', function (env) {
+            if (!env.keepTags) {
+                return;
+            }
+            for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                    div.innerHTML = inside;
+                    inside = div.textContent;
+                    return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                });
+
+                env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                env.element.innerHTML = env.highlightedCode;
+            }
+        });
+
+    }());
+
+    Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+        v.classList.add("language-sql");
+    });
+    Prism.highlightAll();
+
+</script>
+</body>
+
+</html>
