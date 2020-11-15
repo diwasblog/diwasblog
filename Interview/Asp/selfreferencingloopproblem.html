@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link rel="stylesheet" href="../../EF/css/bootstrap.css" />
+    <link rel="stylesheet" href="../../Ef/css/bootstrap-grid.css" />
+    <link rel="stylesheet" href="../../Ef/css/bootstrap-reboot.css" />
+    <link rel="stylesheet" href="../../Ef/css/dracula.css" />
+    <link rel="stylesheet" href="../../Ef/css/dracula-prism.css" />
+    <style>
+        kbd {
+            background: black
+        }
+    </style>
+</head>
+<body>
+
+
+<p><span style="color: #000000;"><strong><span style="font-size: 24pt;">Entity Framework Self Referencing Loop Detected</span></strong></span></p>
+<p><span style="font-size: 18pt; color: #000000;">The main problem is that serializing an entity model which has relation with other entity model(<strong>Foreign key relationship</strong>). This relation causes self-referencing this will throw exception while <strong><span style="color: #2dc26b;">serialization to json or xml</span></strong>.&nbsp;</span></p>
+
+<div class="row">
+
+    <div class="col-lg-6">
+        <pre>
+            <code class="language-sql">
+public class Department  
+{  
+
+    public int Id { get; set; }  
+    public string Name { get; set; }  
+    public string Location { get; set; }  
+    public List&lt;Employee> Employees { get; set; }  
+}   
+            
+            </code>
+        </pre>
+    </div>
+
+    <div class="col-lg-6">
+        <pre>
+            <code class="language-sql">
+public class Employee  
+{  
+        public int Id { get; set; }  
+        public string FirstName { get; set; }  
+        public string LastName { get; set; }  
+        public string Gender { get; set; }  
+        public int Salary { get; set; }  
+        public Department Department { get; set; }  
+}  
+
+
+            </code>
+
+        </pre>
+    </div>
+</div>
+Above errors means , if you execute:
+<pre>
+    <code class="language-sql">
+        var employees = db.Employees.ToList();
+    </code>
+
+</pre>
+<p><span style="font-size: 18pt; color: #000000;">Would load <span style="color: #2dc26b;">Employees </span>and <span style="color: #2dc26b;">related Departments</span> and response will look like this infinitely and loop infinitely</span></p>
+
+
+<pre>
+    <code class="language-sql">
+        [
+employee1 : {
+    name: "name",
+    department : {
+        name: "departmentName",
+        employees : [
+            employee1 : {
+                name: "name",
+                department : {
+                    name: "departmentName",
+                    employees : [
+                        employee1 : {
+                            name: "name",
+                            department : {
+                                and again and again....              infinitely
+                            }
+                    ]
+                }
+            }
+        ]
+    }
+}
+]
+    </code>
+</pre>
+
+
+<p><span style="color: #e03e2d;"><strong><span style="font-size: 18pt;">How to remove ?</span></strong></span></p>
+<p><span style="font-size: 18pt;">To remove <span style="color: #2dc26b;"><strong>Entity Framework Self Referencing Loop</strong></span> Detected in mvc project we do like this: in <span style="color: #2dc26b;"><strong>global.aspx</strong></span></span></p>
+
+<pre data-keep-tags="kbd, em">
+    <code class="language-sql">
+HttpConfiguration config = GlobalConfiguration.Configuration;
+config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.<kbd>ReferenceLoopHandling.Ignore</kbd>;
+    </code>
+</pre>
+
+<p><span style="font-size: 18pt;">Here, <strong><span style="color: #e03e2d;">ReferenceLoopHandling </span></strong>is set to <strong><span style="color: #e03e2d;">ignore . <span style="color: #000000;">After setting ReferenceLoopHandling to Ignore,<span style="color: #2dc26b;"> Departments will be set to null</span> unless you <span style="color: #2dc26b;">include </span>it in your query:</span></span></strong></span></p>
+Now when Newtonsoft.Json runs into a loop, it simply stops serializing that tree. 
+
+ie. {"firstName":"John Smith","department":[]}
+
+
+<pre>
+    <code class="language-sql">
+        var employees = db.Employees.Include(e => e.Department);   // As we have include so, will load employee and its departments
+    </code>
+</pre>
+
+
+
+<h2>Conclusion</h2>
+<pre>
+    <code class="language-sql">
+        var employees = db.Employees.ToList();             /// Will Load Employee only , set department to null  ==> If set referencingloop = ignore
+        var employees = db.Employees.Include(e => e.Department);   // Will Load Employee and its department  and donot loop continuely if set referencing loop = ignore
+    </code> 
+</pre>
+
+<hr>
+<h4>In asp.net core , you have to set referencingloop = ignore at service method</h4>
+<pre data-keep-tags="kbd, em">
+    <code class="language-sql"> 
+        public void ConfigureServices(IServiceCollection services)
+        {
+    
+            services.AddMvc(options =>
+            {
+                options.OutputFormatters.Clear();
+                options.OutputFormatters.Add(new JsonOutputFormatter(new JsonSerializerSettings()
+                {
+                    ReferenceLoopHandling = <kbd>ReferenceLoopHandling.Ignore</kbd>,
+                }, ArrayPool&lt;char>.Shared));
+            });
+    
+            //...
+        }
+    
+    </code>
+
+</pre>
+<script src="../../EF/js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true,
+            // 'break-lines': 10,
+            // 'indent': 2,
+            // 'remove-initial-line-feed': false,
+            // 'tabs-to-spaces': 4,
+            // 'spaces-to-tabs': 4
+        });
+
+
+    (function () {
+        if (!self.Prism) {
+            return;
+        }
+
+        var div = document.createElement('div');
+
+        Prism.hooks.add('before-highlight', function (env) {
+            var elt = env.element;
+            if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                elt = elt.parentNode;
+            }
+            var tags = elt.getAttribute('data-keep-tags');
+            if (!tags) {
+                return;
+            }
+            var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+            env.keepTags = true;
+            env.keepTagsPlaceholder = placeholder;
+
+            tags = tags.split(/\s*,\s*/).join('|');
+            var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+            env.keepTagsRegex = tags_regex;
+
+            env.tokenStack = [];
+            env.backupCode = env.code;
+
+            var code = env.element.innerHTML;
+            code = code.replace(tags_regex, function (match) {
+                env.tokenStack.push(match);
+                return placeholder.replace('{n}', env.tokenStack.length);
+            });
+            env.element.innerHTML = code;
+            code = env.element.textContent;
+            code = code.replace(/^(?:\r?\n|\r)/, '');
+
+            env.code = code;
+        });
+
+        Prism.hooks.add('after-highlight', function (env) {
+            if (!env.keepTags) {
+                return;
+            }
+            for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                    div.innerHTML = inside;
+                    inside = div.textContent;
+                    return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                });
+
+                env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                env.element.innerHTML = env.highlightedCode;
+            }
+        });
+
+    }());
+
+    Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+        v.classList.add("language-sql");
+    });
+    Prism.highlightAll();
+</script>
+</body>
+
+</html>

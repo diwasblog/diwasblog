@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+
+    <style>
+      kbd {
+          background: black
+      }
+  </style>
+</head>
+<body>
+<p><span style="color: #e03e2d;"><strong><span style="font-size: 24pt;">What is Http Protocal ?</span></strong></span></p>
+<ul>
+<li><span style="font-size: 18pt; color: #000000;">Invented by Tim Berners-Lee at CERN in the years 1989&ndash;1991 </span></li>
+<li><span style="font-size: 18pt; color: #000000;">HTTP is an application layer protocol.</span></li>
+<li><span style="font-size: 18pt; color: #000000;">It uses TCP connection and port is 80</span></li>
+<li><span style="font-size: 18pt; color: #000000;">HTTP is stateless protocol .ie. client open connection for sending request, server process it and return a response and connection get closed. </span></li>
+<li><span style="font-size: 18pt; color: #000000;">HTTP is a <strong><span style="color: #2dc26b;">connection-oriented protocol</span></strong> so, <span style="color: #843fa1;"><strong>it guarantees the delivery of data packet transfer using the three-way handshaking methods and re-transmit the lost packets.</strong></span></span></li>
+<li><span style="font-size: 18pt; color: #000000;"><strong>HTTP functions as a request-response protocol in the client-server computing model.</strong> </span></li>
+</ul>
+<p><span style="color: #2dc26b;"><strong><span style="font-size: 18pt;">Why 1 request will have only one response?</span></strong></span></p>
+<p><span style="font-size: 18pt; color: #000000;">HTTP is a request/response system. Any response has to come as a reply to a request. Given that, you can't send&nbsp;<em>multiple</em>&nbsp;responses to a single request. If nothing else, there would be no client listening for those responses (because it already got the response it was waiting for).</span></p>
+<p><span style="font-size: 18pt; color: #000000;">So essentially you have two options:</span></p>
+<ol style="list-style-type: decimal;">
+<li><span style="font-size: 18pt; color: #000000;">Issue multiple requests, one for each "file" being downloaded. This will create multiple responses for the client to expect.</span></li>
+<li><span style="font-size: 18pt; color: #000000;">Combine the files into a single file using some archiving tool (Zip libraries are pretty standard for this) in the server-side code and send&nbsp;<em>that</em>&nbsp;file as the response. The client would then need to un-archive it. (If the client is a user, they'd do it manually. A self-extracting executable Zip helps with that. If the client is an application, the same library can be used client-side to extract the contents of the archive and save the files.)</span></li>
+</ol>
+<p><span style="font-size: 18pt; color: #e03e2d;">One request = one response.</span></p>
+<p><span style="color: #000000;"><strong><span style="font-size: 24pt;">Different version of HTTP</span></strong></span></p>
+<p><span style="color: #000000; font-size: 24pt;">HTTP / 0.9 &nbsp;(1994)&nbsp;</span></p>
+<p><span style="font-size: 14pt; color: #000000;">Initially, HTTP has no version. So, for distinguishing with others it is named as Http/0.9</span></p>
+<ul style="list-style-type: none;">
+<li id="7be6" style="list-style-type: disc;" data-selectable-paragraph=""><span style="font-size: 14pt; color: #000000;">Methods supported:&nbsp;<strong><span style="color: #2dc26b;"><code>GET</code>&nbsp;</span></strong>only</span></li>
+<li id="6bd4" style="list-style-type: disc;" data-selectable-paragraph=""><span style="font-size: 14pt; color: #000000;">Response type:<span style="color: #2dc26b;"> hypertext only (no style, script,media)</span></span></li>
+<li id="7f6a" style="list-style-type: disc;" data-selectable-paragraph=""><span style="font-size: 14pt; color: #000000;">Connection nature: terminated immediately after the response</span></li>
+<li id="eaec" style="list-style-type: disc;" data-selectable-paragraph=""><span style="font-size: 14pt; color: #000000;">No HTTP headers (cannot transfer other content type files)</span></li>
+<li style="list-style-type: disc;" data-selectable-paragraph=""><span style="font-size: 14pt; color: #000000;">No status/error codes, No URLs, No versioning</span></li>
+<li style="list-style-type: disc;" data-selectable-paragraph=""><span style="font-size: 14pt; color: #000000;">Telnet-friendly protocol </span></li>
+</ul>
+
+<pre>
+  <code class="language-sql">
+telnet google.com 80
+
+(Connection 1 Establishment - TCP Three-Way Handshake)
+Connected to xxx.xxx.xxx.xxx
+(Request)
+GET /my-page.html
+(Response in hypertext)
+<HTML>
+A very simple HTML page
+</HTML>
+(Connection 1 Closed - TCP Teardown)
+  </code>
+
+</pre>
+<hr>
+<p><span style="font-size: 24pt; color: #000000;">Http/1.0&nbsp;</span></p>
+<ul>
+<li><span style="font-size: 14pt; color: #000000;">Non Persistent Version of HTTP</span></li>
+<li><span style="font-size: 14pt; color: #000000;">Has a single request-response per connection. One request , reach server and response back to client connection gets close. Again for next request connection is open when response reached to client connection is closed.</span></li>
+<li><span style="font-size: 14pt; color: #000000;"><strong>Nonpersistent connection</strong>, each request-response is separate HTTP connection</span></li>
+<li><span style="font-size: 14pt; color: #000000;">Suppose you have a website , containing index.html and 16 images, then will get 17 HTTP connection between client and server.</span></li>
+</ul>
+<ul style="list-style-type: none;">
+<li id="0b59" style="list-style-type: disc;" data-selectable-paragraph=""><span style="font-size: 14pt; color: #000000;">Browser-friendly protocol</span></li>
+<li id="d5c8" style="list-style-type: disc;" data-selectable-paragraph=""><span style="font-size: 14pt; color: #000000;">Provided header fields including rich metadata about both request and response (HTTP version number, status code, content type)</span></li>
+<li id="aabc" style="list-style-type: disc;" data-selectable-paragraph=""><span style="font-size: 14pt; color: #000000;">Response: <strong><span style="color: #e03e2d;">not limited to hypertext</span> (<code>Content-Type</code> header provided the ability to transmit files other than plain HTML files &mdash; e.g.</strong><span style="color: #2dc26b;"> scripts, stylesheets, media)</span></span></li>
+<li id="eec2" style="list-style-type: disc;" data-selectable-paragraph=""><span style="font-size: 14pt; color: #000000;">Methods supported:&nbsp;<span style="color: #2dc26b;"><strong><code>GET</code>&nbsp;,&nbsp;<code>HEAD</code>&nbsp;,&nbsp;<code>POST</code></strong></span></span></li>
+<li id="b4d8" style="list-style-type: disc;" data-selectable-paragraph=""><span style="font-size: 14pt; color: #000000;">Connection nature: terminated immediately after the response</span></li>
+</ul>
+<pre>
+  <code class="language-xml">
+    (Connection 1 Establishment - TCP Three-Way Handshake)
+Connected to xxx.xxx.xxx.xxx
+(Request)
+GET /my-page.html HTTP/1.0 
+User-Agent: NCSA_Mosaic/2.0 (Windows 3.1)
+(Response)
+HTTP/1.0 200 OK 
+Content-Type: text/html 
+Content-Length: 137582
+Expires: Thu, 01 Dec 1997 16:00:00 GMT
+Last-Modified: Wed, 1 May 1996 12:45:26 GMT
+Server: Apache 0.84
+
+&lt;HTML> 
+A page with an image
+  &lt;IMG SRC="/myimage.gif">
+&lt;/HTML>
+(Connection 1 Closed - TCP Teardown)
+------------------------------------------
+(Connection 2 Establishment - TCP Three-Way Handshake)
+Connected to xxx.xxx.xxx.xxx
+(Request)
+GET /myimage.gif HTTP/1.0
+User-Agent: NCSA_Mosaic/2.0 (Windows 3.1)
+
+(Response)
+HTTP/1.0 200 OK 
+Content-Type: text/gif 
+Content-Length: 137582
+Expires: Thu, 01 Dec 1997 16:00:00 GMT
+Last-Modified: Wed, 1 May 1996 12:45:26 GMT
+Server: Apache 0.84
+[image content]
+(Connection 2 Closed - TCP Teardown)
+  </code>
+</pre>
+<h2 id="4d06" data-selectable-paragraph="">Establishing a new connection for each request &mdash; major problem in both HTTP/0.9 and HTTP/1.0</h2>
+<ul>
+<li id="71f2"><span style="font-size: 18pt; color: #000000;">Both HTTP/0.9 and HTTP/1.0 <strong><span style="color: #e03e2d;">required to open up a new connection for each request</span></strong> (and close it immediately after the response was sent). </span></li>
+<li><span style="font-size: 18pt; color: #000000;">Each time a new connection establishes, a <span style="color: #e03e2d;"><strong>TCP three-way handshake</strong> </span>should also occur. </span></li>
+</ul>
+<p data-selectable-paragraph=""><span style="font-size: 18pt; color: #000000;">For better performance, it was crucial to reduce these<strong><span style="color: #e03e2d;"> round-trips </span></strong>between client and server. HTTP/1.1 solved this with persistent connections.</span></p>
+
+
+<h1 id="0bd6" data-selectable-paragraph=""><span style="color: #000000;">HTTP/1.1 &mdash; The standardized protocol</span></h1>
+<ul style="list-style-type: none;">
+<li id="1da5" style="list-style-type: disc;" data-selectable-paragraph=""><span style="font-size: 18pt; color: #000000;">This is the HTTP version currently in common use.</span></li>
+<li id="0a39" style="list-style-type: disc;" data-selectable-paragraph=""><span style="font-size: 18pt; color: #000000;">Introduced critical performance optimizations and feature enhancements &mdash; </span><span style="font-size: 18pt; color: #000000;"><strong><span style="color: #2dc26b;">persistent and pipelined connections</span></strong>, <strong><span style="color: #2dc26b;">chunked transfers</span></strong>, <strong><span style="color: #2dc26b;">compression/decompression</span></strong>, <strong><span style="color: #2dc26b;">content negotiations</span></strong>, virtual hosting (a server with a single IP Address hosting multiple domains), faster response and great bandwidth savings by adding cache support.</span></li>
+<li id="5bcb" style="list-style-type: disc;" data-selectable-paragraph=""><span style="font-size: 18pt; color: #000000;">Methods supported:&nbsp;<strong><span style="color: #2dc26b;"><code>GET</code>&nbsp;,&nbsp;<code>HEAD</code>&nbsp;,&nbsp;<code>POST</code>&nbsp;,&nbsp;<code>PUT</code>&nbsp;,&nbsp;<code>DELETE</code>&nbsp;,&nbsp;<code>TRACE</code>&nbsp;,&nbsp;<code>OPTIONS</code></span></strong></span></li>
+<li id="8710" style="list-style-type: disc;" data-selectable-paragraph=""><span style="font-size: 18pt; color: #000000;">Connection nature: long-lived also called : <strong><span style="color: #2dc26b;">keep-alive</span></strong></span></li>
+</ul>
+
+<hr>
+<pre ata-keep-tags="kbd, em">
+  <code class="language-csharp">
+  <kbd>  (Connection 1 Establishment - TCP Three-Way Handshake)         </kbd>           // ONLY ONE TIME HANDSHAKE,
+Connected to xxx.xxx.xxx.xxx
+(Request 1)
+GET /en-US/docs/Glossary/Simple_header HTTP/1.1
+Host: developer.mozilla.org
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:50.0) Gecko/20100101 Firefox/50.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate, br
+Referer: https://developer.mozilla.org/en-US/docs/Glossary/Simple_header
+
+(Response 1)
+HTTP/1.1 200 OK
+Connection: <kbd>Keep-Alive</kbd>           //important
+Content-Encoding: gzip
+Content-Type: text/html; charset=utf-8
+Date: Wed, 20 Jul 2016 10:55:30 GMT
+Etag: "547fa7e369ef56031dd3bff2ace9fc0832eb251a"
+<kbd>Keep-Alive: timeout=5, max=1000</kbd>           //important
+Last-Modified: Tue, 19 Jul 2016 00:59:33 GMT
+Server: Apache
+Transfer-Encoding: <kbd>chunked</kbd>
+Vary: Cookie, Accept-Encoding
+
+[content]
+
+(Request 2)
+GET /static/img/header-background.png HTTP/1.1
+Host: developer.cdn.mozilla.net
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.9; rv:50.0) Gecko/20100101 Firefox/50.0
+Accept: */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate, br
+Referer: https://developer.mozilla.org/en-US/docs/Glossary/Simple_header
+
+(Response 2)
+HTTP/1.1 200 OK
+Age: 9578461
+<kbd>Cache-Control: public, max-age=315360000</kbd>          //important
+Connection: keep-alive
+Content-Length: 3077
+Content-Type: image/png
+Date: Thu, 31 Mar 2016 13:34:46 GMT
+Last-Modified: Wed, 21 Oct 2015 18:27:50 GMT
+Server: Apache
+
+[image content of 3077 bytes]
+(Connection 1 Closed - TCP Teardown)
+  </code>
+</pre>
+<p><img src="https://miro.medium.com/max/781/1*hr47CCH4G0B6z24i0w-fsg.gif" alt="" width="500" height="479" /></p>
+<p><span style="font-size: 14pt; color: #000000;">Before establishing any connection, a TCP three-way handshake happens. At the end, after sending all data to Client, 
+  Server sends a message saying there&rsquo;s no more data to send. Then the client closes the connection (TCP teardown). 
+  The problem in HTTP/1.0 is, for each request-response cycle, a connection needs to be opened and closed. And the advantage of using HTTP/1.1 is,
+   we can reuse the same open connection for multiple request-response cycles.KeepAlive depends on max time .So, if maxtime = 1000 then after 1000 second connection gets auto closed and then again TCP 
+  connection is established </span></p>
+<p><span style="font-size: 14pt; color: #000000;">So, what is upgraded in Http/1.1</span></p>
+<ul>
+<li><span style="font-size: 14pt; color: #000000;"><code>Keep-Alive</code> header is used :HTTP persistent connection, is an instruction 
+  that allows a single TCP connection to remain open for multiple HTTP requests/responses. By default, HTTP connections close after each request.&nbsp;</span></li>
+<pre>
+  <code class="language-xml">
+    HTTP/1.1 200 OK
+Connection: Keep-Alive
+Content-Encoding: gzip
+Content-Type: text/html; charset=utf-8
+Date: Thu, 11 Aug 2016 15:23:13 GMT
+Keep-Alive: timeout=5, max=1000
+Last-Modified: Mon, 25 Jul 2016 04:32:39 GMT
+Server: Apache
+
+[body] 
+</code>
+</pre>
+
+
+<li id="dc1a" style="list-style-type: disc;" data-selectable-paragraph=""><span style="font-size: 14pt; color: #000000;">Client, server, or any intermediary can provide information for&nbsp;<code>Keep-Alive</code>&nbsp;header independently. Also, a host can add&nbsp;<code>timeout</code>&nbsp;and&nbsp;<code>max</code>&nbsp;parameters in order to set a timeout or limit maximum request count per connection.</span></li>
+<li id="4f7b" style="list-style-type: disc;" data-selectable-paragraph=""><span style="font-size: 14pt; color: #000000;">HTTP pipelining, multiple connections, and many more improvements have been implemented, thanks to the&nbsp;<code>Keep-Alive</code>&nbsp;header&rsquo;s behavior.</span></li>
+</ul>
+<img src="https://miro.medium.com/max/781/1*z9GvQFsjDhXpm-5MDM81mQ.gif">
+
+<p><strong><span style="font-size: 24pt;">Flaws in HTTP 1.1</span></strong><br /><strong><span style="font-size: 14pt; color: #2dc26b;">1) Head of Line Blocking (HOL)</span></strong><br /><strong><span style="font-size: 14pt; color: #2dc26b;">2) Repetition of Header Data:</span></strong><span style="font-size: 14pt;">As we know that HTTP is stateless protocal ie. each request is independent upon other.</span><span style="font-size: 14pt;">As independent so for each request we have to sent Request Header. SO, here header is repeated.</span></p>
+<p><span style="font-size: 14pt; color: #000000;">Head-of-line blocking increases <span style="color: #e03e2d;">website response time when a sequence of packets is held up</span> because <strong><span style="color: #2dc26b;">one or more packets are blocked.</span></strong> A client sends a request to a server in HTTP/1.1, connecting over Transport Connection Protocol (TCP), and the server must <strong><span style="color: #2dc26b;">return a complete response before the connection can be used again</span></strong>. Subsequent requests will not be able to use the TCP connection until the response is completed. </span></p>
+<img src="https://images.ctfassets.net/ee3ypdtck0rk/xYpVezUadiJrtcGHyZkeD/68e0caeb6bedce06a56cc8ca89d7997a/2.gif">
+
+<p><strong><span style="color: #2dc26b;">Example:</span></strong><br /><span style="font-size: 14pt;">Request Header:</span><br /><span style="font-size: 14pt;">&nbsp; user-agent:xxx</span><br /><span style="font-size: 14pt;">&nbsp; cookie: xxx</span><br /><span style="font-size: 14pt;">&nbsp; cache-control : xxx</span><br /><span style="font-size: 14pt;">&nbsp; ...</span></p>
+<p><span style="font-size: 14pt;">Also, you can compress data, but cannot compress headers.</span></p>
+<p><strong><span style="font-size: 14pt; color: #2dc26b;">3) More focus on gzip,minifying CSS/JS , caching by developer himself etc</span></strong></p>
+
+<p><span style="font-size: 14pt;"><em>Responses 2 and 3 are blocked until response 1 is retransmitted and delivered. Adapted from </em><a href="http://books.gigatux.nl/mirror/unixnetworkprogramming/0131411551_ch10lev1sec5.html" target="_blank" rel="noopener noreferrer"><em>10.5 Exploring Head-of-Line Blocking</em></a><em>.</em></span></p>
+<p><span style="font-size: 14pt;">At first, browsers were allowed only two concurrent connections to a server, and the browser had to wait till one of them was free, creating a bottleneck. The workaround of allowing browsers to make six concurrent connections only postponed the problem.</span></p>
+<p><span style="font-size: 14pt;">Developers started using&nbsp;<a href="https://developer.mozilla.org/en-US/docs/Glossary/Domain_sharding" target="_blank" rel="noopener noreferrer"><strong><span style="color: #2dc26b;">domain </span></strong><strong><span style="color: #2dc26b;">sharding</span></strong></a>&nbsp;to split content across multiple subdomains. This allowed browsers to download more resources at the same time, which made the website load faster. This came at a cost of increased development complexity and increased overhead from the TCP connection setup.</span></p>
+<h2>Http/2</h2>
+All above problem is solved by HTTP/2 <br>
+Please search on internet for detail
+<script src="../ASP Sandbox/js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+
+
+        (function () {
+            if (!self.Prism) {
+                return;
+            }
+
+            var div = document.createElement('div');
+
+            Prism.hooks.add('before-highlight', function (env) {
+                var elt = env.element;
+                if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                    elt = elt.parentNode;
+                }
+                var tags = elt.getAttribute('data-keep-tags');
+                if (!tags) {
+                    return;
+                }
+                var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+                env.keepTags = true;
+                env.keepTagsPlaceholder = placeholder;
+
+                tags = tags.split(/\s*,\s*/).join('|');
+                var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+                env.keepTagsRegex = tags_regex;
+
+                env.tokenStack = [];
+                env.backupCode = env.code;
+
+                var code = env.element.innerHTML;
+                code = code.replace(tags_regex, function (match) {
+                    env.tokenStack.push(match);
+                    return placeholder.replace('{n}', env.tokenStack.length);
+                });
+                env.element.innerHTML = code;
+                code = env.element.textContent;
+                code = code.replace(/^(?:\r?\n|\r)/, '');
+
+                env.code = code;
+            });
+
+            Prism.hooks.add('after-highlight', function (env) {
+                if (!env.keepTags) {
+                    return;
+                }
+                for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                    t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                        div.innerHTML = inside;
+                        inside = div.textContent;
+                        return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                    });
+
+                    env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                    env.element.innerHTML = env.highlightedCode;
+                }
+            });
+
+        }());
+
+        Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+            v.classList.add("language-sql");
+        });
+        Prism.highlightAll();
+</script>
+</body>
+</html>

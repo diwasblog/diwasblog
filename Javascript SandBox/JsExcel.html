@@ -139,4 +139,111 @@
 
 </xmp>
 
+<hr>
+<hr>Using SheetJs<h2>
+Above is without any library , will works only for .xls excel file. When you try to open .xls file will gives warning.So, lets try using SheetJs which does produce .xlsx file
+<br>
+Features <br>
+1) Can Convert Html Table to excel .xlsx  <br>
+2) Import Excel and Display in Web <br>
+3) Querying in Excel using Web SQL <br> 
+4) Many More <br>
+Official sites:
+<xmp class="prettyprint">
+    https://sheetjs.com/demos  
+
+    https://redstapler.co/sheetjs-tutorial-html-table-to-excel/
+</xmp>
+Sample Example <br>
+<xmp class="prettyprint">
+    <html>
+<head>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.10.8/xlsx.full.min.js"></script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.3/FileSaver.min.js"></script>
+</head>
+<body>
+<div id="navbar"><span>Red Stapler - SheetJS </span></div>
+<div id="wrapper">
+<table id="table" border="1" class="xport">
+  <tbody>
+    <tr>
+      <td colspan="4">Some merged cell</td>
+    </tr>
+    <tr>
+      <td >This</td>
+      <td >is</td>
+      <td >a</td>
+      <td >Test</td>
+    </tr>
+    <tr>
+      <td >Fee</td>
+      <td >Fi</td>
+      <td >Fo</td>
+      <td >Fum</td>
+    </tr>
+    <tr>
+      <td >Foo</td>
+      <td ></td>
+      <td >Bar</td>
+      <td ></td>
+    </tr>
+    <tr>
+      <td ></td>
+      <td >Baz</td>
+      <td >☃</td>
+      <td >Qux</td>
+    </tr>
+    <tr>
+      <td >1</td>
+      <td >2</td>
+      <td >3</td>
+      <td >4</td>
+    </tr>
+  </tbody>
+</table>
+<button id="test">Test</button>
+</div>
+<style>
+.xport, .btn {
+	display: inline;
+	text-align:center;
+}
+a { text-decoration: none }
+#table, #table th, #table td { border: 1px solid black }
+
+</style>
+
+
+<script>
+document.getElementById("test").addEventListener("click",function(){
+  var type = "xlsx";
+  return export_table_to_excel('table', type || 'xlsx');
+})
+function s2ab(s) {
+	if(typeof ArrayBuffer !== 'undefined') {
+		var buf = new ArrayBuffer(s.length);
+		var view = new Uint8Array(buf);
+		for (var i=0; i!=s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+		return buf;
+	} else {
+		var buf = new Array(s.length);
+		for (var i=0; i!=s.length; ++i) buf[i] = s.charCodeAt(i) & 0xFF;
+		return buf;
+	}
+}
+function export_table_to_excel(id, type, fn) {
+  var wb = XLSX.utils.table_to_book(document.getElementById(id), {sheet:"Sheet JS"});
+  var wbout = XLSX.write(wb, {bookType:type, bookSST:true, type: 'binary'});
+  var fname = fn || 'test.' + type;
+  try {
+    saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), fname);
+  } catch(e) { if(typeof console != 'undefined') console.log(e, wbout); }
+  return wbout;
+}
+
+</script>
+</body>
+</html>
+</xmp>
 </body>
