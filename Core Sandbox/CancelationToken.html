@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="Core Project/css/bootstrap.css">
+    <link rel="stylesheet" href="Core Project/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="Core Project/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="Core Project/css/dracula.css">
+    <link rel="stylesheet" href="Core Project/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+<style>
+    kbd {
+        background: black
+    }
+</style>
+
+<body>
+
+    <h1><span style="color: #236fa1;">Cancelling Long Running Queries in ASP.NET MVC and Web API</span></h1>
+    <ul>
+    <li id="making-our-code-cancellable"><span style="color: #000000; font-size: 14pt;">Long running queries for read queries (those that are returning data but not modifying data) is good.</span></li>
+    <li><span style="color: #000000; font-size: 14pt;"> Cancelling queries that have modified data might not be a good choice for your application. Do you really want to cancel a Save because the user navigated to another page in your application? Maybe you do but probably not. Aside from the data issue, this also won&rsquo;t likely help performance because the <strong>database server will need to rollback that transaction which could be a costly operation</strong>. </span></li>
+    </ul>
+    <h2 id="What_is_cancellation_and_how_does_it_work?">What is cancellation and how does it work?</h2>
+    <p><span style="font-size: 14pt; color: #000000;">Cancellation is a way to signal to an async task that <strong><span style="color: #2dc26b;">it should stop doing whatever it happens to be doing</span></strong>. In .NET, this is done using a <strong><span style="color: #e03e2d;">CancellationToken</span></strong>. </span></p>
+    <ul>
+    <li><span style="font-size: 14pt; color: #000000;">An instance of a cancellation token is passed to the async task and the async task monitors the token to see if a cancellation has been requested. </span></li>
+    <li><span style="font-size: 14pt; color: #000000;">If a cancellation is requested, it should stop doing what it is doing. </span><span style="font-size: 14pt; color: #000000;">Most Async methods in .NET will have an overload that accepts a cancellation token.</span></li>
+    </ul>
+    <p>&nbsp;</p>
+    <p><span style="font-size: 14pt; color: #000000;">Here is a simple console application that illustrates how cancellation tokens work. In this example, a cancellation token is created (via a CancellationTokenSource) and passed along to an async task that does some work. When the user presses the &lsquo;z&rsquo; key, the Cancel method is called on the CancellationTokenSource. This sets the IsCancellationRequested property to true for the token which will cause the async task to stop doing the work. </span></p>
+    
+    <pre data-keep-tags="kbd, em">
+        <code class="language-csharp">
+            static void Main(string[] args)
+            {
+                Console.WriteLine("Silly counter: Press Z to Stop");
+                var tokenSource = new CancellationTokenSource();
+                var cancellationToken = tokenSource.Token;
+                Task.Run(() =>
+                {
+                    long n = 0;                
+                    while (!cancellationToken.IsCancellationRequested)
+                    {
+                        Console.WriteLine(n);
+                        n = n + 1;
+                    }
+                }, cancellationToken);
+            
+                while (true)
+                {            
+                    if (Console.Read() == 'z')
+                    {
+                        tokenSource.Cancel();                   
+                    }
+                }            
+            }
+        </code>
+        </pre>
+    
+    
+    <h2 id="Why_is_this_so_important?">Why is this so important?</h2>
+    <p><span style="font-size: 14pt; color: #000000;">Think about this in the context of a long-running query in a web application. Somewhere on the other side of this long running query is a frustrated user. WHY IS THIS TAKING SO LONG???&nbsp; What is that user likely to do? Will they sit there diligently waiting for a query to finish running? <strong><span style="color: #e03e2d;">The longer the query is running, the less likely the user will wait. </span><span style="color: #169179;">It is likely the user will give up and navigate to another page or they might hit the browser refresh button in hopes that it will load faster next time.</span></strong></span></p>
+    <p><span style="font-size: 14pt; color: #000000;">So, what happens now you have a query running on the server and the user has moved on to another page (or another site all together). Unfortunately, both your database server and web server will continue processing the request, wasting resources executing a query that likely no one cares about anymore.</span></p>
+    
+    <p><span style="font-size: 14pt; color: #000000;">&nbsp;If the action method the user is hitting takes a long time to run, then refreshing five times will fire off 5 requests. Now you're doing 5 times the work. That's the default behaviour in MVC - even though the user has refreshed the browser, which cancels the original request, your MVC action won't know that the value it's computing is going to be thrown away at the end of it!Which is a problem.</span></p>
+<p><span style="color: #e03e2d;"><em><span style="font-size: 14pt;">I'm ignoring the fact that long running actions are generally a bad idea. If you find yourself with many long running actions in your app, you might be better off considering a solution based on <strong><span style="color: #2dc26b;">CQRS and messaging queues,</span></strong> so you can quickly return a response to the user, and can process the result of the action on a background thread. </span></em></span></p>
+    
+    
+    <h2 id="Cancellation_and_the_Browser">Cancellation and the Browser</h2>
+    <p><span style="font-size: 14pt; color: #000000;">When I was first looking in to this, I assumed there was no way in my MVC controller to be notified when the user has moved to another page. I turns out I was wrong. <span style="color: #e03e2d;">If a user navigates to a new page or refreshes the browser, any HTTP Requests that are in progress will be cancelled.</span></span></p>
+    <p><span style="font-size: 14pt; color: #000000;">Here is an example where the user visited the MyReallySlowReport page. After waiting for nearly 5 seconds, they gave up and went to the Contact page (<em>I assume to look for a phone number to call and complain about how slow that report is</em>). You can see the status of the original page request is&nbsp;<em>canceled</em>.</span></p>
+    <p><a title="" href="https://www.davepaquette.com/wp-content/uploads/2015/07/image_thumb.png" rel="article0"><img style="height: auto;" title="image" src="https://www.davepaquette.com/wp-content/uploads/2015/07/image_thumb.png" alt="" /></a></p>
+    <p><span style="font-size: 14pt; color: #000000;">Both MVC and Web API will recognize the cancelled request and signal a cancellation to the async action method for that request. All you need to do for this to work is add a CancellationToken parameter to your controller action method and pass that token on to whatever async task is doing the work. In this case, Entity Framework:</span></p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+
+    <pre data-keep-tags="kbd, em">
+        <code class="language-csharp">
+            public async Task&lt;ActionResult> MyReallySlowReport(<kbd>CancellationToken cancellationToken</kbd>)
+                {
+                    List&lt;ReportItem> items;
+                    using (ApplicationDbContext context = new ApplicationDbContext())
+                    {
+                        items = await context.ReportItems.ToListAsync(cancellationToken);
+                    }
+                    return View(items);
+                }
+        </code>
+        </pre>
+    <p><span style="font-size: 14pt; color: #000000;">If your action method already has parameters, just add the CancellationToken parameter to the end of your parameter list. That&rsquo;s it. Now if the browser cancels the HTTP Request, MVC will set the CancellationToken to cancelled and Entity Framework will cancel the SQL query that was executing as part of that request.</span></p>
+    <p><span style="font-size: 14pt; color: #000000;">That was easy! One simple change to make sure there are fewer server resources wasted processing canceled requests.</span></p>
+
+
+    <h2>For More: <a href="https://www.davepaquette.com/archive/2015/07/19/cancelling-long-running-queries-in-asp-net-mvc-and-web-api.aspx">Click Here...</a></h2>
+Also read
+<h2>For More: <a href="https://andrewlock.net/using-cancellationtokens-in-asp-net-core-mvc-controllers/">Click Here....</a></h2>
+    <script src="Core Project/js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+
+
+        (function () {
+            if (!self.Prism) {
+                return;
+            }
+
+            var div = document.createElement('div');
+
+            Prism.hooks.add('before-highlight', function (env) {
+                var elt = env.element;
+                if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                    elt = elt.parentNode;
+                }
+                var tags = elt.getAttribute('data-keep-tags');
+                if (!tags) {
+                    return;
+                }
+                var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+                env.keepTags = true;
+                env.keepTagsPlaceholder = placeholder;
+
+                tags = tags.split(/\s*,\s*/).join('|');
+                var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+                env.keepTagsRegex = tags_regex;
+
+                env.tokenStack = [];
+                env.backupCode = env.code;
+
+                var code = env.element.innerHTML;
+                code = code.replace(tags_regex, function (match) {
+                    env.tokenStack.push(match);
+                    return placeholder.replace('{n}', env.tokenStack.length);
+                });
+                env.element.innerHTML = code;
+                code = env.element.textContent;
+                code = code.replace(/^(?:\r?\n|\r)/, '');
+
+                env.code = code;
+            });
+
+            Prism.hooks.add('after-highlight', function (env) {
+                if (!env.keepTags) {
+                    return;
+                }
+                for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                    t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                        div.innerHTML = inside;
+                        inside = div.textContent;
+                        return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                    });
+
+                    env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                    env.element.innerHTML = env.highlightedCode;
+                }
+            });
+
+        }());
+
+        Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+            v.classList.add("language-sql");
+        });
+        Prism.highlightAll();
+
+    </script>
+</body>
+
+</html>

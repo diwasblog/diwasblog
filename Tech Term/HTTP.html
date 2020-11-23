@@ -226,7 +226,50 @@ Server: Apache
 <p><span style="font-size: 14pt;">Developers started using&nbsp;<a href="https://developer.mozilla.org/en-US/docs/Glossary/Domain_sharding" target="_blank" rel="noopener noreferrer"><strong><span style="color: #2dc26b;">domain </span></strong><strong><span style="color: #2dc26b;">sharding</span></strong></a>&nbsp;to split content across multiple subdomains. This allowed browsers to download more resources at the same time, which made the website load faster. This came at a cost of increased development complexity and increased overhead from the TCP connection setup.</span></p>
 <h2>Http/2</h2>
 All above problem is solved by HTTP/2 <br>
+<h1 id="dd40" data-selectable-paragraph="">How HTTP/2 help improve the web page load speed ?</h1>
+<h1 id="4301" data-selectable-paragraph=""><strong><span style="color: #e03e2d;">Header Compression</span></strong></h1>
+<p><span style="font-size: 14pt; color: #000000;">In http/1.1, each request header gets transmitted and it is in <strong><span style="color: #2dc26b;">uncompressed </span></strong>form and is sent in<strong><span style="color: #2dc26b;"> plain text</span></strong>, which increases page load speed.</span></p>
+<p><span style="font-size: 14pt; color: #000000;">In Http/2, the header gets transmitted in <span style="color: #2dc26b;"><strong>compressed </strong></span>form and in <strong><span style="color: #2dc26b;">binary </span></strong>forms, which decreases page load time.</span></p>
+<h1 id="dc74" data-selectable-paragraph=""><span style="color: #e03e2d;">Server Push</span></h1>
+<p><span style="color: #000000; font-size: 14pt;">In http/1.1 <strong><span style="color: #2dc26b;">for each request from the browser, there will only be one response from the server</span></strong>.Eg. the HTML file is sent first and then your browser request other resource files like CSS, javascript, etc.&nbsp;</span></p>
+<p><span style="color: #000000; font-size: 14pt;">But in HTTP2 Server push, In addition to the response to the original request, a server can send multiple responses to a single client request without the client having to request each one explicitly.</span></p>
+<p><img src="https://miro.medium.com/max/875/1*KxxVvblOA2Z_lPJyhICvYQ.jpeg" alt="" width="875" height="211" /></p>
+<p><span style="font-size: 14pt; color: #000000;">In HTTP/1.1 , if page.html is requested to server from client, then again if the page content style.css , then client sent request to server , in the same way client send request for image and javascipt .</span></p>
+<p><span style="font-size: 14pt; color: #000000;">But, in HTTP/2, page .html is requested and if page.html contents styles.css and image.png then server send back all at the same time.</span></p>
+<h1 id="08fe" data-selectable-paragraph=""><strong><span style="color: #e03e2d;">Multiplexing multiple requests over a single TCP connection</span></strong></h1>
+<p id="8f21" data-selectable-paragraph=""><span style="font-size: 14pt; color: #000000;">One of the limitations of HTTP/1.1 is that <span style="color: #2dc26b;">it is only able to request files one by one on a single connection</span> &mdash; this means <span style="color: #e03e2d;">requesting the file, waiting for a response, downloading the file and then requesting the next one.</span> This creates the problem of <strong><span style="color: #e03e2d;">head-of-line blocking</span></strong> and inefficient use of the underlying TCP connection.</span></p>
+<figure>
+<div tabindex="0" role="button">
+<div>&nbsp;</div>
+<span style="font-size: 14pt; color: #000000;"><img style="width: 680px; height: 401.975px;" src="https://miro.medium.com/max/960/1*49PeX5jhZd3RhP-2MjVHNw.jpeg" sizes="700px" srcset="https://miro.medium.com/max/345/1*49PeX5jhZd3RhP-2MjVHNw.jpeg 276w, https://miro.medium.com/max/690/1*49PeX5jhZd3RhP-2MjVHNw.jpeg 552w, https://miro.medium.com/max/800/1*49PeX5jhZd3RhP-2MjVHNw.jpeg 640w, https://miro.medium.com/max/875/1*49PeX5jhZd3RhP-2MjVHNw.jpeg 700w" alt="Image for post" width="768" height="454" /></span></div>
+</figure>
+<p id="82b2" data-selectable-paragraph=""><span style="font-size: 14pt; color: #000000;">The new binary framing layer in HTTP/2 removes these limitations, and enables full request and response multiplexing, by allowing the client and server to break down an HTTP message into independent frames, interleave them, and then reassemble them on the other end.</span></p>
 Please search on internet for detail
+
+<p><span style="color: #3598db;"><strong><span style="font-size: 24pt;">When to Use HTTP?</span></strong></span></p>
+<ul>
+<li><span style="font-size: 18pt; color: #000000;"><strong>Retrieve Resource:</strong>Example:&nbsp;A football fan wants to check the result of a game. If the game were from last week, the game result would be stable and additional updates very unlikely. &nbsp;</span></li>
+<li><span style="font-size: 18pt; color: #000000;"><strong>Highly Cacheable Resource:</strong>Example:&nbsp;Football scores from the previous week&rsquo;s game are highly cacheable because they are stable and unlikely to change, so HTTP would be a good fit.&nbsp;</span></li>
+</ul>
+<h2>When a WebSocket is typically better</h2>
+<ul>
+<li><span style="font-size: 18pt; color: #000000;"><strong><span style="color: #e03e2d;">Fast Reaction Time</span><br /></strong>When a client needs to react quickly to a change (especially one it cannot predict), a WebSocket may be best. Consider a chat application that allows multiple users to chat in real-time. </span></li>
+<li><span style="font-size: 18pt; color: #e03e2d;"><strong>Ongoing Updates</strong></span><br /><span style="font-size: 18pt; color: #000000;">When a client wants ongoing updates about the state of the resource, WebSockets are generally a good fit. </span></li>
+<li><span style="font-size: 18pt; color: #e03e2d;"><strong>High-Frequency Messaging with Small Payloads</strong> </span></li>
+<li><span style="font-size: 18pt; color: #e03e2d;"><strong>Live Feed</strong></span></li>
+<li><span style="font-size: 18pt; color: #e03e2d;"><strong>Multiplaying Games</strong></span></li>
+</ul>
+<p><span style="color: #000000; font-size: 36pt;"><strong>WebSocket</strong></span></p>
+<p><span style="color: #000000; font-size: 36pt;"><strong><img src="https://i.ibb.co/HpsM18G/websocket.jpg" alt="" /></strong></span></p>
+<p><span style="font-size: 18pt;"><span style="color: #000000;">When a client sends a WebSocket request then its request contains an</span> <span style="color: #e03e2d;"><strong>Upgrade header</strong><span style="color: #000000;"> with some keys </span></span><span style="color: #000000;">and </span></span><span style="font-size: 18pt;"><span style="color: #000000;">, server will know that it is websocket and the server looking at it mangled the key and send back key in response from server to client. Then client looks at that hash key and verify the server.If verified then websocket handshakes completes.</span></span></p>
+<p><span style="font-size: 18pt; color: #000000;">Then after that client can send as much data to the server and vice versa.</span></p>
+<p><img src="https://i.ibb.co/CWnWdLZ/websocket-request-response.jpg" alt="" /></p>
+<p>&nbsp;</p>
+<p><img src="https://github.com/developerinsider/developer-insider-content/blob/master/Post%20Images/Wiki%20Insider/15-03-2016/websocket-lifecycle.png?raw=true" alt="" /></p>
+<p>WebSocket : ws vs wss</p>
+<p><img src="https://github.com/developerinsider/developer-insider-content/blob/master/Post%20Images/Wiki%20Insider/15-03-2016/cables21.jpg?raw=true" alt="" /></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <script src="../ASP Sandbox/js/prism.js"></script>
 <script type="text/javascript">
   Prism.plugins.NormalizeWhitespace.setDefaults(

@@ -1,0 +1,549 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="Core Project/css/bootstrap.css">
+    <link rel="stylesheet" href="Core Project/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="Core Project/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="Core Project/css/dracula.css">
+    <link rel="stylesheet" href="Core Project/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+<style>
+    kbd {
+        background: black
+    }
+</style>
+
+<body>
+
+    <h2>WebSocketClient.html</h2>
+
+            <pre data-keep-tags="kbd, em">
+                <code class="language-csharp">
+                   
+&lt;!DOCTYPE html>
+&lt;html>
+
+&lt;head>
+    &lt;meta charset="utf-8" />
+    &lt;title>WebSocket JavaScript Client&lt;/title>
+&lt;/head>
+
+&lt;body>
+    &lt;h1>WebSocket JavaScript Client&lt;/h1>
+    &lt;p id="stateLabel">Ready to connect&lt;/p>
+    &lt;p id="connIDLabel">ConnID: N/a&lt;/p>
+    &lt;div>
+        &lt;label for="connectionUrl">WebSocket Server URL:&lt;/label>
+        &lt;input id="connectionUrl" />
+        &lt;button id="connectButton" type="submit">Connect&lt;/button>
+        &lt;button id="closeButton" disabled>Close Socket&lt;/button>
+    &lt;/div>
+    &lt;p>&lt;/p>
+    &lt;div>
+        &lt;label for="sendMessage">Message:&lt;/label>
+        &lt;input id="sendMessage" disabled />
+        &lt;button id="sendButton" type="submit" disabled>Send&lt;/button>
+    &lt;/div>
+    &lt;p>&lt;/p>
+    &lt;div>
+        &lt;label for="recipients">Recipient IDs:&lt;/label>
+        &lt;input id="recipients" disabled />
+    &lt;/div>
+    &lt;p>&lt;/p>
+    &lt;h2>Communication Log&lt;/h2>
+    &lt;table style="width: 800px">
+        &lt;thead>
+            &lt;tr>
+                &lt;td style="width: 100px">From&lt;/td>
+                &lt;td style="width: 100px">To&lt;/td>
+                &lt;td>Data&lt;/td>
+            &lt;/tr>
+        &lt;/thead>
+        &lt;tbody id="commsLog">
+        &lt;/tbody>
+    &lt;/table>
+    &lt;p>&lt;/p>
+&lt;/body>
+
+&lt;script>
+    var connectionUrl = document.getElementById("connectionUrl");
+    var connectButton = document.getElementById("connectButton");
+    var stateLabel = document.getElementById("stateLabel");
+    var sendMessage = document.getElementById("sendMessage");
+    var sendButton = document.getElementById("sendButton");
+    var commsLog = document.getElementById("commsLog");
+    var closeButton = document.getElementById("closeButton");
+    var recipients = document.getElementById("recipients");
+    var connID = document.getElementById("connIDLabel");
+    
+
+    connectionUrl.value = "ws://localhost:5000/chat";
+
+    connectButton.onclick = function () {
+        stateLabel.innerHTML = "Attempting to connect...";
+        <kbd>
+        socket = new WebSocket(connectionUrl.value);
+    </kbd>
+    <kbd>
+        socket.onopen = function (event) {
+            updateState();
+            commsLog.innerHTML += '&lt;tr>' +
+                '&lt;td colspan="3" class="commslog-data">Connection opened&lt;/td>' +
+                '&lt;/tr>';
+        };
+    </kbd>
+<kbd>
+        socket.onclose = function (event) {
+            updateState();
+            commsLog.innerHTML += '&lt;tr>' +
+                '&lt;td colspan="3" class="commslog-data">Connection closed. Code: ' + htmlEscape(event.code) + '. Reason: ' + htmlEscape(event.reason) + '&lt;/td>' +
+                '&lt;/tr>';
+        };
+
+    </kbd>
+        socket.onerror = updateState;
+        
+        <kbd>
+        socket.onmessage = function (event) {
+            commsLog.innerHTML += '&lt;tr>' +
+                '&lt;td class="commslog-server">Server&lt;/td>' +
+                '&lt;td class="commslog-client">Client&lt;/td>' +
+                '&lt;td class="commslog-data">' + htmlEscape(event.data) + '&lt;/td>&lt;/tr>';
+            isConnID(event.data);
+        };
+    </kbd>
+
+    };
+
+    closeButton.onclick = function () {
+        if (!socket || socket.readyState !== WebSocket.OPEN) {
+            alert("socket not connected");
+        }
+        socket.close(1000, "Closing from client");
+    };
+
+
+    sendButton.onclick = function () {
+        if (!socket || socket.readyState !== WebSocket.OPEN) {
+            alert("socket not connected");
+        }
+        var data = constructJSONPayload();
+        socket.send(data);
+        commsLog.innerHTML += '&lt;tr>' +
+            '&lt;td class="commslog-client">Client&lt;/td>' +
+            '&lt;td class="commslog-server">Server&lt;/td>' +
+            '&lt;td class="commslog-data">' + htmlEscape(data) + '&lt;/td>&lt;/tr>';
+    };
+
+    function htmlEscape(str) {
+        return str.toString()
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+    }
+
+
+    function isConnID(str) {
+        if (str.substring(0, 7) == "ConnID:")
+            connID.innerHTML = "ConnID: " + str.substring(8, 45);
+    }
+
+    function constructJSONPayload() {
+        return JSON.stringify({
+            "From": connID.innerHTML.substring(8, connID.innerHTML.length),
+            "To": recipients.value,
+            "Message": sendMessage.value
+        });
+    }
+
+
+    function updateState() {
+        function disable() {
+            sendMessage.disabled = true;
+            sendButton.disabled = true;
+            closeButton.disabled = true;
+            recipients.disabled = true;
+
+        }
+        function enable() {
+            sendMessage.disabled = false;
+            sendButton.disabled = false;
+            closeButton.disabled = false;
+            recipients.disabled = false;
+
+        }
+        connectionUrl.disabled = true;
+        connectButton.disabled = true;
+        if (!socket) {
+            disable();
+        } else {
+            switch (socket.readyState) {
+                case WebSocket.CLOSED:
+                    stateLabel.innerHTML = "Closed";
+                    connID.innerHTML = "ConnID: N/a"
+                    disable();
+                    connectionUrl.disabled = false;
+                    connectButton.disabled = false;
+                    break;
+                case WebSocket.CLOSING:
+                    stateLabel.innerHTML = "Closing...";
+                    disable();
+                    break;
+                case WebSocket.CONNECTING:
+                    stateLabel.innerHTML = "Connecting...";
+                    disable();
+                    break;
+                case WebSocket.OPEN:
+                    stateLabel.innerHTML = "Open";
+                    enable();
+                    break;
+                default:
+                    stateLabel.innerHTML = "Unknown WebSocket State: " + htmlEscape(socket.readyState);
+                    disable();
+                    break;
+            }
+        }
+    }
+    &lt;/script>
+
+&lt;/html>
+
+                </code>
+            </pre>
+   
+<img src="https://i1.wp.com/dotnetplaybook.com/wp-content/uploads/2019/07/2019-07-14_15-28-21.jpg?w=661&ssl=1">
+
+<h2>Server Side</h2>
+Create Project with :  dotnet new web -n WebSocketServer
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+        WebSocketServer
+          Properties
+            lanchSettings.json
+          MiddleWare
+            WebSocketServerMiddleware.cs
+            WebSocketServerMiddlewareExtensions.cs
+          StartUp.cs
+          WebSocketServerConnectionManager.cs
+    </code>
+</pre>
+
+<h2>launchSettings.json</h2>
+<pre>
+    <code class="language-csharp">
+        {
+            "iisSettings": {
+              "windowsAuthentication": false, 
+              "anonymousAuthentication": true, 
+              "iisExpress": {
+                "applicationUrl": "http://localhost:47262",
+                "sslPort": 44378
+              }
+            },
+            "profiles": {
+              "IIS Express": {
+                "commandName": "IISExpress",
+                "launchBrowser": true,
+                "environmentVariables": {
+                  "ASPNETCORE_ENVIRONMENT": "Development"
+                }
+              },
+              "WebSocketServer": {
+                "commandName": "Project",
+                "launchBrowser": true,
+                <kbd>"applicationUrl": "https://localhost:5001/chat;http://localhost:5000/chat",</kbd>
+                "environmentVariables": {
+                  "ASPNETCORE_ENVIRONMENT": "Development"
+                }
+              }
+            }
+          }
+          
+    </code>
+</pre>
+
+<h2>Startup.cs</h2>
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+        public void ConfigureServices(IServiceCollection services)
+        {
+           <kbd> services.AddWebSocketServerConnectionManager();</kbd>
+        }
+
+
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            <kbd>
+            app.UseWebSockets();
+
+            app.UseWebSocketServer();
+            </kbd>
+
+            // Will Call from browser
+            app.Run(async context =>
+            {
+                Console.WriteLine("Hello from 3rd (terminal) Request Delegate");
+                await context.Response.WriteAsync("Hello from 3rd (terminal) Request Delegate");
+            });
+        }
+    </code>
+</pre>
+<h2>WebSocketServerMiddlewareExtensions.cs</h2>
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+        public static class WebSocketServerMiddlewareExtensions
+        {
+            public static IApplicationBuilder UseWebSocketServer(this IApplicationBuilder builder)
+            {
+                return builder.UseMiddleware&lt;<kbd>WebSocketServerMiddleware</kbd>>();
+            }
+    
+            public static IServiceCollection AddWebSocketServerConnectionManager(this IServiceCollection services)
+            {
+                //Look at Service Lifetimes in .Net Core Fundametal Documentation
+                //services.AddTransient&lt;WebSocketServerConnectionManager>();
+                services.AddSingleton&lt;WebSocketServerConnectionManager>();
+                return services;
+            }
+        }
+
+        </code>
+        </pre>
+        <h2>WebSocketServerConnectionManager.cs</h2>
+
+
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+                using System;
+                using System.Linq;
+                using System.Net.WebSockets;
+                using System.Text;
+                using System.Threading;
+                using System.Threading.Tasks;
+                using Microsoft.AspNetCore.Http;
+                using Newtonsoft.Json;
+                
+                namespace WebSocketServer.Middleware
+                {
+                    public class WebSocketServerMiddleware
+                    {
+                        private readonly RequestDelegate _next;
+                
+                        private WebSocketServerConnectionManager _manager;
+                
+                        public WebSocketServerMiddleware(RequestDelegate next, WebSocketServerConnectionManager manager)
+                        {
+                            _next = next;
+                            _manager = manager;
+                        }
+                
+                        public async Task InvokeAsync(HttpContext context)
+                        {
+                
+                            if (context.WebSockets.IsWebSocketRequest)
+                            {
+                                WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
+                
+                                string conn = _manager.AddSocket(webSocket);
+                
+                                //Send ConnID Back
+                                await SendConnID(webSocket, conn);
+                
+                                await Receive(webSocket, async (result, buffer) =>
+                                {
+                                    if (result.MessageType == WebSocketMessageType.Text)
+                                    {
+                                        Console.WriteLine($"Receive->Text");
+                                        Console.WriteLine($"Message: {Encoding.UTF8.GetString(buffer, 0, result.Count)}");
+                                        await RouteJSONMessageAsync(Encoding.UTF8.GetString(buffer, 0, result.Count));
+                                        return;
+                                    }
+                                    else if (result.MessageType == WebSocketMessageType.Close)
+                                    {
+                                        string id = _manager.GetAllSockets().FirstOrDefault(s => s.Value == webSocket).Key;
+                                        Console.WriteLine($"Receive->Close on: " + id);
+                
+                                        WebSocket sock;
+                                        _manager.GetAllSockets().TryRemove(id, out sock);
+                                        Console.WriteLine("Managed Connections: " + _manager.GetAllSockets().Count.ToString());
+                
+                                        await sock.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
+                
+                                        return;
+                                    }
+                                });
+                            }
+                            else
+                            {
+                                Console.WriteLine("Hello from 2nd Request Delegate - No WebSocket");
+                                await _next(context);
+                            }
+                        }
+                
+                        private async Task RouteJSONMessageAsync(string message)
+                        {
+                
+                            var routeOb = JsonConvert.DeserializeObject&lt;dynamic>(message);
+                            Console.WriteLine("To: " + routeOb.To);
+                            Guid guidOutput;
+                
+                            if (Guid.TryParse(routeOb.To.ToString(), out guidOutput))
+                            {
+                                Console.WriteLine("Targeted");
+                                var sock = _manager.GetAllSockets().FirstOrDefault(s => s.Key == routeOb.To.ToString());
+                                if (sock.Value != null)
+                                {
+                                    if (sock.Value.State == WebSocketState.Open)
+                                        await sock.Value.SendAsync(Encoding.UTF8.GetBytes(routeOb.Message.ToString()), WebSocketMessageType.Text, true, CancellationToken.None);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Invalid Recipient");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Broadcast");
+                                foreach (var sock in _manager.GetAllSockets())
+                                {
+                                    if (sock.Value.State == WebSocketState.Open)
+                                        await sock.Value.SendAsync(Encoding.UTF8.GetBytes(routeOb.Message.ToString()), WebSocketMessageType.Text, true, CancellationToken.None);
+                                }
+                            }
+                
+                
+                        }
+                
+                
+                
+                        private async Task SendConnID(WebSocket socket, string connID)
+                        {
+                            var buffer = Encoding.UTF8.GetBytes("ConnID: " + connID);
+                            await socket.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None);
+                        }
+                
+                        private async Task Receive(WebSocket socket, Action&lt;WebSocketReceiveResult, byte[]> handleMessage)
+                        {
+                            var buffer = new byte[1024 * 4];
+                
+                            while (socket.State == WebSocketState.Open)
+                            {
+                                var result = await socket.ReceiveAsync(buffer: new ArraySegment&lt;byte>(buffer),
+                                                                       cancellationToken: CancellationToken.None);
+                
+                                handleMessage(result, buffer);
+                            }
+                        }
+                    }
+                }
+        </code>
+        </pre>
+
+<
+
+        <p><span style="font-size: 18pt; color: #000000;"><strong>Now lets look at WebSocketServerConnectionManager, which is used to manage connection between client and server</strong></span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 18pt; color: #000000;"><strong>Server</strong></span></p>
+<ul>
+<li><span style="font-size: 18pt; color: #000000;">Create a&nbsp;<strong><span style="color: #e03e2d;"><em>WebSocketServerConnectionManager</em></span></strong>&nbsp;class &ndash; <span style="color: #2dc26b;">this will generate unique Id&rsquo;s for all our WebSocket connections and allow us to track them (with a view to routing)</span></span></li>
+<li><span style="font-size: 18pt; color: #000000;">Send back the Unique WebSocket &ldquo;Connection ID&rdquo; to the client (upon successful WebSocket connection request)</span></li>
+</ul>
+<p><span style="font-size: 18pt; color: #000000;"><strong>Client App</strong></span></p>
+<ul>
+<li><span style="font-size: 18pt; color: #000000;">Process and display the unique WebSocket connection ID generated by our server</span></li>
+</ul>
+
+    <script src="Core Project/js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+
+
+        (function () {
+            if (!self.Prism) {
+                return;
+            }
+
+            var div = document.createElement('div');
+
+            Prism.hooks.add('before-highlight', function (env) {
+                var elt = env.element;
+                if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                    elt = elt.parentNode;
+                }
+                var tags = elt.getAttribute('data-keep-tags');
+                if (!tags) {
+                    return;
+                }
+                var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+                env.keepTags = true;
+                env.keepTagsPlaceholder = placeholder;
+
+                tags = tags.split(/\s*,\s*/).join('|');
+                var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+                env.keepTagsRegex = tags_regex;
+
+                env.tokenStack = [];
+                env.backupCode = env.code;
+
+                var code = env.element.innerHTML;
+                code = code.replace(tags_regex, function (match) {
+                    env.tokenStack.push(match);
+                    return placeholder.replace('{n}', env.tokenStack.length);
+                });
+                env.element.innerHTML = code;
+                code = env.element.textContent;
+                code = code.replace(/^(?:\r?\n|\r)/, '');
+
+                env.code = code;
+            });
+
+            Prism.hooks.add('after-highlight', function (env) {
+                if (!env.keepTags) {
+                    return;
+                }
+                for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                    t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                        div.innerHTML = inside;
+                        inside = div.textContent;
+                        return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                    });
+
+                    env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                    env.element.innerHTML = env.highlightedCode;
+                }
+            });
+
+        }());
+
+        Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+            v.classList.add("language-sql");
+        });
+        Prism.highlightAll();
+
+    </script>
+</body>
+
+</html>
