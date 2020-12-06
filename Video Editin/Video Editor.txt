@@ -1,0 +1,20 @@
+Da Vanci Resolve  <== Free Video Editing 
+
+
+parallel slideshow in da vanci   ===> https://www.youtube.com/watch?v=bQ_CFFJzoj0
+
+
+
+https://text-to-speech-demo.ng.bluemix.net/
+
+
+Concurrency and Parallelism
+
+Concurrency : Goals of concurrency is to have usable application, application should not hang, non-blocking application.
+It is not used for performance perspective.
+
+Parallism: Goals of Parallelism is performance.
+
+
+
+

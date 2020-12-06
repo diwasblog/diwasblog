@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+
+    <style>
+      kbd {
+          background: black
+      }
+  </style>
+</head>
+<body>
+    <h2>Concurrency and Parallelism</h2>
+    <p><img src="https://1.bp.blogspot.com/-TKQSNUbkqNs/W_UCljTAeSI/AAAAAAAAI3Y/FK_seKThNSghF1eNh0wkb7fwTcPyxanyQCLcBGAs/s1600/1.jpg" /> &nbsp; <img src="https://miro.medium.com/max/409/1*_4B2PKsJn9pUz3jbTnBnYw.png" alt="" width="409" height="365" /></p>
+    <table style="border-collapse: collapse; width: 100%; height: 201px;" border="1">
+    <tbody>
+    <tr style="height: 22px;">
+    <td style="width: 49.0426%; height: 22px;"><span style="color: #000000; font-size: 14pt;">Concurrency</span></td>
+    <td style="width: 49.0957%; height: 22px;"><span style="font-size: 14pt; color: #000000;">Parallelism</span></td>
+    </tr>
+    <tr style="height: 22px;">
+    <td style="width: 49.0426%; height: 22px;"><span style="color: #000000; font-size: 14pt;">Concurrency means executing multiple tasks in the same core</span></td>
+    <td style="width: 49.0957%; height: 22px;"><span style="font-size: 14pt; color: #000000;">Parallelism means executing multiple tasks in multiple cores.</span></td>
+    </tr>
+    <tr style="height: 22px;">
+    <td style="width: 49.0426%; height: 22px;"><span style="color: #000000; font-size: 14pt;">It is a <span style="color: #2dc26b;">feel of parallelism</span></span></td>
+    <td style="width: 49.0957%; height: 22px;"><span style="font-size: 14pt; color: #000000;">It is <strong><span style="color: #2dc26b;">true parallelism</span></strong></span></td>
+    </tr>
+    <tr style="height: 22px;">
+    <td style="width: 49.0426%; height: 22px;"><span style="color: #000000; font-size: 14pt;">Occur Context Switching or time slicing</span></td>
+    <td style="width: 49.0957%; height: 22px;"><span style="font-size: 14pt; color: #000000;">No Context Switching</span></td>
+    </tr>
+    <tr style="height: 44px;">
+    <td style="width: 49.0426%; height: 44px;"><strong><span style="color: #843fa1; font-size: 14pt;">The goal of Concurrency is to have a non-blocking application, usable application, application should not hang.</span></strong></td>
+    <td style="width: 49.0957%; height: 44px;"><strong><span style="font-size: 14pt; color: #843fa1;">Goal of Parallelism is Performance</span></strong></td>
+    </tr>
+    <tr style="height: 44px;">
+    <td style="width: 49.0426%; height: 44px;"><span style="color: #000000; font-size: 14pt;">Your intention in the <span style="color: #e03e2d;">concurrent application is not about performance</span>.ie. not about making the application faster</span></td>
+    <td style="width: 49.0957%; height: 44px;"><span style="font-size: 14pt; color: #000000;">Your intention is <strong><span style="color: #e03e2d;">to make faster</span></strong> ie. having <strong><span style="color: #e03e2d;">high performance.</span></strong></span></td>
+    </tr>
+    <tr style="height: 25px;">
+    <td style="width: 49.0426%; height: 25px;"><span style="color: #000000; font-size: 14pt;">Resource Utilization is <span style="color: #2dc26b;"><strong>LIght</strong></span></span></td>
+    <td style="width: 49.0957%; height: 25px;"><span style="color: #000000; font-size: 14pt;">Resource Utilization is <span style="color: #2dc26b;">Heavy</span></span></td>
+    </tr>
+    </tbody>
+    </table>
+    <ul>
+    <li><span style="color: #000000; font-size: 14pt;">Some applications are fundamentally concurrent, e.g. web servers must handle client connections concurrently. </span></li>
+    <li><span style="color: #000000; font-size: 14pt;">Parallelism is a subset of concurrency.</span></li>
+    <li><span style="color: #000000; font-size: 14pt;">Concurrency enables parallelism.</span></li>
+    <li><span style="color: #000000; font-size: 14pt;">Concurrency is more about software design while parallelism is more about hardware.</span></li>
+    <li><span style="color: #000000; font-size: 14pt;">Concurrency gives an illusion of parallelism while parallelism is about performance.</span></li>
+    <li><span style="color: #000000; font-size: 14pt;">Concurrency just needs one core while parallelism needs at least 2 cores.</span></li>
+    </ul>
+<div class="row">
+    <div class="col-lg-6">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-sql">
+                static void Main(string[] a)
+                {
+                    Task.Delay(10000).Wait();
+                    Console.WriteLine("Downloaded File1");
+        
+                    Task.Delay(10000).Wait();
+                    Console.WriteLine("Downloaded File2");
+        
+                    Console.WriteLine("Start Data Input, enter Your Name");
+                    string str = Console.ReadLine();
+                    Console.WriteLine(str);
+                    Console.Read();
+                }
+            </code>
+        </pre>
+    </div>
+    <div class="col-lg-6">
+        When you run the application , it will wait 10 second for downloading File1 , then 10 second for second download then After that only We can get User Input. So, this is not usable application.
+        So, here our main intention is not able performance , but making usable , without blocking application.ie. We will be thinking about Concurrency application.So , lets build concurrent application as below:
+
+    </div>
+</div>
+
+ 
+
+
+<h2>Making Concurrent Running Application</h2>
+<div class="row">
+    <div class="col-lg-6">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-sql">
+                class Program
+                {
+                    static void Main(string[] a)
+                    {
+                        
+                        Method1();
+            
+                        Method2(); 
+                       
+            
+                        Console.Write("Start Data Input, enter Your Name:");
+                        string str = Console.ReadLine();
+                        Console.WriteLine(str);
+                        Console.Read();
+                    }
+            
+                    private <kbd>async</kbd> static void Method1()
+                    {
+                        <kbd>await</kbd> Task.Delay(10000);
+                        Console.WriteLine("Downloaded File1");
+                    }
+            
+                    private <kbd>async</kbd> static void Method2()
+                    {
+                        <kbd>await</kbd> Task.Delay(10000);
+                        Console.WriteLine("Downloaded File2");
+                    }
+            
+                }
+            </code>
+        </pre>
+    </div>
+    <div class="col-lg-6">
+        NOW , Application doesnot wait for method1() and method2() So, here Method1() ,Method2(), user Input are running concurrently. So, This is usable application because as soon as you run the application method1(),method2()
+        are executed in different thread, and you are able to  "Enter your Name" which is nice as it seems to be interactive. So, this is usable application. Note: <strong>While makking usable application 
+            we are not thinking about Performance.</strong><br>
+            
+    </div>
+</div>
+    
+    
+
+<script src="../ASP Sandbox/js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+
+
+        (function () {
+            if (!self.Prism) {
+                return;
+            }
+
+            var div = document.createElement('div');
+
+            Prism.hooks.add('before-highlight', function (env) {
+                var elt = env.element;
+                if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                    elt = elt.parentNode;
+                }
+                var tags = elt.getAttribute('data-keep-tags');
+                if (!tags) {
+                    return;
+                }
+                var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+                env.keepTags = true;
+                env.keepTagsPlaceholder = placeholder;
+
+                tags = tags.split(/\s*,\s*/).join('|');
+                var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+                env.keepTagsRegex = tags_regex;
+
+                env.tokenStack = [];
+                env.backupCode = env.code;
+
+                var code = env.element.innerHTML;
+                code = code.replace(tags_regex, function (match) {
+                    env.tokenStack.push(match);
+                    return placeholder.replace('{n}', env.tokenStack.length);
+                });
+                env.element.innerHTML = code;
+                code = env.element.textContent;
+                code = code.replace(/^(?:\r?\n|\r)/, '');
+
+                env.code = code;
+            });
+
+            Prism.hooks.add('after-highlight', function (env) {
+                if (!env.keepTags) {
+                    return;
+                }
+                for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                    t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                        div.innerHTML = inside;
+                        inside = div.textContent;
+                        return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                    });
+
+                    env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                    env.element.innerHTML = env.highlightedCode;
+                }
+            });
+
+        }());
+
+        Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+            v.classList.add("language-sql");
+        });
+        Prism.highlightAll();
+</script>
+</body>
+</html>

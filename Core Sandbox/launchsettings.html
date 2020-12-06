@@ -1,0 +1,64 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<style>
+xmp.prettyprint{
+    font-size:12pt;
+    font-family:monospace;
+
+}
+</style>
+ 
+</head>
+<body>
+ 
+<h2>Properties/launchSettings.json</h2>
+<xmp class="prettyprint">
+    {
+        "$schema": "http://json.schemastore.org/launchsettings.json",
+        "iisSettings": {
+          "windowsAuthentication": false,
+          "anonymousAuthentication": true,
+          "iisExpress": {
+            "applicationUrl": "http://localhost:53527",
+            "sslPort": 44337
+          }
+        },
+        "profiles": {
+          "IIS Express": {
+            "commandName": "IISExpress",
+            "launchBrowser": true,
+            "launchUrl": "weatherforecast",
+            "environmentVariables": {
+              "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+          },
+          "WebApplication1": {   //WebApplication1 is project Name
+            "commandName": "Project",
+            "launchBrowser": true,
+            "launchUrl": "weatherforecast",
+            "applicationUrl": "https://localhost:5001;http://localhost:5000",
+            "environmentVariables": {
+              "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+          }
+        }
+      }
+      
+</xmp>
+
+<body>
+    <div>
+    <div><img src="blob:https://www.tiny.cloud/374f3b59-9215-4bf1-a1d5-213c84029cbf" /></div>
+    <div>&nbsp;</div>
+    <div><span style="font-size: 18pt; color: #000000;">Here, If we have selected "<strong><span style="color: #e03e2d;">IISExpress</span></strong>" then will launch<strong> IIS Express profiles</strong> set in the "<strong><span style="color: #e03e2d;">profiles</span></strong>" section of <strong><span style="color: #e03e2d;">launchsetting.json</span></strong> at <strong><span style="color: #2dc26b;">port: 53527</span></strong> as :&nbsp;<a style="color: #000000;" href="http://localhost:53527/weatherforecast" aria-invalid="true">http://localhost:53527/weatherforecast</a></span></div>
+    <br />
+    <div><span style="font-size: 18pt; color: #000000;">Suppose if you have selected "<strong><span style="color: #e03e2d;">WebApplication1</span></strong>" from the top&nbsp;dropdown,&nbsp;then&nbsp;will&nbsp;launch at <strong><span style="color: #2dc26b;">port:&nbsp;5001</span></strong> as <a style="color: #000000;" href="http://localhost:5000/weatherforecast" aria-invalid="true">http://localhost:5000/weatherforecast</a></span></div>
+    </div>
+
+</launchsettings>
+  </body>
+  </html>
