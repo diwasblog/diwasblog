@@ -16,59 +16,155 @@ xmp.prettyprint{
  
 </head>
 <body>
+<ul>
+<li><span style="font-size: 18pt;">&nbsp;<strong>middleware defined using&nbsp;<span style="color: #e03e2d;"><code>app.Use</code></span>&nbsp;may call next middleware component in the pipeline. </strong></span></li>
+<li><span style="font-size: 18pt;"><strong>&nbsp;middlware defined using&nbsp;<span style="color: #e03e2d;"><code>app.Run</code></span>&nbsp;will never call subsequent middleware.</strong> </span></li>
+<li><span style="font-size: 18pt;"><strong>Should have only one <span style="color: #e03e2d;">app.Run</span> in pipeline</strong></span></li>
+</ul>
+<div>
 
-<div class="row">
-  <div class="col-lg-12" style="padding:15px">
-    <p><span style="color: #ff0000;"><strong><span style="font-size: 14pt;">MiddleWare</span></strong></span></p>
-<p><span style="font-size: 12pt;">Middleware is like middle man.</span></p>
-<p><span style="font-size: 12pt;">he ASP.NET Core architecture features a system of&nbsp;<strong>middleware</strong>, which are <span style="color: #000000;"><strong>pieces of code that handle requests and responses</strong></span>. </span></p>
-<p><span style="font-size: 12pt;"><span style="color: #ff0000;"><strong>Middleware are chained to each other to form a&nbsp;pipeline.</strong></span> <strong><span style="color: #ff0000;">Incoming requests</span></strong> are passed through the pipeline, where each middleware has a chance to do something with them before passing them to the next middleware. Outgoing responses are also passed through the pipeline,<span style="color: #ff0000;"><strong> in reverse order.</strong></span></span></p>
-<p><span style="font-size: 12pt;">They are mostly hidden behind nicely named <span style="color: #ff0000;"><strong>extension&nbsp; methods</strong></span> like <span style="color: #ff0000;"><strong>UseMvc()</strong></span>,<span style="color: #ff0000;"><strong>UserAuthentication(),UseDeveloperExceptionPage(</strong></span>)&nbsp;</span></p>
-
-<img src="img/middleware.png">
-
-
-MiddelWare1, Middleware2 and Middleware3 forms a pipelining.
-<p><span style="font-size: 12pt;">Middleware is present in Startup.cs file inside Configure Method as below:</span></p>
-
-
-<xmp class="prettyprint">
-      public void Configure(IApplicationBuilder app)
-      {    
-        app.UseExceptionHandler("/Home/Error");  ====> A
-
-        app.UseStaticFiles();                    ====> B
-
-        app.UseAuthentication();                 ====> C 
-
-        app.UseMvcWithDefaultRoute();            ====> D
-      }
-</xmp>
-====================================================================================
-<div class="line number7 index6 alt2"><code class="csharp plain"></code></div>
-<p><span style="font-size: 12pt;">Here 4 middleware are chained together to form pipelining.</span></p>
-<p><span style="font-size: 12pt;">Imagine the request pipeline as a huge tube where you can call something in and where an echo comes back.&nbsp;</span></p>
-<p><strong><span style="font-size: 12pt; color: #000000;">===============================================================================================</span></strong></p>
-<p><span style="font-size: 12pt;">In an ASP.NET Core web, if the client requests an image or any other static file, the&nbsp;<code><strong><span style="color: #000000;">StaticFileMiddleWare</span></strong>(ie. <strong><span style="color: #ff0000;">UseStaticFiles(</span></strong><span style="color: #ff0000;">)</span>) </code><strong><span style="color: #000000;">searches for that resource and returns that resource if it finds one.</span> </strong></span></p>
-<p><span style="font-size: 12pt;"><strong><span style="color: #ff00ff;">If not, this middleware does nothing except to call the next one.</span> </strong>If there is no last middleware that handles the request pipeline( must have app.Run extension), the request returns nothing. </span></p>
-<p><span style="font-size: 12pt;">The<span style="color: #000000;"><strong>&nbsp;<code>MvcMiddleWare</code></strong></span>&nbsp;also <strong><span style="color: #000000;">checks the requested resource,</span></strong> <span style="color: #ff00ff;"><strong>tries to map it to a configured route</strong></span>, <strong><span style="color: #0000ff;">executes the controller</span></strong>, <span style="color: #003366;"><strong>creates a view,</strong> </span>and <strong><span style="color: #ff0000;">returns an HTML or Web API result.</span></strong></span></p>
-<p><span style="font-size: 12pt;"> If&nbsp;<strong><span style="color: #ff00ff;"><code>MvcMiddleWare </code>doesn't find a matching controller</span></strong>, it will return a result anyway, in this case, <strong><span style="color: #000000;">a 404 Status</span></strong> result. It returns an echo in any case. This is <span style="color: #ff0000; font-size: 18pt;"><strong>why&nbsp;<code>MvcMiddleWare</code>&nbsp;is the last configured middleware.</strong></span></span></p>
-<p><strong><span style="color: #000000;">==================================================================================================================</span></strong></p>
-<p><span style="font-size: 12pt;">The <span style="color: #ff00ff;"><strong>exception handling middleware</strong></span> usually is one of the first middlewares to get configured, but <strong><span style="color: #000000;">it is not because it gets executed not first but last.</span></strong> &nbsp;An exception handling middleware validates the result and displays a possible exception in a browser and client-friendly way. <span style="color: #ff0000;"><strong>This is where a runtime error gets a 500 Status.</strong></span></span></p>
-<p><span style="font-size: 12pt;"><span style="color: #ff0000;"><strong>Execute in this way:</strong></span></span></p>
-<p><strong><span style="font-size: 12pt; color: #000000;">A</span></strong></p>
-<p><strong><span style="font-size: 12pt; color: #000000;">B</span></strong></p>
-<p><strong><span style="font-size: 12pt; color: #000000;">C</span></strong></p>
-<p><strong><span style="font-size: 12pt; color: #000000;">D</span></strong></p>
-<p><strong><span style="font-size: 12pt; color: #000000;">C</span></strong></p>
-<p><strong><span style="font-size: 12pt; color: #000000;">B</span></strong></p>
-<p><span style="font-size: 12pt;"><span style="color: #ff0000;"><strong><span style="color: #000000;">A</span>&nbsp; <span style="color: #ff00ff;">(This ie . <code class="csharp plain">app.UseExceptionHandler(</code><code class="csharp string">"/Home/Error"</code><code class="csharp plain">);</code> will execute at last so it is said " The first configured middleware is also the last one if the echo comes back down the tube."&nbsp;</span></strong></span></span></p>
-<p><span style="font-size: 12pt;">The&nbsp;<code>Use*</code>&nbsp;methods in this example are actually just "shortcuts" to make it easier to build the pipeline. Behind the scenes, they all end up using (directly or indirectly) these low-level primitives:&nbsp;<span style="color: #ff0000;"><strong><code>Use</code>&nbsp;and&nbsp;<code>Run</code>.</strong></span> Both add a middleware to the pipeline, the difference is that<strong><span style="color: #000000;">&nbsp;<code>Run</code>&nbsp;adds a&nbsp;<em>terminal</em>&nbsp;middleware</span></strong>, i.e. a middleware that is the last in the pipeline.</span></p>
+ <xmp class="prettyprint">
+public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            app.Use(async (context, next) =>
+            {
+                await context.Response.WriteAsync("Before First Use");        // 1
+                await next();                                                // call next app.Use or app.Run   2
+                await context.Response.WriteAsync("After First Use ");      // 4
+            });
 
 
+            app.Run(async context => {
+                await context.Response.WriteAsync("Inside middleware defined using app.Run");           // 3 
+            });
 
-<span style="color: #ff0000;"><strong><span style="font-size: 14pt;">Note: The middleware is initialized when the application starts and exists once during the application's lifetime. The constructor gets called once. On the other hand, the&nbsp;<code>Invoke()</code><span id="_tmp_pre_1">&nbsp;</span>method is called once per request.</span>
-  </div>
+
+            app.Use(async (context, next) =>
+            { 
+                await context.Response.WriteAsync("After Run ");                 // Willnot execute
+                await context.Response.WriteAsync("Response 2nd After Run");     // Willnot execute
+                await next();
+                await context.Response.WriteAsync("Response 3rd After Run");
+            });
+        }
+
 </div>
+
+
+
+</xmp>
+<h2>Output</h2>
+Before First Use<br />Inside middleware defined using app.Run<br />After First Use 
+
+
+<div>
+<pre><span style="font-size: 18pt; color: #000000;"> Here, middleware defined after <strong><code>app.Run</code></strong> has not&nbsp; executed.&nbsp;</span></pre>
+<p>&nbsp;</p>
+</div>
+
+<p>&nbsp;===================================================================</p>
+
+
+ <xmp class="prettyprint">
+ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            app.Use(async (context, next) =>
+            {
+                await context.Response.WriteAsync("Before First Use");
+                await next();
+                await context.Response.WriteAsync("After First Use ");
+            });
+
+
+            app.Run(async context => {
+                await context.Response.WriteAsync("Inside middleware defined using app.Run");
+            });
+
+</xmp>
+
+
+<hr>
+<h4>If no app.Run then willnot response back 
+<xmp class="prettyprint">
+ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+
+            app.Use(async (context, next) =>
+            {
+                await context.Response.WriteAsync("Before First Use");   // 1
+                await next();                                            // No run middleware so willnot execute below next
+                await context.Response.WriteAsync("After First Use ");   // WIllnot get execute
+            });
+        }
+
+</xmp>
+
+Output: <br>
+Before First Use
+
+<hr>
+<h2>Custom MiddleWare</h2>
+Two Rules <br>
+<p><span style="font-size: 18pt; color: #000000;">1. The middleware class must declare a <strong><span style="color: #2dc26b;">non-static public constructor</span></strong> with at least one parameter of type&nbsp;<span style="color: #2dc26b;"><a style="color: #2dc26b;" href="https://docs.microsoft.com/en-us/dotnet/api/Microsoft.AspNetCore.Http.RequestDelegate?view=aspnetcore-2.0">RequestDe<strong>l</strong>egate</a>&nbsp;</span></span></p>
+<p><span style="font-size: 18pt; color: #000000;">What actually you get here is the reference to the next middleware in the pipeline. When you invoke this&nbsp;RequestDelegate&nbsp;you&nbsp;are actually invoking the next middleware in the pipeline</span></p>
+<p><span style="font-size: 18pt; color: #000000;">2. The middleware class must define a public method named&nbsp;<span style="color: #2dc26b;"><strong>Invoke&nbsp;</strong></span>that takes an&nbsp;<strong><span style="color: #2dc26b;">HttpContext&nbsp;</span></strong>and returns a&nbsp;<strong><span style="color: #2dc26b;">Task</span></strong>. This is the method that gets invoked when the request arrives at the middleware</span></p>
+
+Example: <br>
+Step 1:Create SimpleMiddleware.cs
+<xmp class="prettyprint">
+  public class SimpleMiddleware
+    {
+        private readonly RequestDelegate _next;
+
+        public SimpleMiddleware(RequestDelegate next)
+        {
+          //First, in the constructor, we will get the reference to the next middleware in the pipeline. We store it in local variable _next
+            _next = next;
+        }
+
+        public async System.Threading.Tasks.Task Invoke(HttpContext context)
+        {
+            await context.Response.WriteAsync("<div> Hello from Simple Middleware </div>");
+            await _next(context);
+            await context.Response.WriteAsync("<div> Bye from Simple Middleware </div>");
+        }
+    }
+ </xmp>
+Step 2:  register the middleware in the request pipeline
+<xmp class="prettyprint">
+  public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            app.UseStaticFiles();
+            app.UseMiddleware<SimpleMiddleware>();   //use before Run 
+            app.Run(async context => {
+                await context.Response.WriteAsync("Inside middleware defined using app.Run");
+            });
+        }
+</xmp>
+
+<hr>
+Method 2: Using Extension Method <br>
+SomeMiddlewarerExtensions.cs
+<xmp class="prettyprint">
+  public static class SomeMiddlewarerExtensions
+    {
+        public static IApplicationBuilder UseSimpleMiddleware(this IApplicationBuilder builder)
+        {
+            return builder.UseMiddleware<SimpleMiddleware>();
+        }
+    }
+</xmp>
+THen in startup use it like :
+<xmp class="prettyprint">
+  public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            app.UseStaticFiles();
+            app.UseSimpleMiddleware();   // instead of app.UseMiddleware<SimpleMiddleware>();
+            app.Run(async context => {
+                await context.Response.WriteAsync("Inside middleware defined using app.Run");
+            });
+        }
+</xmp>
+
   </body>
 </html>

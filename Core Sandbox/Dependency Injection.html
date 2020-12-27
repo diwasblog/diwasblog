@@ -1,0 +1,228 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="Core Project/css/bootstrap.css">
+    <link rel="stylesheet" href="Core Project/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="Core Project/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="Core Project/css/dracula.css">
+    <link rel="stylesheet" href="Core Project/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+<style>
+    kbd {
+        background: black
+    }
+</style>
+
+<body>
+
+
+<div class="row">
+    <div class="col-lg-6">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+// Employee.cs
+    public class <kbd>Employee</kbd>
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string Department { get; set; }
+    }
+            </code>
+            </pre>
+    
+    </div>
+    <div class="col-lg-6"> 
+    <pre data-keep-tags="kbd, em">
+        <code class="language-csharp">
+// IEmployeeRepository.cs
+public <kbd>interface</kbd> <kbd>IEmployeeRepository</kbd>
+{
+    Employee GetEmployee(int id);
+}
+        </code>
+        </pre>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-lg-6">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+// EmployeeRepository.cs
+public class <kbd>EmployeeRepository</kbd>: <kbd>IEmployeeRepository</kbd>
+{
+    private List&lt;Employee> _employeeList;
+    public EmployeeRepository()
+    {
+        // calling Employee List From Database
+    }
+    public Employee GetEmployee(int id)
+    {
+        return this._employeeList.FirstOrDefault(e => e.Id == id);
+    }
+}
+            </code>
+            </pre>
+    
+    </div>
+    <div class="col-lg-6"> 
+    <pre data-keep-tags="kbd, em">
+        <code class="language-csharp">
+// MockEmployeeRepository.cs
+public class <kbd>MockEmployeeRepository</kbd> : <kbd>IEmployeeRepository</kbd>
+{
+    private List&lt;Employee> _employeeList;
+    public MockEmployeeRepository()
+    {
+        _employeeList = new List&lt;Employee>()
+        {
+            new Employee() { Id = 1, Name = "Mary", Department = "HR", Email = "mary@pragimtech.com" },
+            new Employee() { Id = 2, Name = "John", Department = "IT", Email = "john@pragimtech.com" },
+            new Employee() { Id = 3, Name = "Sam", Department = "IT", Email = "sam@pragimtech.com" },
+
+    };
+    }
+    public Employee GetEmployee(int id)
+    {
+        return this._employeeList.FirstOrDefault(e => e.Id == id);
+    }
+}
+        </code>
+        </pre>
+    </div>
+</div>
+
+<p><span style="font-size: 18pt; color: #000000;">Now let's add <strong><span style="color: #e03e2d;">EmployeeRepository</span></strong> in the <strong><span style="color: #e03e2d;">ConfigureService </span></strong>method</span></p>
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+// MockEmployeeRepository.cs
+public class Startup
+{
+    public Startup(IConfiguration configuration)
+    {
+        Configuration = configuration;
+    }
+
+    public IConfiguration Configuration { get; }
+
+    // Call At Runtime for service registration for DI
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddMvc(options => options.EnableEndpointRouting = false);
+        services.AddSingleton&lt;<kbd>IEmployeeRepository</kbd>, <kbd>EmployeeRepository</kbd>>();
+    }
+
+    //Call at Runtime for request Pipeline
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        app.UseStaticFiles();
+        app.UseMvcWithDefaultRoute();
+        app.Run(async context => {
+            await context.Response.WriteAsync("Hello World");
+        });
+    }
+}
+    </code>
+    </pre>
+    <p><span style="font-size: 18pt; color: #000000;">Now say if someone requests the <span style="color: #2dc26b;">HomeController Index method</span> then an HomeController constructor creates an instance of <strong><span style="color: #2dc26b;">IEmployeeRepository </span></strong>which is assigned to <strong><span style="color: #2dc26b;">EmployeeRepository <span style="color: #000000;">at startup at runtime when requested.</span></span></strong></span></p>
+    <p>&nbsp;</p>
+    <p><span style="font-size: 18pt; color: #000000;"><strong><span style="color: #2dc26b;"><span style="color: #000000;">So, if any controller wants IEmployeeRepository, then they just have to do constructor dependency injection in controller as shown above.</span></span></strong></span></p>
+    <p>&nbsp;</p>
+
+    <p><span style="font-size: 18pt; color: #000000;">Now suppose if you want to use MockEmployeeRepository then you just have to make change in Startup.cs</span></p>    
+
+
+    <script src="Core Project/js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+
+
+        (function () {
+            if (!self.Prism) {
+                return;
+            }
+
+            var div = document.createElement('div');
+
+            Prism.hooks.add('before-highlight', function (env) {
+                var elt = env.element;
+                if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                    elt = elt.parentNode;
+                }
+                var tags = elt.getAttribute('data-keep-tags');
+                if (!tags) {
+                    return;
+                }
+                var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+                env.keepTags = true;
+                env.keepTagsPlaceholder = placeholder;
+
+                tags = tags.split(/\s*,\s*/).join('|');
+                var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+                env.keepTagsRegex = tags_regex;
+
+                env.tokenStack = [];
+                env.backupCode = env.code;
+
+                var code = env.element.innerHTML;
+                code = code.replace(tags_regex, function (match) {
+                    env.tokenStack.push(match);
+                    return placeholder.replace('{n}', env.tokenStack.length);
+                });
+                env.element.innerHTML = code;
+                code = env.element.textContent;
+                code = code.replace(/^(?:\r?\n|\r)/, '');
+
+                env.code = code;
+            });
+
+            Prism.hooks.add('after-highlight', function (env) {
+                if (!env.keepTags) {
+                    return;
+                }
+                for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                    t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                        div.innerHTML = inside;
+                        inside = div.textContent;
+                        return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                    });
+
+                    env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                    env.element.innerHTML = env.highlightedCode;
+                }
+            });
+
+        }());
+
+        Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+            v.classList.add("language-sql");
+        });
+        Prism.highlightAll();
+
+    </script>
+</body>
+
+</html>

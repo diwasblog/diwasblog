@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <meta charset="utf-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+     <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap.css">
+     <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-grid.css">
+     <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-reboot.css">
+     <link rel="stylesheet" href="../ASP Sandbox/css/dracula.css">
+     <link rel="stylesheet" href="../ASP Sandbox/css/dracula-prism.css">
+     <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+     <style>
+    kbd {
+        background: black
+    }
+</style>
+</head>
+
+<body>
+
+<p><span style="font-size: 36pt;">Cell Reference</span></p>
+<p><span style="color: #e03e2d;"><strong><span style="font-size: 24pt;">1)Relative Reference ( Ie. relative to one
+                another side by side)</span></strong></span></p>
+<p><img src="https://i.ibb.co/YP86Rb9/relative-reference.png" /></p>
+<p>Here on each line net income is calculate as total revenue minus total expenses.</p>
+<p>Formula :&nbsp; &nbsp; &nbsp;=B2-C2 press enter and drag down then result is&nbsp;</p>
+<p><img src="https://i.ibb.co/89VxGcc/drag-down.png" /></p>
+
+<pre>
+<code class="language-sql">
+=A1+A2
+=A1-A2
+=A1*A2
+=A1/A2
+=A1*10%
+=A2^3
+=SQRT(A1)
+=A1^(1/3)
+</code>
+</pre>
+
+
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+
+<p><span style="font-size: 36pt;">Text to&nbsp; column&nbsp;</span></p>
+<p><span style="font-size: 24pt;">You can convert text into a column by selecting the required delimiter.</span></p>
+<p><img src="https://i.ibb.co/mFncbt3/text-to-column-main.png" /></p>
+
+<p><span style="font-size: 18pt;">You can try&nbsp;</span></p>
+<p><span style="font-size: 18pt;"><a href="mailto:diwas@gmail.com"><span
+                style="color: #e03e2d;"><strong>diwas@gmail.com</strong></span></a>&nbsp; with @ delimiter
+        selected</span></p>
+<p><span style="color: #e03e2d;"><strong><span style="font-size: 18pt;">diwas#poudel&nbsp;</span></strong></span></p>
+<p><span style="font-size: 18pt;">or you can set your own delimiter</span></p>
+=====================================================================================================
+
+<script src="../ASP Sandbox/js/prism.js"></script>
+<script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+       {
+           'remove-trailing': true,
+           'remove-indent': true,
+           'left-trim': true,
+           'right-trim': true,
+           // 'break-lines': 10,
+           // 'indent': 2,
+           // 'remove-initial-line-feed': false,
+           // 'tabs-to-spaces': 4,
+           // 'spaces-to-tabs': 4
+       });
+
+
+   (function () {
+       if (!self.Prism) {
+           return;
+       }
+
+       var div = document.createElement('div');
+
+       Prism.hooks.add('before-highlight', function (env) {
+           var elt = env.element;
+           if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+               elt = elt.parentNode;
+           }
+           var tags = elt.getAttribute('data-keep-tags');
+           if (!tags) {
+               return;
+           }
+           var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+           env.keepTags = true;
+           env.keepTagsPlaceholder = placeholder;
+
+           tags = tags.split(/\s*,\s*/).join('|');
+           var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+           env.keepTagsRegex = tags_regex;
+
+           env.tokenStack = [];
+           env.backupCode = env.code;
+
+           var code = env.element.innerHTML;
+           code = code.replace(tags_regex, function (match) {
+               env.tokenStack.push(match);
+               return placeholder.replace('{n}', env.tokenStack.length);
+           });
+           env.element.innerHTML = code;
+           code = env.element.textContent;
+           code = code.replace(/^(?:\r?\n|\r)/, '');
+
+           env.code = code;
+       });
+
+       Prism.hooks.add('after-highlight', function (env) {
+           if (!env.keepTags) {
+               return;
+           }
+           for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+               t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                   div.innerHTML = inside;
+                   inside = div.textContent;
+                   return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+               });
+
+               env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+               env.element.innerHTML = env.highlightedCode;
+           }
+       });
+
+   }());
+
+   Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+       v.classList.add("language-sql");
+   });
+   Prism.highlightAll();
+</script>
+</body>
+
+</html>

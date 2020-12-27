@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+    <style>
+        kbd {
+            background: black
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <pre data-keep-tags="kbd, em">
+<code class="language-csharp">
+
+//webconfig
+
+    &lt;add key="<kbd>SMSEndPointUrl</kbd>" value="http://api.sparrowsms.com/v2/sms/" />
+    &lt;add key="<kbd>SMSSender</kbd>" value="InfoSMS" />
+    &lt;add key="<kbd>SMSToken</kbd>" value="8UbrPh4d6zOfwsrEiAtt" />
+    &lt;add key="<kbd>SMSBODY</kbd>" value="तपाईको किसान-२ को ID न. {0} हो। सक्षम कृषि ब्यवसायी बनौ।" />   // Main Message added at {0}
+    </code>
+    </pre>
+
+
+
+ <pre data-keep-tags="kbd, em">
+     <code class="language-csharp">
+        [Route("sendsms")]
+        [HttpPost]
+        public IHttpActionResult SendSMS()
+        {
+
+            string number = "9862751087,9844605780";  // Call From Database getting comma separated Number
+            string textSMS = "Text Here"; 
+
+            var isCommaPresent = number.Contains(",");
+            if (isCommaPresent)
+            {
+                List&lt;string> numbers = number.Split(',').ToList();  // List of Mobile Number comma separated
+
+                foreach (var num in numbers)
+                {
+                    if (!string.IsNullOrEmpty(num.Trim()))
+                    {
+                        var smsBody = SMSHelpers.GetSMSBody(textSMS, ConfigurationModel.SMS_Sender, ConfigurationModel.SMS_Token, num);
+                        var sentSMS = SMSHelpers.SendSMS(smsBody, ConfigurationModel.SMS_EndPoint_URL);
+                    }
+                }
+            }
+            else
+            {
+                var smsBody = SMSHelpers.GetSMSBody(textSMS, ConfigurationModel.SMS_Sender, ConfigurationModel.SMS_Token, number.Trim());
+                var sentSMS = SMSHelpers.SendSMS(smsBody, ConfigurationModel.SMS_EndPoint_URL);
+            }
+            return Ok("Success");
+        }
+     </code>
+ </pre>   
+
+
+ <pre data-keep-tags="kbd, em">
+     <code class="language-csharp">
+        public class SMSHelpers
+        {
+            public static string SendSMS(NameValueCollection smsBody, string url)
+            {
+                try
+                {
+                    using (var client = new WebClient())
+                    {
+                        var response = client.UploadValues(url, "Post", smsBody);
+                        var responseString = Encoding.Default.GetString(response);
+                        return responseString;
+                    }
+                }
+                catch (WebException ex)
+                {
+                    throw ex;
+                }
+            }
+    
+            public static NameValueCollection GetSMSBody(string mainMessage, string sender, string token, string receiverMobileNo)
+            {
+                var values = new NameValueCollection();
+                values["from"] = sender;
+                values["token"] = token;
+                values["to"] = receiverMobileNo;            
+                values["text"] = string.Format(ConfigurationModel.SMS_BODY, mainMessage);
+                return values;
+            }
+
+     </code>
+
+ </pre>
+
+
+ <pre data-keep-tags="kbd, em">
+     <code class="language-csharp">
+        public class ConfigurationModel
+        {
+            public static string SMS_EndPoint_URL
+            {
+                get
+                {
+                    return ConfigurationManager.AppSettings["SMSEndPointUrl"];
+                }
+            }
+            public static string SMS_Sender
+            {
+                get
+                {
+                    return ConfigurationManager.AppSettings["SMSSender"];
+                }
+            }
+            public static string SMS_Token
+            {
+                get
+                {
+                    return ConfigurationManager.AppSettings["SMSToken"];
+                }
+            }
+            public static string SMS_BODY
+            {
+                get
+                {
+                    return ConfigurationManager.AppSettings["SMSBODY"];
+                }
+            }
+     </code>
+ </pre>
+<hr>
+<h2>Output:</h2>
+ <pre data-keep-tags="kbd, em">
+     <code class="language-csharp">
+        तपाईको किसान-२ को ID न. <kbd>Text Here</kbd> हो। सक्षम कृषि ब्यवसायी बनौ।
+     </code>
+ </pre>
+ <script src="js/prism.js"></script>
+
+ <script type="text/javascript">
+ Prism.plugins.NormalizeWhitespace.setDefaults(
+     {
+         'remove-trailing': true,
+         'remove-indent': true,
+         'left-trim': true,
+         'right-trim': true,
+         // 'break-lines': 10,
+         // 'indent': 2,
+         // 'remove-initial-line-feed': false,
+         // 'tabs-to-spaces': 4,
+         // 'spaces-to-tabs': 4
+     });
+
+
+ (function () {
+     if (!self.Prism) {
+         return;
+     }
+
+     var div = document.createElement('div');
+
+     Prism.hooks.add('before-highlight', function (env) {
+         var elt = env.element;
+         if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+             elt = elt.parentNode;
+         }
+         var tags = elt.getAttribute('data-keep-tags');
+         if (!tags) {
+             return;
+         }
+         var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+         env.keepTags = true;
+         env.keepTagsPlaceholder = placeholder;
+
+         tags = tags.split(/\s*,\s*/).join('|');
+         var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+         env.keepTagsRegex = tags_regex;
+
+         env.tokenStack = [];
+         env.backupCode = env.code;
+
+         var code = env.element.innerHTML;
+         code = code.replace(tags_regex, function (match) {
+             env.tokenStack.push(match);
+             return placeholder.replace('{n}', env.tokenStack.length);
+         });
+         env.element.innerHTML = code;
+         code = env.element.textContent;
+         code = code.replace(/^(?:\r?\n|\r)/, '');
+
+         env.code = code;
+     });
+
+     Prism.hooks.add('after-highlight', function (env) {
+         if (!env.keepTags) {
+             return;
+         }
+         for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+             t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                 div.innerHTML = inside;
+                 inside = div.textContent;
+                 return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+             });
+
+             env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+             env.element.innerHTML = env.highlightedCode;
+         }
+     });
+
+ }());
+
+ Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+     v.classList.add("language-sql");
+ });
+ Prism.highlightAll();
+ </script>
+</body>
+
+</html>

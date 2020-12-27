@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://unpkg.com/vue"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<p><span style="font-size: 18pt; color: #000000;">CSRF is an attack that tricks the victim into submitting a malicious request. A CSRF vulnerability allows an attacker to force a <strong><span style="color: #2dc26b;">validated and logged in user to perform actions without their consent or unknowingly. </span></strong></span></p>
+<p><span style="font-size: 18pt; color: #000000;">Take this simple example.</span></p>
+<ul>
+<li><span style="font-size: 18pt; color: #000000;">User logs in to the <strong>bank server.</strong></span></li>
+<li><span style="font-size: 18pt; color: #000000;">Bank authorizes and a <strong>secure session</strong> is established between the user and the bank server. <strong>Secure session stored in the browser</strong> cookies. On each request, the session is passed between the server and browser.</span></li>
+<li><span style="font-size: 18pt; color: #000000;">The attacker sends an email with a malicious link saying &ldquo;<span style="color: #169179;"><strong>Earn 100000$ now</strong></span>&rdquo; to the user.</span></li>
+<li><span style="font-size: 18pt; color: #000000;">The user clicks on the malicious link and the site tries to transfer money from your account to the attacker's account using the same session information that has already stored in the browser.&nbsp;</span></li>
+</ul>
+<p><span style="font-size: 18pt; color: #000000;"><img src="https://i.ibb.co/f42y3cn/csrf.jpg" alt="" width="640" height="345" /></span></p>
+<p><span style="font-size: 18pt; color: #000000;">Malicious link that hacker can send:</span></p>
+
+<xmp class="prettyprint">
+<h1> You have won Rs. 2,000,000 </h1>
+
+<form action= "https://bank.com/api/transfer" method = "post">
+
+  <input type = "hidden" name="Amount" value = "10000" />
+  <input type = "hidden" name="ReceivingAccountNumber" value = "123-232134-23" />
+
+  <input type = "submit" value = "Click here to redeem your winning price" />
+
+</form>
+</xmp>
+
+
+<hr />
+<p><span style="font-size: 18pt; color: #000000;">Microsoft has recognized this threat and for preventing the same we have something called as&nbsp;<span style="color: #e03e2d;"><strong>AntiForgeryToken</strong></span>.</span></p>
+<p><span style="font-size: 18pt; color: #000000;"><strong>Solution:-</strong></span></p>
+<ul>
+<li><span style="font-size: 18pt; color: #000000;">We need to add <span style="color: #2dc26b;"><strong>@Html.AntiForgeryToken() </strong></span>helper in your <span style="color: #2dc26b;">form inside the form tag </span>. </span></li>
+<li><span style="font-size: 18pt; color: #000000;">And on the Action Method which handles your post ([HttpPost]) Request we need to put<strong><span style="color: #2dc26b;">[ValidateAntiForgeryToken] </span></strong>attribute which will check if the token is valid.</span></li>
+</ul>
+<pre><span style="font-size: 18pt; color: #000000;"><br /><br /><br /></span></pre>
+
+<div class="row">
+    <div class="col-lg-6">
+        <img src="https://i.ibb.co/qRMsvBc/csrf-view.jpg">
+    </div>
+    <div class="col-lg-6">
+        <img src="https://i.ibb.co/5Fdz0jp/csrf-action.jpg">
+    </div>
+</div>
+
+<p><span style="text-decoration: underline; font-size: 18pt; color: #000000;">WorkingofAntiForgeryToken</span></p>
+<p><span style="font-size: 18pt; color: #000000;">When we add AntiForgeryToken helper on View it creates a <strong>hidden field</strong> and<strong> assigns a unique token value</strong> to it and meanwhile, a session cookie is added to the browser.</span></p>
+<p><span style="font-size: 18pt; color: #000000;">When we post form HTML&nbsp;itschecksfor&nbsp;<strong>__RequestVerificationToken</strong>&nbsp;Hidden field and whether&nbsp;<strong>__RequestVerificationToken</strong>&nbsp;Cookie are present or not. If either the cookie or the form&nbsp;<strong>__RequestVerificationToken</strong>&nbsp;Hidden field values are missing, or the values don't match, ASP.NET MVC does not process the action. This is how we can prevent cross-site request forgery attacks in asp.net MVC.</span></p>
+
+<div class="row">
+    <div class="col-lg-6">
+        <img src="https://i.ibb.co/ZghLtCg/token-code.jpg">
+    </div>
+    <div class="col-lg-6">
+        <img src="https://i.ibb.co/s1G9Mcm/token-code-cookies.jpg">
+    </div>
+</div>
+
+
+</body>
+</html>

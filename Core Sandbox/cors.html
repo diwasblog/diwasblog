@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula.css">
+    <link rel="stylesheet" href="../ASP Sandbox/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+
+    <style>
+      kbd {
+          background: black
+      }
+  </style>
+</head>
+<body>
+
+    <p><strong><span style="font-size: 18pt; color: #e03e2d;">CORS</span></strong></p>
+    <p><span style="font-size: 18pt; color: #000000;">Generally, static assets such as images, CSS stylesheets, scripts, and videos are allowed <strong><span style="color: #e03e2d;">access across domains</span></strong> but resources that are requested by means of <span style="color: #e03e2d;"><strong>Ajax</strong>&nbsp;</span>(<em>asynchronous javascript and XML</em>) requests are <strong><span style="color: #e03e2d;">restricted by the CORS policy. Also note that CORS 
+    is not SECURITY Features, so even gives CORS error, we can acccess those data. So, CORS cannot be used for security purpose</span></strong>.&nbsp; </span></p>
+<p><span style="font-size: 14pt; color: #000000;">Two URLs have the same origin if they have identical schemes(HTTPS or HTTP), hosts(domain name), and ports.</span></p>
+<p><span style="font-size: 14pt; color: #000000;">These two URLs have the same origin(ie. same schemes, and hosts, same port(ie 80 by default)):</span></p>
+<ul>
+<li><span style="font-size: 14pt; color: #000000;"><code>https://example.com/foo.html</code></span></li>
+<li><span style="font-size: 14pt; color: #000000;"><code>https://example.com/bar.html</code></span></li>
+</ul>
+<p><span style="font-size: 14pt; color: #000000;">These two URLs have the same origin(ie. same schemes, and hosts, same port(ie 9000 by default)):</span></p>
+<p><span style="font-size: 14pt; color: #000000;">These URLs have different origins than the previous two URLs:</span></p>
+<ul style="list-style-type: none;">
+<li style="list-style-type: disc;"><span style="font-size: 14pt; color: #000000;"><code><a style="color: #000000;" href="https://example.net">https://example.net</a></code>: Different domain</span></li>
+<li style="list-style-type: disc;"><span style="font-size: 14pt; color: #000000;"><code><a style="color: #000000;" href="https://www.example.com/foo.html" aria-invalid="true">https://www.example.com/foo.html</a></code>: <strong><span style="color: #e03e2d;">Different subdomain</span></strong></span></li>
+<li style="list-style-type: disc;"><span style="font-size: 14pt; color: #000000;"><code><a style="color: #000000;" href="http://example.com/foo.html" aria-invalid="true">http://example.com/foo.html</a></code>: Different scheme</span></li>
+<li style="list-style-type: disc;"><span style="font-size: 14pt; color: #000000;"><code><a style="color: #000000;" href="https://example.com:9000/foo.html">https://example.com:9000/foo.html</a></code>: Different port</span></li>
+</ul>
+<hr />
+<ul>
+    <li><span style="color: #000000; font-size: 14pt;">React Project start at : <strong><span style="color: #e03e2d;">3000</span></strong></span></li>
+    <li><span style="font-size: 14pt; color: #000000;">.net project start at : <span style="color: #e03e2d;"><strong>5001</strong></span></span></li>
+    </ul>
+    <p><span style="font-size: 14pt; color: #000000;">Now , in react project call .net project api as below</span></p>
+
+<pre>
+    <code class="language-csharp">
+  async populateWeatherData() {
+        const response = await fetch('https://localhost:5001/');
+        const data = await response.json();
+        this.setState({ forecasts: data, loading: false });
+      }
+    </code>
+</pre>
+
+Now ,when you run both .net and  react project (frontend) then in react view while calling API (via . axios , fetch) will get CORS error like this:
+
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+Access to fetch at '<kbd>https://localhost:5001/</kbd>' from origin '<kbd>http://localhost:3000</kbd>' has been blocked by CORS
+policy: No '<kbd>Access-Control-Allow-Origin</kbd>' header is present on the requested resource. If an opaque response serves your needs, 
+set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
+</code>
+</pre>
+<div>&nbsp;</div>
+<img src="https://i.ibb.co/Y7rPYpM/cors-error.jpg">
+
+<div><span style="font-size: 14pt; color: #000000;">Here we can clearly see :</span></div>
+<ul>
+<li><span style="font-size: 14pt;"><span style="color: #e03e2d;"><strong>Origin</strong></span>: React URL (Frontend)</span></li>
+<li><span style="font-size: 14pt;"><strong><span style="color: #e03e2d;">Fetching Data From</span></strong> .net API URL</span></li>
+</ul>
+
+<h2>Solution to the Problem</h2>
+<h2>Method 1 : Using Default Cors Policy</h2>
+
+<pre data-keep-tags="kbd, em">
+    <code class="language-sql">
+        public void ConfigureServices(IServiceCollection services)
+        {
+
+            services.AddControllersWithViews();
+
+            // In production, the React files will be served from this directory
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/build";
+            });
+
+
+            <kbd>
+            services.AddCors(options =>
+                {
+                    options.AddDefaultPolicy(builder =>
+                    {
+                        builder.WithOrigins("http://localhost:3000");
+                    });
+                });
+            </kbd>
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+           ...
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
+
+            app.UseRouting();
+            <kbd>app.UseCors();</kbd>
+            // Use this CORS after UseRouting and After UseAuthentication
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller}/{action=Index}/{id?}");
+            });
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "ClientApp";
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseReactDevelopmentServer(npmScript: "start");
+                }
+            });
+        }
+    }
+
+
+
+    </code>
+</pre>
+Now, you will get response back and also <b>"Access-Control-Allow-Origin"</b> is added in respoisne of the request like this:
+
+<img src="https://i.ibb.co/HK7DN2j/cors-error3.jpg">
+
+<h2>Method2 : Using Appsetting and setting json</h2>
+
+<pre data-keep-tags="kbd, em">
+    <code class="language-sql">
+
+//appsettings.json
+
+{
+    "Logging": {
+        "LogLevel": {
+        "Default": "Information",
+        "Microsoft": "Warning",
+        "Microsoft.Hosting.Lifetime": "Information"
+        }
+    },
+   <kbd> 
+    "AllowedOrigins": [
+        "http://localhost:3000",
+        "http://localhost:4000"
+    ],</kbd>
+    "AllowedHosts": "*"
+    }
+</code>
+</pre>
+<pre data-keep-tags="kbd, em">
+    <code class="language-sql">
+        public void ConfigureServices(IServiceCollection services)
+        {
+
+            services.AddControllersWithViews();
+
+            // In production, the React files will be served from this directory
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/build";
+            });
+
+
+            <kbd>
+                services.AddCors(options =>
+                {
+                    options.AddDefaultPolicy(builder =>
+                    {
+                        builder.WithOrigins(Configuration.GetSection("AllowedOrigins").Get&lt;string[]>());
+                    });
+                });
+            </kbd>
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+           ...
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
+
+            app.UseRouting();
+            <kbd>app.UseCors();</kbd>
+            // Use this CORS after UseRouting and Before UseAuthentication
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller}/{action=Index}/{id?}");
+            });
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "ClientApp";
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseReactDevelopmentServer(npmScript: "start");
+                }
+            });
+        }
+    }
+
+
+
+    </code>
+</pre>
+<hr>
+<h2>Now making Prelight Request</h2>
+<p><span style="font-size: 18pt; color: #000000;">Now suppose you are making <strong><span style="color: #e03e2d;">authentication, POST, DELETE, PUT</span></strong> requests (called as <strong><span style="color: #2dc26b;">PREFLIGHT Request</span></strong>) then also you will get CORS error from the server.</span></p>
+<p><span style="font-size: 18pt; color: #000000;">Suppose the client send authentication request, then the server (web application) will not know it and will get a&nbsp;CORS error and for this, we have to enable CORS will request header "OPTION".</span></p>
+
+
+
+        //InReact
+<pre data-keep-tags="kbd, em">
+<code class="language-csharp">
+   
+  async populateWeatherData() {
+    const response = await fetch('https://localhost:5001/weatherforecast',
+      {
+       <kbd> headers: {
+        Authorization:"Bearer MYTOKEN"
+      }</kbd>});
+    const data = await response.json();
+    this.setState({ forecasts: data, loading: false });
+  }
+</code>
+    </pre>
+
+    Now , making the call will get below error:
+    <pre data-keep-tags="kbd, em">
+        <code class="language-csharp">
+            Access to fetch at 'https://localhost:5001/weatherforecast' from origin 'http://localhost:3000' has been blocked by CORS policy: Request header field <kbd>authorization</kbd> is not allowed by Access-Control-Allow-Headers in preflight response.
+        </code>
+            </pre>
+            <img src="https://i.ibb.co/h1V49W2/authorizationadded.jpg">
+            We can clearly see that authorization is on request , but doesnot understand those 
+
+
+            <pre data-keep-tags="kbd, em">
+                <code class="language-csharp">
+                    Access to fetch at 'https://localhost:5001/weatherforecast' from origin 'http://localhost:3000' has been blocked by CORS policy: Request header field <kbd>authorization</kbd> is not allowed by Access-Control-Allow-Headers in preflight response.
+                </code>
+                    </pre>
+                    
+     To make this working we must add below code in startup
+     <pre data-keep-tags="kbd, em">
+        <code class="language-csharp">
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins(Configuration.GetSection("AllowedOrigins").Get&lt;string[]>())
+                           <kbd> .WithHeaders("Authorization");</kbd>
+                });
+            });
+        </code>
+            </pre>
+     Now problem is solved
+
+     Also problem arise for POST , PUT and delete request.So, lets specify this as well.
+     <pre data-keep-tags="kbd, em">
+        <code class="language-csharp">
+            services.AddCors(options =>
+            public void ConfigureServices(IServiceCollection services)
+            {
+    
+                services.AddControllersWithViews();
+    
+                // In production, the React files will be served from this directory
+                services.AddSpaStaticFiles(configuration =>
+                {
+                    configuration.RootPath = "ClientApp/build";
+                });
+
+
+                services.AddCors(options =>
+                {
+                    options.AddDefaultPolicy(builder =>
+                    {
+                        builder.WithOrigins(Configuration.GetSection("AllowedOrigins").Get&lt;string[]>())
+                                .WithHeaders("Authorization")
+                                <kbd>.WithMethods("GET", "POST", "DELETE");</kbd>
+                    });
+                });
+    
+        </code>
+            </pre>
+            <hr>
+            <h2>Method  3 Adding in Controller </h2>
+
+
+
+
+
+
+            <hr>
+            <h2>Allowing CORS for all types</h2>
+    <script src="../ASP Sandbox/js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+
+
+        (function () {
+            if (!self.Prism) {
+                return;
+            }
+
+            var div = document.createElement('div');
+
+            Prism.hooks.add('before-highlight', function (env) {
+                var elt = env.element;
+                if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                    elt = elt.parentNode;
+                }
+                var tags = elt.getAttribute('data-keep-tags');
+                if (!tags) {
+                    return;
+                }
+                var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+                env.keepTags = true;
+                env.keepTagsPlaceholder = placeholder;
+
+                tags = tags.split(/\s*,\s*/).join('|');
+                var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+                env.keepTagsRegex = tags_regex;
+
+                env.tokenStack = [];
+                env.backupCode = env.code;
+
+                var code = env.element.innerHTML;
+                code = code.replace(tags_regex, function (match) {
+                    env.tokenStack.push(match);
+                    return placeholder.replace('{n}', env.tokenStack.length);
+                });
+                env.element.innerHTML = code;
+                code = env.element.textContent;
+                code = code.replace(/^(?:\r?\n|\r)/, '');
+
+                env.code = code;
+            });
+
+            Prism.hooks.add('after-highlight', function (env) {
+                if (!env.keepTags) {
+                    return;
+                }
+                for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                    t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                        div.innerHTML = inside;
+                        inside = div.textContent;
+                        return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                    });
+
+                    env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                    env.element.innerHTML = env.highlightedCode;
+                }
+            });
+
+        }());
+
+        Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+            v.classList.add("language-sql");
+        });
+        Prism.highlightAll();
+</script>
+</body>
+</html>

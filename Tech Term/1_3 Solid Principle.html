@@ -30,6 +30,8 @@
 <li><span style="font-size: 12pt;">Choose correct Design Pattersn to build the software based on its specification.</span></li>
 </ul>
 <p><strong><span style="font-size: 24pt;">SOLID Principles</span></strong></p>
+<p><span style="font-size: 18pt; color: #000000;">SOLID principles were developed by computer science instructor and author <strong><span style="color: #e03e2d;">Robert C. Martin</span></strong> (sometimes called &ldquo;<strong><span style="color: #e03e2d;">Uncle Bob</span></strong>&rdquo;) in 2000&nbsp;</span></p>
+<p>&nbsp;</p>
 <p><span style="font-size: 12pt;">They are the desing principle that enable us to manage with most of the software design patterns.</span></p>
 <p><span style="font-size: 12pt;">This principles provide us ways to move from tightly coupled code and little encapsulation to desired results of loosely coupled and encapsulated real needs of a business properly.</span></p>
 <ul>
@@ -42,94 +44,182 @@
 <p><span style="color: #008000;"><strong><span style="font-size: 12pt;">==============================================================================</span></strong></span></p>
 <p><span style="color: #000000; font-size: 18pt;"><strong>SRS(Solid Responsibility Principle)</strong></span></p>
 <p><span style="color: #808080; font-size: 12pt;">One class should be responsible for one tasks only.</span></p>
-
+<p><span style="font-size: 18pt; color: #000000;">The&nbsp;<strong>single-responsibility principle</strong>&nbsp;(SRP) states that <span style="color: #e03e2d;"><strong>each class</strong></span>, <strong><span style="color: #e03e2d;">module</span></strong>, or <strong><span style="color: #e03e2d;">function </span></strong>in your program should only do one job. </span></p>
 
 <div class="row">
   <div class="col-6">
       <pre>
           <code class="language-csharp">
- public class BankAccount
+// does not follow SRP
+public class RegisterService
 {
-  pulbic BankAccount(){ }
+    public void RegisterUser(string username)
+    {
+        if (username == "admin")
+            throw new InvalidOperationException();
 
-  public string AccountNumber{get;set;}
+        SqlConnection connection = new SqlConnection();
+        connection.Open();
+        SqlCommand command = new SqlCommand("INSERT INTO [...]");//Insert user into database. 
 
-  public string AccountHolderName{get;set;}
+        SmtpClient client = new SmtpClient("smtp.myhost.com");
+        client.Send(new MailMessage()); //Send a welcome email. 
+    }
+}
+</code>
+</pre>
+</div>
+<div class="col-6">
+  <pre>
+      <code class="language-csharp">
+//Follows SRP
+public class RegisterService
+{
+public void RegisterUser(string username)
+{
+    if (username == "admin")
+        throw new InvalidOperationException();
 
-  public decimal AccountBalance{get;set;}
-
-  public decimal Cal_Interest(){
-    //code to calculate interest
-  }
+    _userRepository.Insert(...);
+    
+    _emailService.Send(...);
+}
 }
 
-public class Main
-{
-  psvm(){
-    BankAccount ba = new BankAccount();
-    ba.AccountNumber=1;
-    s = ba.Cal_Interest();
-  }
-}
-            </code>
-     </pre>
-  </div>
+</code>
+</pre>
+</div>
+</div>
 
+<h3>Example 2: </h3>
+<div class="row">
   <div class="col-6">
       <pre>
           <code class="language-csharp">
-              public class BankAccount
-              {
-                pulbic BankAccount(){ }
-              
-                public string AccountNumber{get;set;}
-              
-                public string AccountHolderName{get;set;}
-              
-                public decimal AccountBalance{get;set;}
-              
-                
-              }
-              
-              public class InterestCalculator
-              {
-                public decimal Cal_Interest(BankAccount acc){
-              
-                  //code to calculate interest
-                }
-              }
-              
-              public class Main
-              {
-                psvm(){
-                  BankAccount ba = new BankAccount();
-                  ba.AccountNumber=1;
-              
-                  InterestCalculator cal = new InterestCalculator();
-                  s = cal.Cal_Interest(ba);
-                  console.Read();
-                }
-              }
-            </code>
-     </pre>
-  </div>
+namespace SRP
+{
+    public class Employee
+    {
+        public int Employee_Id { get; set; }
+        public string Employee_Name { get; set; }
+
+        public bool InsertIntoEmployeeTable(Employee em)
+        {
+            // Insert into employee table.
+            return true;
+        }
+
+        public void GenerateReport(Employee em)
+        {
+            // Report generation with employee data using crystal report.
+        }
+    }
+}
+</code>
+</pre>
 </div>
+<div class="col-6">
+  <pre>
+      <code class="language-csharp">
+
+        public class Employee
+        {
+            public int Employee_Id { get; set; }
+            public string Employee_Name { get; set; }
+    
+            public bool InsertIntoEmployeeTable(Employee em)
+            {
+                // Insert into employee table.
+                return true;
+            }
+            ReportGeneration.GenerateReport(em);
+          }
 
 
-<p><span style="font-size: 14pt;">Bad Practice</span></p>
-<p><span style="font-size: 12pt;">Look for <strong>BankAccount we have 4 method</strong>. <strong><span style="color: #ff00ff;">For having BankAccoun</span><span style="color: #ff00ff;">t</span></strong> <strong>we donot need logic of calculate interes</strong>t. Suppose BankAccount class is used for showing detail to user . So , for this there is no any logic for keeping calculate_interest(). So , we separate it from BankAccount.</span></p>
-<p><span style="font-size: 12pt;">As Calculating Interest is separate logic and if needed changing interest function code affect whole class BankAccount. So, tightly coupled. To remove this separate class for Interest is made so, changing code in calculating_interest() function donot affect to BankAccount class.</span></p>
-<p><span style="font-size: 14pt;">Note:</span></p>
-<p><span style="font-size: 12pt;">A class should always handle single functionality.If you put more than one functionality in one class in C# it introduce coupling between two functionality and even if you change one functionality there is chance you broke coupled functionality , which required another round of testying to avoid any surprise on production environment.</span></p>
-<p><span style="font-size: 12pt;">The size of the classes become shorter .It makes code easily understandable. Your class may contain several method or property but must relate to single responsibility.</span></p>
-<p><span style="font-size: 18pt;">Open Closed Principle</span></p>
+        public class ReportGeneration
+        {
+             public void GenerateReport(Employee em)
+             {
+                 // Report reneration with employee data.
+             }
+        }
+</code>
+</pre>
+</div>
+</div>
+<p><span style="font-size: 18pt; color: #000000;">&lsquo;<code>Employee</code>&rsquo; class is taking 2 responsibilities, one is to take responsibility of employee database operation and another one is to generate employee report.&nbsp;<code>Employee</code> the class should not take the report generation responsibility because <strong><span style="color: #2dc26b;">suppose some days after your customer asked you to give a facility to generate the report in Excel or any other reporting format, then this class will need to be changed and that is not good.</span></strong></span></p>
+<p><span style="font-size: 18pt; color: #000000;">So according to SRP, one class should take one responsibility so we should write one different class for report generation so that any change in report generation should not affect the &lsquo;<code>Employee</code>&rsquo; class.</span></p>
 
 
 <p><span style="font-size: 18pt;">Open/Closed Principle</span></p>
 <p><span style="color: #ff0000;"><strong><span style="font-size: 14pt;">Software components should be open for extension, but closed for modification</span></strong></span></p>
 <p><span style="font-size: 12pt;">This means that our classes should be designed such a way that whenever fellow developers wants to change the flow of control in specific conditions in application, all they need to <span style="color: #ff0000;"><strong>extend</strong> </span>our class and <span style="color: #ff0000;"><strong>override</strong> </span>some functions and that's it.</span></p>
 <p><span style="font-size: 12pt;">If you look at&nbsp; good framework like <strong>spring</strong> or <strong>asp.net mvc</strong> , we will see that we cannot change their core logic and request processing&nbsp; , but we modify the desired application flow just by extending some classes and plugin them in configuration files.</span></p>
+
+<div class="row">
+  <div class="col-6">
+      <pre>
+          <code class="language-csharp">
+public class ReportGeneration
+{
+    public string ReportType { get; set; }
+
+    public void GenerateReport(Employee em)
+    {
+        if (ReportType == "CRS")
+        {
+              // Report generation with employee data in Crystal Report.
+        }
+        if (ReportType == "PDF")
+        {
+            // Report generation with employee data in PDF.
+        }
+      }
+  }
+</code>
+</pre>
+<p><span style="font-size: 14pt; color: #000000;">Brilliant!! Yes you are right, too much &lsquo;<code>If</code>&rsquo; clauses are there and if we want to introduce another new report type like &lsquo;<strong><span style="color: #2dc26b;"><code>Excel</code></span></strong>&rsquo;, then you need to write another &lsquo;<code>if</code>&rsquo;. This class should be open for extension but closed for modification. But how to do that!! </span></p>
+
+</div>
+<div class="col-6">
+  <pre>
+      <code class="language-csharp">
+  public class IReportGeneration
+  {
+      public virtual void GenerateReport(Employee em)
+      {
+          // From base
+      }
+  }
+
+  public class CrystalReportGeneraion : IReportGeneration
+  {
+      public override void GenerateReport(Employee em)
+      {
+          // Generate crystal report.
+      }
+  }
+
+  public class PDFReportGeneraion : IReportGeneration
+  {
+      public override void GenerateReport(Employee em)
+      {
+          // Generate PDF report.
+      }
+  }
+</code>
+</pre>
+<p><span style="font-size: 14pt; color: #000000;">So if you want to introduce a new report type, then just inherit from&nbsp;<strong><span style="color: #2dc26b;"><code>IReportGeneration</code></span></strong>. So&nbsp;<strong><span style="color: #2dc26b;"><code>IReportGeneration</code></span></strong>&nbsp;is open for extension but closed for modification. </span></p>
+</div>
+</div>
+
+
 <p><span style="font-size: 12pt;">For Example , mvc framework has class DbContext . To use this class , we arenot required to modify this class but we just extend it's functionality the way we want as :</span></p>
+
+
+
+
+
 
 
 <pre>

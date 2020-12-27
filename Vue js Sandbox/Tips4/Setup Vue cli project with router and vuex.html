@@ -77,7 +77,7 @@
   <br>
   <h3>Now lets look vue structure </h3>
   <img
-    src="https://d2mxuefqeaa7sj.cloudfront.net/s_4F0B8E7AB4E6ED4B9E26FFEEF7D345C2DAFD5E5BAADEA28ACC924E6DE74CDBBD_1531780354405_16.png">
+    src="https://i.ibb.co/mCQ78wf/nepalpolicecloneproject.jpg">
 
 
   <p><span style="font-size: 14pt;">Here we can see script has js extension now let's <strong><span
@@ -183,43 +183,11 @@
     npm install vue-router
   </xmp>
 
-  <p style="text-align: justify;"><span style="font-size: 14pt;">Then this will add vue-router in package.json.Now let's
-      configure the router in <span style="color: #e03e2d;"><strong>main.ts</strong></span> as shown below.</span></p>
-  <p style="text-align: justify;"><span style="font-size: 14pt;">It is recommended to write routes in a separate file
-      like <span style="color: #e03e2d;"><strong>router/index.ts</strong></span>, so we did :&nbsp;</span></p>
-  <div>
-    <ul>
-      <li><span style="color: #000000; font-size: 14pt;"><strong>import router from '@/router';</strong></span></li>
-    </ul>
-    <div>&nbsp;</div>
-    <div><span style="color: #000000; font-size: 14pt;"><strong>Here, The @ is just a nice alias for the<span
-            style="color: #e03e2d;"> /src</span> directory that was set up in a web pack by the Vue command-line
-          tool.</strong></span></div>
-  </div>
+  <p style="text-align: justify;"><span style="font-size: 14pt;">Then this will add vue-router in package.json.
+    </span>
+  </p>
+    
 
-
-
-  <xmp class="prettyprint">
-    import Vue, { CreateElement, VNode } from 'vue';
-    import App from './App.vue';
-    import router from '@/router'; //// Router being imported to src/router/
-
-    Vue.config.productionTip = false;
-
-    new Vue({
-    router, // router configuration
-    render: (h: CreateElement): VNode => h(App),
-    }).$mount('#app');
-  </xmp>
-
-  <p style="text-align: justify;"><span style="font-size: 14pt; font-family: verdana, geneva, sans-serif;">Here we have
-      installed a router<span style="color: #e03e2d;"> separately,&nbsp;</span>Why, <strong><span
-          style="color: #e03e2d;">Vue CLI</span></strong> is not coming with <span
-        style="color: #e03e2d;"><strong>router</strong></span>, <span
-        style="color: #e03e2d;"><strong>store</strong></span>, and <strong><span style="color: #e03e2d;">Http
-        </span></strong><span style="color: #e03e2d;"><span style="color: #000000;">at initial setup
-        </span></span>because the creator is trying to make it lighter.</span></p>
-  <br>
   ==============================================================================================
   <hr>
   <hr>
@@ -371,6 +339,47 @@
 
     <br>
     <hr>
+    <hr>
+    Now let's
+      configure the router in <span style="color: #e03e2d;"><strong>main.ts</strong></span> as shown below.</span></p>
+  <p style="text-align: justify;"><span style="font-size: 14pt;">It is recommended to write routes in a separate file
+      like <span style="color: #e03e2d;"><strong>router/index.ts</strong></span>, so we did :&nbsp;</span></p>
+  <div>
+    <ul>
+      <li><span style="color: #000000; font-size: 14pt;"><strong>import router from '@/router';</strong></span></li>
+    </ul>
+    <div>&nbsp;</div>
+    <div><span style="color: #000000; font-size: 14pt;"><strong>Here, The @ is just a nice alias for the<span
+            style="color: #e03e2d;"> /src</span> directory that was set up in a web pack by the Vue command-line
+          tool.</strong></span></div>
+  </div>
+
+
+
+  <xmp class="prettyprint">
+    import Vue, { CreateElement, VNode } from 'vue';
+    import App from './App.vue';
+    import router from '@/router'; //// Router being imported to src/router/
+
+    Vue.config.productionTip = false;
+
+    new Vue({
+    router, // router configuration
+    render: (h: CreateElement): VNode => h(App),
+    }).$mount('#app');
+  </xmp>
+
+  <p style="text-align: justify;"><span style="font-size: 14pt; font-family: verdana, geneva, sans-serif;">Here we have
+      installed a router<span style="color: #e03e2d;"> separately,&nbsp;</span>Why, <strong><span
+          style="color: #e03e2d;">Vue CLI</span></strong> is not coming with <span
+        style="color: #e03e2d;"><strong>router</strong></span>, <span
+        style="color: #e03e2d;"><strong>store</strong></span>, and <strong><span style="color: #e03e2d;">Http
+        </span></strong><span style="color: #e03e2d;"><span style="color: #000000;">at initial setup
+        </span></span>because the creator is trying to make it lighter.</span></p>
+  <br>
+
+
+
     <h5>When click on home we goto home component and when clicked on login we goto login component</h5>
     <img src="https://i.ibb.co/nPJ3s24/home-and-login-route.jpg">
 
@@ -381,7 +390,6 @@
     </center>
     <hr>
 
-    <hr>
 
     <hr>
 
@@ -477,7 +485,7 @@
           </script>
 
           <style scoped>
-            //local css in template only  and not in child component
+         //   local css in template only  and not in child component /
             #app {
               p {
                 text-style: italic;

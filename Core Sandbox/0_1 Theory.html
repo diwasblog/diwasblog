@@ -1,3 +1,12 @@
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://unpkg.com/vue"></script>
+
+
+
+<h2>https://www.roundthecode.com/dotnet/asp-net-core-web-hosting/four-reasons-why-your-asp-net-core-application-is-not-working-in-iis</h2>
+
 <p><span style="font-size: 14pt; color: #000000;">Asp.net core is a<span style="color: #ff0000;"> <strong>free and open source</strong> </span>web framework used to develop ASP.NET applications.</span></p>
 <p><span style="font-size: 14pt;"><span style="color: #000000;">Can runs on Windows as well as on <span style="color: #ff0000;">cross platform</span> systems</span> .</span></p>
 <p><span style="font-size: 14pt;"><span style="color: #000000;">Originally it was called</span> <span style="color: #ff0000;">asp.net next version</span> <span style="color: #000000;">and then later it was supposed to be called</span> <strong><span style="color: #ff0000;">asp.net 5</span></strong> <span style="color: #000000;">when it is ready. However, Microsoft later changed the name to ASP.NET core during the first release. </span></span></p>
@@ -122,3 +131,219 @@ http://www.codedigest.com/posts/18/difference-between-aspnet-and-aspnet-core
 http://www.codedigest.com/quick-start/5/learn-kestrel-webserver-in-10-minutes
 
 https://www.codeguru.com/csharp/.net/net_asp/mvc/securing-asp.net-mvc-applications-with-asp.net-identity.htm
+
+
+<h2>How asp.net core program starts ?</h2>
+<xmp class="prettyprint">
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            CreateHostBuilder(args).Build().Run();
+        }
+
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
+    }
+</xmp>
+<p><span style="font-size: 18pt; color: #000000;">The&nbsp;<code>Program</code> the class contains the method&nbsp;<span style="color: #2dc26b;"><code>Main</code></span>, which is the entry point of the ASP.NET Core applications like main method in console application.</span></p>
+<p><span style="font-size: 18pt; color: #000000;">The first main method gets called which in result called &nbsp;<span style="color: #2dc26b;"><strong>CreateHostBuilder()  </strong></span>method(which set Kestrel as server==>look source code), which calls <strong><span style="color: #2dc26b;">Startup.cs</span></strong> class and startup.cs which then configures the logging, <a style="color: #000000;" href="https://www.tektutorialshub.com/asp-net-core/asp-net-core-dependency-injection/#di-container">Dependency Injection Container</a>. configuration system,&nbsp;<a style="color: #000000;" href="https://www.tektutorialshub.com/asp-net-core/asp-net-core-kestrel-web-server/">Kestrel Web server</a>, IIS Integration,DI etc.</span></p>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" src="https://www.tektutorialshub.com/wp-content/uploads/2019/09/Main-method-in-program.cs-class.png" alt="" width="638" height="281" /></p>
+<ol style="list-style-type: decimal;">
+<li><span style="font-size: 18pt; color: #000000;"><code><strong>CreateWebHostBuilder</strong></code><strong>&nbsp;</strong>creates the host and provides the configuration to it.</span></li>
+<li><span style="font-size: 18pt; color: #000000;">The&nbsp;<strong><code>build</code>&nbsp;</strong>method builds it using the provided configuration</span></li>
+<li><span style="font-size: 18pt; color: #000000;">The&nbsp;<strong><code>Run</code>&nbsp;</strong>method runs it and it then listens for HTTP requests.</span></li>
+</ol>
+<br>
+<h2>Different Between ConfigureServices() and Configure() method ?</h2>
+
+<p><span style="color: #2dc26b;"><strong><span style="font-size: 18pt;">ConfigureServices() vs Configure()</span></strong></span></p>
+<xmp class="prettyprint">
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddRazorPages();
+    }
+
+    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        app.UseStaticFiles();
+
+        app.Run(async context => {
+            await context.Response.WriteAsync("Inside middleware defined using app.Run");
+        });
+    }
+</xmp>
+
+
+<p><strong><span style="font-size: 18pt; color: #2dc26b;">ConfigureServices()</span></strong></p>
+<ul>
+<li><span style="font-size: 18pt; color: #000000;">ConfigureServices() is used to configure <span style="color: #e03e2d;"><strong>Dependency Injection.</strong></span> &nbsp;After registering the dependent classes, you can use those classes anywhere in the application.</span></li>
+<li><span style="font-size: 18pt; color: #000000;">ASP.NET Core refers <span style="color: #e03e2d;">dependent class</span> as a <span style="color: #e03e2d;">Service</span>. So, whenever you read "Service" then understand it as a class that is going to be used in some other class.</span></li>
+</ul>
+<br>
+<p><strong><span style="font-size: 18pt; color: #2dc26b;">Configure()</span></strong></p>
+<ul>
+<li><span style="font-size: 18pt; color: #000000;">Configure is used to set up middlewares, routing rules, etc</span></li>
+<li><span style="font-size: 18pt; color: #000000;">ASP.NET Core introduced the middleware components to define a request pipeline, <strong><span style="color: #e03e2d;">which will be executed on every request.</span></strong></span></li>
+<li><span style="font-size: 18pt; color: #000000;"><strong>You include only those middleware components which are required by your application and thus increase the performance of your application. </strong></span></li>
+</ul>
+<br>
+<p><span style="font-size: 24pt; color: #000000;">Middleware</span></p>
+<ul>
+<li><span style="font-size: 18pt; color: #000000;">The middleware component is present in <span style="color: #2dc26b;"><strong>configure()</strong></span> method and is added to the pipeline by invoking a <strong><span style="color: #2dc26b;">app.Use</span> </strong>... extension method.</span></li>
+<li><span style="font-size: 18pt; color: #000000;">Each component performs operations on an&nbsp;<span style="color: #2dc26b;"><code>HttpContext</code>&nbsp;</span>and either i<span style="color: #e03e2d;">nvokes the next middleware in the pipeline or terminates the request. </span></span></li>
+<li><span style="font-size: 18pt; color: #000000;">For example, to enable rendering of static files, call UseStaticFiles() middleware.</span></li>
+</ul>
+<p>&nbsp;</p>
+<br>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+    <tbody>
+    <tr style="background: black; color: white;">
+    <td style="width: 49.0426%;"><span style="font-size: 14pt;">Method</span></td>
+    <td style="width: 49.0957%;"><span style="font-size: 14pt;">Available Services</span></td>
+    </tr>
+    <tr>
+    <td style="width: 49.0426%;"><span style="font-size: 14pt;">Startup Constructor </span></td>
+    <td style="width: 49.0957%;"><span style="font-size: 14pt;">IHostingEnvironment &amp; ILoggerFactory </span></td>
+    </tr>
+    <tr>
+    <td style="width: 49.0426%;"><span style="font-size: 14pt;">ConfigureServices </span></td>
+    <td style="width: 49.0957%;"><span style="font-size: 14pt;">IServiceCollection </span></td>
+    </tr>
+    <tr>
+    <td style="width: 49.0426%;"><span style="font-size: 14pt;">Configure </span></td>
+    <td style="width: 49.0957%;"><span style="font-size: 14pt;">IApplicationBuilder, IHostingEnvironment &amp; ILoggerFactory </span></td>
+    </tr>
+    </tbody>
+    </table>
+    <p>&nbsp;</p>
+    <table style="width: 685.6px; height: 204px;">
+    <tbody>
+    <tr style="height: 26px; background: black; color: white;">
+    <td style="height: 26px;"><span style="font-size: 14pt;"><strong>Services</strong></span></td>
+    <td style="height: 26px;"><span style="font-size: 14pt;"><strong>Purpose</strong></span></td>
+    </tr>
+    <tr style="height: 25px;">
+    <td style="height: 25px;"><span style="font-size: 14pt;">IApplicationBuilder</span></td>
+    <td style="height: 25px;"><span style="font-size: 14pt;">We use this service to the application request pipeline.</span></td>
+    </tr>
+    <tr style="height: 76px;">
+    <td style="height: 76px;"><span style="font-size: 14pt;">IHostingEnvironment</span></td>
+    <td style="height: 76px;"><span style="font-size: 14pt;">This service provides the current <strong><span style="color: #169179;">EnvironmentName, ContentRootPath, WebRootPath, and web root</span></strong> file provider</span></td>
+    </tr>
+    <tr style="height: 25px;">
+    <td style="height: 25px;"><span style="font-size: 14pt;">ILoggerFactory</span></td>
+    <td style="height: 25px;"><span style="font-size: 14pt;">Provides a mechanism for creating <strong><span style="color: #169179;">loggers</span></strong></span></td>
+    </tr>
+    <tr style="height: 52px;">
+    <td style="height: 52px;"><span style="font-size: 14pt;">IServiceCollection</span></td>
+    <td style="height: 52px;"><span style="font-size: 14pt;">This is a&nbsp;<span style="color: #169179;"><strong><a style="color: #169179;" href="https://www.tektutorialshub.com/asp-net-core/asp-net-core-dependency-injection/#di-container">DI container</a></strong></span>. We add services into this container.</span></td>
+    </tr>
+    </tbody>
+    </table>
+<p><span style="font-size: 18pt; color: #000000;">Web API application can be hosted in two ways.</span></p>
+<ul>
+<li><span style="font-size: 18pt; color: #000000;">IIS Hosting</span></li>
+<li><span style="font-size: 18pt;">Self Hosting</span></li>
+</ul>
+<hr />
+<p><strong><span style="font-size: 18pt; color: #2dc26b;">IIS Hosting&nbsp;</span></strong></p>
+<p><span style="font-size: 18pt; color: #000000;">Web API can be hosted under IIS that we always used to do.</span></p>
+<hr />
+<p><span style="font-size: 18pt; color: #000000;">Self Hosting</span></p>
+<p><span style="font-size: 18pt; color: #000000;">You can host a Web API as separate process than ASP.NET. It means you can host a Web API in console application or windows service or OWIN or any other process that is managed by .NET framework.</span></p>
+<hr />
+<p><strong><span style="font-size: 18pt; color: #2dc26b;">Why people donot use Self Hosting ?</span></strong></p>
+<ul>
+<li><span style="font-size: 18pt; color: #000000;">IIS provides a number of common capabilities that are not available by default in self-hosted web services.&nbsp;</span></li>
+<li><span style="font-size: 18pt; color: #000000;">&nbsp;Supervisor: it monitors the health of the web application and will kill/respawn the application if it starts looking unhealthy (using too much memory, CPU, etc. -- configurable)</span></li>
+<li><span style="font-size: 18pt; color: #000000;">Resource limits like CPU usage, connection limits, etc.&nbsp;</span></li>
+<li><span style="font-size: 18pt; color: #000000;">Run as a certain user for least privilege security.</span></li>
+<li><span style="font-size: 18pt; color: #000000;">Manage certificates/SSL.&nbsp;</span></li>
+<li><span style="font-size: 18pt; color: #000000;">Host/manage many applications through one port/interface. (eg. localhost:45000 , localhost:45000/otherapps , localhost:45000/nextwebapp)</span></li>
+<li><span style="font-size: 18pt; color: #000000;">request logging</span></li>
+</ul>
+<hr />
+<p><span style="font-size: 18pt; color: #000000;">InProcess Hosting vs OutProcess Hosting .net core</span></p>
+<p><span style="color: #2dc26b;"><strong><span style="font-size: 18pt;">InProcess</span></strong></span></p>
+<p><span style="font-size: 18pt; color: #000000;"><img src="https://dotnettutorials.net/wp-content/uploads/2019/01/asp-net-core-inprocess-hosting.png" /></span></p>
+<p><span style="font-size: 18pt; color: #000000;">When you set run program using "<strong><span style="color: #2dc26b;">IISExpress</span></strong>" from dropdown at top, then it will use InProcess, where <strong><span style="color: #2dc26b;">CreateDefaultBuilder()</span></strong>&nbsp; from Program.cs calls <span style="color: #2dc26b;"><strong>useIIS()</strong></span> method.Then host the application inside the IIS worker process (i.e.&nbsp;w3wp.exe&nbsp;for IIS and&nbsp;iisexpress.exe&nbsp;for IISExpress).&nbsp;</span></p>
+<p><span style="font-size: 18pt; color: #000000;">You can check it by right on Project&gt;Properties.</span></p>
+<p><span style="font-size: 18pt; color: #000000;"><img src="https://dotnettutorials.net/wp-content/uploads/2019/01/word-image-41.png" alt="" width="758" height="599" /></span></p>
+<p><span style="font-size: 18pt; color: #000000;">Also from right click on project &gt;edit project as <span style="color: #2dc26b;"><strong>.csproj</strong></span></span></p>
+<p><span style="font-size: 18pt; color: #000000;"><img src="https://dotnettutorials.net/wp-content/uploads/2019/01/word-image-43.png" /></span></p>
+<p><strong><span style="font-size: 18pt; color: #2dc26b;">OutProcess</span></strong></p>
+<p><span style="font-size: 18pt; color: #000000;">In OutProcess Kestrel will be used.There are two ways.</span></p>
+<ol style="list-style-type: decimal;">
+<li><span style="font-size: 18pt; color: #000000;">By Itself (Self Hosting)</span></li>
+<li><span style="font-size: 18pt; color: #000000;">Behind another Webserver</span></li>
+</ol>
+<p><span style="font-size: 18pt; color: #000000;">1)By ItSelf</span></p>
+<p><span style="font-size: 18pt; color: #000000;"><img src="https://www.tektutorialshub.com/wp-content/uploads/2017/10/Self-Hosting-of-ASP.NET-Core-Application.png" width="582" height="401" /></span></p>
+<p><span style="font-size: 18pt; color: #000000;">We can use the Kestrel Web Server as the internet-facing web server which will directly process the incoming HTTP requests.</span></p>
+<p><span style="font-size: 18pt; color: #000000;">In this scenario, <span style="color: #2dc26b;"><strong>only the Kestrel Server is used and the other one i.e. external web server is not going to be used</strong></span>.</span></p>
+<p><span style="font-size: 18pt; color: #000000;">So, when we run the application using the .<strong><span style="color: #2dc26b;">NET core CLI(like using dotnet run) then Kestrel is the only web server </span></strong>that is going to be used to handle and process the incoming HTTP request&nbsp;</span></p>
+<p><span style="font-size: 18pt; color: #000000;">2)Behind another Webserver (combination of IIS/nginx/apache and Kestrel)</span></p>
+<p><span style="font-size: 18pt; color: #000000;">Kestrel is not a fully-featured web server.t is not advisable to run&nbsp;Kestrel&nbsp;as a standalone web server in the Production environment. It is recommended to run it behind a Fully Featured Web server like IIS, Nginx, Apache, etc. In such a scenario, the Web server acts as a reverse proxy server .</span></p>
+<p><span style="font-size: 18pt; color: #000000;">The IIS can take the HTTP request and perform some useful processing like logging, request filtering, URL rewrites before passing the request to Kestrel.</span></p>
+<p><span style="font-size: 18pt; color: #000000;"><img src="https://www.tektutorialshub.com/wp-content/uploads/2017/10/Hosting-Model-of-ASP.NET-Core-Application.png" /></span></p>
+<p><span style="font-size: 18pt; color: #000000;">There are many reasons why you should use this model in the production</span></p>
+<ol style="list-style-type: decimal;">
+<li><span style="font-size: 18pt; color: #000000;">Security</span></li>
+<li><span style="font-size: 18pt; color: #000000;">It can limit your exposed surface area. It provides an optional additional layer of configuration and defense.</span></li>
+<li><span style="font-size: 18pt; color: #000000;">Simplifies Load Balancing</span></li>
+<li><span style="font-size: 18pt; color: #000000;">SSL Setup</span><br /><span style="font-size: 18pt; color: #000000;">Only your reverse proxy server requires an SSL certificate, and that server can communicate with your application servers on the internal network using plain HTTP.</span></li>
+<li><span style="font-size: 18pt; color: #000000;">Sharing Single IP with Multiple addresses</span></li>
+<li><span style="font-size: 18pt; color: #000000;">Request FIltering, logging &amp; URL Rewrites, etc.</span></li>
+<li><span style="font-size: 18pt; color: #000000;">It can make sure that the application restarts if it is crashes</span></li>
+</ol>
+<p><span style="font-size: 18pt; color: #000000;">The&nbsp;CreateDefaultBuilder&nbsp;method calls the&nbsp;UseIISIntegration, which tells ASP.NET that the application will be using the&nbsp;IIS as a reverse proxy in front of&nbsp;Kestrel.</span></p>
+<div id="crayon-5fdd54145838b386158308-2"><span style="color: #e03e2d;"><strong>.UseIIS()</strong></span></div>
+<div id="crayon-5fdd54145838b386158308-3"><span style="color: #e03e2d;"><strong>.UseIISIntegration();</strong></span></div>
+<p>&nbsp;</p>
+<table style="border-collapse: collapse; width: 82.7793%;" border="1">
+<tbody>
+<tr>
+<td style="width: 49.0426%;"><span style="font-size: 18pt; color: #e03e2d;"><strong>InProcess</strong></span></td>
+<td style="width: 49.0957%;"><span style="font-size: 18pt; color: #e03e2d;"><strong>OutProcess</strong></span></td>
+</tr>
+<tr>
+<td style="width: 49.0426%;"><span style="font-size: 18pt; color: #000000;">the request/responds process through is&nbsp;<strong>w3wp.exe</strong>&nbsp;or&nbsp;<strong>iisexpress.exe</strong> </span></td>
+<td style="width: 49.0957%;"><span style="font-size: 18pt; color: #000000;">the request/responds process through&nbsp;<strong>dotnet.exe</strong> </span></td>
+</tr>
+<tr>
+<td style="width: 49.0426%;"><span style="font-size: 18pt; color: #000000;">It is using Single web server (ie. <strong>IIS server</strong>)</span></td>
+<td style="width: 49.0957%;"><span style="font-size: 18pt; color: #000000;">it is using two webservers(<strong>kestrel </strong>, <strong>IIS/apache/nginx</strong>)</span></td>
+</tr>
+<tr>
+<td style="width: 49.0426%;"><span style="font-size: 18pt; color: #000000;">&nbsp;</span></td>
+<td style="width: 49.0957%;"><span style="font-size: 18pt; color: #000000;">&nbsp;</span></td>
+</tr>
+<tr>
+<td style="width: 49.0426%;"><span style="font-size: 18pt; color: #000000;">great performance </span></td>
+<td style="width: 49.0957%;"><span style="font-size: 18pt; color: #000000;">many proxying requests between internal and external web servers </span></td>
+</tr>
+<tr>
+<td style="width: 49.0426%;">&nbsp;</td>
+<td style="width: 49.0957%;">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p><strong><span style="font-size: 18pt; color: #e03e2d;">Then why Kestrel is used, it's unnecessary?</span></strong></p>
+<ol style="list-style-type: decimal;">
+<li><span style="font-size: 18pt; color: #000000;">Kestrel is fast. It is not a fully-featured website and does not provide the many features that you expect from a standard web server. Hence it makes it lightweight in design and fast.</span></li>
+<li><span style="font-size: 18pt; color: #000000;">Is supports all the versions of .NET Core</span></li>
+<li><span style="font-size: 18pt; color: #000000;">To make use in all platform, we have to create setup for apache startup,nginx startup ,iis startup which is different from each other so for removing this problem kestrel is developed so that&nbsp;type have a common startup.</span></li>
+<li><span style="font-size: 18pt; color: #000000;">It is cross-platform. You can run it on Windows/Linux or Mac. This is something the ASP.NET missed always</span></li>
+<li><span style="font-size: 18pt; color: #000000;">It is very simple to configure and run. In fact, it is already configured, when you create a&nbsp;<a style="color: #000000;" href="https://www.tektutorialshub.com/asp-net-core/asp-net-core-getting-started/">new ASP.NET Core project</a>&nbsp;in Visual Studio</span></li>
+<li><span style="font-size: 18pt; color: #000000;">Supports HTTPS</span></li>
+<li><span style="font-size: 18pt; color: #000000;">Supports HTTP/2 (except on macOS. But will be supported in a future release).</span></li>
+</ol>
+<p><strong><span style="font-size: 18pt; color: #2dc26b;">Profile Used by IIS and Kestrel</span></strong></p>
+<p><span style="font-size: 18pt; color: #000000;"><img src="https://dotnettutorials.net/wp-content/uploads/2019/01/word-image-53.png" /></span></p>
+<p><span style="font-size: 18pt; color: #000000;">If you use dotnet run like command, then kestrel server with port 5000 is used. Otherwise IISExpress is used.</span></p>

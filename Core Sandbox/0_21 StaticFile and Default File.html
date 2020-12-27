@@ -1,0 +1,125 @@
+<html>
+<head>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://unpkg.com/vue"></script>
+
+<style>
+xmp.prettyprint{
+
+    font-size:12pt;
+    font-family:"Consolas, 'Courier New', monospace";
+
+}
+</style>
+ 
+</head>
+<body>
+<h2>Note:</h2>
+1) File and folder inside wwwroot can be access from url directly <br>
+2) Here, you will put jvascript file ,image file , css file , default html file etc
+
+can be access directly: localhost:45000/history.png
+
+<hr>
+Example:
+ Put image inside wwwroot ie. history.png <br>
+
+ <xmp class="prettyprint">
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+
+        //app.UseStaticFiles();
+
+        app.Run(async context => {
+            await context.Response.WriteAsync("Inside middleware defined using app.Run");
+        });
+    }
+
+
+    </xmp>
+    try to acces that png file like this : localhost:45000/history.png , you willnot be access it because there is nothing in pipeline to work with Static File . So, to make working add below line.
+
+
+    <xmp class="prettyprint">
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+    
+            app.UseStaticFiles();            //added
+    
+            app.Run(async context => {
+                await context.Response.WriteAsync("Inside middleware defined using app.Run");
+            });
+        }
+    
+    Now hardrefresh   localhost:45000/history.png  page , you will access the png file
+        </xmp>
+
+        <hr>
+        <h2>Access Default html file</h2>
+
+<div class="row">
+    <div class="col-lg-4">
+        <xmp class="prettyprint">
+            wwwroot
+             default.html
+        </xmp>
+    </div>
+    <div class="col-lg-8">
+        // This default page can be accessable at : localhost:45000/ directly but need to add below line
+        <xmp class="prettyprint">
+            public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+            {
+                app.UseDefaultFiles(); //added
+                app.UseStaticFiles();
+    
+                app.Run(async context => {
+                    await context.Response.WriteAsync("Inside middleware defined using app.Run");
+                });
+            }
+        </xmp>
+    </div>
+</div>
+<hr>
+<h2>Use another page inside of default.html</h2>
+localhost:45000/ <== display : foo.html
+
+
+<div class="row">
+    <div class="col-lg-4">
+        <xmp class="prettyprint">
+            wwwroot
+             default.html
+             foo.html
+        </xmp>
+    </div>
+    <div class="col-lg-8">
+        // This default page can be accessable at : localhost:45000/ directly but need to add below line
+        <xmp class="prettyprint">
+            public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+
+            DefaultFilesOptions defaultFilesOptions = new DefaultFilesOptions();
+            defaultFilesOptions.DefaultFileNames.Clear();   //clearing default.html file
+            defaultFilesOptions.DefaultFileNames.Add("foo.html");  //added foo.html as default page
+            app.UseDefaultFiles(defaultFilesOptions);                //bind defaultpage
+
+            app.UseStaticFiles();
+
+            app.Run(async context => {
+                await context.Response.WriteAsync("Inside middleware defined using app.Run");
+            });
+        }
+        </xmp>
+    </div>
+</div>
+
+The following are the default files which UseDefaultFiles middleware looks for
+index.htm <br>
+index.html <br>
+default.htm <br> 
+default.html<br>
+
+  </body>
+</html>
