@@ -155,7 +155,40 @@
 
         }
     </xmp>
+<hr>
+<h2>Disable One Checkbox when other is clicked</h2>
 
+
+
+
+<hr>
+<h2>Disable button when checkbox is not clicked</h2>
+<div class="row">
+    <div class="col-lg-6">
+        <xmp class="prettyprint">
+            <div id='app'>
+                <label for="agree"><input id="agree" type="checkbox" value="agree" v-model="checked"/>I Agree</lable>
+                <p>
+                <button :disabled="!checked">Button</button>
+              </div>
+        
+        
+            <script>
+                  new Vue({
+                el : '#app',
+                data: {
+                  checked : false
+                }
+              });
+            </script>
+        </xmp>
+    </div>
+
+<div class="col-lg-6">
+    https://codepen.io/oomusou/pen/mVNVrL
+</div>
+
+</div>
 </body>
 
 </html>

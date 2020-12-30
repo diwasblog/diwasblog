@@ -1,0 +1,91 @@
+<html>
+<head>
+
+<style>
+.container {
+  width: 500px;
+  margin: auto
+}
+
+img {
+  width: 500px;
+  height: 300px;
+  border: 2px solid #e1e1e1;
+}
+
+</style>
+</head>
+
+<body>
+<div class="container">
+  <!-- Image 1 -->
+  <img src="http://res.cloudinary.com/christekh/image/upload/c_scale,h_3,w_5/v1505391130/wynand-van-poortvliet-364366_gsvyby.jpg" data-src="http://res.cloudinary.com/christekh/image/upload/c_scale,h_300,w_500/v1505391130/wynand-van-poortvliet-364366_gsvyby.jpg"
+    alt="">
+  
+  <!-- Image 2 -->
+  <img src="http://res.cloudinary.com/christekh/image/upload/c_scale,h_3,w_5/v1505390963/matt-hoffman-146094_pckgfo.jpg" data-src="http://res.cloudinary.com/christekh/image/upload/c_scale,h_300,w_500/v1505390963/matt-hoffman-146094_pckgfo.jpg"
+    alt="">
+  
+    <!-- Image 3 -->
+  <img src="http://res.cloudinary.com/christekh/image/upload/c_scale,h_3,w_5/v1505390701/jason-wong-305496_odp5k1.jpg" data-src="http://res.cloudinary.com/christekh/image/upload/c_scale,h_300,w_500/v1505390701/jason-wong-305496_odp5k1.jpg"
+    alt="">
+  
+   <!-- Image 4 -->
+  <img src="http://res.cloudinary.com/christekh/image/upload/c_scale,h_3,w_5/v1499705400/fi7mytperytdqt9hdcvx.jpg" data-src="http://res.cloudinary.com/christekh/image/upload/c_scale,h_300,w_500/v1499705400/fi7mytperytdqt9hdcvx.jpg"
+    alt="">
+  
+  <!-- Image 5 -->
+  <img src="http://res.cloudinary.com/christekh/image/upload/c_scale,h_3,w_5/v1477419989/bicycle_jzfmtj.jpg" data-src="http://res.cloudinary.com/christekh/image/upload/c_scale,h_300,w_500/v1477419989/bicycle_jzfmtj.jpg"
+    alt="">
+</div>
+
+
+</body>
+<script>
+const images = document.querySelectorAll('img');
+
+const options = {
+  // If the image gets within 50px in the Y axis, start the download.
+  root: null, // Page as root
+  rootMargin: '0px',
+  threshold: 0.1
+};
+
+const fetchImage = (url) => {
+  console.log(url)
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.src = url;
+    image.onload = resolve;
+    image.onerror = reject;
+  });
+}
+
+const loadImage = (image) => {
+  const src = image.dataset.src;
+  fetchImage(src).then(() => {
+    // console.log(src)
+    image.src = src;
+  })
+}
+
+const handleIntersection = (entries, observer) => {
+  entries.forEach(entry => {
+    if(entry.intersectionRatio > 0) {
+      console.log(entry.intersectionRatio);
+      loadImage(entry.target)
+    }
+  })
+}
+
+// The observer for the images on the page
+const observer = new IntersectionObserver(handleIntersection, options);
+
+images.forEach(img => {
+  observer.observe(img);
+})
+
+
+</script>
+
+</html>

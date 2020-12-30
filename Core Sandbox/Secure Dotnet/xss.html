@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<h1><strong><span style="color: #000000;">Cross Site Scripting Attack(XSS Attack)</span></strong></h1>
+<p><span style="font-size: 18pt; color: #000000;">Cross-site Scripting (XSS) is an <strong><span style="color: #2dc26b;">attack in which malicious scripts are injected via input fields this attack is most common and allows an attacker to steal credentials and valuable data that can lead to a big security breach</span></strong>.</span></p>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" src="https://i.ibb.co/Mgs7956/xss-attack.jpg" /></p>
+<p><span style="font-size: 18pt; color: #3598db;">In this attack, the attacker visits a website and tries to execute a malicious script in the form comment box. Now if the website has not checked for Malicious code then the code can get executed on the server and saved into the database.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 18pt; color: #000000;">Let's try to understand the same using an example. Below is a simple Employee form which we are trying to save data. Now in the text box, I am trying to execute some malicious code using javascript using the SCRIPT tag. But if we try to submit the same MVC throws an error that something bad is happening. </span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 18pt; color: #e03e2d;">Note: Asp.Net itself prevent XSS and do not allow to submit of the form. This is good.:)</span></p>
+<p><span style="font-size: 18pt; color: #000000;"><img style="display: block; margin-left: auto; margin-right: auto;" src="https://i.ibb.co/CV2KgZ1/block-script.jpg" /></span></p>
+<p><span style="font-size: 18pt; color: #000000;">Programming sites should allow to post script as well in the comment so how to allow those?</span></p>
+<p>&nbsp;</p>
+<p><span style="color: #236fa1;"><strong><span style="font-size: 18pt;">So we have four things via which we can allow scripts to be posted.</span></strong></span></p>
+<p><span style="font-size: 18pt;"><strong>Solution: -</strong></span></p>
+<ol type="1">
+<li><span style="font-size: 18pt; color: #2dc26b;"><strong>[ValidateInput(false)]</strong></span></li>
+<li><span style="font-size: 18pt; color: #2dc26b;"><strong>[AllowHtml]</strong></span></li>
+<li><span style="font-size: 18pt; color: #2dc26b;"><strong>[RegularExpressionAttribute]</strong></span></li>
+<li><span style="font-size: 18pt; color: #2dc26b;"><strong>AntiXSS Library</strong></span></li>
+</ol>
+<p>&nbsp;</p>
+<p><span style="font-size: 18pt; color: #000000;"><strong>[ValidateInput] is an attribute which can be applied on Controller or Action Method on which we want the script to go through.</strong></span></p>
+<p><span style="font-size: 18pt;"><strong><img style="display: block; margin-left: auto; margin-right: auto;" src="https://i.ibb.co/R0GwCF4/validate-input.jpg" /></strong></span></p>
+<p><span style="font-size: 18pt; color: #000000;"><strong>AllowHtml: </strong>[AllowHtml]attributes that is applied to Model properties</span></p>
+<p><span style="font-size: 18pt;"><img style="display: block; margin-left: auto; margin-right: auto;" src="https://i.ibb.co/LgKLfkf/allowhtml.jpg" /></span></p>
+<p><span style="font-size: 18pt; color: #000000;">Using Regular Expression in Model Properties</span></p>
+<p><span style="font-size: 18pt; color: #000000;">AntiXSS :Using Anti XSS library.</span></p>
+<p>&nbsp;</p>
+</body>
+</html>

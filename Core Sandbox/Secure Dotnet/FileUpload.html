@@ -1,0 +1,553 @@
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../Core Project/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../Core Project/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../Core Project/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../Core Project/css/dracula.css">
+    <link rel="stylesheet" href="../Core Project/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+<style>
+    kbd {
+        background: black
+    }
+</style>
+
+<body>
+    <p><span style="font-size: 18pt; color: #000000;">Prevent Invalid File Upload. The attacker can change file extension [<strong>tuto.exe</strong> to <strong>tuto.jpeg</strong>] and the malicious script can be uploaded as an image file. Most of the developer just look on the file extension of the file and save in folder or database but file extension is valid not file it may have a malicious script.&nbsp;</span></p>
+    <p><span style="font-size: 18pt; color: #000000;">Solution:-</span></p>
+    <ol type="1">
+    <li><span style="font-size: 18pt; color: #000000;">First thing we need to do is <span style="color: #2dc26b;"><strong>validate file uploads</strong></span></span></li>
+    <li><span style="font-size: 18pt; color: #000000;">Allow only access to<strong> <span style="color: #2dc26b;">files extension</span></strong> which are required</span></li>
+    <li><span style="font-size: 18pt; color: #000000;">Check the <strong><span style="color: #2dc26b;">file header.</span></strong></span></li>
+    </ol>
+    <pre data-keep-tags="kbd, em">
+        <code class="language-csharp">
+
+            &lt;form method="post" action="/index">
+                &lt;input type="file" id="Avatar" name="<kbd>upload</kbd>" />
+                    &lt;input type="text" name="EmployeeName">
+                    &lt;input type="text" name="EmployeeSalary">
+                    &lt;input type="submit" value="Create" />
+            &lt;/form>
+
+
+
+            [HttpPost]
+            [ValidateAntiForgeryToken]
+            public ActionResult Index(EmployeeDetail EmployeeDetail)
+            {
+                if (ModelState.IsValid)
+                {
+                    <kbd>HttpPostedFileBase</kbd> upload = Request.Files["upload"];
+                    if (upload.ContentLength == 0)
+                    {
+                        ModelState.AddModelError("File", "Please Upload Your file");
+                    }
+                    else if (upload.ContentLength > 0)
+                    {
+                        string fileName = upload.FileName; // getting File Name
+                        string fileContentType = upload.ContentType; // getting ContentType
+                        byte[] tempFileBytes = new byte[upload.ContentLength]; // getting filebytes
+                        var data = upload.InputStream.Read(tempFileBytes, 0, Convert.ToInt32(upload.ContentLength));
+                        var types = MvcSecurity.Filters.FileUploadCheck.FileType.Image;  // Setting Image type
+
+                        var result = FileUploadCheck.<kbd>isValidFile</kbd>(tempFileBytes, types, fileContentType); // Validate Header
+    
+                        if (result == true)
+                        {
+                            int FileLength = 1024 * 1024 * 2; //FileLength 2 MB 
+                            if (upload.ContentLength > FileLength)
+                            {
+                                ModelState.AddModelError("File", "Maximum allowed size is: " + FileLength + " MB");
+                            }
+                            else
+                            {
+                                
+                                dbcon.EmployeeDetails.Add(EmployeeDetail);
+                                dbcon.SaveChanges();
+                                return View();
+                            }
+                        }
+                    }
+                }
+                return View(EmployeeDetail);
+            }
+    
+        </code>
+    </pre>
+
+
+<h2>FileUploadCheck.cs</h2>
+    <pre data-keep-tags="kbd, em">
+        <code class="language-csharp">
+public static class FileUploadCheck
+{
+
+    #region " Validations for File Types"
+
+    private enum ImageFileExtension
+    {
+        none = 0,
+        jpg = 1,
+        jpeg = 2,
+        bmp = 3,
+        gif = 4,
+        png = 5
+    }
+
+    private enum VideoFileExtension
+    {
+        none = 0,
+        wmv = 1,
+        mpg = 2,
+        mpeg = 3,
+        mp4 = 4,
+        avi = 5,
+        flv = 6
+    }
+
+    private enum PDFFileExtension
+    {
+        none = 0,
+        PDF = 1
+    }
+
+    public enum FileType
+    {
+        Image = 1,
+        Video = 2,
+        PDF = 3,
+        Text = 4,
+        DOC = 5,
+        DOCX = 6,
+        PPT = 7,
+    }
+
+    public static bool XLMimeType(string MimeType, string ext)
+    {
+        bool isValid = false;
+
+        if (MimeType == "application/x-msexcel" && (ext == ".xlsx" || ext == ".xls"))
+        {
+            isValid = true;
+        }
+        else if (MimeType == "application/x-excel" && (ext == ".xlsx" || ext == ".xls"))
+        {
+            isValid = true;
+        }
+        else if (MimeType == "application/vnd.ms-excel" && (ext == ".xlsx" || ext == ".xls"))
+        {
+            isValid = true;
+        }
+        else if (MimeType == "application/excel" && (ext == ".xlsx" || ext == ".xls"))
+        {
+            isValid = true;
+        }
+
+        return isValid;
+    }
+
+    public static bool isValidFile(byte[] bytFile, FileType flType, String FileContentType)
+    {
+        bool isvalid = false;
+
+        if (flType == FileType.Image)
+        {
+            isvalid = isValidImageFile(bytFile, FileContentType);
+        }
+        else if (flType == FileType.Video)
+        {
+            isvalid = isValidVideoFile(bytFile, FileContentType);
+        }
+        else if (flType == FileType.PDF)
+        {
+            isvalid = isValidPDFFile(bytFile, FileContentType);
+        }
+
+        return isvalid;
+
+
+    }
+
+    public static bool <kbd>isValidImageFile</kbd>(byte[] bytFile, String FileContentType)
+    {
+        bool isvalid = false;
+
+        byte[] chkBytejpg = { 255, 216, 255, 224 };
+        byte[] chkBytebmp = { 66, 77 };
+        byte[] chkBytegif = { 71, 73, 70, 56 };
+        byte[] chkBytepng = { 137, 80, 78, 71 };
+
+
+        ImageFileExtension imgfileExtn = ImageFileExtension.none;
+
+        if (FileContentType.Contains("jpg") | FileContentType.Contains("jpeg"))
+        {
+            imgfileExtn = ImageFileExtension.jpg;
+        }
+        else if (FileContentType.Contains("png"))
+        {
+            imgfileExtn = ImageFileExtension.png;
+        }
+        else if (FileContentType.Contains("bmp"))
+        {
+            imgfileExtn = ImageFileExtension.bmp;
+        }
+        else if (FileContentType.Contains("gif"))
+        {
+            imgfileExtn = ImageFileExtension.gif;
+        }
+
+        if (imgfileExtn == ImageFileExtension.jpg || imgfileExtn == ImageFileExtension.jpeg)
+        {
+            if (bytFile.Length >= 4)
+            {
+                int j = 0;
+                for (Int32 i = 0; i <= 3; i++)
+                {
+                    if (bytFile[i] == chkBytejpg[i])
+                    {
+                        j = j + 1;
+                        if (j == 3)
+                        {
+                            isvalid = true;
+                        }
+                    }
+                }
+            }
+        }
+
+
+        if (imgfileExtn == ImageFileExtension.png)
+        {
+            if (bytFile.Length >= 4)
+            {
+                int j = 0;
+                for (Int32 i = 0; i <= 3; i++)
+                {
+                    if (bytFile[i] == chkBytepng[i])
+                    {
+                        j = j + 1;
+                        if (j == 3)
+                        {
+                            isvalid = true;
+                        }
+                    }
+                }
+            }
+        }
+
+
+        if (imgfileExtn == ImageFileExtension.bmp)
+        {
+            if (bytFile.Length >= 4)
+            {
+                int j = 0;
+                for (Int32 i = 0; i <= 1; i++)
+                {
+                    if (bytFile[i] == chkBytebmp[i])
+                    {
+                        j = j + 1;
+                        if (j == 2)
+                        {
+                            isvalid = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (imgfileExtn == ImageFileExtension.gif)
+        {
+            if (bytFile.Length >= 4)
+            {
+                int j = 0;
+                for (Int32 i = 0; i <= 1; i++)
+                {
+                    if (bytFile[i] == chkBytegif[i])
+                    {
+                        j = j + 1;
+                        if (j == 3)
+                        {
+                            isvalid = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return isvalid;
+    }
+
+    private static bool <kbd>isValidVideoFile</kbd>(byte[] bytFile, String FileContentType)
+    {
+        byte[] chkBytewmv = { 48, 38, 178, 117 };
+        byte[] chkByteavi = { 82, 73, 70, 70 };
+        byte[] chkByteflv = { 70, 76, 86, 1 };
+        byte[] chkBytempg = { 0, 0, 1, 186 };
+        byte[] chkBytemp4 = { 0, 0, 0, 20 };
+        bool isvalid = false;
+
+        VideoFileExtension vdofileExtn = VideoFileExtension.none;
+        if (FileContentType.Contains("wmv"))
+        {
+            vdofileExtn = VideoFileExtension.wmv;
+        }
+        else if (FileContentType.Contains("mpg") || FileContentType.Contains("mpeg"))
+        {
+            vdofileExtn = VideoFileExtension.mpg;
+        }
+        else if (FileContentType.Contains("mp4"))
+        {
+            vdofileExtn = VideoFileExtension.mp4;
+        }
+        else if (FileContentType.Contains("avi"))
+        {
+            vdofileExtn = VideoFileExtension.avi;
+        }
+        else if (FileContentType.Contains("flv"))
+        {
+            vdofileExtn = VideoFileExtension.flv;
+        }
+
+        if (vdofileExtn == VideoFileExtension.wmv)
+        {
+            if (bytFile.Length >= 4)
+            {
+                int j = 0;
+                for (Int32 i = 0; i <= 3; i++)
+                {
+                    if (bytFile[i] == chkBytewmv[i])
+                    {
+                        j = j + 1;
+                        if (j == 3)
+                        {
+                            isvalid = true;
+                        }
+                    }
+                }
+            }
+        }
+        else if ((vdofileExtn == VideoFileExtension.mpg || vdofileExtn == VideoFileExtension.mpeg) & isvalid)
+        {
+            if (bytFile.Length >= 4)
+            {
+                int j = 0;
+                for (Int32 i = 0; i <= 3; i++)
+                {
+                    if (bytFile[i] == chkBytempg[i])
+                    {
+                        j = j + 1;
+                        if (j == 3)
+                        {
+                            isvalid = true;
+                        }
+                    }
+                }
+            }
+        }
+        else if (vdofileExtn == VideoFileExtension.mp4 & isvalid)
+        {
+            if (bytFile.Length >= 4)
+            {
+                int j = 0;
+                for (Int32 i = 0; i <= 3; i++)
+                {
+                    if (bytFile[i] == chkBytemp4[i])
+                    {
+                        j = j + 1;
+                        if (j == 3)
+                        {
+                            isvalid = true;
+                        }
+                    }
+                }
+            }
+        }
+        else if (vdofileExtn == VideoFileExtension.avi & isvalid)
+        {
+            if (bytFile.Length >= 4)
+            {
+                int j = 0;
+                for (Int32 i = 0; i <= 3; i++)
+                {
+                    if (bytFile[i] == chkByteavi[i])
+                    {
+                        j = j + 1;
+                        if (j == 3)
+                        {
+                            isvalid = true;
+                        }
+                    }
+                }
+            }
+        }
+        else if (vdofileExtn == VideoFileExtension.flv & isvalid)
+        {
+            if (bytFile.Length >= 4)
+            {
+                int j = 0;
+                for (Int32 i = 0; i <= 3; i++)
+                {
+                    if (bytFile[i] == chkByteflv[i])
+                    {
+                        j = j + 1;
+                        if (j == 3)
+                        {
+                            isvalid = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return isvalid;
+
+    }
+
+    public static bool isValidPDFFile(byte[] bytFile, String FileContentType)
+    {
+        byte[] chkBytepdf = { 37, 80, 68, 70 };
+        bool isvalid = false;
+
+        PDFFileExtension pdffileExtn = PDFFileExtension.none;
+        if (FileContentType.Contains("pdf"))
+        {
+            pdffileExtn = PDFFileExtension.PDF;
+        }
+
+        if (pdffileExtn == PDFFileExtension.PDF)
+        {
+            if (bytFile.Length >= 4)
+            {
+                int j = 0;
+                for (Int32 i = 0; i <= 3; i++)
+                {
+                    if (bytFile[i] == chkBytepdf[i])
+                    {
+                        j = j + 1;
+                        if (j == 3)
+                        {
+                            isvalid = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return isvalid;
+    }
+
+    public static bool isValidDimension(byte[] bytFile, int maxRequiredWidth, int maxRequiredHeight)
+    {
+        using (System.Drawing.Image image = System.Drawing.Image.FromStream(new System.IO.MemoryStream(bytFile), true, true))
+        {
+            if (image.Width == maxRequiredWidth && image.Height == maxRequiredHeight)
+            {
+                return true;
+            }
+            else
+                return false;
+        }
+    }
+    #endregion
+
+}
+        </code>
+    </pre>
+
+    </body>
+    <script src="../Core Project/js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+
+
+        (function () {
+            if (!self.Prism) {
+                return;
+            }
+
+            var div = document.createElement('div');
+
+            Prism.hooks.add('before-highlight', function (env) {
+                var elt = env.element;
+                if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                    elt = elt.parentNode;
+                }
+                var tags = elt.getAttribute('data-keep-tags');
+                if (!tags) {
+                    return;
+                }
+                var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+                env.keepTags = true;
+                env.keepTagsPlaceholder = placeholder;
+
+                tags = tags.split(/\s*,\s*/).join('|');
+                var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+                env.keepTagsRegex = tags_regex;
+
+                env.tokenStack = [];
+                env.backupCode = env.code;
+
+                var code = env.element.innerHTML;
+                code = code.replace(tags_regex, function (match) {
+                    env.tokenStack.push(match);
+                    return placeholder.replace('{n}', env.tokenStack.length);
+                });
+                env.element.innerHTML = code;
+                code = env.element.textContent;
+                code = code.replace(/^(?:\r?\n|\r)/, '');
+
+                env.code = code;
+            });
+
+            Prism.hooks.add('after-highlight', function (env) {
+                if (!env.keepTags) {
+                    return;
+                }
+                for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                    t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                        div.innerHTML = inside;
+                        inside = div.textContent;
+                        return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                    });
+
+                    env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                    env.element.innerHTML = env.highlightedCode;
+                }
+            });
+
+        }());
+
+        Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+            v.classList.add("language-sql");
+        });
+        Prism.highlightAll();
+
+    </script>
+</body>
+
+</html>

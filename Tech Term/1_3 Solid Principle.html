@@ -14,6 +14,11 @@
     <link rel="stylesheet" href="../ASP Sandbox/css/dracula-prism.css">
     <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
   </head>
+  <style>
+    kbd {
+        background: black
+    }
+</style>
   <body>
 
 
@@ -176,9 +181,20 @@ public class ReportGeneration
         }
       }
   }
+
+  class Program
+  {
+      static void Main(string[] args)
+      {
+        Employee emp = new Employee();
+        ReportGeneration report = new ReportGeneration();
+        report.GenerateReport(emp)
+      }
+  }
 </code>
 </pre>
-<p><span style="font-size: 14pt; color: #000000;">Brilliant!! Yes you are right, too much &lsquo;<code>If</code>&rsquo; clauses are there and if we want to introduce another new report type like &lsquo;<strong><span style="color: #2dc26b;"><code>Excel</code></span></strong>&rsquo;, then you need to write another &lsquo;<code>if</code>&rsquo;. This class should be open for extension but closed for modification. But how to do that!! </span></p>
+<p><span style="font-size: 14pt; color: #000000;">If we want to introduce another new report type like &lsquo;<strong><span style="color: #2dc26b;"><code>Excel</code></span></strong>&rsquo;, then you need to write another &lsquo;<code>if</code>&rsquo;.And suppose this class is already in production,so there if we add there "If" then
+  it lead to OPEN for Modification (old class), but what we have to do is open for extension(extends) but closed for modification.  </span></p>
 
 </div>
 <div class="col-6">
@@ -205,6 +221,26 @@ public class ReportGeneration
       public override void GenerateReport(Employee em)
       {
           // Generate PDF report.
+      }
+  }
+
+  
+  public class ExcelReportGeneraion : IReportGeneration
+  {
+      public override void GenerateReport(Employee em)
+      {
+          // Generate PDF report.
+      }
+  }
+
+  class Program
+  {
+      static void Main(string[] args)
+      {
+        Employee emp = new Employee();
+        IReportGeneration report = new ExcelReportGeneraion();
+        //Can use according to need
+        report.GenerateReport(emp)
       }
   }
 </code>
@@ -249,21 +285,320 @@ public class ReportGeneration
 <br>
 <p><span style="color: #ff0000;"><strong><span style="font-size: 14pt;">Liskov's Substitution Principle</span></strong></span></p>
 
+<p><span style="font-size: 18pt; color: #000000;">The Liskov Substitution Principle says that the<strong> <span style="color: #2dc26b;">object of a derived class</span></strong> should be able to replace an <strong><span style="color: #2dc26b;">object of the base class</span></strong> without bringing any errors in the system or modifying the behavior of the base class.</span></p>
+<p><img src="https://i.ibb.co/d41qFdy/rectangle-square.png" /></p>
 
-<script src="../ASP Sandbox/js/prism.js"></script>
-<script type="text/javascript">
-  Prism.plugins.NormalizeWhitespace.setDefaults(
+<pre data-keep-tags="kbd, em">
+  <code class="language-csharp">
+    Rectangle r1 = new <kbd>Rectangle()</kbd>;  //  Here reference is of type Rectangle, Object is also rectangle
+    Rectangle r2 = new <kbd>Square()</kbd>;  // Here, reference is of type Rectangle, Object is of type Square ie. object of derived class
+    r1.getArea(4,5);
+    r2.getArea(4,4);
+  </code>
+</pre>
+<p>So, here Object of Square should be able to replace the object of the base class(Rectangle) and the result should be same for those two case or should not produce any error.</p>
+
+<div class="row">
+  <div class="col-lg-4">
+    <pre>
+      <code class="language-csharp">
+
+ 
+public class Rectangle
+{
+    public virtual int Height { get; set; }
+    public virtual int Width { get; set; }
+}
+
+public class Square : Rectangle
+{
+    private int _height;
+    private int _width;
+    public override int Height
     {
-      'remove-trailing': true,
-      'remove-indent': true,
-      'left-trim': true,
-      'right-trim': true,
-      // 'break-lines': 10,
-      // 'indent': 2,
-      // 'remove-initial-line-feed': false,
-      // 'tabs-to-spaces': 4,
-      // 'spaces-to-tabs': 4
-    });
+        get
+        {
+            return _height;
+        }
+        set
+        {
+            _height = value;
+            _width = value;
+        }
+    }
+    public override int Width
+    {
+        get
+        {
+            return _width;
+        }
+        set
+        {
+            _width = value;
+            _height = value;
+        }
+    }
+
+}
+
+      </code>
+    </pre>
+  </div>
+  <div class="col-lg-4">
+    <pre>
+      <code class="language-csharp">
+public class AreaCalculator
+{
+    public static int CalculateArea(Rectangle r)
+    {
+        return r.Height * r.Width;
+    }
+
+    public static int CalculateArea(Square s)
+    {
+        return s.Height * s.Height;
+    }
+}    </code>
+    </pre>
+  </div>
+  <div class="col-lg-4">
+    <pre  data-keep-tags="kbd, em">
+      <code class="language-csharp">
+class LSPDemo
+{
+    static void Main(string[] args)
+    {
+        Rectangle newRectangle1 = new <kbd>Rectangle</kbd>();
+        newRectangle1.Height = 4;
+        newRectangle1.Width = 6;
+        var result1 = <kbd>AreaCalculator.CalculateArea(newRectangle1)</kbd>;
+        Console.WriteLine(result1);  // 24
+
+
+        Rectangle newRectangle2 = new <kbd>Square</kbd>();
+        newRectangle2.Height = 4;
+        newRectangle2.Width = 6;
+        var result2 = <kbd>AreaCalculator.CalculateArea(newRectangle2)</kbd>;
+        Console.WriteLine(result2);  // 36
+    }
+}
+      </code>
+    </pre>
+  </div>
+</div>
+
+<p><span style="font-size: 18pt; color: #000000;">Here, the <span style="color: #2dc26b;"><strong>results of both areas are not the same</strong></span> as we replace objects for the base class with objects of the derived class,<span style="color: #2dc26b;"> <strong>so it violates the LSP principle.</strong></span></span></p>
+<p><span style="font-size: 18pt; color: #000000;"><strong><span style="color: #e03e2d;">So, how to solve it ?</span></strong></span></p>
+
+<div class="row">
+  <div class="col-lg-4">
+    <pre>
+      <code class="language-csharp">
+  public class Rectangle : Shape
+  {
+      public int Height { get; set; }
+      public int Width { get; set; }
+      public int Area()
+      {
+          return Height * Width;
+      }
+  }
+
+
+  public abstract class Shape
+  {
+
+  }
+  public class Square : Shape
+  {
+      public int Sides;
+      public int Area()
+      {
+          return Sides * Sides;
+      }
+
+  }
+
+      </code>
+    </pre>
+  </div>
+
+  <div class="col-lg-4">
+    <pre  data-keep-tags="kbd, em">
+      <code class="language-csharp">
+class LSPDemo
+{
+    static void Main(string[] args)
+    {
+      var shapes = new List&lt;Shape>{
+        new Rectangle{Height=4,Width=6},
+        new Square{Sides=3}
+    };
+    var areas = new List&lt;int>();
+    foreach(Shape shape in shapes){
+      <kbd>  if(shape.GetType()==typeof(Rectangle))
+        {
+            areas.Add(((Rectangle)shape).Area());
+        }</kbd>
+
+     <kbd>
+      if (shape.GetType() == typeof(Square))
+      {
+          areas.Add(((Square)shape).Area());
+      }
+
+     </kbd>
+    }
+    Assert.AreEqual(24, areas[0]);        // true  output : 24
+    Assert.AreEqual(9, areas[1]);         // true   output : 9
+    }
+}
+      </code>
+    </pre>
+  </div>
+</div>
+Now relationship is OK and we are getting result what ever is in object . But look we are voilating OPEN/CLOSE principle by adding if statement.And if we want more shape , we keep adding if else.
+<br>
+So, lets solve it.
+
+<div class="row">
+  <div class="col-lg-6">
+    <pre data-keep-tags="kbd, em">
+      <code class="language-csharp">
+public class Rectangle : Shape
+{
+    public int Height { get; set; }
+    public int Width { get; set; }
+    public <kbd>override</kbd> int Area()
+    {
+        return Height * Width;
+    }
+}
+
+
+public abstract class Shape
+{
+    <kbd>public abstract int Area();</kbd>
+}
+
+public class Square : Shape
+{
+    public int Sides;
+    public <kbd>override</kbd> int Area()
+    {
+        return Sides * Sides;
+    }
+
+}
+
+      </code>
+    </pre>
+  </div>
+
+  <div class="col-lg-6">
+    <pre  data-keep-tags="kbd, em">
+      <code class="language-csharp">
+        static void Main(string[] args)
+        {
+            var shapes = new List&lt;Shape>{
+                new Rectangle{Height=4,Width=6},
+                new Square{Sides=3}
+            };
+            var areas = new List&lt;int>();
+
+            //No If Else
+            foreach (Shape shape in shapes)
+            {
+                areas.Add(shape.Area());
+            }
+            Assert.AreEqual(24, areas[0]);
+            Assert.AreEqual(9, areas[1]);
+        }
+      </code>
+    </pre>
+  </div>
+</div>
+<p><span style="font-size: 18pt; color: #000000;">In this way, we can create a relationship between the subclass and the base class by adhering to the Liskov Substitution Principle.&nbsp; </span></p>
+<script src="../ASP Sandbox/js/prism.js"></script>
+<script>
+Prism.plugins.NormalizeWhitespace.setDefaults(
+     {
+         'remove-trailing': true,
+         'remove-indent': true,
+         'left-trim': true,
+         'right-trim': true,
+         // 'break-lines': 10,
+         // 'indent': 2,
+         // 'remove-initial-line-feed': false,
+         // 'tabs-to-spaces': 4,
+         // 'spaces-to-tabs': 4
+     });
+
+
+ (function () {
+     if (!self.Prism) {
+         return;
+     }
+
+     var div = document.createElement('div');
+
+     Prism.hooks.add('before-highlight', function (env) {
+         var elt = env.element;
+         if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+             elt = elt.parentNode;
+         }
+         var tags = elt.getAttribute('data-keep-tags');
+         if (!tags) {
+             return;
+         }
+         var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+         env.keepTags = true;
+         env.keepTagsPlaceholder = placeholder;
+
+         tags = tags.split(/\s*,\s*/).join('|');
+         var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+         env.keepTagsRegex = tags_regex;
+
+         env.tokenStack = [];
+         env.backupCode = env.code;
+
+         var code = env.element.innerHTML;
+         code = code.replace(tags_regex, function (match) {
+             env.tokenStack.push(match);
+             return placeholder.replace('{n}', env.tokenStack.length);
+         });
+         env.element.innerHTML = code;
+         code = env.element.textContent;
+         code = code.replace(/^(?:\r?\n|\r)/, '');
+
+         env.code = code;
+     });
+
+     Prism.hooks.add('after-highlight', function (env) {
+         if (!env.keepTags) {
+             return;
+         }
+         for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+             t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                 div.innerHTML = inside;
+                 inside = div.textContent;
+                 return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+             });
+
+             env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+             env.element.innerHTML = env.highlightedCode;
+         }
+     });
+
+ }());
+
+ Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+     v.classList.add("language-sql");
+ });
+ Prism.highlightAll();
 </script>
 </body>
 </html>
