@@ -1,0 +1,370 @@
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../Core Project/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../Core Project/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../Core Project/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../Core Project/css/dracula.css">
+    <link rel="stylesheet" href="../Core Project/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+<style>
+    kbd {
+        background: black
+    }
+</style>
+
+<body>
+    <p><span style="font-size: 18pt; color: #000000;">Prevent Invalid File Upload. The attacker can change file extension [<strong>tuto.exe</strong> to <strong>tuto.jpeg</strong>] and the malicious script can be uploaded as an image file. Most of the developer just look on the file extension of the file and save in folder or database but file extension is valid not file it may have a malicious script.&nbsp;</span></p>
+    <p><span style="font-size: 18pt; color: #000000;">Solution:-</span></p>
+    <ol type="1">
+    <li><span style="font-size: 18pt; color: #000000;">First thing we need to do is <span style="color: #2dc26b;"><strong>validate file uploads</strong></span></span></li>
+    <li><span style="font-size: 18pt; color: #000000;">Allow only access to<strong> <span style="color: #2dc26b;">files extension</span></strong> which are required</span></li>
+    <li><span style="font-size: 18pt; color: #000000;">Check the <strong><span style="color: #2dc26b;">file header.</span></strong></span></li>
+    </ol>
+    <pre data-keep-tags="kbd, em">
+        <code class="language-csharp">
+            public class Startup
+            {
+                public Startup(IConfiguration configuration)
+                {
+                    Configuration = configuration;
+                }
+        
+                public IConfiguration Configuration { get; }
+        
+                // This method gets called by the runtime. Use this method to add services to the container.
+                public void ConfigureServices(IServiceCollection services)
+                {
+                    services.AddMvc(options =>
+                    {
+                        //Registering CustomExceptionFilterAttribute
+                        options.<kdb>Filters</kdb>>.Add(typeof(<kbd>CustomExceptionFilterAttribute</kbd>));
+
+                        //registered Audit Filter
+                        options.<kbd>Filters</kbd>.Add(typeof(<kbd>AuditFilter</kbd>>));
+                    });
+
+                    ....
+
+
+                }
+        </code>
+    </pre>
+
+<hr>
+
+<h2>AuditDb.cs</h2>
+
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+
+
+        public class DatabaseContext : DbContext
+        {
+            public DatabaseContext(DbContextOptions&lt;DatabaseContext> options) : base(options)
+            {
+    
+            }
+
+            ...
+            public DbSet&lt;AuditTb> AuditTb { get; set; }
+
+        }
+
+
+    [Table("AuditTB")]
+    public class AuditTb
+    {
+        [Key]
+        public int UsersAuditId { get; set; }
+        public int? UserId { get; set; }
+        public string SessionId { get; set; }
+        public string IpAddress { get; set; }
+        public string PageAccessed { get; set; }
+        public DateTime? LoggedInAt { get; set; }
+        public DateTime? LoggedOutAt { get; set; }
+        public string LoginStatus { get; set; }
+        public string ControllerName { get; set; }
+        public string ActionName { get; set; }
+        public string UrlReferrer { get; set; }
+        public string Method { get; set; }
+
+    }
+
+    </code>
+</pre>
+
+
+    <h2>AuditFilter.cs</h2>
+    <pre data-keep-tags="kbd, em">
+        <code class="language-csharp">
+
+
+            
+
+
+
+
+            public class AuditFilter : ActionFilterAttribute
+            {
+                private readonly DatabaseContext _databaseContext;
+                public AuditFilter(DatabaseContext databaseContext)
+                {
+                    _databaseContext = databaseContext;
+                }
+                public override void OnActionExecuting(ActionExecutingContext context)
+                {
+                    try
+                    {
+                        string actionName = null;
+                        string controllerName = null;
+        
+                        // Getting ActionName
+                        if (((Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor)context.ActionDescriptor).ActionName != null)
+                        {
+                            actionName =
+                                ((Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor)context.ActionDescriptor)
+                                .ActionName;
+                        }
+                        // Getting ControllerName
+                        if (((Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor)context.ActionDescriptor).ControllerName != null)
+                        {
+                            controllerName = ((Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor)context.ActionDescriptor).ControllerName;
+                        }
+        
+                        // Assigning values to AuditTb Class
+                        var objaudit = new AuditTb
+                        {
+                            UserId = context.HttpContext.Session.GetInt32("UserID") ?? 0,
+                            UsersAuditId = 0,
+                            SessionId = context.HttpContext.Session.Id,
+                            IpAddress = context.HttpContext.Connection.RemoteIpAddress.ToString(),
+                            PageAccessed = context.HttpContext.Request.GetDisplayUrl(),
+                            LoggedInAt = DateTime.Now,
+                            Method = context.HttpContext.Request.Method
+                        };
+        
+                        if (actionName == "Logout")
+                        {
+                            objaudit.LoggedOutAt = DateTime.Now;
+                        }
+        
+                        objaudit.LoginStatus = "A";
+                        objaudit.ControllerName = controllerName;
+                        objaudit.ActionName = actionName;
+        
+                        _databaseContext.AuditTb.Add(objaudit);
+                        _databaseContext.SaveChanges();
+        
+                        base.OnActionExecuting(context);
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                }
+            }
+        
+
+            </code>
+            </pre>
+
+
+
+<h2>CustomExceptionFilterAttribute.cs</h2>
+    <pre data-keep-tags="kbd, em">
+        <code class="language-csharp">
+            namespace CoreSecurity.Filters
+            {
+                public class CustomExceptionFilterAttribute : ExceptionFilterAttribute
+                {
+                    private readonly IHostingEnvironment _hostingEnvironment;
+            
+                    public CustomExceptionFilterAttribute(IHostingEnvironment hostingEnvironment)
+                    {
+                        _hostingEnvironment = hostingEnvironment;
+                    }
+            
+                    public override void OnException(ExceptionContext context)
+                    {
+                        string strLogText = "";
+                        Exception ex = context.Exception;
+            
+                        context.ExceptionHandled = true;
+                        var objClass = context;
+                        strLogText += "Message ---\n{0}" + ex.Message;
+            
+            
+                        if (context.HttpContext.Request.Headers["x-requested-with"] == "XMLHttpRequest")
+                        {
+                            strLogText += Environment.NewLine + ".Net Error ---\n{0}" + "Check MVC Ajax Code For Error";
+                        }
+            
+                        strLogText += Environment.NewLine + "Source ---\n{0}" + ex.Source;
+                        strLogText += Environment.NewLine + "StackTrace ---\n{0}" + ex.StackTrace;
+                        strLogText += Environment.NewLine + "TargetSite ---\n{0}" + ex.TargetSite;
+                        if (ex.InnerException != null)
+                        {
+                            strLogText += Environment.NewLine + "Inner Exception is {0}" + ex.InnerException;//error prone
+                        }
+                        if (ex.HelpLink != null)
+                        {
+                            strLogText += Environment.NewLine + "HelpLink ---\n{0}" + ex.HelpLink;//error prone
+                        }
+            
+                        StreamWriter log;
+            
+                        string timestamp = DateTime.Now.ToString("d-MMMM-yyyy", new CultureInfo("en-GB"));
+            
+                        string errorFolder = Path.Combine(_hostingEnvironment.WebRootPath, "ErrorLog");
+            
+                        if (!System.IO.Directory.Exists(errorFolder))
+                        {
+                            System.IO.Directory.CreateDirectory(errorFolder);
+                        }
+            
+                        // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
+                        if (!File.Exists(String.Format(@"{0}\Log_{1}.txt", errorFolder, timestamp)))
+                        {
+                            log = new StreamWriter(String.Format(@"{0}\Log_{1}.txt", errorFolder, timestamp));
+                        }
+                        else
+                        {
+                            log = File.AppendText(String.Format(@"{0}\Log_{1}.txt", errorFolder, timestamp));
+                        }
+            
+                        var controllerName = (string)context.RouteData.Values["controller"];
+                        var actionName = (string)context.RouteData.Values["action"];
+            
+                        // Write to the file:
+                        log.WriteLine(Environment.NewLine + DateTime.Now);
+                        log.WriteLine("------------------------------------------------------------------------------------------------");
+                        log.WriteLine("Controller Name :- " + controllerName);
+                        log.WriteLine("Action Method Name :- " + actionName);
+                        log.WriteLine("------------------------------------------------------------------------------------------------");
+                        log.WriteLine(objClass);
+                        log.WriteLine(strLogText);
+                        log.WriteLine();
+            
+                        // Close the stream:
+                        log.Close();
+                        context.HttpContext.Session.Clear();
+            
+                        if (!_hostingEnvironment.IsDevelopment())
+                        {
+                            // do nothing
+                            return;
+                        }
+                        var result = new RedirectToRouteResult(
+                        new RouteValueDictionary
+                        {
+                            {"controller", "Errorview"}, {"action", "Error"}
+                        });
+                        // TODO: Pass additional detailed data via ViewData
+                        context.Result = result;
+                    }
+                }
+        </code>
+    </pre>
+
+
+<img src="https://i.ibb.co/YhLRnPb/error-log.jpg">
+<br>
+<img src="https://i.ibb.co/3MNVm0X/auditlog.jpg">
+
+
+
+    </body>
+    <script src="../Core Project/js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+
+
+        (function () {
+            if (!self.Prism) {
+                return;
+            }
+
+            var div = document.createElement('div');
+
+            Prism.hooks.add('before-highlight', function (env) {
+                var elt = env.element;
+                if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                    elt = elt.parentNode;
+                }
+                var tags = elt.getAttribute('data-keep-tags');
+                if (!tags) {
+                    return;
+                }
+                var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+                env.keepTags = true;
+                env.keepTagsPlaceholder = placeholder;
+
+                tags = tags.split(/\s*,\s*/).join('|');
+                var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+                env.keepTagsRegex = tags_regex;
+
+                env.tokenStack = [];
+                env.backupCode = env.code;
+
+                var code = env.element.innerHTML;
+                code = code.replace(tags_regex, function (match) {
+                    env.tokenStack.push(match);
+                    return placeholder.replace('{n}', env.tokenStack.length);
+                });
+                env.element.innerHTML = code;
+                code = env.element.textContent;
+                code = code.replace(/^(?:\r?\n|\r)/, '');
+
+                env.code = code;
+            });
+
+            Prism.hooks.add('after-highlight', function (env) {
+                if (!env.keepTags) {
+                    return;
+                }
+                for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                    t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                        div.innerHTML = inside;
+                        inside = div.textContent;
+                        return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                    });
+
+                    env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                    env.element.innerHTML = env.highlightedCode;
+                }
+            });
+
+        }());
+
+        Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+            v.classList.add("language-sql");
+        });
+        Prism.highlightAll();
+
+    </script>
+</body>
+
+</html>

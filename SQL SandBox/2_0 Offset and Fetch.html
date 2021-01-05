@@ -95,6 +95,25 @@ END
   </code>
 </pre>
 
+<h2>Drawback of Fetch Offset and Skip</h2>
+
+<p><span style="font-size: 18pt; color: #000000;">What is happening here ?</span></p>
+<p><span style="font-size: 18pt; color: #000000;"><strong><span style="color: #e03e2d;">Problem 1</span></strong>: Here, we are getting 110 records and then removing top 100 records and getting 10 records. So, here unnecessary 100 records are scanned.</span></p>
+<p><img src="https://i.ibb.co/RD1Q85Z/fetch-offset-drawback.jpg" width="648" height="436" /></p>
+<p><span style="font-size: 18pt; color: #000000;">Problem 2 : Will occur read twice problem like below</span></p>
+<p><img src="https://i.ibb.co/bghWWNM/read-twice-problem.jpg" /></p>
+<p><span style="color: #000000; font-size: 18pt;"><strong>Best Way:</strong></span></p>
+<p><span style="color: #2dc26b; font-size: 18pt;"><strong>select * from news where id &lt; 15000 order by id desc limit 10</strong></span></p>
+<p><span style="font-size: 18pt; color: #000000;"><strong>Here, id = 15000 is the last element of the list which is passed when clicked on pagination.</strong></span></p>
+<hr />
+<p><span style="font-size: 18pt; color: #000000;"><strong>Look what happen with offset</strong></span></p>
+<p><strong><img src="https://i.ibb.co/YtjLxS9/offset.jpg" /></strong></p>
+<p><span style="font-size: 18pt; color: #000000;"><strong>Here we are scanning 1010 record</strong></span></p>
+<hr />
+<p><strong>But lets look with id</strong></p>
+<p><strong><img src="https://i.ibb.co/LS5xQ29/using-ID-only.jpg" /></strong></p>
+<p><span style="font-size: 18pt;"><strong>What ever value , it doesnot matter, it is scaning 10 row only.</strong></span></p>
+
 
 =============================================================================
     <script src="js/prism.js"></script>

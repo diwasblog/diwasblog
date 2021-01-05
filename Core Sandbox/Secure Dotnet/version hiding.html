@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<p><strong><span style="font-size: 24pt;">Version Discloser</span></strong></p>
+<p><span style="font-size: 18pt; color: #000000;">Version information can be used by an attacker to target a specific attack on that Version that is disclosed.</span></p>
+<p><span style="font-size: 18pt; color: #000000;">Whenever the browser sends HTTP to request to the server in response we get a response header which contains information of [Server, X-AspNet-Version, X-AspNetMvc-Version, X-Powered-By].</span></p>
+<p><span style="font-size: 18pt; color: #000000;"><span style="color: #2dc26b;"><strong>Server: Microsoft-IIS/10.0</strong></span>: The server shows information about which web server is begin used.</span></p>
+<p><span style="font-size: 18pt; color: #000000;"><strong><span style="color: #2dc26b;">X-AspNet-Version</span></strong> shows information of which specific Asp.Net VersionUsed.</span></p>
+<p><span style="font-size: 18pt; color: #000000;"><span style="color: #2dc26b;"><strong>X-AspNetMvc-Version: 4.0</strong></span>&nbsp;shows information of which ASP.NET MVC version Used. Here 4.0 is used</span></p>
+<p><span style="font-size: 18pt; color: #000000;"><strong><span style="color: #2dc26b;">X-Powered-By: Asp.net</span></strong> shows information of which framework your website is running on.</span></p>
+<p><span style="font-size: 18pt; color: #000000;"><img style="display: block; margin-left: auto; margin-right: auto;" src="https://i.ibb.co/XyWkkYV/response-header.jpg" /></span></p>
+<h3>How to Hide Header Values</h3>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" src="https://i.ibb.co/zSMJvby/server-and-project-version.jpg" /></p>
+<p>&nbsp;</p>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" src="https://i.ibb.co/RgbZ3Wd/remove-powerby.jpg" /></p>
+<p>Then lets look output:</p>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" src="https://i.ibb.co/zxfZqmr/final-response-header.jpg" /></p>
+<div>
+<div id="highlighter_66102"></div>
+</div>
+</body>
+</html>

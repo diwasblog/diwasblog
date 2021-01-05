@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://unpkg.com/vue"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<p><strong><span style="font-size: 18pt; color: #000000;">ClickJacking</span></strong></p>
+<p><span style="font-size: 18pt; color: #000000;">Clickjacking, also known as a &ldquo;UI redress attack&rdquo;, is when an attacker uses multiple transparent or opaque layers to trick a user into clicking on a button or link on another page when they were intending to click on the top-level page. Thus, the attacker is &ldquo;hijacking&rdquo; clicks meant for their page and routing them to another page, most likely owned by another application, domain, or both.</span></p>
+<p><span style="font-size: 18pt; color: #000000;">For example, imagine an attacker who builds a web site that has a button on it that says &ldquo;click here for a free iPod&rdquo;. However, on top of that web page, <strong><span style="color: #2dc26b;">the attacker has loaded an iframe with your mail account (with zero opacity)</span></strong>, and lined up exactly the &ldquo;delete all messages&rdquo; button directly on top of the &ldquo;free iPod&rdquo; button. The victim tries to click on the &ldquo;free iPod&rdquo; button but instead actually clicked on the invisible &ldquo;delete all messages&rdquo; button. In essence, the attacker has &ldquo;hijacked&rdquo; the user&rsquo;s click, hence the name &ldquo;Clickjacking&rdquo;.</span></p>
+<p><span style="font-size: 18pt; color: #000000;"><img style="display: block; margin-left: auto; margin-right: auto;" src="https://i.ibb.co/25bG3B8/clickjacking-attacks.png" /></span></p>
+<p><span style="font-size: 18pt; color: #000000;">This attack differs from a&nbsp;<a style="color: #000000;" href="https://portswigger.net/web-security/csrf">CSRF</a>&nbsp;attack in that the user is required to perform an action such as a button click whereas a&nbsp;<a style="color: #000000;" href="https://portswigger.net/web-security/csrf">CSRF attack</a>&nbsp;depends upon forging an entire request without the user's knowledge or input.</span></p>
+<p><span style="font-size: 18pt; color: #000000;">Check your website is vulnerable to ClickJacking ?</span></p>
+<xmp class="prettyprint">
+    <html>
+<head>
+<title>Clickjack test page</title>
+</head>
+<body>
+<p>Website is vulnerable to clickjacking!</p>
+<iframe src="http://www.yoursite.com/sensitive-page" width="500" height="500"></iframe>
+</body>
+</html>
+
+//If load website in iframe then we can say it is vulnerable to CLickJacking   , Noobietech is vulnerable to Xframe
+</xmp>
+
+Live Demo Here : <a href="https://javascript.info/clickjacking#the-demo">Click Here</a>
+
+
+<h2>Mitigating clickjacking with X-Frame-Options response header</h2>
+<p><span style="font-size: 18pt; color: #000000;">The X-Frame-Options response header is passed as part of the HTTP response of a web page, indicating whether or not a browser should be allowed to render a page inside a &lt;FRAME&gt; or &lt;IFRAME&gt; tag.</span></p>
+<p><span style="font-size: 18pt; color: #000000;">There are three values allowed for the X-Frame-Options header:</span></p>
+<ul style="list-style-type: none;">
+<li><span style="font-size: 18pt; color: #000000;"><strong>DENY</strong>&nbsp;&ndash; does not allow any domain to display this page within a frame</span></li>
+<li><span style="font-size: 18pt; color: #000000;"><strong>SAMEORIGIN</strong>&nbsp;&ndash; allows the current page to be displayed in a frame on another page, but only within the current domain</span></li>
+<li><span style="font-size: 18pt; color: #000000;"><strong>ALLOW-FROM URI</strong>&nbsp;&ndash; allows the current page to be displayed in a frame, but only in a specific URI &ndash; for example&nbsp;<em><a style="color: #000000;" href="www.example.com/frame-page" aria-invalid="true">www.example.com/frame-page</a></em></span></li>
+</ul>
+
+<h2>Completely remove Xframe Jacking</h2>
+<xmp class="prettyprint">
+protected void Application_Start(object sender, EventArgs e)
+{
+            HttpContext.Current.Response.AddHeader("x-frame-options", "DENY");
+}
+</xmp>
+</body>
+</html>
