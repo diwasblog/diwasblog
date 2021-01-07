@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<p><span style="font-size: 18pt; color: #000000;">Before Virtual Machine</span></p>
+<p><span style="font-size: 18pt; color: #000000;">We used to have bare hardware(containing multiple cpu, large capacity RAM) and on that server we install like Windows Server or Ubuntu Server.</span></p>
+<p><span style="font-size: 18pt; color: #000000;">Suppose you have installed Windows Server in bare hardware and host .net application there. Then suppose you need to host a python project, and you cannot host this project in Windows Machine. So, what we do is :&nbsp;</span></p>
+<p><span style="font-size: 18pt; color: #000000;">Create Two large Bare Machine</span></p>
+<p><span style="font-size: 18pt; color: #000000;">1)Bare Hardware with Windows Server ( ==&gt; Host .net application)&nbsp; &nbsp; &nbsp;</span></p>
+<p><span style="font-size: 18pt; color: #000000;">2)Bare Hardware with Ubuntu Server ( ==&gt; Host php, pyhton application)</span></p>
+<p><strong><span style="font-size: 18pt; color: #e03e2d;">So , two bare pieces of hardware are required.</span></strong></p>
+<p><span style="font-size: 18pt; color: #000000;">So what is the problem here is: We need two bare hardware which is more expensive.</span></p>
+<hr />
+<p><span style="font-size: 18pt; color: #000000;">To solve this problem, <strong><span style="color: #2dc26b;">Virtual Machine, Hypersior</span></strong> Came.</span></p>
+<p><span style="font-size: 18pt; color: #000000;">So, instead of using two bare hardware, we use one.</span></p>
+<p><span style="font-size: 18pt; color: #000000;"><strong><span style="color: #2dc26b;">Method1: </span></strong>In that hardware we installed Hypervisor and on that, we installed multiple Virtual Machine ie. multiple OS.Which is called <strong><span style="color: #e03e2d;">Type 1 Hypervisor.</span></strong></span></p>
+<p><span style="font-size: 18pt; color: #000000;"><strong><span style="color: #2dc26b;">Method 2: </span></strong>In that hardware we installed one OS called Host OS , and on that Hypervisor is installed and on that we installed multiple Virtual Machine OS. This is called<strong><span style="color: #e03e2d;"> Type 2 Hypervisor.</span></strong></span></p>
+<p>&nbsp;</p>
+<p><img src="https://i.ibb.co/Bsnk0MF/type1-type2-hy.png" width="1259" height="708" /></p>
+<p><span style="font-size: 24pt; color: #2dc26b;">Role of Hypervisor:</span></p>
+<p><span style="font-size: 18pt; color: #000000;">You can create One Windows OS VM where you host .net Application, One Next VM installed Ubuntu Server and on that host PHP, python application. So, one hardware ==&gt; multiple software.</span></p>
+<p><strong><span style="font-size: 18pt; color: #e03e2d;">Then Container and Docker Came</span></strong></p>
+<p><span style="font-size: 18pt; color: #000000;">What happens here.</span></p>
+<p><span style="font-size: 18pt; color: #000000;">We have bare hardware, then we installed one OS, say Ubuntu Server&nbsp; and on that Docker is installed (installed like any other application in Linux and this process keep running) and on docker we installed Operating System ( which is called container)</span></p>
+<p><span style="font-size: 18pt; color: #000000;"><img src="https://i.ibb.co/FsyyTYj/container-vm.jpg" /></span></p>
+<p><span style="font-size: 18pt; color: #000000;">Both Seems look similar ,</span></p>
+<ul>
+<li><span style="font-size: 18pt; color: #000000;">ie The <strong><span style="color: #e03e2d;">container </span></strong>has Operating System or any application</span></li>
+<li><span style="font-size: 18pt; color: #000000;"><strong><span style="color: #e03e2d;">Virtual Machine </span></strong>has an Operating System or any application.</span></li>
+</ul>
+<p><span style="font-size: 18pt; color: #000000;">Different is: </span><span style="color: #000000; font-size: 18pt;">But <strong><span style="color: #2dc26b;">Docker Engine is lighter and Faster than </span></strong></span><strong><span style="color: #2dc26b;">Hypervisor</span></strong><span style="color: #000000; font-size: 18pt;">. So, a Virtual Machine takes more time to boot/start than Container.</span></p>
+<p>&nbsp;</p>
+</body>
+</html>

@@ -35,5 +35,90 @@
 <p><span style="color: #2dc26b; font-size: 24pt;"><strong>Disadvantages of Microservices:</strong></span></p>
 <p><span style="font-size: 18pt;"><strong><span style="color: #3598db;">1) Deployment/Architecture Complexity</span></strong></span></p>
 <p><span style="font-size: 18pt; color: #000000;">Can to make an architecture to host in separate server and communicate each other efficiently.</span></p>
+
+
+<img src="https://i.ibb.co/52T8rTg/microservices-example.jpg">
+
+<p><span style="font-size: 18pt; color: #000000;">Microservices are smaller single responsibility services. Which does only one thing and one thing only.And have clear boundary.Usually they have their own data and datastore.</span></p>
+<p><span style="font-size: 18pt; color: #000000;">Logic, as well as data of a single responsibility microservice,&nbsp;should not leaks outside of it.&nbsp;</span></p>
+<p><span style="font-size: 18pt; color: #000000;">Here we have divided it into 4 services (product, inventory, user, order). These are separate projects.And when inventory needs to communicate with the product then it will communicate via API.</span></p>
+<p><span style="font-size: 18pt; color: #000000;">Each of these services can be hosted in different web servers as well as database servers.</span></p>
+<p><strong><span style="font-size: 18pt; color: #e03e2d;">What about cost of Deployment ?</span></strong></p>
+<p><span style="font-size: 18pt; color: #e03e2d;">COST of IIS&nbsp;</span></p>
+<ul>
+<li><span style="font-size: 18pt; color: #000000;">If all the services are deployed in the <strong>same windows machine in an IIS,</strong> if IIS has an issue then all apps will fail</span></li>
+<li><span style="font-size: 18pt; color: #000000;">If you want <strong>multiple IIS</strong> and boxes,then there will be a significantly high cost.</span></li>
+</ul>
+<p><strong><span style="font-size: 18pt; color: #e03e2d;">COST of Database</span></strong></p>
+<ul>
+<li><span style="font-size: 18pt; color: #000000;">The database should be isolated from each other.</span></li>
+<li><span style="font-size: 18pt; color: #000000;">SQL Server may not be cost-effective because it has to license cost.</span></li>
+</ul>
+<p><span style="font-size: 18pt; color: #000000;">Solution: Container is the solution for all. The container is used for packaging software and all its dependencies into a standard unit of development, deployment, and shipment. They are immutable ie. Container images of one service can be copied into multiple machines in no time and cost without creating a problem for others.</span></p>
+<p><span style="font-size: 18pt; color: #000000;">You can do the same with a virtual machine</span></p>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<td style="width: 49.0652%;">Container</td>
+<td style="width: 49.0652%;">Virtual Machine</td>
+</tr>
+<tr>
+<td style="width: 49.0652%;">Lightweight( in MB)</td>
+<td style="width: 49.0652%;">Heavy (in GB)</td>
+</tr>
+<tr>
+<td style="width: 49.0652%;">Faster to start ( &lt;10 min usually)</td>
+<td style="width: 49.0652%;">Slower to start</td>
+</tr>
+<tr>
+<td style="width: 49.0652%;">Best Suited for Microservices.</td>
+<td style="width: 49.0652%;">Can be used , but not cost effective.</td>
+</tr>
+<tr>
+<td style="width: 49.0652%;">Resource utlization can be optimized</td>
+<td style="width: 49.0652%;">Resource utlization is not much optimizable</td>
+</tr>
+<tr>
+<td style="width: 49.0652%;">Less Secure Accross the container.</td>
+<td style="width: 49.0652%;">Much Secure.</td>
+</tr>
+</tbody>
+</table>
+<p><span style="font-size: 18pt; color: #e03e2d;">When should I use Microservices?</span></p>
+<ul>
+<li><span style="font-size: 18pt; color: #000000;">Start with the <span style="color: #2dc26b;">Monolithics application if you are not sure.</span></span></li>
+<li><span style="font-size: 18pt; color: #000000;">The main decider of going into microservices is <span style="color: #2dc26b;">your agility of deployment</span>. Think about which functionality makes sense breaking up for ease of deployment.</span></li>
+<li><span style="font-size: 18pt; color: #000000;">If you are going with Microservices,<span style="color: #2dc26b;"> docker is your best friend.</span></span></li>
+</ul>
+<hr />
+<p><strong><span style="font-size: 18pt; color: #e03e2d;">Tools Needed</span></strong></p>
+<p><span style="font-size: 18pt; color: #000000;">For starting microservices, we do not&nbsp;need any tools but try using Docker&nbsp;</span></p>
+<ul>
+<li><span style="font-size: 18pt; color: #000000;">Docker</span></li>
+<li><span style="font-size: 18pt; color: #000000;">When you use docker, there comes the question of <strong><span style="color: #2dc26b;">how to scale out or scale down</span></strong>. Hence we need an Orchestration Engine. <strong><span style="color: #2dc26b;">Kubernetes</span></strong> is most popular open source <strong><span style="color: #e03e2d;">container orchestration engine</span></strong>.</span></li>
+</ul>
+<hr />
+<p><span style="color: #e03e2d;"><strong><span style="font-size: 18pt;">Microservice Communication (Between services and services)</span></strong></span></p>
+<ul>
+<li><span style="font-size: 18pt; color: #000000;">Most Popular is REST API (gRPC is growing nowadays).</span></li>
+<li><span style="font-size: 18pt; color: #000000;">Message Based Communications(Queue or Pub/Sub).Which works very well if you want to offload the work to some background microservices.And the response is not time sensitive.Eg. Banking Statement for last 1 year.</span></li>
+</ul>
+<hr />
+<p><span style="color: #e03e2d;"><strong><span style="font-size: 18pt;">What about Reports ?</span></strong></span></p>
+<p><span style="font-size: 18pt; color: #000000;">When data is available across multiple databases then getting a consolidated view of data or report is difficult.</span></p>
+<p><span style="font-size: 18pt; color: #000000;">So, what you can do is :</span></p>
+<ul>
+<li><span style="font-size: 18pt; color: #000000;">You can either use data aggregation by calling multiple services.</span></li>
+<li><span style="font-size: 18pt; color: #000000;">Or you can create a data stream for all the data and have an aggregated create read-only view of the data.</span></li>
+<li><span style="font-size: 18pt; color: #000000;"><strong><span style="color: #2dc26b;">Use API Gateway (octelet )</span></strong> which is the best one.</span></li>
+</ul>
+<hr />
+<p><strong><span style="font-size: 18pt; color: #e03e2d;">Few Notes for building microservices application</span></strong></p>
+<ul>
+<li><span style="font-size: 18pt; color: #000000;">When you start building microservices, think about resilience during design.</span></li>
+<li><span style="font-size: 18pt; color: #000000;">Establish a communication pattern you have to use between your microservices-based&nbsp;on response needs.</span></li>
+<li><span style="font-size: 18pt; color: #000000;">Logging and Monitoring is a critical aspect of microservices. Cloud-Based Centralizing logging is extremely critical. And passing correlation log id across microservices will save you a lot of debugging time in the future.</span></li>
+</ul>
+<p>&nbsp;</p>
 </body>
 </html>
