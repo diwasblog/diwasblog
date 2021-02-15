@@ -150,5 +150,56 @@ How to get that table
 </xmp>	
 ===========================================================================================================================================
 <br>
+Complete Model:
+
+class MyData{
+    public AccountHeadData Data  {get;set;}
+    public int Id {get;set;}
+    public string OtherData {get;set;}
+
+}
+
+class AccountHeadData{
+    public string Name {get;set;}
+    public float Amount {get;set;}
+    public float TotalInstallment {get;set;}
+}
+
+
+<h2>Then hit in controller like this:</h2>
+<xmp class="prettyprint">
+    [Route("employee/api/insertleavedata")]
+        [HttpPost]
+        public IHttpActionResult InsertLeaveData(MyData postData)
+        {
+            MyData headTypeInsertModel = new MyData();
+            try
+            {
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                List<AccountHeadData> list = serializer.Deserialize<List<AccountHeadData>>(postData.Data);
+                DataTable headData = new DataTable();
+                headData.Columns.Add("Name");
+                headData.Columns.Add("Id");
+                headData.Columns.Add("Amount");
+                headData.Columns.Add("TotalInstallment");
+                foreach(var item in list)
+                {
+                    headData.Rows.Add(item.Name, item.Id, item.Amount, item.TotalInstallment);
+                }
+
+                headTypeInsertModel.AdminName = User.Identity.Name;
+                headTypeInsertModel.InstitutionId = GetInstitutionId();
+                headTypeInsertModel.DtLeaveType = leaveTypeData;
+                _headTypeService.InsertLeaveTypeForEmployee(leavetypeInsertModal);  //Then save bulk data to database
+                _apiResponse.StatusCode = (int)HttpStatusCode.OK;
+                return Ok(_apiResponse);
+            }
+            catch (Exception ex)
+            {
+                _apiResponse.ErrorMessage = ex.Message;
+                return BadRequest(ex.Message);
+            }
+         
+</xmp>
 </body>
 </html> 	

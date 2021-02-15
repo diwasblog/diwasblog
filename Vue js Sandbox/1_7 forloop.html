@@ -1,323 +1,169 @@
 <html>
+
 <head>
-<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
-    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+  <script
+    src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+  <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
 
-    <link
-    rel="stylesheet"
-    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-    crossorigin="anonymous"
-  />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
 
-<script src="https://unpkg.com/vue"></script>
+  <script src="https://unpkg.com/vue"></script>
 
-<style>
-xmp.prettyprint{
+  <style>
+    xmp.prettyprint {
 
-    font-size:12pt;
-    font-family:"Consolas, 'Courier New', monospace";
+      font-size: 12pt;
+      font-family: "Consolas, 'Courier New', monospace";
 
-}
-</style>
- 
+    }
+  </style>
+
 </head>
+
 <body>
 
-<!--Explaination-->
+  <!--|#########################DISPLAY############################################-->
+  <?prettify linenums=1?>
+  <xmp class="prettyprint">
+      <div id='app'>
+        <ul>
+          <li v-for="character in characters">{{character}}</li>
+        </ul>
 
-<!--########################Main Code######################################-->
-<div id='app'>
+        <ul>
+          <li v-for="(character,index) in characters">
+            {{index}}
+            {{character}}
+          </li>
+        </ul>
 
-   <ul>
-   <li v-for="character in characters">{{character}}</li>
-   </ul>
-   
-   <ul>
-     <li v-for="(character,index) in characters">
-       {{index}}
-       {{character}}
-     </li>
-   </ul>
+        <div v-for="(ninja,index) in ninjas" :key="ninja.name">
+          <h3>{{ninja.name}}-{{ninja.age}}</h3>
+        </div>
 
-   <ul>
-   <li v-for="(value,index,key) in ninjas">
-     {{key}}-{{index}}-{{value}}
-   </li>
-  </ul>
+        <template v-for="(ninja,index) in ninjas">
+          <h3>{{index}}</h3>
+          <h3>{{ninja.name}}</h3>
+          <p>{{ninja.age}}</p>
+        </template>
 
-   <div v-for="ninja in ninjas">
-     <h3>{{ninja.name}}-{{ninja.age}}</h3>
-   </div>
+      </div>
 
-   <template v-for="ninja in ninjas">
-     <h3>{{ninja.name}}</h3>
-     <p>{{ninja.age}}</p>
-   </template>
-
-
-
-</div>
-
-<script>
-const app=new Vue({
-    el:'#app',
-    data:{
-      characters:['diwas','yogesh','hari','ram'],
-      ninjas:[
-              {name:'Ganesh',age:25},
-              {name:'Hamuman',age:35},
-              {name:'Buddha',age:20}
-              ]
+      <script>
+        const app = new Vue({
+          el: '#app',
+          data: {
+            characters: ['diwas', 'yogesh', 'hari', 'ram'],
+            ninjas: [
+              { name: 'Ganesh', age: 25 },
+              { name: 'Hamuman', age: 35 },
+              { name: 'Buddha', age: 20 }
+            ]
           }
-    
-});
-</script>
-<!--##############################################################-->
 
+        });
+      </script>
+  </xmp>
+  <!--####################################################-->
 
-<!--|#########################DISPLAY############################################-->
-<?prettify linenums=1?>
-<xmp class="prettyprint"
-   >
-
-   <html>
-      <head>
-         <title>Using This</title>
-      </head>
-      <body>
-
-          <div id='app'>
-
-              <ul>
-              <li v-for="character in characters">{{character}}</li>
-              </ul>
-              
-              <ul>
-                <li v-for="(character,index) in characters">
-                  {{index}}
-                  {{character}}
-                </li>
-              </ul>
-           
-              <div v-for="ninja in ninjas">
-                <h3>{{ninja.name}}-{{ninja.age}}</h3>
-              </div>
-           
-              <template v-for="ninja in ninjas">
-                <h3>{{ninja.name}}</h3>
-                <p>{{ninja.age}}</p>
-              </template>
-           
-           </div>
-           
-           <script>
-           const app=new Vue({
-               el:'#app',
-               data:{
-                 characters:['diwas','yogesh','hari','ram'],
-                 ninjas:[
-                         {name:'Ganesh',age:25},
-                         {name:'Hamuman',age:35},
-                         {name:'Buddha',age:20}
-                         ]
-                     }
-               
-           });
-           </script>
-      </body>
-   </html>
-</xmp>
-<!--####################################################-->
-
-<xmp class="prettyprint">
+  <xmp class="prettyprint">
     <div class="col-sm-5 col-md-6 blog_post" v-for="(item,index) in noticeData">
-        <img :src="'/Areas/Admin/File/'+ item.attachment" height="150" width="150" class="img-responsive" alt="gallery 1" />
-        <span class="blog_header">{{item.title}}</span>
+      <img :src="'/Areas/Admin/File/'+ item.attachment" height="150" width="150" class="img-responsive"
+        alt="gallery 1" />
+      <span class="blog_header">{{item.title}}</span>
     </div>
 
     new Vue({
-      el: '#app',
-      data: {
-          noticeData: [],
-          reportData:[]
-         
+    el: '#app',
+    data: {
+    noticeData: [],
+    reportData:[]
 
-      },
-</xmp>
-============================================================================================
-<br>
-<h2>v-for with v-if</h2>
-When they exist on the same node, v-for has a higher priority than v-if. That means the v-if will be run on each iteration of the loop separately. This can be useful when you want to render nodes for only some items.
 
-<pre class="prettyprint">
-  <li v-for="todo in todos" v-if="!todo.isComplete">
-    {{ todo }}
-  </li>
-</pre>
-
-<h3>The above only renders the todos that are not complete.</h3>
-
-If instead, your intent is to conditionally skip execution of the loop, you can place the v-if on a wrapper element (or template). 
-  For example:
+    },
+  </xmp>
+  ============================================================================================
+  <p><span style="color: #e03e2d;"><strong><span style="font-size: 18pt;">In v-for always use Key</span></strong></span>
+  </p>
+  <p><span style="font-size: 18pt; color: #000000;">In vue we have two states: <strong><span
+          style="color: #e03e2d;">Application Stat</span></strong>e and <strong><span style="color: #e03e2d;">DOM
+          State.</span></strong></span></p>
+  <p><span style="font-size: 18pt; color: #000000;">Application States are those which are defined in the data property.
+      Ex. List of Array in data.</span></p>
+  <p><span style="font-size: 18pt; color: #000000;">Temporary DOM State: They are those which are added to data let's
+      say from the input field dynamically. This does not directly add to the actual DOM but only remains temporary in
+      memory.</span></p>
+  <p><span style="font-size: 18pt; color: #000000;">Vue&rsquo;s documentation describes, &ldquo;<strong><span
+          style="color: #2dc26b;">If the order of the data items has changed, instead of moving the DOM elements to
+          match the order of the items, Vue will patch each element in-place and make sure it reflects what should be
+          rendered at that particular index</span></strong>.&rdquo; Let&rsquo;s dig deeper.</span></p>
+  <p><span style="font-size: 18pt; color: #000000;">Vue renders lists in such a way that whenever there are dynamic
+      changes in the UI, for example, the order of the list changes, Vue will just update the data in the DOM of each
+      element of that list. Instead of moving HTML chunks of each element of that list, Vue will just update the current
+      application state into the DOM, by updating the DOM element&rsquo;s state.</span></p>
+  <p><img src="https://deepsource.io/images/blog/key-attribute-vue-js/in-place-patch.png"
+      alt="In place patch strategy" /></p>
+  <p><span style="font-size: 18pt; color: #000000;">So, if order of element is changed, and if key is not given then Vue
+      will try to add own key on each items in temporary dom, instead of moving HTML chunks. This sometimes may take
+      time but if we use key like any unique field, or say simple a serial number ourself then vue should not have to
+      think about it.And Hence may improve performance.</span></p>
+  <hr>
+  <h2>Using Name as unique field as Key in loop</h2>
 
   <xmp class="prettyprint">
-      <ul v-if="todos.length">
-          <li v-for="todo in todos">
-            {{ todo }}
-          </li>
-        </ul>
-        <p v-else>No todos left!</p>
-  </xmp>
 
-
-===================================================================================================================
-
-<h2>v-for on template</h2>
-
-<xmp class="prettyprint">
-    <ul>
-        <template v-for="item in items">
-          <li>{{ item.msg }}</li>
-          <li class="divider" role="presentation"></li>
-        </template>
-      </ul>
-</xmp>
-
-======================================================================================================================
-<h2>Dynamic Loop (Looping Through Key and value if no. of keys are not known)</h2>
-
-<xmp class="prettyprint">
     <div id="app">
-        <table>
-        <tr v-for="item in ninjas"> //access array
-          <td v-for="value in item">  //access each object of array
-            {{value}}
-          </td>
-        </tr>
-        </table>
-      </div>
-
-      <xmp class="prettyprint">
-          var example2 = new Vue({
-            el: '#app',
-            data: {
-             ninjas:[
-                    {name:'Ganesh',age:25},
-                    {name:'Hamuman',age:35},
-                    {name:'Buddha',age:20}
-                    ]
-            }
-          })
-      </xmp>
-
-Output: <br>
-Ganesh	25
-Hamuman	35
-Buddha	20
-</xmp>
-
-=============================================================================
-<h2>V-for for object</h2>
-
-<div class="row">
-  <div class="col-lg-6">
-    <xmp class="prettyprint">
-
-      <ul id="v-for-object" class="demo">
-        <li v-for="value in object">
-          {{ value }}
+      <ul>
+        <li v-for="item in shoppingItems" v-bind:key="item.name">
+          {{ item.name }} - {{ item.price }}
         </li>
       </ul>
+    </div>
 
+    <script>
       new Vue({
-        el: '#v-for-object',
-        data: {
-          object: {
-            title: 'How to do lists in Vue',
-            author: 'Jane Doe',
-            publishedAt: '2016-04-10'
+        el: "#app",
+        data() {
+          return {
+            shoppingItems: [
+              { name: 'apple', price: '7' },
+              { name: 'orange', price: '12' }
+            ]
           }
         }
-      })
-    </xmp>
+      });
+    </script>
+  </xmp>
+  <hr>
+  <h2>Using Index as unique field in v-for Loop</h2>
+  <xmp class="prettyprint">
 
-    try this as well   ===>2
-    <div v-for="(value, name) in object">
-        {{ name }}: {{ value }}
-      </div>
-  </div>
+    <div id="app">
+      <ul>
+        <li v-for="(item,index) in shoppingItems" v-bind:key="index">
+          {{ item.name }} - {{ item.price }}
+        </li>
+      </ul>
+    </div>
 
-  <div class="col-lg-6">
-    Result:
-    <xmp class="prettyprint">
-      . How to do lists in Vue
-      . Jane Doe
-      . 2016-04-10
-
-
-      ===>2
-            title: 'How to do lists in Vue',
-            author: 'Jane Doe',
-            publishedAt: '2016-04-10'
-    </xmp>
-  </div>
-</div>
-=========================================================================
-Webpack by itself only knows javascript, so when we want it to pack any other type of resources like .css or .scss or .ts, webpack needs help in order to compile and bundle those non-javascript types of resources.
-
-
-https://medium.com/a-beginners-guide-for-webpack-2/webpack-loaders-css-and-sass-2cc0079b5b3a
-
-<xmp class="prettyprint">
-    module.exports = {
-      entry: {
-        //  This is the "main" file which should include all other modules
-          app: ['./scripts/index.js']
-      },
-      output: {
-        // // Where should the compiled file go?
-          path: __dirname + "/wwwroot/js/dist/",
-          filename: '[name].js'
-      },
-      devtool: 'source-map',
-      module: {
-        //// Special compilation rules
-              rules: [
-              {  //   // Ask webpack to check: If this file ends with .js, then apply some transforms
-                  test: /\.js$/,
-                  //  // don't transform node_modules folder (which don't need to be compiled)
-                  exclude: /node_modules/,
-                  // load this .js file using babel loader so make it compactible with browser
-                  loader: 'babel-loader'
-              },
-                  {  // // Ask webpack to check: If this file ends with .png,woff2, then apply some transforms
-                    test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000' },
-                  {
-                    // Ask webpack to check: If this file ends with .css, then apply some transforms
-                      test: /\.css$/,
-                      // // Transform it with css loader
-                      use: [
-                          { loader: "css-loader" }
-                      ]
-                  }
-          ]
-      }
-  };
-</xmp>
-
-Whenever possible, as suggested by the Vue documentation, you should use the unique id of the item. The reason for this is so that Vue can more accurately track changes in the items in your array and update the component state to reflect this, and also to be able to reuse and reorder existing components rather than having to essentially re-render the entire loop.
-
-
-
-smart store ASP.NET MVC
-
-
-<br>
-If you want to provide web api endpoints then its better to use web api project template.
-Otherwise select mvc and it will automatically provide support for web api
-    </body>
+    <script>
+      new Vue({
+        el: "#app",
+        data() {
+          return {
+            shoppingItems: [
+              { name: 'apple', price: '7' },
+              { name: 'orange', price: '12' }
+            ]
+          }
+        }
+      });
+    </script>
+  </xmp>
+  <hr>
+  Best URL : https://deepsource.io/blog/key-attribute-vue-js/ <br>
+  https://www.digitalocean.com/community/tutorials/vuejs-iterating-v-for
+</body>
 
 </html>
-
-

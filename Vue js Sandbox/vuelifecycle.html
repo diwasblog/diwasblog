@@ -1,0 +1,154 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script
+        src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+    <script src="https://unpkg.com/vue"></script>
+
+    <style>
+        xmp.prettyprint {
+            font-size: 12pt;
+            font-family: monospace;
+
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <p><span style="font-size: 18pt; color: #000000;">Vue LifeCycle Hook Step By Step</span></p>
+    <ul>
+        <li><span style="font-size: 18pt; color: #000000;">beforeCreate</span></li>
+        <li><span style="font-size: 18pt; color: #000000;">create</span></li>
+        <li><span style="font-size: 18pt; color: #000000;">beforeMount</span></li>
+        <li><span style="font-size: 18pt; color: #000000;">mounted</span></li>
+        <li><span style="font-size: 18pt; color: #000000;">beforeUpdate</span></li>
+        <li><span style="font-size: 18pt; color: #000000;">updated</span></li>
+        <li><span style="font-size: 18pt; color: #000000;">activated</span></li>
+        <li><span style="font-size: 18pt; color: #000000;">deactivated</span></li>
+        <li><span style="font-size: 18pt; color: #000000;">beforeDestroy</span></li>
+        <li><span style="font-size: 18pt; color: #000000;">destroyed</span></li>
+        <li><span style="font-size: 18pt; color: #000000;">errorCaptured</span></li>
+    </ul>
+    <p><span style="font-size: 18pt; color: #000000;">The beforeCreate, created, beforeMount, mounted and errorCaptured
+            hooks will be executed automatically, all the others will be executed when something happens.</span></p>
+    <p><strong><span style="font-size: 18pt; color: #2dc26b;">beforeCreate()</span></strong><br /><span
+            style="font-size: 18pt; color: #000000;">1)It is called immediately <strong><span
+                    style="color: #2dc26b;">after the instance has been initialized </span></strong>and <span
+                style="color: #2dc26b;">before that the data, props, template, methods, computed, watchers will be in an
+                in-process state.</span></span><br /><span style="font-size: 18pt; color: #000000;">2)<span
+                style="color: #e03e2d;"> You cannot access data, props, template, methods, computed, watcher property
+                here.</span></span><br /><span style="font-size: 18pt; color: #000000;">3)<strong><span
+                    style="color: #e03e2d;">You cannot access the DOM element</span></strong>(ie.
+            HTML).</span><br /><span style="font-size: 18pt; color: #000000;">4)Generally used for authentication
+            (because it should be called before HTML is loaded and before data property has value).</span></p>
+    <p><strong><span style="font-size: 18pt; color: #e03e2d;">Created()</span></strong></p>
+    <p><span style="font-size: 18pt; color: #000000;">1) Called After beforecreate(), all data, props, template,
+            methods, computed and watchers are setup.</span><br /><span style="font-size: 18pt; color: #000000;">2)
+            <strong><span style="color: #e03e2d;">You can access data, props, template, methods, computed, watcher
+                    property inside Created()</span></strong></span><br /><span
+            style="font-size: 18pt; color: #000000;">2) <strong><span style="color: #e03e2d;">You cannot access DOM
+                    element ie cannot access HTML</span></strong></span><br /><span
+            style="font-size: 18pt; color: #000000;">3) <span style="color: #e03e2d;">You cannot access local Storage
+                info here</span>.</span></p>
+    <p><span style="font-size: 18pt; color: #000000;">Mounting Process: </span><span
+            style="font-size: 18pt; color: #000000;">The most used method when working with components, mounting methods
+            let you access your component immediately before and </span><span
+            style="font-size: 18pt; color: #000000;">after it is rendered the first time. </span><span
+            style="font-size: 18pt; color: #000000;">They should be used if the DOM of your component needs to be
+            modified immediately before or after it is initially rendered.</span></p>
+    <p><span style="color: #2dc26b;"><strong><span style="font-size: 18pt;">beforeMount()</span></strong></span></p>
+    <ul>
+        <li><span style="font-size: 18pt; color: #000000;">Called after the template has been compiled</span></li>
+        <li><span style="font-size: 18pt; color: #000000;">Called after vue compiled the code and create virtual DOM,
+                not mounted template to virtual DOM and we cannot see template HTML effect on browser.</span></li>
+        <li><span style="color: #000000;"><span style="font-size: 18pt;">You cannot access this.$el</span>
+            </span>(ie<span style="color: #000000; font-size: 18pt;">. content inside &lt;template&gt;&lt;/template&gt;)
+                at this stage.</span></li>
+    </ul>
+    <p><span style="color: #2dc26b;"><strong><span style="font-size: 18pt;">mounted()</span></strong></span></p>
+    <ul>
+        <li><span style="font-size: 18pt; color: #000000;">Vue mount the template to virtual DOM,then after mounted is
+                called.</span></li>
+        <li><span style="font-size: 18pt; color: #000000;">Here, you can access this.$el. So, that you can manipulate
+                native /actual DOM.</span></li>
+    </ul>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+
+    <div class="col-xs-12">
+
+
+        <xmp class="prettyprint">
+            <template>
+                <div>
+                    <h1 ref="myref">This is header</h1>
+                    <h2>My name is {{name}}</h2>
+                </div>
+            </template>
+
+            <script>
+                export default {
+                    data() {
+                        return {
+                            name: 'Diwas',
+                        }
+                    },
+                    beforeCreated() {
+                        console.log(this.name); // Cannot be accessed
+                        console.log(this.$ref.myref); // cannot access DOM
+                    },
+                    created() {
+                        console.log(this.$ref.myref);  // Cannot access DOM gives undefined ie. HTML tag inside div cannot be accessd
+                        console.log(this.name);        //Can access data property, function, methods, computed and watch
+                    },
+                    beforeMounted() {
+                        console.log(this.$ref.myref);  //can access
+                        console.log(this.name);        // Can access data,function,watch and computed
+                        console.log(this.$el);        // this.$el gives element inside template and cannot access here
+                        //Here will get compiled javascript , and virtual DOM is created but not mounted to template. So cannot see HTML in screen
+                    },
+                    mounted() {
+                        console.log(this.$ref.myref);  //Can Access DOM
+                        console.log(this.name);        // Can Access data,function, watch , computed
+                        //Here, Virtual DOM is mounted to Template so we can see HTML effect present
+                        console.log(this.$el);        // this.$el gives element inside template and can access here
+                    }
+                }
+            </script>
+        </xmp>
+
+    </div>
+    </div>
+
+
+</body>
+
+</html>
+
+
+<template>
+    <div>
+        <h1 ref="myref">This is header</h1>
+        <h2>My name is {{name}}</h2>
+    </div>
+</template>
+
+<script>
+    export default {
+        data() {
+            return {
+                name: 'Diwas',
+            }
+        },
+        created() {
+            console.log(this.$ref.myref);  // Cannot access DOM gives undefined
+            console.log(this.name);        //Can access data property, function, methods, computed and watch
+        }
+    }
+</script>

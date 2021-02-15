@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+    <link rel="stylesheet" href="../EF/css/bootstrap.css">
+    <link rel="stylesheet" href="../Ef/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../Ef/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../Ef/css/dracula.css">
+    <link rel="stylesheet" href="../Ef/css/dracula-prism.css">
+    <style>
+        kbd {
+            background: blue
+        }
+        ebd{
+            background:green;
+        }
+    </style>
+</head>
+<body>
+    <h2>Component name best way is having multiple word like app-header instead of header</h2>
+    <p style="text-align: justify;">
+        <span style="font-size: 18pt;"
+          >Component names should always be
+          <span style="color: #e03e2d;"><strong>multi-word</strong></span
+          >, except for root<strong
+            ><span style="color: #e03e2d;">&nbsp;<code>App</code></span></strong
+          >&nbsp;components, and built-in components provided by Vue, such
+          as&nbsp;<span style="color: #e03e2d;"
+            ><strong><code>&lt;transition&gt;</code></strong
+            >&nbsp;</span
+          >or&nbsp;<strong
+            ><span style="color: #e03e2d;"
+              ><code>&lt;component&gt;</code>.</span
+            ></strong
+          ></span
+        >
+      </p>
+      <p style="text-align: justify;">
+        <span style="font-size: 18pt; color: #000000;"
+          ><strong
+            >Why? <span style="color: #e03e2d;">To prevent</span
+            ><a
+              style="color: #000000;"
+              href="http://w3c.github.io/webcomponents/spec/custom/#valid-custom-element-name"
+              target="_blank"
+              rel="noopener"
+              ><span style="color: #e03e2d;">&nbsp;conflict</span>s</a
+            >
+            with existing and future HTML elements, since all HTML elements are a
+            single word like &lt;textarea&gt; , &lt;checkbox&gt;</strong
+          ></span
+        >
+      </p>
+
+      <br>
+      <hr>
+    <p><span style="font-size: 18pt; color: #000000;">Component can be registered locally as well as globally.</span>
+    </p>
+<hr>
+<center>
+    <h2 style="font-size: 18pt; color: red;">Component Globally and access from any Vue File</h2>
+   </center>
+<hr>
+
+Here, MainBodyComponent can be access from any vue component. Here we are accessing MainComponent.vue from App.vue component
+
+<div class="row">
+    <div class="col-lg-6">
+        <p><span style="font-size: 18pt; color: #000000;">1)Creating <span
+                    style="color: #2dc26b;"><strong>MainBody.vue</strong></span> component&nbsp;</span></p>
+
+                      <pre data-keep-tags="kbd, em">
+        <code class="language-html">
+&lt;template>
+    &lt;div>
+        &lt;h2>My Body&lt;/h2>
+    &lt;ul>
+        &lt;li v-for="(ninja, index) in ninjas" :key="index">{{ ninja }}&lt;/li>
+    &lt;/ul>
+    &lt;/div>
+&lt;/template>
+
+&lt;script>
+    export default {
+        data() {
+            return {
+                ninjas: ["Diwas", "Ramesh", "Aakash"],
+            };
+        },
+    };
+    &lt;/script>
+
+    &lt;style scoped>
+    &lt;/style>
+</code>
+    </pre>
+    </div>
+    <div class="col-lg-6">
+        <p><span style="font-size: 18pt; color: #000000;">2) Open <strong><span
+                        style="color: #2dc26b;">main.js</span></strong> for registering globally</span></p>
+
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+                import Vue from 'vue'
+                import App from './App.vue'
+    
+                //Globally Imported NinjaComponent
+                <kbd>import MainBody from './components/MainBody.vue';</kbd>
+    
+                //Globally Registered Ninja Component
+                <kbd>Vue.component('main-body', MainBody)</kbd>
+    
+                Vue.config.productionTip = false
+    
+                new Vue({
+                render: h => h(App),
+                }).$mount('#app')
+            </code>
+        </pre>
+       
+    </div>
+</div>
+
+<p><span style="font-size: 18pt; color: #000000;">3) Inside <strong><span
+                style="color: #2dc26b;">App.vue</span></strong></span></p>
+<div class="row">
+    <div class="col-lg-6">
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+        &lt;template>
+        &lt;div id="app">
+           <kbd> &lt;main-body>&lt;/main-body></kbd>
+        &lt;/div>
+    &lt;/template>
+
+    &lt;script>
+        export default {
+            name: "App",
+            components: {
+            },
+        };
+    &lt;/script>
+
+    &lt;style>
+    &lt;/style>
+
+    </code>
+</pre>
+      
+           
+
+       
+    </div>
+    <div class="col-lg-6">
+        <img src="https://i.ibb.co/t3zkw30/result.png">
+    </div>
+</div>
+    
+<hr>
+<h2><center>   <span style="font-size: 18pt; color: red;">Component Locally </span>
+</center></h2>
+<hr>
+Making MainBodyComponent.vue , and making accessing it inside <strong>App.vue</strong> component only, by importing inside <strong>App.vue</strong>
+<div class="row">
+    <div class="col-lg-6">
+        <h4>MainBody.vue</h4>
+        <pre data-keep-tags="kbd, em">
+            <code class="language-html">
+        &lt;template>
+        &lt;div>
+            &lt;h2>My Body&lt;/h2>
+        &lt;ul>
+            &lt;li v-for="(ninja, index) in ninjas" :key="index">{{ ninja }}&lt;/li>
+        &lt;/ul>
+        &lt;/div>
+        &lt;/template>
+        
+        &lt;script>
+        export default {
+            data() {
+                return {
+                    ninjas: ["Diwas", "Ramesh", "Aakash"],
+                };
+            },
+        };
+        &lt;/script>
+        
+        &lt;style scoped>
+        &lt;/style>
+        </code>
+        </pre>
+    </div>
+
+<div class="col-lg-6">
+Making MainBody.vue component accessible only on App.vue Component
+<h4>App.vue</h4>
+    <pre data-keep-tags="kbd, em">
+        <code class="language-csharp">
+            &lt;template>
+                &lt;div id="app">
+                    <kbd>&lt;main-body>&lt;/main-body></kbd>
+                &lt;/div>
+            &lt;/template>
+              
+            &lt;script>
+             <kbd> import MainBody from "./components/MainBody.vue";</kbd>
+              export default {
+                name: "App",
+                components: {
+                    <kbd>  MainBody</kbd>
+                },
+                data() {
+                  return {};
+                },
+                methods: {},
+                created() {},
+              };
+              &lt;/script> 
+              
+              &lt;style>
+              &lt;/style>
+        </code>
+    </pre>
+   
+</div>
+</div>
+
+
+<h2>
+    <center>
+        <h1 style="font-size: 18pt; color: red;">Props: Data Passing from Parent to Child </h1>
+    </center>
+</h2>
+<div class="row">
+    <div class="col-lg-6">
+        <h4>App.vue  (Parent Component)</h4>
+        <pre data-keep-tags="kbd, em,ebd">
+            <code class="language-html">
+&lt;template>
+    &lt;div id="app">
+        &lt;main-body <kbd>:userList="users"</kbd>>&lt;/main-body>
+    &lt;/div>
+    &lt;/template>
+    
+    &lt;script>
+    <kbd>import MainBody from "./components/MainBody.vue";</kbd>
+    export default {
+    name: "App",
+    components: {
+        <kbd>MainBody</kbd>,
+    },
+    data() {
+        return {
+        users: [
+            { name: "Diwas", speciality: "Vue ", show: false },
+            { name: "Ramesh", speciality: "HTML", show: false },
+            { name: "Yogesh", speciality: "Angular", show: false },
+            { name: "Ajesh", speciality: "Python", show: false },
+            { name: "Dipesh", speciality: "React", show: false },
+        ],
+        };
+    },
+    methods: {},
+    created() {},
+    };
+    &lt;/script> 
+    
+    &lt;style>
+    &lt;/style>
+        </code>
+        </pre>
+    </div>
+
+<div class="col-lg-6">
+
+<h4>MainBody.vue</h4>
+    <pre data-keep-tags="kbd, em">
+        <code class="language-csharp">
+&lt;template>
+    &lt;div>
+        &lt;h2>My Body&lt;/h2>
+        &lt;ul>
+            &lt;li v-for="(user, index) in <kbd>userList</kbd>>" :key="index">{{ user.name }}&lt;/li>
+        &lt;/ul>
+    &lt;/div>
+&lt;/template>
+    
+&lt;script>
+    export default {
+    <kbd>props: ["userList"],</kbd>
+    data() {
+        return {};
+    },
+    };
+    &lt;/script>
+    
+    &lt;style scoped>
+    &lt;/style>
+        </code>
+    </pre>
+   
+    <h4><u>Output:</u></h4>
+    <h2>My Body</h2>
+    <br>
+    Diwas<br>
+    Ramesh <br>
+    Yogesh <br>
+    Ajesh <br>
+    Dipesh <br>
+</div>
+</div>
+
+<hr>
+<center>
+    <h2>Single Props</h2>
+</center>
+<hr>
+
+<div class="row">
+    <div class="col-lg-6">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+&lt;script>
+    export default {
+        <kbd>props:['name']</kbd>
+    }
+&lt;/script>
+            </code>
+        </pre>
+        
+    </div>
+
+    <div class="col-lg-6">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+           &lt;child <kbd>:name="myName"</kbd>>&lt;/child>
+
+            data(){
+                return {
+                    myName ="Diwas"
+                }
+            }
+            </script>
+            </code>
+        </pre>
+        
+    </div>
+</div>
+
+
+<hr>
+<center>
+    <h2>Multiple Props</h2>
+</center>
+<hr>
+
+<div class="row">
+    <div class="col-lg-6">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+&lt;script>
+    export default {
+        <kbd>props:['firstName','lastName']</kbd>
+    }
+&lt;/script>
+            </code>
+        </pre>
+        
+    </div>
+
+    <div class="col-lg-6">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+           &lt;child <kbd>:firstName="fName" :lastName="lName"</kbd>>&lt;/child>
+
+            data(){
+                return {
+                    fName ="Diwas",
+                    lName="Poudel"
+                }
+            }
+            </script>
+            </code>
+        </pre>
+        
+    </div>
+</div>
+
+
+<hr>
+<center>
+    <h2>Props Types</h2>
+</center>
+<hr>
+
+<div class="row">
+    <div class="col-lg-6">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+&lt;script>
+    export default {
+        <kbd>props:{
+            firstName:String,
+            lastName:String
+        }
+    </kbd>
+    }
+    //When Type mismatch will alert on the Console
+&lt;/script>
+            </code>
+        </pre>
+        
+    </div>
+
+    <div class="col-lg-6">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+           Other Type:
+           String
+           Number
+           Boolean
+           Array
+           Object
+           Date
+           Function
+           Symbol
+            </script>
+            </code>
+        </pre>
+        
+    </div>
+</div>
+
+
+<br>
+<hr>
+<h2>Props Mandatory Types</h2>
+
+<hr>
+
+
+<pre>
+    <code class="language-csharp">
+        props: {
+            firstName: {
+              type: String,
+              required: true
+            }
+          }
+    </code>
+</pre>
+
+<br>
+<hr>
+<h2>Props Default Value</h2>
+
+<hr>
+
+<div class="row">
+    <div class="col-lg-6">
+        
+<pre  data-keep-tags="kbd, em">
+    <code class="language-csharp">
+        props: {
+            firstName: {
+              type: String,
+              default: 'Unknown person'
+            }
+          }
+    </code>
+</pre>
+    </div>
+    <div class="col-lg-6">
+        
+        <pre  data-keep-tags="kbd, em">
+            <code class="language-csharp">
+
+                //For Object
+                props: {
+                    name: {
+                      type: Object,
+                      default: {
+                        firstName: 'Unknown',
+                        lastName: ''
+                      }
+                    }
+                  }
+            </code>
+        </pre>
+            </div>
+</div>
+
+
+<center>
+    <h2>Props Static and Dynamic</h2>
+</center>
+<div class="row">
+    <div class="col-lg-6">
+       Props Static 
+<pre  data-keep-tags="kbd, em">
+    <code class="language-csharp">
+        &lt;ComponentName <kbd>color="white" </kbd>/>
+    </code>
+</pre>
+    </div>
+    <div class="col-lg-6">
+        Props Dynamic
+        <pre  data-keep-tags="kbd, em">
+            <code class="language-csharp">
+                &lt;template>
+                    &lt;ComponentName <kbd>:color=color </kbd>/>
+                &lt;/template>
+                  
+                &lt;script>
+                  ...
+                  export default {
+                    //...
+                    data: function() {
+                      return {
+                       <kbd> color: 'white'</kbd>
+                      }
+                    },
+                    //...
+                  }
+                  &lt;/script>
+            </code>
+        </pre>
+            </div>
+</div>
+
+<br>
+
+<hr>
+<h1>Blog Post Practical Example</h1>
+</hr>
+<img src="https://i.ibb.co/kDjCKyF/component-project.png">
+<br>
+<pre>
+    <code class="language-csharp">
+        components
+            Header.vue
+            Footer.vue
+            MainBody.vue
+        App.vue
+        main.js
+    </code>
+</pre>
+
+<div class="row">
+    <div class="col-lg-3">
+        <h4>Header.vue</h4>
+        <pre>
+            <code class="language-csharp">
+&lt;template>
+    &lt;header>
+        &lt;h1>{{ title }}&lt;/h1>
+    &lt;/header>
+    &lt;/template>
+    
+    &lt;script>
+    export default {
+    data() {
+        return {
+        title: "Vue Ninjas",
+        };
+    },
+    methods: {},
+    };
+    &lt;/script>
+    
+    &lt;style scoped>
+    header {
+    background: lighgreen;
+    padding: 10px;
+    }
+    
+    h1 {
+    color: #222;
+    text-align: center;
+    }
+    &lt;/style>
+            </code>
+        </pre>
+    </div>
+    <div class="col-lg-3">
+       <h4> Footer.vue</h4>
+        <pre>
+            <code class="language-csharp">
+&lt;template>
+    &lt;footer>
+        &lt;p>{{ CopyRight }}&lt;/p>
+    &lt;/footer>
+    &lt;/template>
+    
+    &lt;script>
+    export default {
+    data() {
+        return {
+        CopyRight: "CopyRight 2021 Vue JS",
+        };
+    },
+    created() {},
+    };
+    &lt;/script>
+    
+    &lt;style scoped>
+    footer {
+    background: #222;
+    padding: 6px;
+    }
+    
+    p {
+    color: lightgreen;
+    text-align: center;
+    }
+    &lt;/style>
+            </code>
+        </pre>
+    </div>
+    <div class="col-lg-6">
+       <h4> MainBody.vue</h4>
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+&lt;template>
+    &lt;div>
+        &lt;div id="ninjas">
+        &lt;ul>
+            &lt;li
+            v-for="(user, index) in <kbd>userList</kbd>"
+            :key="index"
+            v-on:click="user.show = !user.show"
+            >
+            &lt;h2>{{ user.name }}&lt;/h2>
+            &lt;h3 v-show="user.show">{{ user.speciality }}&lt;/h3>
+            &lt;/li>
+        &lt;/ul>
+        &lt;/div>
+    &lt;/div>
+    &lt;/template>
+    
+    &lt;script>
+    export default {
+    <kbd>props: ["userList"],</kbd>
+    data() {
+        return {};
+    },
+    created() {},
+    };
+    &lt;/script>
+    
+    &lt;style scoped>
+    #ninjas {
+    width: 100%;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+    }
+    
+    ul {
+    display: flex;
+    flex-wrap: wrap;
+    list-style-type: none;
+    padding: 0px;
+    }
+    
+    li {
+    flex-grow: 1;
+    flex-basis: 300px;
+    text-align: center;
+    padding: 30px;
+    border: 1px solid #222;
+    margin: 10px;
+    }
+    &lt;/style>
+                  
+            </code>
+        </pre>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-lg-6">
+        <h4>App.vue</h4>
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+&lt;template>
+&lt;div id="app">
+    &lt;center>{{ titleHeader }}&lt;/center>
+    &lt;app-header <kbd>:tHeader="titleHeader"</kbd>> &lt;/app-header>
+    &lt;main-body <kbd>:userList="users"</kbd>>&lt;/main-body>
+    &lt;app-footer>&lt;/app-footer>
+&lt;/div>
+&lt;/template>
+
+&lt;script>
+<kbd>
+import AppHeader from "./components/Header.vue";
+import MainBody from "./components/MainBody.vue";
+import AppFooter from "./components/Footer.vue";
+</kbd>
+export default {
+name: "App",
+components: {
+<kbd>
+    AppHeader,
+    AppFooter,
+    MainBody,
+</kbd>
+},
+data() {
+    return {
+    titleHeader: "This is Header",
+    users: [
+        { name: "Diwas", speciality: "Vue ", show: false },
+        { name: "Ramesh", speciality: "HTML", show: false },
+        { name: "Yogesh", speciality: "Angular", show: false },
+        { name: "Ajesh", speciality: "Python", show: false },
+        { name: "Dipesh", speciality: "React", show: false },
+    ],
+    };
+},
+methods: {},
+created() {},
+};
+&lt;/script> 
+
+&lt;style>
+&lt;/style>
+                  
+            </code>
+        </pre>
+    </div>
+    <div class="col-lg-6">
+        <img  width="700px" src="https://i.ibb.co/ygngFDk/body.png">
+    </div>
+</div>
+
+
+<h2>Event (Passing from Child to Parent )</h2>
+Here, "This Change Title in Header" is passed/emit from Header.vue ie. child component to Parent Component ie. App.vue
+<div class="row">
+    <div class="col-lg-6">
+      <h4>Header.vue ie . Child Component</h4>
+<pre  data-keep-tags="kbd, em">
+    <code class="language-csharp">
+&lt;template>
+&lt;header>
+    &lt;h1 @click="buttonClicked">{{ title }}&lt;/h1>
+&lt;/header>
+&lt;/template>
+
+&lt;script>
+export default {
+data() {
+    return {
+    title: "Vue Ninjas",
+    };
+},
+methods: {
+    buttonClicked() {
+   <kbd> this.$emit("emit-change-title", "This Change Title in Header");</kbd>
+   //emit-change-title <== name
+   // "This Change Title in Header" <== Value
+    },
+},
+};
+&lt;/script>
+
+&lt;style scoped>
+header {
+background: lighgreen;
+padding: 10px;
+}
+
+h1 {
+color: #222;
+text-align: center;
+}
+&lt;/style>
+    </code>
+</pre>
+    </div>
+    <div class="col-lg-6">
+        <h4>Footer.vue</h4>
+        <pre  data-keep-tags="kbd, em">
+            <code class="language-csharp">
+&lt;template>
+    &lt;div id="app">
+        &lt;center>{{ titleHeader }}&lt;/center>
+        &lt;app-header <kbd> @emit-change-title="changedTitle"</kbd>> &lt;/app-header>
+        
+    
+        ....
+    &lt;/div>
+    &lt;/template>
+    
+    &lt;script>
+    import AppHeader from "./components/Header.vue";
+    
+    
+    export default {
+    name: "App",
+    components: {
+        AppHeader
+    },
+    data() {
+        return {
+        titleHeader: "This is Header",
+        };
+    },
+    methods: {
+        <kbd>changedTitle(e) { // e content value which is in header.vue
+            this.titleHeader = e;
+            },</kbd>
+    },
+    created() {
+  
+    },
+    };
+    &lt;/script> 
+    
+    &lt;style>
+    &lt;/style>
+                  
+            </code>
+        </pre>
+            </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-6">
+        <img width="450px" src="https://i.ibb.co/nfhxZLY/click-and-change.png">
+    </div>
+    <div class="col-lg-6">
+        <img src="https://i.ibb.co/x6dxd9F/changed-header.png">
+    </div>
+</div>
+
+<hr>
+<hr>
+
+
+<h2>Event BUS( Can Pass from any component to any component, espescially done between Sibling Comoponent)</h2>
+<img src="https://i.ibb.co/X3qCRtz/event-emit-props.png">
+<h4>First Register BUS in Main.js</h4>
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+        import Vue from 'vue'
+        import App from './App.vue'
+        
+        
+      <kbd>export const bus = new Vue();</kbd>  //Create Event Bus and Exporting it.
+        
+        Vue.config.productionTip = false
+        
+        new Vue({
+          render: h => h(App),
+        }).$mount('#app')
+        
+    </code>
+</pre>
+Now, lets pass value from HeaderComponent.vue to FooterComponent.vue
+<div class="row">
+    <div class="col-lg-6">
+      <h4>Header.vue</h4>
+<pre  data-keep-tags="kbd, em">
+    <code class="language-csharp">
+&lt;template>
+    &lt;header>
+        &lt;h1 @click="buttonClicked">{{ title }}&lt;/h1>
+    &lt;/header>
+&lt;/template>
+    
+&lt;script>
+    <kbd> import { bus } from "../main";</kbd>
+    export default {
+    data() {
+        return {
+        title: "Vue Ninjas",
+        };
+    },
+    methods: {
+        buttonClicked() {
+        <kbd>bus.$emit("emit-change-title", "This Change footer Header");</kbd>
+        },
+    },
+    };
+    &lt;/script>
+    
+    &lt;style scoped>
+    header {
+    background: lighgreen;
+    padding: 10px;
+    }
+    
+    h1 {
+    color: #222;
+    text-align: center;
+    }
+    &lt;/style>
+    </code>
+</pre>
+    </div>
+    <div class="col-lg-6">
+        <h4>Footer.vue</h4>
+        <pre  data-keep-tags="kbd, em">
+            <code class="language-csharp">
+&lt;template>
+    &lt;footer>
+        &lt;p>{{ CopyRight }}&lt;/p>
+    &lt;/footer>
+&lt;/template>
+    
+&lt;script>
+   <kbd> import { bus } from "../main.js";</kbd>
+    export default {
+    data() {
+        return {
+        CopyRight: "CopyRight 2021 Vue JS",
+        };
+    },
+    created() {
+       <kbd> 
+        bus.$on("emit-change-title", (data) => {
+        this.CopyRight = data;
+        });
+    </kbd>
+    },
+    };
+    &lt;/script>
+    
+    &lt;style scoped>
+    footer {
+    background: #222;
+    padding: 6px;
+    }
+    
+    p {
+    color: lightgreen;
+    text-align: center;
+    }
+    &lt;/style>
+            </code>
+        </pre>
+            </div>
+</div>
+
+<hr>
+<hr><hr>
+<center><h1>Slot in Vue</h1></center>
+<hr>
+<p><span style="color: #e03e2d;"><strong><span style="font-size: 24pt;">Slot:</span></strong></span><br /><span style="font-size: 18pt; color: #000000;">Slots are reserved space offered by vue to display <strong><span style="color: #e03e2d;">HTML content </span></strong>passed down from one component to another.</span></p>
+<p><span style="color: #e03e2d;"><strong><span style="font-size: 18pt;">Two Types: </span></strong></span></p>
+<ul>
+<li><span style="font-size: 18pt; color: #000000;">unnamed(default) slot </span></li>
+<li><span style="font-size: 18pt; color: #000000;">named slot.</span></li>
+</ul>
+<p><span style="font-size: 18pt; color: #000000;">When to Use Slot?</span><br /><span style="font-size: 18pt; color: #000000;">- To pass down HTML elements from one component to another.</span></p>
+<ul>
+<li><span style="font-size: 18pt; color: #2dc26b;">With props, vue allows us to pass strings, objects, arrays, and functions from parent to child component.</span></li>
+<li><span style="font-size: 18pt; color: #000000;">You can pass HTML elements using props but is<strong><span style="color: #e03e2d;"> vulnerable to CSS attack </span></strong>so, the <strong><span style="color: #e03e2d;">slot</span></strong> is used which sends an insecure way.</span></li>
+</ul>
+<h2>Default Slot</h2>
+<pre>
+    <code class="language-csharp">
+        component
+           ChildComponent.vue
+        App.vue
+    </code>
+</pre>
+
+Here, whatever html present inside <b>&lt;ChildComponent>&lt;/ChildComponent></b> will be auto be present in <b>&lt;slot>&lt;/slot></b>
+
+
+<div class="row">
+    <div class="col-lg-6">
+        <h2>ChildComponent.vue</h2>
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+&lt;template>
+    &lt;div class="container">
+        &lt;div class="row">
+        &lt;div class="col-xs-12">
+            &lt;h2>Child Component Begin &lt;/h2>
+            <kbd>&lt;slot>&lt;/slot></kbd>
+            &lt;h2>Child Component End &lt;/h2>
+        &lt;/div>
+    &lt;/div>
+    &lt;/div>
+&lt;/template>
+    
+&lt;script>
+    export default {};
+&lt;/script>
+&lt;style>
+&lt;/style>
+            </code>
+        </pre>
+    </div>
+    <div class="col-lg-6">
+        <h3>App.vue</h3>
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+&lt;template>
+    &lt;div class="container">
+        &lt;div class="row">
+        &lt;div class="col-xs-12">
+            &lt;h2>Parent&lt;/h2>
+            <kbd>&lt;child-component></kbd>
+                    &lt;h3 class="child-content">You are my first child&lt;/h3>
+                    &lt;h4 class="child-content">Your name is Diwas&lt;/h4>
+            <kbd>&lt;/child-component></kbd>
+        &lt;/div>
+        &lt;/div>
+    &lt;/div>
+    &lt;/template>
+    
+    &lt;script>
+    import ChildComponent from "./components/Form/ChildComponent.vue";
+    export default {
+    components: {
+        ChildComponent,
+    },
+    };
+    &lt;/script>
+                                  
+            </code>
+        </pre>
+    </div>
+</div>
+<img src="https://i.ibb.co/18p8L9n/slot.png">
+<hr>
+<hr>
+<h2>Name Slot</h2>
+<div class="row">
+    <div class="col-lg-6">
+        <h2>ChildComponent.vue</h2>
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+&lt;template>
+    &lt;div class="container">
+        &lt;div class="row">
+        &lt;div class="col-xs-12">
+            &lt;h2>Child Component Begin &lt;/h2>
+            <kbd>&lt;slot name="message">&lt;/slot></kbd>
+            &lt;p>Any Thing in between&lt;/p>
+            <kbd>&lt;slot name="name">&lt;/slot></kbd>
+            &lt;h2>Child Component End &lt;/h2>
+        &lt;/div>
+    &lt;/div>
+    &lt;/div>
+&lt;/template>
+    
+&lt;script>
+    export default {};
+&lt;/script>
+&lt;style>
+&lt;/style>
+            </code>
+        </pre>
+    </div>
+    <div class="col-lg-6">
+        <h3>App.vue</h3>
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+&lt;template>
+    &lt;div class="container">
+        &lt;div class="row">
+        &lt;div class="col-xs-12">
+            &lt;h2>Parent&lt;/h2>
+            <kbd>&lt;child-component></kbd>
+                    &lt;h3 class="child-content" <kbd>slot="message"</kbd>>You are my first child&lt;/h3>
+                    &lt;h4 class="child-content" <kbd>slot="name"</kbd>>Your name is Diwas&lt;/h4>
+            <kbd>&lt;/child-component></kbd>
+        &lt;/div>
+        &lt;/div>
+    &lt;/div>
+    &lt;/template>
+    
+    &lt;script>
+    import ChildComponent from "./components/Form/ChildComponent.vue";
+    export default {
+    components: {
+        ChildComponent,
+    },
+    };
+    &lt;/script>
+                                  
+            </code>
+        </pre>
+    </div>
+</div>
+<img src="https://i.ibb.co/Tt28WMj/slot-named.png">
+<hr>
+    <script src="../EF/js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+                  {
+                      'remove-trailing': true,
+                      'remove-indent': true,
+                      'left-trim': true,
+                      'right-trim': true,
+                      // 'break-lines': 10,
+                      // 'indent': 2,
+                      // 'remove-initial-line-feed': false,
+                      // 'tabs-to-spaces': 4,
+                      // 'spaces-to-tabs': 4
+                  });
+      
+      
+              (function () {
+                  if (!self.Prism) {
+                      return;
+                  }
+      
+                  var div = document.createElement('div');
+      
+                  Prism.hooks.add('before-highlight', function (env) {
+                      var elt = env.element;
+                      if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                          elt = elt.parentNode;
+                      }
+                      var tags = elt.getAttribute('data-keep-tags');
+                      if (!tags) {
+                          return;
+                      }
+                      var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+      
+                      env.keepTags = true;
+                      env.keepTagsPlaceholder = placeholder;
+      
+                      tags = tags.split(/\s*,\s*/).join('|');
+                      var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+      
+                      env.keepTagsRegex = tags_regex;
+      
+                      env.tokenStack = [];
+                      env.backupCode = env.code;
+      
+                      var code = env.element.innerHTML;
+                      code = code.replace(tags_regex, function (match) {
+                          env.tokenStack.push(match);
+                          return placeholder.replace('{n}', env.tokenStack.length);
+                      });
+                      env.element.innerHTML = code;
+                      code = env.element.textContent;
+                      code = code.replace(/^(?:\r?\n|\r)/, '');
+      
+                      env.code = code;
+                  });
+      
+                  Prism.hooks.add('after-highlight', function (env) {
+                      if (!env.keepTags) {
+                          return;
+                      }
+                      for (var i = 0, t; t = env.tokenStack[i]; i++) {
+      
+                          t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                              div.innerHTML = inside;
+                              inside = div.textContent;
+                              return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                          });
+      
+                          env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                          env.element.innerHTML = env.highlightedCode;
+                      }
+                  });
+      
+              }());
+      
+              Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+                  v.classList.add("language-sql");
+              });
+              Prism.highlightAll();
+      </script>
+</body>
+
+</html>
