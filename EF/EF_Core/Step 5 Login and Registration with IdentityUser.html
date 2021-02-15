@@ -1,0 +1,212 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../css/dracula.css">
+    <link rel="stylesheet" href="../css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+
+<body>
+    </head>
+    <style>
+        kbd {
+            background: blue
+        }
+    </style>
+
+    <body>
+
+
+
+
+<h2>Step 1:Continue of (IdentityUser From Scratch)</h2>
+
+<hr>
+<h2>Step 2: Token Configuration</h2>
+<pre data-keep-tags="kbd, em">
+<code class="language-csharp">
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddDbContext&lt;ApplicationDbContext>(options =>
+    {
+        options.UseSqlServer(Configuration.GetConnectionString("AuthConnection"));
+    });
+    services.AddIdentity&lt;IdentityUser, IdentityRole>(options =>
+    {
+        options.Password.RequireDigit = true;
+        options.Password.RequireLowercase = true;
+        options.Password.RequiredLength = 5;
+
+    }).AddEntityFrameworkStores&lt;ApplicationDbContext>()
+    .AddDefaultTokenProviders();
+
+   <kbd>
+    services.AddAuthentication(auth =>
+    {
+        auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    }).AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidAudience = "http://ahmadmozaffer.net",
+            ValidIssuer = "http://ahmadmozaffer.net",
+            RequireExpirationTime = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("This is the key we will use in the encryption")),
+            ValidateIssuerSigningKey = true
+        };
+    });
+   </kbd>
+
+
+    services.AddControllers();
+}
+</code>
+</pre>    
+<br>
+<h2>Step 3 : Request and Response Model inside ViewModel Folder</h2>
+<div class="row">
+    <div class="col-lg-4">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+public class RegisterViewModel
+{
+    [Required]
+    [StringLength(50)]
+    [EmailAddress]
+    public string Email { get; set; }
+    [Required]
+    [StringLength(50,MinimumLength =5)]
+    public string Password { get; set; }
+    [Required]
+    [StringLength(50, MinimumLength = 5)]
+    public string ConfirmPassword { get; set; }
+}
+            </code>
+        </pre>
+    </div>
+    <div class="col-lg-4">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+public class LoginViewModel
+{
+    [Required]
+    [StringLength(50)]
+    [EmailAddress]
+    public string Email { get; set; }
+    [Required]
+    [StringLength(50,MinimumLength =5)]
+    public string Password { get; set; }
+}
+            </code>
+        </pre>
+    </div>
+    <div class="col-lg-4">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+public  class UserManagerResponse
+{
+    public string Message { get; set; }
+    public bool IsSuccess { get; set; }
+    public IEnumerable&lt;string> Errors { get; set; }
+}
+
+            </code>
+        </pre>
+    </div>
+</div>
+
+<script src="../js/prism.js"></script>
+<script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true,
+            // 'break-lines': 10,
+            // 'indent': 2,
+            // 'remove-initial-line-feed': false,
+            // 'tabs-to-spaces': 4,
+            // 'spaces-to-tabs': 4
+        });
+
+
+    (function () {
+        if (!self.Prism) {
+            return;
+        }
+
+        var div = document.createElement('div');
+
+        Prism.hooks.add('before-highlight', function (env) {
+            var elt = env.element;            if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                elt = elt.parentNode;
+            }
+            var tags = elt.getAttribute('data-keep-tags');
+            if (!tags) {
+                return;
+            }
+            var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+            env.keepTags = true;
+            env.keepTagsPlaceholder = placeholder;
+
+            tags = tags.split(/\s*,\s*/).join('|');
+            var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+            env.keepTagsRegex = tags_regex;
+
+            env.tokenStack = [];
+            env.backupCode = env.code;
+
+            var code = env.element.innerHTML;
+            code = code.replace(tags_regex, function (match) {
+                env.tokenStack.push(match);
+                return placeholder.replace('{n}', env.tokenStack.length);
+            });
+            env.element.innerHTML = code;
+            code = env.element.textContent;
+            code = code.replace(/^(?:\r?\n|\r)/, '');
+
+            env.code = code;
+        });
+
+        Prism.hooks.add('after-highlight', function (env) {
+            if (!env.keepTags) {
+                return;
+            }
+            for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                    div.innerHTML = inside;
+                    inside = div.textContent;
+                    return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                });
+
+                env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                env.element.innerHTML = env.highlightedCode;
+            }
+        });
+
+    }());
+
+    Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+        v.classList.add("language-sql");
+    });
+    Prism.highlightAll();
+
+</script>
+</body>
+
+</html>

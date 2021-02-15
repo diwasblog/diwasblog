@@ -1,0 +1,237 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../css/dracula.css">
+    <link rel="stylesheet" href="../css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+
+<body>
+    </head>
+    <style>
+        kbd {
+            background: blue
+        }
+    </style>
+
+    <body>
+
+
+
+
+<h2>Step 1:Create Application</h2>
+<pre data-keep-tags="kbd, em">
+<code class="language-csharp">
+ Create API Project with no authentication (We will install it ourselve)
+</code>
+</pre>    
+<br>
+<hr>
+<h2>Step2 : Install Packages</h2>
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+// Install all these to same version eg. 3.1 , as we are targeting .net Core 3.1  
+//If not install to same version then may give Error
+1)install-package Microsoft.EntityFrameworkCore
+2)install-package Microsoft.EntityFrameworkCore.SqlServer
+3)install-package Microsoft.EntityFrameworkCore.Tools 
+4) install-package Microsoft.EntityFrameworkCore.Design
+
+5)install-package Microsoft.AspNetCore.Identity
+6)install-package Microsoft.AspNetCore.Authentication.JwtBearer
+    </code>
+    </pre>  
+
+    <hr>
+    <h2>Step 3. Create Employee.cs inside Models Folder</h2>
+<pre data-keep-tags="kbd, em">
+<code class="language-csharp">
+public class Employee
+{
+    public int EmployeeId { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string Email { get; set; }
+    public string PhoneNumber { get; set; }
+}
+
+</code>
+</pre> 
+<hr>
+<h2>Step 4. Create ApplicationDbContext.cs inside Models Folder</h2>
+Use IdentityDbContext to User Identity Table in Database
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+public class ApplicationDbContext:<kbd>IdentityDbContext</kbd>  //<=== Important
+{
+    public ApplicationDbContext(DbContextOptions options ):base(options)
+    {
+
+    }
+
+    public DbSet&lt;<kbd>Employee</kbd>> Employees { get; set; }
+}
+
+    </code>
+    </pre> 
+<hr>
+<h2>Step 5. appsettings.json</h2>
+Create Connection String
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+appsettings.json File
+
+{
+    "<kbd>ConnectionStrings</kbd>": {
+    "DefaultConnection": "Server:.;Database=AuthDemoDb;Integrated Security=true"
+    },
+
+..
+
+}
+    </code>
+    </pre> 
+<hr>
+
+<h2>Step 6. StartUp.cs </h2>
+Use SQL Server and IdentityUser, IdentityRole in application by registering in Configure Service. <br>
+We are using default IdentityUser Provided by AspNetUser
+Create Connection String
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddDbContext&lt;ApplicationDbContext>(options =>
+    {
+        options.<kbd>UseSqlServer</kbd>(Configuration.GetConnectionString("DefaultConnection"));
+    });
+    services.AddIdentity&lt;<kbd>IdentityUser</kbd>, <kbd>IdentityRole</kbd>>(options =>
+    {
+        options.Password.RequireDigit = true;
+        options.Password.RequireLowercase = true;
+        options.Password.RequiredLength = 5;
+
+    }).AddEntityFrameworkStores&lt;ApplicationDbContext>().AddDefaultTokenProviders();
+
+
+    services.AddControllers();
+}
+
+    </code>
+    </pre> 
+<hr>
+<h2>Step 7. Create Migration and Update database</h2>
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+Add-Migration FirstMigration 
+Update-Database
+
+
+//This will generate Table in Database like below
+
+AuthDb   // <--- DbName
+  Table 
+    dbo.EFMigrationsHistory
+    dbo.AspNetRoleClaims
+    dbo.AspNetUserClaims
+    dbo.AspNetUserLogins
+    dbo.AspNetUserRoles
+    dbo.AspNetUsers
+    dbo.AspNetUserTokens
+    dbo.Employees          // Which is custom Table we have created
+
+    </code>
+    </pre> 
+
+<script src="../js/prism.js"></script>
+<script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true,
+            // 'break-lines': 10,
+            // 'indent': 2,
+            // 'remove-initial-line-feed': false,
+            // 'tabs-to-spaces': 4,
+            // 'spaces-to-tabs': 4
+        });
+
+
+    (function () {
+        if (!self.Prism) {
+            return;
+        }
+
+        var div = document.createElement('div');
+
+        Prism.hooks.add('before-highlight', function (env) {
+            var elt = env.element;            if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                elt = elt.parentNode;
+            }
+            var tags = elt.getAttribute('data-keep-tags');
+            if (!tags) {
+                return;
+            }
+            var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+            env.keepTags = true;
+            env.keepTagsPlaceholder = placeholder;
+
+            tags = tags.split(/\s*,\s*/).join('|');
+            var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+            env.keepTagsRegex = tags_regex;
+
+            env.tokenStack = [];
+            env.backupCode = env.code;
+
+            var code = env.element.innerHTML;
+            code = code.replace(tags_regex, function (match) {
+                env.tokenStack.push(match);
+                return placeholder.replace('{n}', env.tokenStack.length);
+            });
+            env.element.innerHTML = code;
+            code = env.element.textContent;
+            code = code.replace(/^(?:\r?\n|\r)/, '');
+
+            env.code = code;
+        });
+
+        Prism.hooks.add('after-highlight', function (env) {
+            if (!env.keepTags) {
+                return;
+            }
+            for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                    div.innerHTML = inside;
+                    inside = div.textContent;
+                    return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                });
+
+                env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                env.element.innerHTML = env.highlightedCode;
+            }
+        });
+
+    }());
+
+    Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+        v.classList.add("language-sql");
+    });
+    Prism.highlightAll();
+
+</script>
+</body>
+
+</html>
