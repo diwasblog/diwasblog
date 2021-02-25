@@ -1,0 +1,478 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="css/b">
+    <link rel="stylesheet" href="css/bootstrap-grid.css">
+    <link rel="stylesheet" href="css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="css/dracula.css">
+    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+    <style>
+        kbd {
+            background: blue
+        }
+    </style>
+</head>
+
+<body>
+
+    <p><span style="color: #000000; font-size: 24pt;"><strong>AutoMapper</strong></span></p>
+    <ul>
+    <li><span style="font-size: 18pt; color: #000000;">AutoMapper is a mapper between two objects.</span></li>
+    <li><span style="font-size: 18pt; color: #000000;">Used for transferring data from one object to another.</span></li>
+    <li><span style="font-size: 18pt; color: #000000;">If no auto mapper we have to map each and every object parameter manually which is time-consuming and boring if has large data.</span></li>
+    </ul>
+    <p><span style="color: #000000; font-size: 18pt;"><strong>How to install it?</strong></span></p>
+    <p><span style="color: #000000; font-size: 18pt;">1) Install-Package AutoMapper</span></p>
+
+    <pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+        Install-Package AutoMapper
+    </code>
+</pre>
+<hr><hr>
+<h2>How to Use it?</h2>
+<h2>If Source and Destination Property having Same Name</h2>
+<div class="row">
+    <div class="col-lg-6">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+public class Employee
+{
+    public string Name {get;set;}
+    public int Salary {get;set;}
+    public string Address {get;set;}
+    public string Department {get;set;}
+}
+            </code>
+        </pre>
+    </div>
+    <div class="col-lg-6">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+public class EmployeeDTO
+{
+    public string Name {get;set;}
+    public int Salary {get;set;}
+    public string Address {get;set;}
+    public string Department {get;set;}
+}
+            </code>
+        </pre>        
+    </div>
+</div>
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+        //Initialize the mapper
+        var config = new MapperConfiguration(cfg =>
+                cfg.CreateMap&lt;<kbd>Employee</kbd>, <kbd>EmployeeDTO</kbd>>()
+            );
+
+        //Creating the source object
+        var emp = new Employee
+        {
+            Name = "Diwas",
+            Salary = 20000,
+            Address = "Kathmandu",
+            Department = "IT"
+        };
+
+        var mapper = new Mapper(config);
+        var empDTO = mapper.Map&lt;<kbd>EmployeeDTO</kbd>>(<kbd>emp</kbd>);
+
+        //OR
+        //var empDTO2 = mapper.Map&lt;Employee, EmployeeDTO>(emp);
+
+        Console.WriteLine("Name:" + empDTO.Name + ", Salary:" + empDTO.Salary + ", Address:" + empDTO.Address + ", Department:" + empDTO.Department);
+        Console.ReadLine();
+    </code>
+</pre>     
+
+<br><hr><hr>
+<h2>If Source and Destination Property are different</h2>
+<div class="row">
+    <div class="col-lg-6">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+public class Employee
+{
+    public string <kbd>Name</kbd> {get;set;}
+    public int Salary {get;set;}
+    public string Address {get;set;}
+    public string <kbd>Department</kbd> {get;set;}
+}
+            </code>
+        </pre>
+    </div>
+    <div class="col-lg-6">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+public class EmployeeDTO
+{
+    public string <kbd>FullName</kbd> {get;set;}
+    public int Salary {get;set;}
+    public string Address {get;set;}
+    public string <kbd>Depart</kbd> {get;set;}
+}
+            </code>
+        </pre>        
+    </div>
+</div>
+<pre data-keep-tags="kbd, em">
+    <code class="language-csharp">
+
+var config = new MapperConfiguration(cfg =>
+cfg.CreateMap&lt;<kbd>Employee</kbd>, <kbd>EmployeeDTO</kbd>>()
+.ForMember(dest => dest.<kbd>FullName</kbd>, act => act.MapFrom(src => src.<kbd>Name</kbd>))
+.ForMember(dest => dest.<kbd>Dept</kbd>, act => act.MapFrom(src => src.<kbd>Department</kbd>))
+);
+
+//Creating the source object
+var emp = new Employee
+{
+    Name = "Diwas",
+    Salary = 20000,
+    Address = "Kathmandu",
+    Department = "IT"
+};
+
+//Using automapper
+var mapper = new Mapper(config);
+var empDTO = mapper.Map&lt;EmployeeDTO>(emp);
+//OR
+//var empDTO2 = mapper.Map&lt;Employee, EmployeeDTO>(emp);
+
+Console.WriteLine("Name:" + empDTO.FullName + ", Salary:" + empDTO.Salary + ", Address:" + empDTO.Address + ", Department:" + empDTO.Dept);
+Console.ReadLine();
+
+    </code>
+</pre>   
+
+<hr><hr>
+<hr>
+<h2>Complex Type Mapping</h2>
+<div class="row">
+    <div class="col-lg-6">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+public class Employee
+{
+    public string Name { get; set; }
+    public int Salary { get; set; }
+    public string Department { get; set; }
+    public <kbd>Address</kbd> address { get; set; }
+}
+
+public class <kbd>Address</kbd>
+{
+    public string City { get; set; }
+    public string Stae { get; set; }
+    public string Country { get; set; }
+}
+            </code>
+        </pre>
+    </div>
+    <div class="col-lg-6">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+public class EmployeeDTO
+{
+    public string Name { get; set; }
+    public int Salary { get; set; }
+    public string Department { get; set; }
+    public <kbd>AddressDTO</kbd> address { get; set; }
+}
+
+
+public class <kbd>AddressDTO</kbd>
+{
+    public string City { get; set; }
+    public string Stae { get; set; }
+    public string Country { get; set; }
+}
+            </code>
+        </pre>        
+    </div>
+</div>
+<pre data-keep-tags="kbd em">
+    <code class="language-csharp">
+static void Main(string[] args)
+{
+    //Step1: Create and populate the Employee object
+    Address empAddres = new Address()
+    {
+        City = "Mumbai",
+        Stae = "Maharashtra",
+        Country = "India"
+    };
+
+    Employee emp = new Employee
+    {
+        Name = "James",
+        Salary = 20000,
+        Department = "IT",
+        address = empAddres
+    };
+
+    var mapper =<kbd>InitializeAutomapper()</kbd>;
+    var empDTO = mapper.Map&lt;EmployeeDTO>(emp);
+    
+    Console.WriteLine("Name:" + empDTO.Name + ", Salary:" + empDTO.Salary + ", Department:" + empDTO.Department);
+    Console.WriteLine("City:" + empDTO.address.City + ", State:" + empDTO.address.Stae + ", Country:" + empDTO.address.Country);
+    Console.ReadLine();
+}
+
+static Mapper InitializeAutomapper()
+{
+    var config = new MapperConfiguration(cfg => {
+        cfg.CreateMap&lt;Address, AddressDTO>();
+        cfg.CreateMap&lt;Employee, EmployeeDTO>()
+        .ForMember(dest => dest.addressDTO, act => act.MapFrom(src => src.address));  // This line is required for preventing null reference error.
+    });
+
+    var mapper = new Mapper(config);
+    return mapper;
+}
+    </code>
+</pre>
+<hr>
+<hr>
+<hr>
+<h2>If Complex Types are different</h2>
+<div class="row">
+    <div class="col-lg-6">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+public class Employee
+{
+    public string Name { get; set; }
+    public int Salary { get; set; }
+    public string Department { get; set; }
+    public <kbd>Address</kbd> address { get; set; }
+}
+
+public class Address
+{
+    public string City { get; set; }
+    public string Stae { get; set; }
+    public string Country { get; set; }
+}
+            </code>
+        </pre>
+    </div>
+    <div class="col-lg-6">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+public class EmployeeDTO
+{
+    public string Name { get; set; }
+    public int Salary { get; set; }
+    public string Department { get; set; }
+    public AddressDTO addressDTO { get; set; }
+}
+
+
+public class AddressDTO
+{
+    public string EmpCity { get; set; }
+    public string EmpStae { get; set; }
+    public string Country { get; set; }
+}
+            </code>
+        </pre>        
+    </div>
+</div>
+<pre data-keep-tags="kbd em">
+    <code class="language-csharp">
+static void Main(string[] args)
+{
+    //Step1: Create and populate the Employee object
+    Address empAddres = new Address()
+    {
+        City = "Mumbai",
+        Stae = "Maharashtra",
+        Country = "India"
+    };
+
+    Employee emp = new Employee
+    {
+        Name = "James",
+        Salary = 20000,
+        Department = "IT",
+        address = empAddres
+    };
+
+    var mapper =<kbd>InitializeAutomapper()</kbd>;
+    var empDTO = mapper.Map&lt;EmployeeDTO>(emp);
+    
+    Console.WriteLine("Name:" + empDTO.Name + ", Salary:" + empDTO.Salary + ", Department:" + empDTO.Department);
+    Console.WriteLine("City:" + empDTO.addressDTO.EmpCity + ", State:" + empDTO.addressDTO.EmpStae + ", Country:" + empDTO.addressDTO.Country);
+    Console.ReadLine();
+}
+
+static Mapper InitializeAutomapper()
+{
+    var config = new MapperConfiguration(cfg => {
+        cfg.CreateMap&lt;Address, AddressDTO>()
+        .ForMember(dest => dest.<kbd>EmpCity</kbd>, act => act.MapFrom(src => src.<kbd>City</kbd>))
+            .ForMember(dest => dest.<kbd>EmpStae</kbd>, act => act.MapFrom(src => src.<kbd>Stae</kbd>)); ;
+        cfg.CreateMap&lt;Employee, EmployeeDTO>()
+        .ForMember(dest => dest.<kbd>addressDTO</kbd>, act => act.MapFrom(src => src.<kbd>address</kbd>));
+    });
+    var mapper = new Mapper(config);
+    return mapper;
+}
+    </code>
+</pre>
+
+<hr><hr>
+<h2>Mapping Complex type to Primitive Type </h2>
+<div class="row">
+    <div class="col-lg-6">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+public class Employee
+{
+    public string Name { get; set; }
+    public int Salary { get; set; }
+    public string Department { get; set; }
+    public Address address { get; set; }
+}
+
+public class Address
+{
+    public string City { get; set; }
+    public string State { get; set; }
+    public string Country { get; set; }
+}
+
+</code>
+        </pre>
+    </div>
+    <div class="col-lg-6">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+public class EmployeeDTO
+{
+    public string Name { get; set; }
+    public int Salary { get; set; }
+    public string Department { get; set; }
+    public string City { get; set; }
+    public string State { get; set; }
+    public string Country { get; set; }
+}
+
+            </code>
+        </pre>        
+    </div>
+</div>
+<pre data-keep-tags="kbd em">
+    <code class="language-csharp">
+static void Main(string[] args)
+{
+    Address empAddres = new Address()
+    {
+        City = "Mumbai",
+        State = "Maharashtra",
+        Country = "India"
+    };
+    Employee emp = new Employee();
+    emp.Name = "James";
+    emp.Salary = 20000;
+    emp.Department = "IT";
+    emp.City = "Mumbai";
+    emp.State = "Maharashtra";
+    emp.Country = "India";
+
+    var mapper =InitializeAutomapper();
+    var empDTO = mapper.Map&lt;EmployeeDTO>(emp);
+
+    Console.WriteLine("Name:" + empDTO.Name + ", Salary:" + empDTO.Salary + ", Department:" + empDTO.Department);
+    Console.WriteLine("City:" + empDTO.address.City + ", State:" + empDTO.address.State + ", Country:" + empDTO.address.Country);
+    Console.ReadLine();
+}
+
+static Mapper InitializeAutomapper()
+{
+
+    var config = new MapperConfiguration(cfg => {
+        cfg.CreateMap&lt;Employee, EmployeeDTO>()
+        .ForMember(dest => dest.address, act => act.MapFrom(src => new Address()
+        {
+            City = src.City,
+            State = src.State,
+            Country = src.Country
+        }));
+    });
+    
+    var mapper = new Mapper(config);
+    return mapper;
+}
+    </code>
+</pre>
+    <script src="js/prism.js">
+    </script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+
+        (function () {
+            if (!self.Prism) {
+                return;
+            }
+
+            var div = document.createElement('div');
+
+            Prism.hooks.add('before-highlight', function (env) {
+                var elt = env.element;
+                if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                    elt = elt.parentNode;
+                }
+                var tags = elt.getAttribute('data-keep-tags');
+                if (!tags) {
+                    return;
+                }
+                var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+                env.keepTags = true;
+                env.keepTagsPlaceholder = placeholder;
+
+                tags = tags.split(/\s*,\s*/).join('|');
+                var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g'); env.keepTagsRegex = tags_regex;
+                env.tokenStack = []; env.backupCode = env.code; var code = env.element.innerHTML; code = code.replace(tags_regex,
+                    function (match) { env.tokenStack.push(match); return placeholder.replace('{n}', env.tokenStack.length); });
+                env.element.innerHTML = code; code = env.element.textContent; code = code.replace(/^(?:\r?\n|\r)/, '');
+                env.code = code;
+            }); Prism.hooks.add('after-highlight', function (env) {
+                if (!env.keepTags) { return; } for (var
+                    i = 0, t; t = env.tokenStack[i]; i++) {
+                    t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                        div.innerHTML = inside; inside = div.textContent; return '<' + tag + '>' + Prism.highlight(inside, env.grammar,
+                            env.language) + '</' + tag + '>';
+                    });
+                    env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                    env.element.innerHTML = env.highlightedCode;
+                }
+            });
+        }());
+
+    </script>
+</body>
+
+</html>

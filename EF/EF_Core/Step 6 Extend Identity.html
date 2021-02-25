@@ -114,6 +114,16 @@ public void ConfigureServices(IServiceCollection services)
     </div>
 </div>
 
+<br>
+<hr>
+<h4>Then run migration</h4>
+<pre>
+    <code class="language-csharp">
+        add-migration IdentityUserChanged
+        update-database
+    </code>
+</pre>
+
 <script src="../js/prism.js"></script>
 <script type="text/javascript">
     Prism.plugins.NormalizeWhitespace.setDefaults(

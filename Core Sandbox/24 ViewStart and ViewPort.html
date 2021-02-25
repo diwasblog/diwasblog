@@ -1,0 +1,267 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="Core Project/css/bootstrap.css">
+    <link rel="stylesheet" href="Core Project/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="Core Project/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="Core Project/css/dracula.css">
+    <link rel="stylesheet" href="Core Project/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+<style>
+    kbd {
+        background: black
+    }
+</style>
+
+<body>
+
+    <h5><span style="font-size: 14pt; color: #2dc26b;"><strong>Why do we need _ViewStart.cshtml file in ASP.NET Core MVC Application?</strong></span></h5>
+    <p><span style="font-size: 14pt; color: #000000;">As of now, we have used the Layout Property to associate a view with a layout view as shown below.</span></p>
+    <p><span style="font-size: 14pt; color: #2dc26b;"><strong>Layout = &ldquo;~/Views/Shared/_Layout.cshtml&rdquo;;</strong></span></p>
+    <p><span style="font-size: 14pt;"><span style="color: #000000;">Suppose, we have 100 views in our application and all the 100 views want to use the same layout file. Then we need to set the Layout Property as shown in the above image in all the 100 views. This violates the</span>&nbsp;<span style="color: #f1c40f;"><strong>DRY (Don&rsquo;t Repeat Yourself)</strong>&nbsp;</span><span style="color: #000000;">Principle and has the following disadvantages.</span></span></p>
+    <ol style="list-style-type: decimal;">
+    <li><span style="font-size: 14pt; color: #e03e2d;"><strong>Redundant Code</strong></span></li>
+    <li><span style="font-size: 14pt; color: #e03e2d;"><strong>Maintenance Overhead</strong></span></li>
+    </ol>
+    <p><span style="font-size: 14pt; color: #000000;">Suppose tomorrow you want to use a different Layout, then you need to update the Layout Property in each and every individual view. This process is tedious, time-consuming as well as error-prone because you may miss updating the Property in some of the views. To solve the above problems we need to use the _ViewStart.cshtml file.</span></p>
+
+<h2></h2>
+
+<div class="row">
+    <div class="col-lg-12">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+Views
+   User
+     add.cshtml
+     list.cshtml
+   Movie
+     add.cshtml
+     list.cshtml
+   Shared
+     _Layout.cshtml
+   _ViewStart.cshtml
+            </code>
+        </pre>
+            
+</code>
+
+</pre>
+
+</div>
+
+</div>
+
+
+
+</div>
+
+<div class="row">
+    <div class="col-lg-6">
+        <h4>_Layout.cshtml</h4>
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+
+            </code>
+        </pre>
+
+    </div>
+
+    <div class="col-lg-6">
+           <h4>_ViewStart.cshtml</h4>
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+                @{
+                    Layout = "/Views/Shared/_Layout.cshtml"
+                }
+            </code>
+        </pre>
+    </div>
+</div>
+Now , this layout is used in all the project folder. <br>
+
+
+
+<div class="row">
+    <div class="col-lg-6">
+        <h4>User/Add.cshtml</h4>
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+               ....
+
+               // By default use Layout.cshtml
+            </code>
+        </pre>
+        <div class="col-lg-6">
+            <h4>User/Add.cshtml</h4>
+            <pre data-keep-tags="kbd, em">
+                <code class="language-csharp">
+                   @{
+                    Layout = "/Views/Shared/_LayoutNext.cshtml"
+                   }
+
+
+                   //Overrides layout within cshtml file: Add.cshtml with _LayoutNext.cshtml
+                </code>
+            </pre>
+    </div>
+
+<h2>Overrides Layout within Folder</h2>
+Here,
+    <div class="row">
+        <div class="col-lg-6">
+            <pre data-keep-tags="kbd, em">
+                <code class="language-csharp">
+    Views
+       User
+         _ViewStart.cshtml
+         add.cshtml
+         list.cshtml
+       Movie
+         add.cshtml
+         list.cshtml
+       Shared
+         _Layout.cshtml
+       _ViewStart.cshtml
+                </code>
+            </pre>
+                
+    </code>
+    
+    </pre>
+    
+    </div>
+    
+    </div>
+    
+    <div class="col-lg-6">
+
+        <pre data-keep-tags="kbd, em">
+            <code class="language-csharp">
+                //Now add.cshtml and list.cshtml layout are overrides by what is written in User/_ViewStart.cshtml
+
+                // No need to Write 
+                @{
+                    Layout =" ..."
+                }
+                //In add.cshtml and list.cshtml
+            </code>
+        </pre>
+            
+</code>
+
+</pre>
+
+</div>
+
+</div>
+    
+    </div>
+
+
+    <hr>
+    <h2>ViewImport.cshtml</h2>
+    <p><span style="font-size: 14pt; color: #000000;">In ASP.NET Core MVC Application, the&nbsp;<strong>_ViewImports.cshtml</strong>&nbsp;file provides a mechanism to include the directives globally for Razor Pages so that we don&rsquo;t have to add them individually in each and every page.&nbsp;As of this article, the _ViewImports.cshtml file supports the following directives:</span></p>
+    <ol style="list-style-type: decimal;">
+    <li><span style="font-size: 14pt; color: #000000;"><strong>@addTagHelper</strong></span></li>
+    <li><span style="font-size: 14pt; color: #000000;"><strong>@tagHelperPrefix</strong></span></li>
+    <li><span style="font-size: 14pt; color: #000000;"><strong>@removeTagHelper</strong></span></li>
+    <li><span style="font-size: 14pt; color: #000000;"><strong>@namespace</strong></span></li>
+    <li><span style="font-size: 14pt; color: #000000;"><strong>@inject</strong></span></li>
+    <li><span style="font-size: 14pt; color: #000000;"><strong>@model</strong></span></li>
+    <li><span style="font-size: 14pt; color: #000000;"><strong>@using</strong></span></li>
+    </ol>
+
+    <a href="https://dotnettutorials.net/lesson/viewimports-in-asp-net-core-mvc/">Learn Here</a>
+    <script src="Core Project/js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+
+
+        (function () {
+            if (!self.Prism) {
+                return;
+            }
+
+            var div = document.createElement('div');
+
+            Prism.hooks.add('before-highlight', function (env) {
+                var elt = env.element;
+                if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                    elt = elt.parentNode;
+                }
+                var tags = elt.getAttribute('data-keep-tags');
+                if (!tags) {
+                    return;
+                }
+                var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+                env.keepTags = true;
+                env.keepTagsPlaceholder = placeholder;
+
+                tags = tags.split(/\s*,\s*/).join('|');
+                var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+                env.keepTagsRegex = tags_regex;
+
+                env.tokenStack = [];
+                env.backupCode = env.code;
+
+                var code = env.element.innerHTML;
+                code = code.replace(tags_regex, function (match) {
+                    env.tokenStack.push(match);
+                    return placeholder.replace('{n}', env.tokenStack.length);
+                });
+                env.element.innerHTML = code;
+                code = env.element.textContent;
+                code = code.replace(/^(?:\r?\n|\r)/, '');
+
+                env.code = code;
+            });
+
+            Prism.hooks.add('after-highlight', function (env) {
+                if (!env.keepTags) {
+                    return;
+                }
+                for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                    t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                        div.innerHTML = inside;
+                        inside = div.textContent;
+                        return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                    });
+
+                    env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                    env.element.innerHTML = env.highlightedCode;
+                }
+            });
+
+        }());
+
+        Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+            v.classList.add("language-sql");
+        });
+        Prism.highlightAll();
+
+    </script>
+</body>
+
+</html>
