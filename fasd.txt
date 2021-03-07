@@ -1,0 +1,1864 @@
++using Kendo.DynamicLinq;
+using MBOS.Data.Infrastructure;
+using MBOS.Domain.Entity;
+using MBOS.Domain.Entity.AOCA;
+using MBOS.DTO.ViewModel;
+using MBOS.General.Configuration;
+using MBOS.General.Enums;
+using MBOS.General.Interface;
+using MBOS.General.Service;
+using MBOS.Mailing.Interfaces;
+using MBOS.Mailing.Models;
+using MBOS.Service.Configuration;
+using MBOS.Service.Interfaces;
+
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using MBOS.Domain.Entity.SetUp;
+using MBOS.DTO.Infastructure;
+using MBOS.DTO.ViewModel.AOCA;
+using MBOS.DTO.ViewModel.MajorBreaches;
+using System.Data.Entity.Validation;
+using MBOS.DTO.ViewModel.BOCA;
+using MBOS.General.Helpers;
+using MBOS.DTO.ViewModel.General;
+using Org.BouncyCastle.Asn1.X509;
+using System.Linq.Expressions;
+
+namespace MBOS.Service.Services
+{
+    public class AocaService : IAocaService
+    {
+        private readonly IGenericUnitOfWork _genericUnitOfWork;
+
+        private readonly ISharedService _sharedService;
+        private readonly IEmailComposer _emailComposer;
+        private readonly IDiObjectMapper _mapper;
+
+        private readonly IListService _listService;
+        private readonly ISetUpService _setupService;
+        private readonly IMajorBreachService _majorBreachService;
+
+        public AocaService(IGenericUnitOfWork genericUnitOfWork,
+            ISharedService sharedService, IListService listService,
+            ISetUpService setupService,
+            IEmailComposer emailComposer, IDiObjectMapper mapper,
+            IMajorBreachService majorBreachService)
+        {
+            _listService = listService;
+            _sharedService = sharedService;
+
+            _emailComposer = emailComposer;
+            _setupService = setupService;
+            _mapper = mapper;
+            _genericUnitOfWork = genericUnitOfWork;
+            _majorBreachService = majorBreachService;
+
+        }
+
+        #region ExternalAudit
+        public DataSourceResult ListExternalAudit(KendoDataRequest kendoDataRequest)
+        {
+            return _genericUnitOfWork.GetRepository<ExternalAudit, Guid>().GetAll().ToDataSourceResult<ExternalAudit, ExternalAuditListViewModel>(kendoDataRequest, new Sort() { Field = "Id", Dir = "asc" });
+        }
+        public void AddExternalAudit(ServiceRequestModel<ExternalAuditViewModel> serviceRequestModel)
+        {
+            var repo = _genericUnitOfWork.GetRepository<ExternalAudit, Guid>();
+            var mapped = _mapper.Map<ExternalAuditViewModel, ExternalAudit>(serviceRequestModel.Model);
+
+            var bankExists = repo.GetAll().Any(c => c.Agent.Id == mapped.AgentId && c.Date.Month == mapped.Date.Month && c.Date.Year == mapped.Date.Year);
+            if (bankExists)
+                throw new ArgumentNullException($"External audit for  the selected agent and month is already exists in the system", innerException: null);
+
+
+            mapped.Id = Guid.NewGuid();
+            mapped.CreatedById = serviceRequestModel.CurrentUserId.Value;
+            mapped.CreatedDate = GeneralService.CurrentDate;
+            repo.Add(mapped);
+            _genericUnitOfWork.SaveChanges();
+        }
+        public void UpdateExternalAudit(ServiceRequestModel<ExternalAuditViewModel> serviceRequestModel)
+        {
+
+            var repo = _genericUnitOfWork.GetRepository<ExternalAudit, Guid>();
+            var data = repo.GetById(serviceRequestModel.Model.Id);
+            var mapped = _mapper.Map(serviceRequestModel.Model, data);
+
+            var bankExists = repo.GetAll().Any(c => c.Agent.Id == mapped.AgentId && c.Date.Month == mapped.Date.Month && c.Date.Year == mapped.Date.Year && c.Id != mapped.Id);
+            if (bankExists)
+                throw new ArgumentNullException($"External audit for  the selected agent and month is already exists in the system", innerException: null);
+
+            repo.Update(mapped);
+            _genericUnitOfWork.SaveChanges();
+        }
+        public ExternalAuditViewModel GetExternalAudit(Guid id)
+        {
+            var a = _mapper.Map<ExternalAudit, ExternalAuditViewModel>(_genericUnitOfWork.GetRepository<ExternalAudit, Guid>().GetById(id));
+            return a;
+        }
+        public void DeleteExternalAudit(ServiceRequestModel<Guid> serviceRequestModel)
+        {
+            var repo = _genericUnitOfWork.GetRepository<ExternalAudit, Guid>();
+            if (repo.GetTagList(serviceRequestModel.Model).Any())
+                throw new ArgumentNullException($"Cannot delete. Already tagged.", innerException: null);
+
+            var data = repo.GetById(serviceRequestModel.Model);
+            repo.Delete(data);
+            _genericUnitOfWork.SaveChanges();
+        }
+        #endregion
+
+        #region Assessment
+        public GenericRepository<Agent, Guid> AgentRepository => _genericUnitOfWork.GetRepository<Agent, Guid>();
+        public GenericRepository<AOCAAssessment, Guid> AssessmentRepository => _genericUnitOfWork.GetRepository<AOCAAssessment, Guid>();
+        public GenericRepository<AOCACARRRequest, Guid> CarrRequestRepository => _genericUnitOfWork.GetRepository<AOCACARRRequest, Guid>();
+        public GenericRepository<AOCA, Guid> AocaRepository => _genericUnitOfWork.GetRepository<AOCA, Guid>();
+        public GenericRepository<AOCAAttachment, Guid> AttachmentRepository => _genericUnitOfWork.GetRepository<AOCAAttachment, Guid>();
+        public GenericRepository<GradingCriteria, int> GradingCriteriaRepository => _genericUnitOfWork.GetRepository<GradingCriteria, int>();
+        public GenericRepository<AocaObservationMap, Guid> AocaObservationMapRepository => _genericUnitOfWork.GetRepository<AocaObservationMap, Guid>();
+        public GenericRepository<Observation, Guid> ObservationRepository => _genericUnitOfWork.GetRepository<Observation, Guid>();
+        public GenericRepository<AOCACARRResponse, Guid> CarrResponseRepository => _genericUnitOfWork.GetRepository<AOCACARRResponse, Guid>();
+        public GenericRepository<NAScoringGuide, int> NaScoringGuideRepository => _genericUnitOfWork.GetRepository<NAScoringGuide, int>();
+
+
+        public DataSourceResult ListAssessment(ServiceRequestModel<KendoDataRequest> kendoDataRequest)
+        {
+            try
+            {
+                kendoDataRequest.Model.DataExtensions = new List<DataExtension>()
+                {
+                    new DataExtension() { Field = "Agent", ActualField = "Agent.Name" },
+                    new DataExtension() { Field = "AssessmentType", FieldType = typeof(AssessmentType) },
+                    new DataExtension() { Field = "AssessmentTypeName", ActualField = "AssessmentType" },
+                    new DataExtension() { Field = "Status", FieldType = typeof(AssessmentStatus) },
+                    new DataExtension() { Field = "StatusName", ActualField = "Status" },
+                    new DataExtension() { Field = "Date", ActualField = "Date" },
+                    new DataExtension() { Field = "SubmissionDate", ActualField = "CreatedDate" },
+                    new DataExtension() { Field = "Aging", Ignore = true },
+                    new DataExtension() { Field = "NoOfAOCACARRs", Ignore = true },
+                    new DataExtension() { Field = "NoOfMinorFindings", Ignore = true},
+                    new DataExtension() { Field = "AssessedBy", ActualField = "CreatedBy.FullName" },
+                };
+
+                var initialSort = new Sort() { Field = "AssessmentNo", Dir = "desc" };
+
+                var sharedService = new SharedService(_genericUnitOfWork);
+                var loginRoleId = kendoDataRequest.LoginInfo.RoleId;
+                var isBOASNotAreaAdmin = sharedService.IsBOASNotAreaAdmin(loginRoleId);
+                var isBOASSystemAdmin = sharedService.IsBOASSystemAdmin(loginRoleId);
+                var isAreaAdmin = sharedService.IsAreaAdmin(loginRoleId);
+                var isAgent = sharedService.IsAgent(loginRoleId);
+
+                //var assessment = AssessmentRepository.GetAll(null, a => a.AOCAs.Select(ao => ao.CARRRequests), a => a.AOCAs.Select(ao => ao.AOCAMinorFindings), a => a.Agent);
+                var assessment = AssessmentRepository.GetAll();
+                if (isAreaAdmin)
+                    assessment = assessment.Where(a => a.Agent.AssesorId == kendoDataRequest.CurrentUserId.Value);
+                if (isAgent)
+                    assessment = assessment.Where(a => a.Agent.UserId == kendoDataRequest.CurrentUserId.Value);
+                if (!(isBOASNotAreaAdmin))
+                    assessment = assessment.Where(a => a.CreatedById == kendoDataRequest.CurrentUserId.Value);
+
+                var filterByAging = kendoDataRequest.Model.Filter?.Filters?.Where(s => s.Field == "Aging").FirstOrDefault();
+                if (filterByAging != null)
+                {
+                    var filterValue = filterByAging.Value.ToInt();
+                    if (filterByAging.Operator == "eq")
+                    {
+                        assessment = assessment.Where(a => (a.Status == AssessmentStatus.Closed && (a.ClosedDate == null && 0 == filterValue) || (DbFunctions.DiffDays(a.Date, a.ClosedDate) == filterValue)) || (a.Status != AssessmentStatus.Closed && DbFunctions.DiffDays(a.Date, DateTime.Today) == filterValue));
+                    }
+                }
+
+                var sortByAging = kendoDataRequest.Model.Sort?.Where(s => s.Field == "Aging").FirstOrDefault();
+                if (sortByAging != null)
+                {
+                    if (sortByAging.Dir == "asc")
+                    {
+                        assessment = assessment.OrderBy(a => (a.Status == AssessmentStatus.Closed ? (a.ClosedDate == null ? 0 : DbFunctions.DiffDays(a.Date, a.ClosedDate)) : DbFunctions.DiffDays(a.Date, DateTime.Today)));
+                    }
+                    else
+                    {
+                        assessment = assessment.OrderByDescending(a => (a.Status == AssessmentStatus.Closed ? (a.ClosedDate == null ? 0 : DbFunctions.DiffDays(a.Date, a.ClosedDate)) : DbFunctions.DiffDays(a.Date, DateTime.Today)));
+                    }
+                    initialSort = null;
+                }
+
+                var filterByNoOfCARRs = kendoDataRequest.Model.Filter?.Filters?.Where(s => s.Field == "NoOfAOCACARRs").FirstOrDefault();
+                if (filterByNoOfCARRs != null)
+                {
+                    var filterValue = filterByNoOfCARRs.Value.ToInt();
+                    if (filterByNoOfCARRs.Operator == "eq")
+                    {
+                        assessment = assessment.Where(a => a.AOCAs.Count(ac => ac.CARRRequests.Any()) == filterValue);
+                    }
+                }
+                var sortByNoOfCARRs = kendoDataRequest.Model.Sort?.Where(s => s.Field == "NoOfAOCACARRs").FirstOrDefault();
+                if (sortByNoOfCARRs != null)
+                {
+                    if (sortByNoOfCARRs.Dir == "asc")
+                    {
+                        assessment = assessment.OrderBy(a => (a.AOCAs.Count(ac => ac.CARRRequests.Any())));
+                    }
+                    else
+                    {
+                        assessment = assessment.OrderByDescending(a => (a.AOCAs.Count(ac => ac.CARRRequests.Any())));
+                    }
+                    initialSort = null;
+                }
+
+                var filterByNoOfMinorFindings = kendoDataRequest.Model.Filter?.Filters?.Where(s => s.Field == "NoOfMinorFindings").FirstOrDefault();
+                if (filterByNoOfMinorFindings != null)
+                {
+                    var filterValue = filterByNoOfMinorFindings.Value.ToInt();
+                    if (filterByNoOfMinorFindings.Operator == "eq")
+                    {
+                        assessment = assessment.Where(a => (a.AOCAs.Any(ac => ac.AOCAMinorFindings.Any()) ? a.AOCAs.Sum(ac => ac.AOCAMinorFindings.Count()) : 0) == filterValue);
+                    }
+                }
+
+                var sortByNoOfMinorFindings = kendoDataRequest.Model.Sort?.Where(s => s.Field == "NoOfMinorFindings").FirstOrDefault();
+                if (sortByNoOfMinorFindings != null)
+                {
+                    if (sortByNoOfMinorFindings.Dir == "asc")
+                    {
+                        assessment = assessment.OrderBy(a => (a.AOCAs.Any(ac => ac.AOCAMinorFindings.Any()) ? a.AOCAs.Sum(ac => ac.AOCAMinorFindings.Count()) : 0));
+                    }
+                    else
+                    {
+                        assessment = assessment.OrderByDescending(a => (a.AOCAs.Any(ac => ac.AOCAMinorFindings.Any()) ? a.AOCAs.Sum(ac => ac.AOCAMinorFindings.Count()) : 0));
+                    }
+                    initialSort = null;
+                }
+
+                var dataSourceResult = assessment.ToDataSourceResult<AOCAAssessment, AocaAssessmentListViewModel>(kendoDataRequest.Model, new Sort() { Field = "AssessmentNo", Dir = "desc" });
+
+                var aocaAssessmentIdList = dataSourceResult.Data.Cast<AocaAssessmentListViewModel>().Select(a => a.Id).ToList();
+                var assessmentCarrNMinorFindingCount = _genericUnitOfWork.GetRepository<AOCAAssessment, Guid>()
+                            .GetAll(a => aocaAssessmentIdList.Contains(a.Id)).Select(a =>
+                            new
+                            {
+                                Id = a.Id,
+                                CARRCount = a.AOCAs.Count(ac => ac.CARRRequests.Any()),
+                                MinorFindingCount = a.AOCAs.Any(ac => ac.AOCAMinorFindings.Any()) ? a.AOCAs.Sum(ac => ac.AOCAMinorFindings.Count()) : 0
+                            }).ToList();
+
+                foreach (var item in dataSourceResult.Data.Cast<AocaAssessmentListViewModel>())
+                {
+                    item.CanView = true;
+                    item.CanEdit = !item.IsCompleted && item.Status != AssessmentStatus.Closed && (item.CreatedById == kendoDataRequest.CurrentUserId.Value || isBOASNotAreaAdmin || isAreaAdmin);
+                    item.CanDelete = (!item.IsCompleted && item.Status != AssessmentStatus.Closed && (item.CreatedById == kendoDataRequest.CurrentUserId.Value || isAreaAdmin || isBOASNotAreaAdmin)) || isBOASSystemAdmin;
+                    item.NoOfAOCACARRs = assessmentCarrNMinorFindingCount.Where(c => c.Id == item.Id).Select(c => c.CARRCount).FirstOrDefault();
+                    item.NoOfMinorFindings = assessmentCarrNMinorFindingCount.Where(c => c.Id == item.Id).Select(c => c.MinorFindingCount).FirstOrDefault();
+                }
+
+                return dataSourceResult;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+
+            }
+        }
+
+        public AocaAssessmentViewModel GetAocaByAgentId(Guid agentId)
+        {
+            var model = new AocaAssessmentViewModel();
+
+            var gradingCriteria = GradingCriteriaRepository.GetAll(gc => gc.IsActive == true).ToList();
+            var gradingCriteriaAocaMap = _genericUnitOfWork.GetRepository<GradingCriteriaAocaMap, int>().GetAll().ToList();
+            gradingCriteria =
+                gradingCriteria.Join(gradingCriteriaAocaMap, gc => gc.Id, gcm => gcm.Id, (gc, gcm) => gc).ToList();
+            var agent = AgentRepository.GetAll().FirstOrDefault(c => c.Id == agentId);
+
+            model.AgentId = agentId;
+
+            var agentwiseObservation = AocaObservationMapRepository.GetAll().Where(c => c.AgentCategoryId == agent.AgentCategoryId && c.AgentServiceId == agent.AgentServiceId && c.AgentTypeId == agent.AgentTypeId).Select(p => p.ObservationId).ToList();
+            var observationList = ObservationRepository.GetAll().Join(agentwiseObservation, ob => ob.Id, ao => ao, (ob, ao) => ob);
+            var list = observationList.ToList().OrderBy(x => x.GradingCriteriaId).ThenBy(y => y.DisplayOrder).ToList();
+
+            var aocaChecklist = list.Select(x =>
+            {
+                var aocaViewModel = _mapper.Map<Observation, AOCAViewModel>(x);
+                aocaViewModel.Id = Guid.NewGuid();
+                return aocaViewModel;
+
+            }).ToList();
+
+            int seqNo = 0, itemNo = 0, gradeCriteria = 0;
+            var naScoringGuides = NaScoringGuideRepository.GetAll().ToList();
+            var scoringGuides = _listService.ListScoringGuide();
+
+            foreach (var aoca in aocaChecklist)
+            {
+                var nascoringIds = naScoringGuides.Where(y => y.ObervationId == aoca.ObservationId).Select(z => z.ScoringGuideId as object).ToList();
+                aoca.ApplicableScoringGuides = scoringGuides.Where(x => !nascoringIds.Contains(x.Id)).ToList();
+
+                aoca.Attachments = new List<AocaAttachmentViewModel>()
+                {
+                    new AocaAttachmentViewModel() { Id = Guid.NewGuid(), AOCAId = aoca.Id},
+                    new AocaAttachmentViewModel() { Id = Guid.NewGuid(), AOCAId = aoca.Id},
+                    new AocaAttachmentViewModel() { Id = Guid.NewGuid(), AOCAId = aoca.Id},
+                    new AocaAttachmentViewModel() { Id = Guid.NewGuid(), AOCAId = aoca.Id},
+                    new AocaAttachmentViewModel() { Id = Guid.NewGuid(), AOCAId = aoca.Id},
+                    new AocaAttachmentViewModel() { Id = Guid.NewGuid(), AOCAId = aoca.Id},
+                    new AocaAttachmentViewModel() { Id = Guid.NewGuid(), AOCAId = aoca.Id},
+                    new AocaAttachmentViewModel() { Id = Guid.NewGuid(), AOCAId = aoca.Id},
+                    new AocaAttachmentViewModel() { Id = Guid.NewGuid(), AOCAId = aoca.Id},
+                    new AocaAttachmentViewModel() { Id = Guid.NewGuid(), AOCAId = aoca.Id},
+
+                };
+
+
+                if (gradeCriteria != aoca.GradingCriteriaId)
+                    itemNo = 0;
+
+                gradeCriteria = aoca.GradingCriteriaId;
+                seqNo++;
+                itemNo++;
+                aoca.SeqNo = seqNo;
+                aoca.ItemNo = itemNo;
+            }
+
+            model.ChecklistCriteria = new List<AOCAChecklistPanelViewModel>();
+
+            gradingCriteria.ForEach(x =>
+            {
+                var listAoca = aocaChecklist.Where(y => y.GradingCriteriaId == x.Id).ToList();
+
+                if (listAoca.Any())
+                {
+                    model.ChecklistCriteria.Add(new AOCAChecklistPanelViewModel
+                    {
+                        GradingCriteriaId = x.Id,
+                        GradingCriteriaName = x.Name,
+                        AOCAChecklist = listAoca,
+                        IsCompleted = listAoca.Count() == listAoca.Count(g => g.ScoringGuideId > 0)
+                    });
+                }
+            }
+
+            );
+
+
+            return model;
+
+        }
+
+        public AocaAssessmentViewModel AddAocaAssessment(ServiceRequestModel<AocaAssessmentViewModel> serviceRequestModel)
+        {
+            DateTime assessmentDate;
+            DateTime.TryParse(serviceRequestModel.Model.Date, out assessmentDate);
+
+            var monthStartDate = assessmentDate.FirstDayOfMonth();
+            var monthEndDate = assessmentDate.LastDayOfMonth();
+
+            if (assessmentDate.Date > GeneralService.CurrentDate.Date)
+                throw new ArgumentNullException($"The assessment date cannot be in future.", innerException: null);
+
+            var assessmentExists = AssessmentRepository.GetAll().Any(c => c.AgentId == serviceRequestModel.Model.AgentId && c.Date >= monthStartDate && c.Date <= monthEndDate);
+            if (assessmentExists)
+                throw new ArgumentNullException($"AOCA Assessment for the month {assessmentDate.ToString(@"MMM\'yy")} already exists in the system", innerException: null);
+
+            var agentCode = _genericUnitOfWork.GetRepository<Agent, Guid>().GetAll().FirstOrDefault(c => c.Id == serviceRequestModel.Model.AgentId)?.Code;
+
+            var mapped = _mapper.Map<AocaAssessmentViewModel, AOCAAssessment>(serviceRequestModel.Model);
+            mapped.AssessmentNo = Convert.ToString(_sharedService.GenerateNumber(RunningNumberType.AOCA,
+            mapped.Date.Year, agentCode ?? "", "AOCA/", "yy", "MM", 3));
+            mapped.CreatedById = serviceRequestModel.LoginInfo.UserId;
+            mapped.CreatedDate = GeneralService.CurrentDate;
+            mapped.EditedById = serviceRequestModel.LoginInfo.UserId;
+            mapped.EditedDate = GeneralService.CurrentDate;
+            mapped.Status = AssessmentStatus.Open;
+
+            if (!serviceRequestModel.Model.IsPartialSave)
+            {
+                var assessmentStatus = AssessmentStatus.Closed;
+
+                if (serviceRequestModel.Model.ChecklistCriteria
+                   .SelectMany(x => x.AOCAChecklist)
+                   .Where(x => x.CARRRequest != null || (x.AOCAMinorFindings != null && x.AOCAMinorFindings.Any())).Any())
+                    assessmentStatus = AssessmentStatus.Open;
+
+                // mapped.Status = serviceRequestModel.Model.ChecklistCriteria.SelectMany(x => x.AOCAChecklist).Where(x => x.CARRRequest != null).Select(x => x.CARRRequest).Any() ? AssessmentStatus.Open : AssessmentStatus.Closed;
+                mapped.Status = assessmentStatus;
+                mapped.IsCompleted = true;
+
+            }
+
+            decimal score = 0, checkListCount = 0;
+
+            AssessmentRepository.Add(mapped);
+
+            MajorBreachViewModel majorBreach = null;
+            if (!serviceRequestModel.Model.IsPartialSave)
+            {
+                majorBreach = new MajorBreachViewModel()
+                {
+                    AgentId = serviceRequestModel.Model.AgentId,
+                    ShowCaseMeetingDate = null,
+                    BreachType = (int)MajorBreachType.AOCA,
+                    Findings = new List<FindingViewModel>()
+                };
+            }
+            var carrCount = 0;
+            var observations = serviceRequestModel.Model.ChecklistCriteria
+                                .SelectMany(x => x.AOCAChecklist)
+                                .Select(h => h.ObservationId)
+                                .Distinct()
+                                .ToList();
+            var observationHistoryList = ObservationRepository
+                            .GetAll(c => observations.Contains(c.Id))
+                            .Select(c => new
+                            {
+                                ObservationId = c.Id,
+                                ObservationParticularHistoryId = c.ParticularHistories.Where(w => w.ObservationType == ObservationType.AOCA).OrderByDescending(o => o.CreatedDateTime).Select(h => h.Id).FirstOrDefault()
+                            }).ToList();
+            foreach (var aocaViewModel in serviceRequestModel.Model.ChecklistCriteria.SelectMany(x => x.AOCAChecklist).ToList())
+            {
+                //aocaViewModel.Id = Guid.NewGuid();
+                aocaViewModel.AOCAAssessmentId = mapped.Id;
+
+                var aoca = _mapper.Map<AOCAViewModel, AOCA>(aocaViewModel);
+                aoca.Attachments = null;
+                aoca.ObservationParticularHistoryId = observationHistoryList.Where(c => c.ObservationId == aoca.ObservationId).First().ObservationParticularHistoryId;
+                if (aoca.ScoringGuideId == 3 || aoca.ScoringGuideId == 4)
+                {
+                    foreach (var minorFinding in aoca.AOCAMinorFindings)
+                    {
+                        minorFinding.Id = Guid.NewGuid();
+                        foreach (var attachment in minorFinding.Attachments)
+                        {
+                            attachment.Id = Guid.NewGuid();
+                        }
+                    }
+                }
+                else
+                {
+                    aoca.AOCAMinorFindings = null;
+                }
+
+                AocaRepository.Add(aoca);
+                score += Convert.ToDecimal(aocaViewModel.ScoringGuideId);
+
+                checkListCount++;
+
+                if (aocaViewModel.CARRRequest != null)
+                {
+                    // response for partial save
+                    var carrId = Guid.NewGuid();
+                    aocaViewModel.CARRRequest.Id = carrId;
+                    aocaViewModel.CARRRequest.CARRStatus = CARRStatus.Pending;
+                    aocaViewModel.CARRRequest.IsNew = true;
+                    aocaViewModel.CARRRequest.AOCAId = aoca.Id;
+                    if (!serviceRequestModel.Model.IsPartialSave)
+                    {
+                        var nextCarrRunningNo = _sharedService.GetNextRunningNumber(RunningNumberType.AOCACARR, mapped.Date.Year, agentCode);
+                        aocaViewModel.CARRRequest.ReferenceNo = $"{"AOCA/CARR"}/{mapped.Date.Year}-{agentCode}-{nextCarrRunningNo.ToString().PadLeft(3, '0')}";
+                    }
+                    foreach (var carrFinding in aocaViewModel.CARRRequest.CARRFindings)
+                    {
+                        carrFinding.Id = Guid.NewGuid();
+                        foreach (var attachment in carrFinding.Attachments)
+                        {
+                            attachment.Id = Guid.NewGuid();
+                        }
+                    }
+
+                    var carrReq = _mapper.Map<AOCACARRRequestViewModel, AOCACARRRequest>(aocaViewModel.CARRRequest);
+                    if (majorBreach != null)
+                    {
+                        majorBreach.Findings.Add(new FindingViewModel()
+                        {
+                            Topic = aocaViewModel.ObservationTitle,
+                            Detailed = carrReq.Findings,
+                            KeyId = carrReq.Id.ToString()
+                        });
+                    }
+
+                    // carrReq.RecommendedReplyDate = mapped.Date.AddDays(14);
+                    
+                    CarrRequestRepository.Add(carrReq);
+                    carrCount++;
+                }
+
+                if (aocaViewModel.Attachments.Any())
+                {
+                    aocaViewModel.Attachments.ForEach(y =>
+                    {
+                        y.Id = Guid.NewGuid();
+                        y.AOCAId = aoca.Id;
+                        var attachment = _mapper.Map<AocaAttachmentViewModel, AOCAAttachment>(y);
+                        var attachmentFullName =
+                            attachment.AttachmentFullName.MoveToDestination(
+                                serviceRequestModel.Model.HostingEnviromentPath, "AOCA/" + mapped.Id);
+                        attachment.AttachmentFullName = attachmentFullName;
+                        y.AttachmentFullName = attachmentFullName;
+                        AttachmentRepository.Add(attachment);
+                    });
+                }
+            }
+            var finalscore = (score / (checkListCount * 5)) * 100;
+
+            if (majorBreach != null && majorBreach.Findings.Count() > 0 && finalscore < 50)
+            {
+                _majorBreachService.Add(new ServiceRequestModel<MajorBreachViewModel>()
+                {
+                    LoginInfo = serviceRequestModel.LoginInfo,
+                    CurrentUserId = serviceRequestModel.CurrentUserId,
+                    Model = majorBreach
+                });
+            }
+
+            try
+            {
+                _genericUnitOfWork.SaveChanges(new Domain.Entity.AuditTrail.AuditTrialRequest
+                {
+                    CreateDateTime = mapped.CreatedDate,
+                    Mode = "Create",
+                    ModuleName = AuditTrialModule.AOCAAssessment,
+                    SubModuleName = AuditTrialSubModule.Create,
+                    UserName = serviceRequestModel.LoginInfo.FullName,
+                    ReferenceNo = mapped.AssessmentNo
+                });
+            }
+            catch (DbEntityValidationException ex)
+            {  // Retrieve the error messages as a list of strings.
+                var errorMessages = ex.EntityValidationErrors
+                        .SelectMany(x => x.ValidationErrors)
+                        .Select(x => x.ErrorMessage);
+
+                // Join the list to a single string.
+                var fullErrorMessage = string.Join("; ", errorMessages);
+
+                // Combine the original exception message with the new one.
+                var exceptionMessage = string.Concat(ex.Message, " The validation errors are: ", fullErrorMessage);
+
+                // Throw a new DbEntityValidationException with the improved exception message.
+                throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors);
+            }
+            
+            if (serviceRequestModel.Model.IsPartialSave)
+            {
+                serviceRequestModel.Model.AssessmentNo = mapped.AssessmentNo;
+                return serviceRequestModel.Model;
+            }
+
+            if (carrCount == 0)
+                return new AocaAssessmentViewModel();
+
+            var agentDetail = AgentRepository.GetById(mapped.AgentId);
+
+            var aocaNotificationViewModel = new AOCANotificationViewModel
+            {
+                AssessmentNo = mapped.AssessmentNo,
+                CARRRequestCount = carrCount,
+                ToEmail = agentDetail.User.Email,
+                CcEmail = agentDetail.User.Email
+            };
+            SendCarrRequestedEmailsToAllAgentManagementUsers(aocaNotificationViewModel);
+
+            return new AocaAssessmentViewModel();
+        }
+
+        public AocaAssessmentViewModel UpdateAocaAssessment(ServiceRequestModel<AocaAssessmentViewModel> serviceRequestModel)
+        {
+            var agentCode = _genericUnitOfWork.GetRepository<Agent, Guid>().GetAll().FirstOrDefault(c => c.Id == serviceRequestModel.Model.AgentId)?.Code;
+
+            var carrCount = 0;
+            var assessment = AssessmentRepository.GetAll(a => a.Id == serviceRequestModel.Model.Id).FirstOrDefault();
+
+            if (assessment == null)
+                return new AocaAssessmentViewModel();
+
+            if (!serviceRequestModel.Model.IsPartialSave)
+            {
+                var assessmentStatus = AssessmentStatus.Closed;
+
+                if (serviceRequestModel.Model.ChecklistCriteria
+                   .SelectMany(x => x.AOCAChecklist)
+                   .Where(x => x.CARRRequest != null || (x.AOCAMinorFindings != null && x.AOCAMinorFindings.Any())).Any())
+                    assessmentStatus = AssessmentStatus.Open;
+
+                assessment.IsCompleted = true;
+                assessment.CreatedDate = GeneralService.CurrentDate;
+                assessment.EditedById = serviceRequestModel.LoginInfo.UserId;
+                assessment.EditedDate = GeneralService.CurrentDate;
+                assessment.Status = assessmentStatus;
+                AssessmentRepository.Update(assessment);
+            }
+
+            var observations = serviceRequestModel.Model.ChecklistCriteria
+                                 .SelectMany(x => x.AOCAChecklist)
+                                 .Select(h => h.ObservationId)
+                                 .Distinct()
+                                 .ToList();
+            var observationHistoryList = ObservationRepository
+                            .GetAll(c => observations.Contains(c.Id))
+                            .Select(c => new
+                            {
+                                ObservationId = c.Id,
+                                ObservationParticularHistoryId = c.ParticularHistories.Where(w => w.ObservationType == ObservationType.AOCA).OrderByDescending(o => o.CreatedDateTime).Select(h => h.Id).FirstOrDefault()
+                            }).ToList();
+            
+            serviceRequestModel.Model.ChecklistCriteria.SelectMany(x => x.AOCAChecklist).ToList().ForEach(x =>
+            {
+                var aocaExisting = assessment.AOCAs.Where(a => a.Id == x.Id).FirstOrDefault();
+                x.ObservationParticularHistoryId = observationHistoryList.Where(c => c.ObservationId == x.ObservationId).First().ObservationParticularHistoryId;
+                if (x.Id == Guid.Empty) //|| !assessment.AOCAs.Where(a => a.Id == aoca.Id).Any())
+                {
+                    x.Id = Guid.NewGuid();
+                }
+                x.AOCAAssessmentId = assessment.Id;
+                var aoca = _mapper.Map<AOCAViewModel, AOCA>(x);
+                aoca.AOCAMinorFindings = null;
+                aoca.Attachments = null;
+                aoca.CARRRequests = null;
+                AocaRepository.AddOrUpdate(aoca);
+
+                /*Minor finding*/
+                if (x.ScoringGuideId == 3 || x.ScoringGuideId == 4)
+                {
+                    var minorFindingsExisting = aocaExisting == null ? null : aocaExisting.AOCAMinorFindings;
+
+                    foreach (var minorFindingVM in x.AOCAMinorFindings)
+                    {   
+                        if (minorFindingVM.Id == Guid.Empty)
+                        {
+                            minorFindingVM.Id = Guid.NewGuid();
+                            if (minorFindingVM.Status == 0)
+                                minorFindingVM.Status = CARRStatus.Pending;
+                        }
+                        minorFindingVM.AOCAId = x.Id;
+                        var minorFinding = _mapper.Map<AOCAMinorFindingViewModel, AOCAMinorFinding>(minorFindingVM);
+                        minorFinding.Attachments = null;
+                        _genericUnitOfWork.GetRepository<AOCAMinorFinding, Guid>().AddOrUpdate(minorFinding);
+
+                        //Checking Exists or Not Old Attachment
+                        var attachmentsExisting = minorFindingsExisting == null ? null : minorFindingsExisting.Where(mf => mf.Id == minorFinding.Id).FirstOrDefault().Attachments;
+
+                        foreach (var attachmentVM in minorFindingVM.Attachments)
+                        {
+                            if(attachmentVM.Id == Guid.Empty)
+                            {
+                                attachmentVM.Id = Guid.NewGuid();
+                            }
+
+                            if (!string.IsNullOrEmpty(attachmentVM.FilePath) && attachmentVM.FilePath.Contains("/Uploads/Temp/"))
+                            {
+                                attachmentVM.FilePath = attachmentVM.FilePath.MoveToDestination(serviceRequestModel.Model.HostingEnviromentPath, "AOCA/" + assessment.Id);
+                            }
+                            var attachment = _mapper.Map<AttachmentViewModel, Attachment>(attachmentVM);
+                            attachment.AOCAMinorFindingId = minorFinding.Id;
+                            _genericUnitOfWork.GetRepository<Attachment, Guid>().AddOrUpdate(attachment);
+                        }
+
+                        //Checking Old Attachment and Deleting it.
+                        if (attachmentsExisting != null)
+                        {
+                            attachmentsExisting.ToList().ForEach(a =>
+                            {
+                                if (!minorFindingVM.Attachments.Where(att => att.Id == a.Id).Any())
+                                {
+                                    _genericUnitOfWork.GetRepository<Attachment, Guid>().Delete(a);
+                                }
+                            });
+                        }
+                    }
+                    if (minorFindingsExisting != null)
+                    {
+                        minorFindingsExisting.ToList().ForEach(mf =>
+                        {
+                            if (!x.AOCAMinorFindings.Where(mfVM => mfVM.Id == mf.Id).Any())
+                            {
+                                _genericUnitOfWork.GetRepository<AOCAMinorFinding, Guid>().Delete(mf);
+                            }
+                        });
+                    }
+                    
+                }
+                else
+                {
+                    if (aocaExisting != null)
+                    {
+                        aocaExisting.AOCAMinorFindings.ToList().ForEach(m =>
+                        {     
+                            _genericUnitOfWork.GetRepository<AOCAMinorFinding, Guid>().Delete(m);
+                        });
+                    }
+
+                    x.AOCAMinorFindings = null;
+                }
+                
+                if (x.ScoringGuideId > 2)
+                    x.CARRRequest = null;
+
+                /*CARR request*/
+                var carrRequestsExisting = aocaExisting == null ? null : aocaExisting.CARRRequests;
+                if (x.CARRRequest != null)
+                {
+                    if (x.CARRRequest.CARRFindings == null)
+                    {
+                        throw new Exception("Finding is missing in AOCA CARR.");
+                    }
+                    if (!serviceRequestModel.Model.IsPartialSave)
+                    {
+                        var nextCarrRunningNo = _sharedService.GetNextRunningNumber(RunningNumberType.AOCACARR, assessment.Date.Year, agentCode);
+                        x.CARRRequest.ReferenceNo = $"{"AOCA/CARR"}/{assessment.Date.Year}-{agentCode}-{nextCarrRunningNo.ToString().PadLeft(3, '0')}";
+                    }
+                    
+                    if (x.CARRRequest.Id == Guid.Empty)
+                    {
+                        x.CARRRequest.Id = Guid.NewGuid();
+                        if (x.CARRRequest.CARRStatus == 0)
+                            x.CARRRequest.CARRStatus = CARRStatus.Pending;
+                        x.CARRRequest.IsNew = true;
+                    }
+
+                    x.CARRRequest.AOCAId = x.Id;
+                    var carrRequest = _mapper.Map<AOCACARRRequestViewModel, AOCACARRRequest>(x.CARRRequest);
+                    carrRequest.CARRFindings = null;
+                    _genericUnitOfWork.GetRepository<AOCACARRRequest, Guid>().AddOrUpdate(carrRequest);
+
+                    foreach (var carrFindingVM in x.CARRRequest.CARRFindings)
+                    {
+                        var carrFindingExisting = carrRequestsExisting == null || carrRequestsExisting.FirstOrDefault() == null ? null : carrRequestsExisting.FirstOrDefault().CARRFindings == null ? null : carrRequestsExisting.FirstOrDefault().CARRFindings.Where(f => f.Id == carrFindingVM.Id).FirstOrDefault();
+                        if (carrFindingVM.Id == Guid.Empty)
+                        {
+                            carrFindingVM.Id = Guid.NewGuid();
+                        }
+                        carrFindingVM.AOCACARRRequestId = carrRequest.Id;
+                        
+                        var attachmentsExisting = carrFindingExisting == null ? null : carrFindingExisting.Attachments;
+                        if (attachmentsExisting != null)
+                        {
+                            attachmentsExisting.ToList().ForEach(a =>
+                            {
+                                if (!carrFindingVM.Attachments.Where(att => att.Id == a.Id).Any())
+                                {
+                                    _genericUnitOfWork.GetRepository<Attachment, Guid>().Delete(a);
+                                }
+                            });
+                        }
+
+                        foreach (var attachmentVM in carrFindingVM.Attachments)
+                        {
+                            if (attachmentVM.Id == Guid.Empty)
+                            {
+                                attachmentVM.Id = Guid.NewGuid();
+                            }
+                           
+                            
+                            var attachment = _mapper.Map<AttachmentViewModel, Attachment>(attachmentVM);
+                            attachment.AOCACARRFindingId = carrFindingVM.Id;
+                            
+                            _genericUnitOfWork.GetRepository<Attachment, Guid>().AddOrUpdate(attachment);
+                        }
+                      
+
+
+                        var carrFinding = _mapper.Map<AOCACARRFindingViewModel, AOCACARRFinding>(carrFindingVM);
+                        carrFinding.Attachments = null;
+                        _genericUnitOfWork.GetRepository<AOCACARRFinding, Guid>().AddOrUpdate(carrFinding);
+                    }
+
+                    var carrFindingsExisting = carrRequestsExisting == null || carrRequestsExisting.FirstOrDefault() == null ? null : carrRequestsExisting.FirstOrDefault().CARRFindings;
+                    if (carrFindingsExisting != null)
+                    {
+                        carrFindingsExisting.ToList().ForEach(cf =>
+                        {
+                            if (!x.CARRRequest.CARRFindings.Where(cfVM => cfVM.Id == cf.Id).Any())
+                            {
+                                _genericUnitOfWork.GetRepository<AOCACARRFinding, Guid>().Delete(cf);
+                            }
+                        });
+                    }
+
+                    carrCount++;
+                }
+                else
+                {
+                    if (carrRequestsExisting != null && carrRequestsExisting.Count>0)
+                    {
+                        carrRequestsExisting.ToList().ForEach(c =>
+                        {
+                            c.CARRFindings.ToList().ForEach(f =>
+                            {
+                                _genericUnitOfWork.GetRepository<AOCACARRFinding, Guid>().Delete(f);
+                            });
+
+                            _genericUnitOfWork.GetRepository<AOCACARRRequest, Guid>().Delete(c);
+                        });
+                    }
+                }
+
+                aoca.Attachments = null;
+                //aoca.AOCAAssessmentId = assessment.Id;
+                
+                if (x.Attachments.Any())
+                {
+                    x.Attachments.ForEach(y =>
+                    {
+                        if (y.Id == Guid.Empty)
+                            y.Id = Guid.NewGuid();
+                        y.AOCAId = aoca.Id;
+
+                        var attachment = _mapper.Map<AocaAttachmentViewModel, AOCAAttachment>(y);
+                        var attachmentFullName = attachment.AttachmentFullName.MoveToDestination(serviceRequestModel.Model.HostingEnviromentPath, "AOCA/" + assessment.Id);
+                        attachment.AttachmentFullName = attachmentFullName;
+                        y.AttachmentFullName = attachmentFullName;
+                        AttachmentRepository.AddOrUpdate(attachment);
+                    });
+                };
+
+            });
+
+            _genericUnitOfWork.SaveChanges(new Domain.Entity.AuditTrail.AuditTrialRequest
+            {
+                CreateDateTime = DateTime.Now,
+                Mode = "Update",
+                ModuleName = AuditTrialModule.AOCAAssessment,
+                SubModuleName = AuditTrialSubModule.Update,
+                UserName = serviceRequestModel.LoginInfo.FullName,
+                ReferenceNo = assessment.AssessmentNo
+            });
+
+            if (serviceRequestModel.Model.IsPartialSave)
+                return serviceRequestModel.Model;
+
+            if (carrCount == 0)
+                return new AocaAssessmentViewModel();
+
+            var agentDetail = AgentRepository.GetById(assessment.AgentId);
+
+            var aocaNotificationViewModel = new AOCANotificationViewModel
+            {
+                AssessmentNo = assessment.AssessmentNo,
+                CARRRequestCount = carrCount,
+                ToEmail = agentDetail.User.Email
+            };
+            SendCarrRequestedEmailsToAllAgentManagementUsers(aocaNotificationViewModel);
+
+            return new AocaAssessmentViewModel();
+        }
+        private AocaAssessmentViewModel PartialAocaAssessment(ServiceRequestModel<AocaAssessmentViewModel> serviceRequestModel)
+        {
+            serviceRequestModel.Model.ChecklistCriteria.SelectMany(x => x.AOCAChecklist).ToList().ForEach(x =>
+            {
+                var aoca = _mapper.Map<AOCAViewModel, AOCA>(x);
+                aoca.AOCAAssessmentId = serviceRequestModel.Model.Id;
+                AocaRepository.AddOrUpdate(aoca);
+                x.Id = aoca.Id;
+
+                var carr = CarrRequestRepository.GetAll().FirstOrDefault(p => p.AOCAId == aoca.Id);
+
+                if (carr != null)
+                    CarrRequestRepository.Delete(carr);
+
+                if (x.ScoringGuideId > 2)
+                    x.CARRRequest = null;
+
+
+                if (x.CARRRequest != null)
+                {
+                    var carrReq = _mapper.Map<AOCACARRRequestViewModel, AOCACARRRequest>(x.CARRRequest);
+                    carrReq.Id = Guid.NewGuid();
+                    carrReq.AOCAId = aoca.Id;
+
+                    carrReq.RecommendedReplyDate = serviceRequestModel.Model.Date.ToStringDate().AddDays(14);
+                    carrReq.CARRStatus = CARRStatus.Pending;
+
+                    CarrRequestRepository.AddOrUpdate(carrReq);
+                    x.CARRRequest.Id = carrReq.Id;
+
+                }
+
+                if (!x.Attachments.Any())
+                    return;
+
+                x.Attachments.ForEach(att =>
+                {
+                    att.Id = att.Id != Guid.Empty ? att.Id : Guid.NewGuid();
+                    att.AOCAId = aoca.Id;
+                    var mapped = _mapper.Map<AocaAttachmentViewModel, AOCAAttachment>(att);
+                    AttachmentRepository.AddOrUpdate(mapped);
+
+                });
+
+
+            });
+
+            _genericUnitOfWork.SaveChanges();
+
+            return serviceRequestModel.Model;
+
+        }
+
+        public AocaAssessmentViewModel GetAocaAssessment(Guid id)
+        {
+            var entity = AssessmentRepository.GetById(id);
+            var assessment = _mapper.Map<AOCAAssessment, AocaAssessmentViewModel>(entity);
+
+            List<GradingCriteria> gradingCriteria;
+            if (entity.IsCompleted)
+            {
+                gradingCriteria = GradingCriteriaRepository.GetAll().ToList();
+            }
+            else
+            {
+                gradingCriteria = GradingCriteriaRepository.GetAll(gc => gc.IsActive == true).ToList();
+            }
+
+            var agent = AgentRepository.GetAll().FirstOrDefault(c => c.Id == assessment.AgentId);
+            var listFromDb = AocaRepository.GetAll().Where(x => x.AOCAAssessmentId == id).ToList();
+            List<AOCAViewModel> aocaChecklist;
+
+            if (entity.IsCompleted)
+            {
+                aocaChecklist =
+                    ObservationRepository.GetAll(o => o.GradingCriteria.GradingCriteriaAocaMap != null).ToList()
+                    .Join(listFromDb, o => o.Id, ao => ao.ObservationId,
+                        (o, ao) => new { Observation = o, Aoca = ao })
+                    .Select((x) =>
+                    {
+                        var p = _mapper.Map<AOCA, AOCAViewModel>(x.Aoca);
+                        p.Score = x.Aoca.ScoringGuide.Score;
+                        p.ScoreTitle = x.Aoca.ScoringGuide.Grade;
+                        return p;
+                    }).ToList();
+            }
+            else
+            {
+                var agentwiseObservation =
+                AocaObservationMapRepository.GetAll()
+                    .Where(
+                        c =>
+                            c.AgentCategoryId == agent.AgentCategoryId && c.AgentServiceId == agent.AgentServiceId &&
+                            c.AgentTypeId == agent.AgentTypeId)
+                    .Select(p => p.ObservationId)
+                    .ToList();
+                var observationList = ObservationRepository.GetAll()
+                    .Join(agentwiseObservation, ob => ob.Id, ao => ao, (ob, ao) => ob);
+                var list = observationList.OrderBy(x => x.GradingCriteriaId).ThenBy(y => y.DisplayOrder).ToList();
+
+                aocaChecklist =
+                    list.GroupJoin(listFromDb, o => o.Id, ao => ao.ObservationId,
+                        (o, ao) => new { Observation = o, Aoca = ao })
+                        .SelectMany(x => x.Aoca.DefaultIfEmpty(), (x, y) =>
+                        {
+                            if (y != null)
+                                return _mapper.Map<AOCA, AOCAViewModel>(y);
+
+                            var aocaViewModel = _mapper.Map<Observation, AOCAViewModel>(x.Observation);
+                            aocaViewModel.Id = Guid.NewGuid();
+                            return aocaViewModel;
+
+                        }).ToList();
+            }
+
+            int seqNo = 0,
+                itemNo = 0,
+                gradeCriteria = 0;
+
+            var naScoringGuides = NaScoringGuideRepository.GetAll().ToList();
+            var scoringGuides = _listService.ListScoringGuide();
+            var carrQueryable = CarrRequestRepository.GetAll();
+            var attachmentQueryable = AttachmentRepository.GetAll();
+
+            foreach (var aoca in aocaChecklist)
+            {
+                if (aoca.ScoringGuideId != null)
+                {
+                    aoca.ScoreTitle = scoringGuides.Where(s => (int)s.Id == aoca.ScoringGuideId).FirstOrDefault().Text;
+                }
+
+                var nascoringIds =
+                    naScoringGuides.Where(y => y.ObervationId == aoca.ObservationId)
+                        .Select(z => z.ScoringGuideId as object)
+                        .ToList();
+                aoca.ApplicableScoringGuides = scoringGuides.Where(x => !nascoringIds.Contains(x.Id)).ToList();
+                aoca.CARRRequest =
+                    _mapper.Map<AOCACARRRequest, AOCACARRRequestViewModel>(
+                        carrQueryable.FirstOrDefault(x => x.AOCAId == aoca.Id));
+                var aocaAttachments =
+                    _mapper.Map<IList<AOCAAttachment>, IList<AocaAttachmentViewModel>>(
+                        attachmentQueryable.Where(x => x.AOCAId == aoca.Id).ToList()).ToList();
+
+                if (!aocaAttachments.Any())
+                    aocaAttachments = new List<AocaAttachmentViewModel>();
+
+                var missingAttachmentCount = 10 - aocaAttachments.Count; //adding blank attachments for ui iteration
+                for (var i = 0; i < missingAttachmentCount; i++)
+                    aocaAttachments.Add(new AocaAttachmentViewModel { Id = Guid.NewGuid(), AOCAId = aoca.Id });
+
+                aoca.Attachments = aocaAttachments;
+                if (gradeCriteria != aoca.GradingCriteriaId) itemNo = 0;
+                gradeCriteria = aoca.GradingCriteriaId;
+                seqNo++;
+                itemNo++;
+                aoca.SeqNo = seqNo;
+                aoca.ItemNo = itemNo;
+            }
+
+            assessment.ChecklistCriteria = new List<AOCAChecklistPanelViewModel>();
+            gradingCriteria.ForEach(x =>
+            {
+                var aocaList = aocaChecklist.Where(y => y.GradingCriteriaId == x.Id).ToList();
+
+                if (!aocaList.Any())
+                    return;
+
+                assessment.ChecklistCriteria.Add(new AOCAChecklistPanelViewModel
+                {
+                    GradingCriteriaId = x.Id,
+                    GradingCriteriaName = x.Name,
+                    AOCAChecklist = aocaList,
+                    IsCompleted = aocaList.Count() == aocaList.Count(q => q.ScoringGuideId > 0)
+                });
+            });
+
+            return assessment;
+        }
+
+        public void DeleteAoca(ServiceRequestModel<Guid> serviceRquestModel)
+        {
+            var id = serviceRquestModel.Model;
+            var aocaAssessment = AssessmentRepository.GetById(id);
+
+            if (aocaAssessment == null)
+            {
+                throw new ArgumentNullException($"Aoca assessment doesn't exist.", innerException: null);
+            }
+            if (!new SharedService(_genericUnitOfWork).IsBOASSystemAdmin(serviceRquestModel.LoginInfo.RoleId))
+            {
+                if (aocaAssessment.IsCompleted || aocaAssessment.Status == AssessmentStatus.Closed)
+                {
+                    throw new ArgumentNullException($"This AOCA assessment is already completed. So, cannot delete this AOCA assessment.", innerException: null);
+                }
+
+                if (AssessmentRepository.GetTagList(id, new List<string>() { "AOCA", "AOCAAttachment", "AOCACARRRequest" }).Any())
+                    throw new ArgumentNullException($"Cannot delete. Already tagged.", innerException: null);
+            }
+
+            var aocaList = AocaRepository.GetAll().Where(c => c.AOCAAssessmentId == id).ToList();
+
+            aocaList.ForEach(c =>
+            {
+                var attachments = AttachmentRepository.GetAll().Where(a => a.AOCAId == c.Id).ToList();
+                attachments.ForEach(at =>
+                {
+                    AttachmentRepository.Delete(at);
+                });
+
+                var carr = CarrRequestRepository.GetAll().Where(a => a.AOCAId == c.Id).ToList();
+                carr.ForEach(car =>
+                {
+                    car.CARRFindings.ToList().ForEach(f =>
+                    {
+                        f.Attachments.ToList().ForEach(a =>
+                        {
+                            _genericUnitOfWork.GetRepository<Attachment, Guid>().Delete(a);
+                        });
+                        _genericUnitOfWork.GetRepository<AOCACARRFinding, Guid>().Delete(f);
+                    });
+
+                    CarrRequestRepository.Delete(car);
+                });
+
+                var minorFinding = _genericUnitOfWork.GetRepository<AOCAMinorFinding, Guid>().GetAll(m => m.AOCAId == c.Id).ToList();
+                minorFinding.ForEach(mf =>
+                {
+                    mf.Attachments.ToList().ForEach(a =>
+                    {
+                        _genericUnitOfWork.GetRepository<Attachment, Guid>().Delete(a);
+                    });
+                    _genericUnitOfWork.GetRepository<AOCAMinorFinding, Guid>().Delete(mf);
+                });
+                AocaRepository.Delete(c);
+            });
+
+            var data = AssessmentRepository.GetById(id);
+            AssessmentRepository.Delete(data);
+
+            _genericUnitOfWork.SaveChanges();
+        }
+        #endregion
+
+        #region CARR
+        public DataSourceResult ListAocaCarrRequest(ServiceRequestModel<KendoDataRequest> serviceRequestModel)
+        {
+            serviceRequestModel.Model.DataExtensions = new List<DataExtension>()
+            {
+                new DataExtension() { Field = "AgentName", ActualField = "AOCA.AOCAAssessment.Agent.Name"},
+                new DataExtension() { Field = "AssessedDate", ActualField = "AOCA.AOCAAssessment.Date" },
+                new DataExtension() { Field = "AssessmentNo", ActualField = "AOCA.AOCAAssessment.AssessmentNo" },
+                new DataExtension() { Field = "AssessorName", ActualField = "AOCA.AOCAAssessment.CreatedBy.FullName" },
+                new DataExtension() { Field = "CARRStatus", FieldType = typeof(CARRStatus) },
+                new DataExtension() { Field = "AgingDays", Ignore = true }
+                
+                //new DataExtension() { Field = "Score", ActualField = "AOCA.ScoringGuide.Score" },
+                //new DataExtension() { Field = "GradingCriteriaName", ActualField = "AOCA.Observation.GradingCriteria.Name" },
+                
+                //new DataExtension() { Field = "ObservationTitle", ActualField = "AOCA.Observation.Title" },
+                //new DataExtension() { Field = "ObservationDescription", ActualField = "AOCA.Observation.Description" }
+            };
+
+            var userId = serviceRequestModel.CurrentUserId.Value;
+            var roleId = serviceRequestModel.LoginInfo.RoleId;
+
+            var carrRequestListQueryable = CarrRequestRepository
+                .GetAll(p => p.AOCA.AOCAAssessment.IsCompleted
+                &&
+                p.AOCA.AOCAAssessment.Agent.Status == true);
+
+            if (serviceRequestModel.Model.ExternalFilter != null)
+            {
+                if (serviceRequestModel.Model.ExternalFilter.ContainsKey("AssessmentId"))
+                {
+                    var assessmentId = new Guid(serviceRequestModel.Model.ExternalFilter.FirstOrDefault(c => c.Key == "AssessmentId").Value.ToString());
+                    carrRequestListQueryable = carrRequestListQueryable.Where(p => p.AOCA.AOCAAssessmentId == assessmentId);
+                }
+            }
+
+            if (GeneralService.IsAreaAdministratorRole(roleId))
+                carrRequestListQueryable = carrRequestListQueryable.Where(x => x.AOCA.AOCAAssessment.Agent.AssesorId == userId);
+
+            else if (roleId == new Guid(ApplicationConstants.AgentRoleId) || roleId == new Guid(ApplicationConstants.AgentAdminId) || roleId == new Guid(ApplicationConstants.AgentUserId))
+                carrRequestListQueryable = carrRequestListQueryable
+                    .Where(x => (x.ReassignToId == null && x.AOCA.AOCAAssessment.Agent.UserId == userId) || (x.ReassignToId != null && x.ReassignToId == userId));
+
+            var initialSort = new Sort() { Field = "AssessmentNo", Dir = "desc" };
+            var filterByAging = serviceRequestModel.Model.Filter?.Filters?.Where(s => s.Field == "AgingDays").FirstOrDefault();
+            if (filterByAging != null)
+            {
+                var filterValue = filterByAging.Value.ToInt();
+                if (filterByAging.Operator == "eq")
+                {
+                    carrRequestListQueryable = carrRequestListQueryable
+                        .Where(a =>
+                                (a.CARRStatus == CARRStatus.Closed &&
+                                    (a.ClosedDate == null && 0 == filterValue) || (DbFunctions.DiffDays(a.AOCA.AOCAAssessment.Date, a.ClosedDate) == filterValue)) ||
+                                (a.CARRStatus != CARRStatus.Closed && DbFunctions.DiffDays(a.AOCA.AOCAAssessment.Date, DateTime.Today) == filterValue));
+                }
+            }
+
+            var sortByAging = serviceRequestModel.Model.Sort?.Where(s => s.Field == "AgingDays").FirstOrDefault();
+            if (sortByAging != null)
+            {
+                if (sortByAging.Dir == "asc")
+                {
+                    carrRequestListQueryable = carrRequestListQueryable
+                        .OrderBy(a =>
+                            (a.CARRStatus == CARRStatus.Closed ?
+                                (a.ClosedDate == null ? 0 : DbFunctions.DiffDays(a.AOCA.AOCAAssessment.Date, a.ClosedDate)) :
+                            DbFunctions.DiffDays(a.AOCA.AOCAAssessment.Date, DateTime.Today)));
+                }
+                else
+                {
+                    carrRequestListQueryable = carrRequestListQueryable
+                        .OrderByDescending(a =>
+                            (a.CARRStatus == CARRStatus.Closed ?
+                                (a.ClosedDate == null ? 0 : DbFunctions.DiffDays(a.AOCA.AOCAAssessment.Date, a.ClosedDate)) :
+                            DbFunctions.DiffDays(a.AOCA.AOCAAssessment.Date, DateTime.Today)));
+                }
+                initialSort = null;
+            }
+
+            var result = carrRequestListQueryable.OrderByDescending(x => x.ReferenceNo).ThenBy(y => y.CARRStatus).ToDataSourceResult<AOCACARRRequest, AOCACARRRequestListViewModel>(serviceRequestModel.Model, new Sort() { Field = "AssessmentNo", Dir = "desc" });
+            foreach (var item in result.Data.Cast<AOCACARRRequestListViewModel>())
+            {
+                item.CanSendCarrClosureNotification = CanSendCarrClosureNotification(serviceRequestModel.LoginInfo, item.CARRStatus, item.SendClosureRequestById);
+                item.CanDelete = CanDeleteCarr(serviceRequestModel.LoginInfo, item.CARRStatus);
+                item.CanEdit = CanEditCarr(serviceRequestModel.LoginInfo, item.CARRStatus, item.IsNew ?? false);
+                item.CanReassign = CanReassign(serviceRequestModel.LoginInfo, item.CARRStatus);
+            }
+            return result;
+        }
+
+        private bool CanEditCarr(LoginInfo loginInfo, CARRStatus cARRStatus, bool isNew)
+        {
+            return cARRStatus != CARRStatus.Closed && loginInfo.RoleId == new Guid(ApplicationConstants.SystemAdminRoleId) && isNew;
+        }
+        private bool CanSendCarrClosureNotification(LoginInfo loginInfo, CARRStatus cARRStatus, Guid? SendClosureRequestById)
+        {
+            return SendClosureRequestById == null && cARRStatus == CARRStatus.Pending && loginInfo.RoleId.IsBOAS(true);
+        }
+        private bool CanDeleteCarr(LoginInfo loginInfo, CARRStatus cARRStatus)
+        {
+            return cARRStatus != CARRStatus.Closed && loginInfo.RoleId.IsBOAS();
+        }
+        private bool CanReassign(LoginInfo loginInfo, CARRStatus cARRStatus)
+        {
+            return loginInfo.RoleId.IsBOAS(true) && cARRStatus == CARRStatus.Pending;
+        }
+
+        public void UpdateAocaCarrRequest(ServiceRequestModel<AOCACARRRequestViewModel> serviceRequestModel)
+        {
+            var carrRequestEntity = CarrRequestRepository.GetById(serviceRequestModel.Model.Id);
+            #region Update done by AA/AAA
+            if (GeneralService.IsAreaAdministratorRole(serviceRequestModel.LoginInfo.RoleId))
+            {
+                if (!serviceRequestModel.Model.PreviousResponses.Any())
+                    return;
+
+                var resp = serviceRequestModel.Model.PreviousResponses.Last();
+                var respEntity = CarrResponseRepository.GetById(resp.Id);
+                if (respEntity != null)
+                {
+
+                    respEntity.CARRResponseStatus = resp.CARRResponseStatus;
+                    CarrResponseRepository.Update(respEntity);
+
+                    if (!string.IsNullOrEmpty(resp.RecommendedReplyDate))
+                        carrRequestEntity.RecommendedReplyDate =
+                            resp.RecommendedReplyDate.ToStringDate();
+
+                    carrRequestEntity.CARRStatus = resp.CARRResponseStatus;
+                    CarrRequestRepository.Update(carrRequestEntity);
+
+                    var agentEmails = _genericUnitOfWork.GetRepository<User, Guid>().GetAll().Where(c => c.Roles.Any(p => GeneralService.AgentManagementDepartmentAgents.Any(q => q == p.Role.Id)));
+
+                    var aocaNotificationViewModel = new AOCANotificationViewModel
+                    {
+                        AOCACARRReferenceNo = serviceRequestModel.Model.ReferenceNo,
+                        AOCACARRResponseStatus = resp.CARRResponseStatus,
+                        ToEmail = carrRequestEntity.AOCA.AOCAAssessment.Agent.User.Email,
+                        AssessmentNo = carrRequestEntity.AOCA.AOCAAssessment.AssessmentNo
+                    };
+
+                    if (agentEmails.Any())
+                    {
+                        aocaNotificationViewModel.ToEmails = agentEmails.Select(c => c.Email).ToList();
+                    }
+
+                    _genericUnitOfWork.SaveChanges(new Domain.Entity.AuditTrail.AuditTrialRequest
+                    {
+                        CreateDateTime = DateTime.Now,
+                        Mode = "Update",
+                        ModuleName = AuditTrialModule.AOCACARRRequest,
+                        SubModuleName = AuditTrialSubModule.Update,
+                        UserName = serviceRequestModel.LoginInfo.FullName,
+                        ReferenceNo = carrRequestEntity.ReferenceNo
+                    });
+
+                    //aocaNotificationViewModel.ToEmails.Add(carrRequestEntity.AOCA.AOCAAssessment.Agent.CarrResponseEmail);
+                    SendCarrResponseVerifiedEmailToAgentManagement(aocaNotificationViewModel);
+                }
+
+                if (resp.CARRResponseStatus != CARRStatus.Closed)
+                    return;
+
+                carrRequestEntity.CARRStatus = CARRStatus.Closed;
+                carrRequestEntity.ClosedDate = GeneralService.CurrentDate;
+                CarrRequestRepository.Update(carrRequestEntity);
+
+
+                var assessment = AssessmentRepository.GetAll().FirstOrDefault(x => x.AssessmentNo == serviceRequestModel.Model.AssessmentNo);
+
+                if (assessment == null) return;
+
+                var carrsQueryable = CarrRequestRepository.GetAll().Where(car => car.AOCA.AOCAAssessment.Id == assessment.Id);
+
+                if (carrsQueryable.Count() != carrsQueryable.Count(c => c.CARRStatus == CARRStatus.Closed)) return;
+
+                var isMinorFinidingRaised = assessment.AOCAs.SelectMany(p => p.AOCAMinorFindings).Any();
+
+                if (isMinorFinidingRaised &&
+                    (assessment.AOCAMinorFindingAction == null || assessment.AOCAMinorFindingAction.Status != MinorFindingActionStatus.Accepted))
+                    return;
+
+                assessment.Status = AssessmentStatus.Closed;
+                assessment.ClosedDate = DateTime.Now;
+                AssessmentRepository.Update(assessment);
+
+                _genericUnitOfWork.SaveChanges(new Domain.Entity.AuditTrail.AuditTrialRequest
+                {
+                    CreateDateTime = DateTime.Now,
+                    Mode = "Closed",
+                    ModuleName = AuditTrialModule.AOCAAssessment,
+                    SubModuleName = AuditTrialSubModule.Update,
+                    UserName = serviceRequestModel.LoginInfo.FullName,
+                    ReferenceNo = assessment.AssessmentNo
+                });
+            }
+            #endregion
+
+            #region Update done by Agent 
+            else if (serviceRequestModel.Model.CurrentResponse != null && (serviceRequestModel.LoginInfo.RoleId == new Guid(ApplicationConstants.AgentRoleId) || serviceRequestModel.LoginInfo.RoleId == new Guid(ApplicationConstants.AgentAdminId) || serviceRequestModel.LoginInfo.RoleId == new Guid(ApplicationConstants.AgentUserId)))
+            {
+                var mappedResponse = _mapper.Map<AocacarrResponseViewModel, AOCACARRResponse>(serviceRequestModel.Model.CurrentResponse);
+                mappedResponse.Id = Guid.NewGuid();
+                mappedResponse.AOCACARRRequestId = serviceRequestModel.Model.Id;
+                mappedResponse.CARRResponseStatus = CARRStatus.Submitted;
+                mappedResponse.CARRResponseDate = GeneralService.CurrentDate;
+                mappedResponse.ResponserId = serviceRequestModel.CurrentUserId;
+
+                if (mappedResponse.Attachments.Any())
+                    foreach (var aocaCarrResponseAttachment in mappedResponse.Attachments)
+                        aocaCarrResponseAttachment.Id = Guid.NewGuid();
+
+                CarrResponseRepository.Add(mappedResponse);
+                
+                _genericUnitOfWork.SaveChanges(new Domain.Entity.AuditTrail.AuditTrialRequest
+                {
+                    CreateDateTime = DateTime.Now,
+                    Mode = "Response Submitted",
+                    ModuleName = AuditTrialModule.AOCACARRResponse,
+                    SubModuleName = AuditTrialSubModule.Create,
+                    UserName = serviceRequestModel.LoginInfo.FullName,
+                    ReferenceNo = carrRequestEntity.ReferenceNo
+                });
+
+                carrRequestEntity.CARRStatus = CARRStatus.Submitted;
+                CarrRequestRepository.Update(carrRequestEntity);
+                _genericUnitOfWork.SaveChanges();
+
+                var areaAdminUser = _setupService.GetUserByuserId(serviceRequestModel.Model.AssessorId);
+                if (areaAdminUser == null) return;
+                var aocaNotificationViewModel = new AOCANotificationViewModel
+                {
+                    AOCACARRReferenceNo = serviceRequestModel.Model.ReferenceNo,
+                    AOCACARRResponseStatus = mappedResponse.CARRResponseStatus,
+                    ToEmail = areaAdminUser.Email,
+                    AssessmentNo = carrRequestEntity.AOCA.AOCAAssessment.AssessmentNo
+                };
+                SendCarrResponsedEmailToAreaAdministrator(aocaNotificationViewModel);
+            }
+            #endregion
+        }
+
+        public AOCACARRRequestViewModel GetAocaCarrRequest(Guid id, Guid roleId, string mode)
+        {
+            var data = CarrRequestRepository.GetById(id);
+            var model = _mapper.Map<AOCACARRRequest, AOCACARRRequestViewModel>(data);
+            if (model == null)
+                return null;
+            if (mode != "document")
+            {
+                var previouslist = CarrResponseRepository.GetAll().Where(x => x.AOCACARRRequestId == model.Id).OrderBy(y => y.CARRResponseDate).ToList();
+                model.PreviousResponses = _mapper.Map<List<AOCACARRResponse>, List<AocacarrResponseViewModel>>(previouslist);
+                model.IsAreaAdmin = GeneralService.IsAreaAdministratorRole(roleId);
+                model.IsAgent = roleId == new Guid(ApplicationConstants.AgentRoleId) || roleId == new Guid(ApplicationConstants.AgentAdminId) || roleId == new Guid(ApplicationConstants.AgentUserId);
+                model.ShowReply =
+                    (model.CARRStatus != CARRStatus.Closed && !model.IsAreaAdmin && !model.PreviousResponses.Any())
+                    || (model.CARRStatus != CARRStatus.Closed && !model.IsAreaAdmin && model.PreviousResponses.Any() && model.PreviousResponses.Last().CARRResponseStatus == CARRStatus.Reassess)
+                    || (model.CARRStatus != CARRStatus.Closed
+                        && model.IsAreaAdmin
+                        && model.PreviousResponses.Any() &&
+                        model.PreviousResponses.Last().CARRResponseStatus == CARRStatus.Submitted);
+            }
+            if (mode == "assign")
+            {
+                //Note Name is Agent User But Set as AreaAdmin , SAA, and AAA
+                model.AgentUsers = (from user in _genericUnitOfWork.GetRepository<User, Guid>().GetAll().ToList()
+                                    join userRole in _genericUnitOfWork.GetRepository<UserRole, Guid>().GetAll().ToList() on user.Id equals userRole.UserId
+                                    where userRole.RoleId.IsAreaAdmin()
+                                    select new ListViewModel<Guid>
+                                    {
+                                        Id = user.Id,
+                                        Text = user.FullName
+                                    }).ToList();
+
+                //model.AgentUsers = _genericUnitOfWork.GetRepository<User, Guid>().GetAll()
+                //    .Where(c => c.IsActive && c.AgentId == data.AOCA.AOCAAssessment.AgentId).Select(y => new ListViewModel<Guid> { Id = y.Id, Text = y.FullName }).ToList();
+            }
+
+            return model;
+        }
+
+        public void SendClosureRequest(ServiceRequestModel<Guid> serviceRequestModel)
+        {
+            var carrRequestEntity = CarrRequestRepository.GetById(serviceRequestModel.Model);
+            carrRequestEntity.SendClosureRequestById = serviceRequestModel.CurrentUserId;
+            carrRequestEntity.SendClosureRequestDate = GeneralService.CurrentDate;
+            CarrRequestRepository.Update(carrRequestEntity);
+            _genericUnitOfWork.SaveChanges();
+        }
+        public void AOCACarrReassign(ServiceRequestModel<AOCACARRReassignViewModel> serviceRequestModel)
+        {
+            var carrRequestEntity = CarrRequestRepository.GetById(serviceRequestModel.Model.Id);
+            carrRequestEntity.ReassignedDate = GeneralService.CurrentDate;
+            carrRequestEntity.ReassignToId = serviceRequestModel.Model.ReassignTo;
+            carrRequestEntity.ReassignById = serviceRequestModel.CurrentUserId;
+            CarrRequestRepository.Update(carrRequestEntity);
+            _genericUnitOfWork.SaveChanges();
+
+            var reassignedUser = _genericUnitOfWork.GetRepository<User, Guid>().GetAll().FirstOrDefault(c => c.Id == serviceRequestModel.Model.ReassignTo);
+            var aocaNotificationViewModel = new AOCANotificationViewModel
+            {
+                AssessmentNo = carrRequestEntity.AOCA.AOCAAssessment.AssessmentNo,
+                CARRRequestCount = 1,
+                ToEmail = reassignedUser.Email
+            };
+            var boasEmails = _genericUnitOfWork.GetRepository<User, Guid>().GetAll()
+                .Where(c => c.Roles.Any(p => GeneralService.BOASRoles.Any(q => q == p.Role.Id))).Select(c => c.Email).ToList();
+
+
+            var emailRequest = new EmailRequest<AOCANotificationViewModel>()
+            {
+                Model = aocaNotificationViewModel
+            };
+            if (!string.IsNullOrEmpty(aocaNotificationViewModel.ToEmail))
+                emailRequest.To.Add(new System.Net.Mail.MailAddress(aocaNotificationViewModel.ToEmail));
+
+            boasEmails.ForEach(e =>
+            {
+                emailRequest.CC.Add(new System.Net.Mail.MailAddress(e));
+            });
+
+            _emailComposer.SendAOCAEmails(emailRequest, EmailTemplate.AocacarrRequested, $"MBOS: CARR(s) for Assessment No: {aocaNotificationViewModel.AssessmentNo}");
+        }
+        public void AOCACarrFindingDocumentSave(ServiceRequestModel<List<AOCACARRFindingViewModel>> serviceRequestModel)
+        {
+            if (serviceRequestModel.LoginInfo.RoleId != new Guid(ApplicationConstants.SystemAdminRoleId))
+                throw new ArgumentNullException($"Access denied.", innerException: null);
+            var repo = _genericUnitOfWork.GetRepository<Attachment, Guid>();
+            foreach (var carrFinding in serviceRequestModel.Model)
+            {
+                var carrFindingEntity = _genericUnitOfWork.GetRepository<AOCACARRFinding, Guid>().GetById(carrFinding.Id);
+                var deletedDocuments = carrFindingEntity.Attachments.Where(c => !carrFinding.Attachments.Any(x => x.Id == c.Id));
+                deletedDocuments.ToList().ForEach(c =>
+                {
+                    repo.Delete(c);
+                });
+                foreach (var attachment in carrFinding.Attachments)
+                {
+                    if (attachment.Id == Guid.Empty)
+                        attachment.Id = Guid.NewGuid();
+
+                    if (!string.IsNullOrEmpty(attachment.FilePath) && attachment.FilePath.Contains("/Uploads/Temp/"))
+                    {
+                        attachment.FilePath = attachment.FilePath.MoveToDestination("AOCA/" + carrFinding.Id);
+                    }
+                    var entity = new Attachment()
+                    {
+                        Id = attachment.Id,
+                        FileName = attachment.FileName,
+                        FilePath = attachment.FilePath,
+                        AOCACARRFindingId = carrFinding.Id
+                    };
+                    entity.AOCACARRFindingId = carrFinding.Id;
+                    repo.AddOrUpdate(entity);
+                }
+                _genericUnitOfWork.SaveChanges();
+            }
+        }
+        public void AOCACarrClose(ServiceRequestModel<Guid> serviceRequestModel)
+        {
+            var carrRequest = CarrRequestRepository.GetById(serviceRequestModel.Model);
+            carrRequest.CARRStatus = CARRStatus.Closed;
+
+            CarrRequestRepository.Update(carrRequest);
+            _genericUnitOfWork.SaveChanges();
+        }
+        #endregion
+
+        #region Criteria
+        public DataSourceResult ListCriteria(ServiceRequestModel<KendoDataRequest> serviceRequestModel)
+        {
+            serviceRequestModel.Model.DataExtensions = new List<DataExtension>()
+            {
+                new DataExtension() { Field = "IsActive", FieldType = typeof(Boolean)}
+            };
+            //return _genericUnitOfWork.GetRepository<GradingCriteriaAocaMap, int>().GetAll().ToDataSourceResult<GradingCriteriaAocaMap, GradingCriteriaAocaListViewModel>(serviceRequestModel.Model, new Sort() { Field = "Id", Dir = "asc" });
+
+            return GradingCriteriaRepository.GetAll(c => c.GradingCriteriaAocaMap != null).ToDataSourceResult<GradingCriteria, GradingCriteriaAocaListViewModel>(serviceRequestModel.Model, new Sort() { Field = "Id", Dir = "desc" });
+        }
+        public GradingCriteriaAocaViewModel GetCriteriaRequest(int id, Guid roleId)
+        {
+            var criteriaRepo = _genericUnitOfWork.GetRepository<GradingCriteria, int>();
+            var model = _mapper.Map<GradingCriteria, GradingCriteriaAocaViewModel>(criteriaRepo.GetById(id));
+            if (model == null)
+                return null;
+
+            return model;
+        }
+
+        public void CriteriaSave(ServiceRequestModel<GradingCriteriaAocaViewModel> serviceRequestModel)
+        {
+            var model = serviceRequestModel.Model;
+
+            var criteriaAocaMapRepo = _genericUnitOfWork.GetRepository<GradingCriteriaAocaMap, int>();
+            if (!criteriaAocaMapRepo.GetAll(c => c.GradingCriteria.Name == model.Name && (model.Id == 0 || c.GradingCriteria.Id != model.Id)).Any())
+            {
+                if (model.IsActive == false)
+                {
+                    if (_genericUnitOfWork.GetRepository<AOCA, Guid>().GetAll(b => b.AOCAAssessment.IsCompleted == false && b.Observation.GradingCriteriaId == model.Id).Any())
+                    {
+                        throw new ArgumentNullException($"There are partially saved assessments with this criteria. So, this criteria can't be inactive.", innerException: null);
+                    }
+                }
+
+                var gradingCriteria = new GradingCriteria()
+                {
+                    Name = model.Name,
+                    IsActive = model.IsActive,
+                    DisplayOrder = model.DisplayOrder
+                };
+
+                if (model.Id == 0)
+                {
+                    criteriaAocaMapRepo.Add(new GradingCriteriaAocaMap() { GradingCriteria = gradingCriteria });
+                }
+                else
+                {
+                    var criteriaAocaRepo = _genericUnitOfWork.GetRepository<GradingCriteria, int>();
+                    gradingCriteria.Id = model.Id;
+                    criteriaAocaRepo.Update(gradingCriteria);
+                }
+
+
+                //criteriaAocaMapRepo.Add(
+                //    new GradingCriteriaAocaMap()
+                //    {
+                //        GradingCriteria = new GradingCriteria()
+                //        {
+                //            Name = model.Name,
+                //            IsActive = model.IsActive,
+                //            DisplayOrder = model.DisplayOrder
+                //        }
+                //    }
+                //);
+                _genericUnitOfWork.SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentNullException($"Criteria name can't be duplicate.", innerException: null);
+            }
+        }
+        #endregion
+
+        #region Instruction Page
+
+        public IList<AOCAInstructionPageViewModel> ListInstructionPage()
+        {
+
+            var sql = $@"SELECT acts.*, ac.[Name] AS TypeName, aty.[Name] AS BusinessTypeName, asv.[Name] AS ServiceName, 
+                            aip.Id, aip.DocumentName AS DocumentName, aip.DocumentPath AS DocumentPath, aip.UpdatedOn AS UpdatedOn
+                        FROM 
+	                        (select 1 as AgentCategoryId, 1 as AgentTypeId,1 as AgentServiceId
+	                        union all select 2 as AgentCategoryId, 2 as AgentTypeId,2 as AgentServiceId
+	                        union all select 2 as AgentCategoryId, 1 as AgentTypeId, 2 as AgentServiceId
+	                        union all select 2 as AgentCategoryId, 1 as AgentTypeId,3 as AgentServiceId
+	                        union all select 2 as AgentCategoryId, 3 as AgentTypeId,2 as AgentServiceId
+	                        union all select 2 as AgentCategoryId, 3 as AgentTypeId,3 as AgentServiceId
+	                        union all select 2 as AgentCategoryId, 4 as AgentTypeId,2 as AgentServiceId
+	                        union all select 2 as AgentCategoryId, 4 as AgentTypeId,1 as AgentServiceId
+	                        union all select 2 as AgentCategoryId, 5 as AgentTypeId, 3 as AgentServiceId) acts 
+	                        INNER JOIN AgentCategory ac ON acts.AgentCategoryId = ac.Id
+	                        INNER JOIN AgentType aty ON acts.AgentTypeId = aty.Id 
+	                        INNER JOIN AgentService asv ON acts.AgentServiceId = asv.Id
+                            LEFT JOIN AOCAInstructionPage aip ON acts.AgentCategoryId = aip.AgentCategoryId 
+                                                                AND acts.AgentTypeId = aip.AgentTypeId 
+                                                                AND acts.AgentServiceId = aip.AgentServiceId";
+
+            var aocaInstructionPageList = _genericUnitOfWork.SqlQuery<AOCAInstructionPageViewModel>(sql).ToList();
+            return aocaInstructionPageList;
+        }
+        public AOCAInstructionPageViewModel GetInstructionPageByAgentId(Guid id)
+        {
+            var agent = _genericUnitOfWork.GetRepository<Agent, Guid>().GetById(id);
+            if (agent == null)
+                return null;
+
+            var instructionPage = _genericUnitOfWork.GetRepository<AOCAInstructionPage, Guid>().GetAll(i => i.AgentCategoryId == agent.AgentCategoryId
+                                                                    && i.AgentTypeId == agent.AgentTypeId
+                                                                    && i.AgentServiceId == agent.AgentServiceId).FirstOrDefault();
+            if (instructionPage == null)
+                return null;
+
+            var aocaInstructionPageVM = new AOCAInstructionPageViewModel();
+
+            _mapper.Map<AOCAInstructionPage, AOCAInstructionPageViewModel>(instructionPage, aocaInstructionPageVM);
+
+            return aocaInstructionPageVM;
+        }
+
+        public void UpdateInstructionPage(ServiceRequestModel<List<AOCAInstructionPageViewModel>> serviceRequestModel)
+        {
+            var aocaInstructionPageRepo = _genericUnitOfWork.GetRepository<AOCAInstructionPage, int>();
+            var aocaInstuctionPages = aocaInstructionPageRepo.GetAll().ToList<AOCAInstructionPage>();
+            DateTime? updatedOnDate;
+
+            foreach (var model in serviceRequestModel.Model)
+            {
+
+                updatedOnDate = model.UpdatedOn;
+                if (model.Id == null || model.Id == Guid.Empty)
+                {
+                    model.Id = Guid.NewGuid();
+                }
+                else
+                {
+                    if (aocaInstuctionPages.Any(i => i.Id == model.Id && i.DocumentPath != null && i.DocumentPath != ""
+                                                 && (model.DocumentPath == "" || model.DocumentPath == null)))
+                    {
+                        updatedOnDate = DateTime.Now;
+                    }
+                }
+
+                aocaInstructionPageRepo.AddOrUpdate(
+                    new AOCAInstructionPage()
+                    {
+                        Id = (Guid)model.Id,
+                        AgentCategoryId = model.AgentCategoryId,
+                        AgentTypeId = model.AgentTypeId,
+                        AgentServiceId = model.AgentServiceId,
+                        DocumentName = model.DocumentName,
+                        DocumentPath = model.DocumentPath,
+                        UpdatedOn = updatedOnDate
+                    }
+                );
+            }
+
+            _genericUnitOfWork.SaveChanges();
+        }
+        #endregion
+
+        #region Observation
+        public IList<AocaObservation> ListAocaObservation()
+        {
+            var sql = $@"EXECUTE spGetAOCAObservation";
+            var listAocamap = _genericUnitOfWork.SqlQuery<AocaObservation>(sql).ToList();
+
+            //return listAocamap.GroupBy(p => p.GradingCriteria, (key, list) => new GradingCriteriaAocaObservation()
+            //{
+            //    Name = key,
+            //    Observations = list.ToList()
+            //}).ToList();
+
+            return listAocamap;
+        }
+
+        public void UpdateAocaObservation(ServiceRequestModel<List<AocaObservation>> serviceRequestModel)
+        {
+            var repo = _genericUnitOfWork.GetRepository<AocaObservationMap, Guid>();
+            var repoAoca = _genericUnitOfWork.GetRepository<AOCA, Guid>();
+            var observationRepo = _genericUnitOfWork.GetRepository<Observation, Guid>();
+            var naScoreRepo = _genericUnitOfWork.GetRepository<NAScoringGuide, Guid>();
+
+            var entityList = repo.GetAll();
+            var naScoreList = naScoreRepo.GetAll();
+
+            List<AocaObservationMapViewModel> aocaObservationMapVMList = new List<AocaObservationMapViewModel>();
+            List<NAScoringGuideViewModel> nAScoringGuideVMList = new List<NAScoringGuideViewModel>();
+            var displayOrder = 0;
+            var criteriaId = 0;
+
+            foreach (var observation in serviceRequestModel.Model.OrderBy(o => o.GradingCriteriaId).ThenBy(o => o.ObservationOrder))
+            {
+                //var AocaObservationMapVMList = new List<AocaObservationMapViewModel> 
+                //{
+                //        new AocaObservationMapViewModel() { AgentCategoryId = 1, AgentServiceId = 1, AgentTypeId = 1, IsActive = observation.HA_MC_RA, ObservationId = observation.ObservationId },
+                //        new AocaObservationMapViewModel() { AgentCategoryId = 2, AgentServiceId = 2, AgentTypeId = 2, IsActive = observation.FA_TA_MCRA, ObservationId = observation.ObservationId },
+                //        new AocaObservationMapViewModel() { AgentCategoryId = 2, AgentServiceId = 2, AgentTypeId = 1, IsActive = observation.FA_MC_MCRA, ObservationId = observation.ObservationId },
+                //        new AocaObservationMapViewModel() { AgentCategoryId = 2, AgentServiceId = 3, AgentTypeId = 1, IsActive = observation.FA_MC_MC, ObservationId = observation.ObservationId },
+                //        new AocaObservationMapViewModel() { AgentCategoryId = 2, AgentServiceId = 2, AgentTypeId = 3, IsActive = observation.FA_H_MCRC, ObservationId = observation.ObservationId },
+                //        new AocaObservationMapViewModel() { AgentCategoryId = 2, AgentServiceId = 3, AgentTypeId = 3, IsActive = observation.FA_H_MC, ObservationId = observation.ObservationId },
+                //        new AocaObservationMapViewModel() { AgentCategoryId = 2, AgentServiceId = 2, AgentTypeId = 4, IsActive = observation.FA_NME_MCRA, ObservationId = observation.ObservationId },
+                //        new AocaObservationMapViewModel() { AgentCategoryId = 2, AgentServiceId = 1, AgentTypeId = 4, IsActive = observation.FA_NME_RA, ObservationId = observation.ObservationId },
+                //        new AocaObservationMapViewModel() { AgentCategoryId = 2, AgentServiceId = 3, AgentTypeId = 5, IsActive = observation.FA_DF_MC, ObservationId = observation.ObservationId }
+                //};
+
+                if (observation.ObservationId == null || observation.ObservationId == Guid.Empty)
+                {
+                    var newGuid = Guid.NewGuid();
+
+                    if (criteriaId != observation.GradingCriteriaId)
+                    {
+                        criteriaId = observation.GradingCriteriaId;
+                        var criteriaObservation = observationRepo.GetAll(o => o.GradingCriteriaId == observation.GradingCriteriaId);
+                        displayOrder = criteriaObservation.Any() ? criteriaObservation.Max(o => o.DisplayOrder) : 0;
+                    }
+                    displayOrder++;
+
+                    observationRepo.Add(new Observation()
+                    {
+                        Id = newGuid,
+                        GradingCriteriaId = observation.GradingCriteriaId,
+                        Title = observation.Title,
+                        Description = observation.Description,
+                        IsActive = true,
+                        DisplayOrder = displayOrder,
+                        TypeId = ObservationType.AOCA,
+                        ParticularHistories = new ObservationParticularHistory[] {
+                            new ObservationParticularHistory{
+                                Id = Guid.NewGuid(),
+                                Title = observation.Title,
+                                CreatedDateTime = GeneralService.CurrentDate,
+                                Description = observation.Description,
+                                ObservationType = ObservationType.AOCA
+                            }
+                        }
+                    });
+                    observation.ObservationId = newGuid;
+                }
+
+                aocaObservationMapVMList.AddRange(
+                    new List<AocaObservationMapViewModel> {
+                        new AocaObservationMapViewModel() { AgentCategoryId = 1, AgentServiceId = 1, AgentTypeId = 1, IsActive = observation.HA_MC_RA, ObservationId = observation.ObservationId },
+                        new AocaObservationMapViewModel() { AgentCategoryId = 2, AgentServiceId = 2, AgentTypeId = 2, IsActive = observation.FA_TA_MCRA, ObservationId = observation.ObservationId },
+                        new AocaObservationMapViewModel() { AgentCategoryId = 2, AgentServiceId = 2, AgentTypeId = 1, IsActive = observation.FA_MC_MCRA, ObservationId = observation.ObservationId },
+                        new AocaObservationMapViewModel() { AgentCategoryId = 2, AgentServiceId = 3, AgentTypeId = 1, IsActive = observation.FA_MC_MC, ObservationId = observation.ObservationId },
+                        new AocaObservationMapViewModel() { AgentCategoryId = 2, AgentServiceId = 2, AgentTypeId = 3, IsActive = observation.FA_H_MCRC, ObservationId = observation.ObservationId },
+                        new AocaObservationMapViewModel() { AgentCategoryId = 2, AgentServiceId = 3, AgentTypeId = 3, IsActive = observation.FA_H_MC, ObservationId = observation.ObservationId },
+                        new AocaObservationMapViewModel() { AgentCategoryId = 2, AgentServiceId = 2, AgentTypeId = 4, IsActive = observation.FA_NME_MCRA, ObservationId = observation.ObservationId },
+                        new AocaObservationMapViewModel() { AgentCategoryId = 2, AgentServiceId = 1, AgentTypeId = 4, IsActive = observation.FA_NME_RA, ObservationId = observation.ObservationId },
+                        new AocaObservationMapViewModel() { AgentCategoryId = 2, AgentServiceId = 3, AgentTypeId = 5, IsActive = observation.FA_DF_MC, ObservationId = observation.ObservationId }
+                    }
+                );
+
+                nAScoringGuideVMList.AddRange(
+                    new List<NAScoringGuideViewModel> {
+                        new NAScoringGuideViewModel() { ObervationId = observation.ObservationId, ScoringGuideId = 1, IsActive = observation.Score1To5 || observation.Score135 || observation.Score1And5 },
+                        new NAScoringGuideViewModel() { ObervationId = observation.ObservationId, ScoringGuideId = 2, IsActive = observation.Score1To5 },
+                        new NAScoringGuideViewModel() { ObervationId = observation.ObservationId, ScoringGuideId = 3, IsActive = observation.Score1To5 || observation.Score135 },
+                        new NAScoringGuideViewModel() { ObervationId = observation.ObservationId, ScoringGuideId = 4, IsActive = observation.Score1To5 },
+                        new NAScoringGuideViewModel() { ObervationId = observation.ObservationId, ScoringGuideId = 5, IsActive = observation.Score1To5 || observation.Score135 || observation.Score1And5 }
+                    }
+                );
+            }
+            var aocaCriteriaObservationList = observationRepo.GetAll(o => o.GradingCriteria.GradingCriteriaAocaMap != null, o => o.GradingCriteria).ToList();
+            var dtToday = DateTime.Today;
+            AocaObservationMap entity;
+            var joinRepo = (from i in aocaObservationMapVMList
+                            join b in entityList
+                            on new { i.AgentCategoryId, i.AgentServiceId, i.AgentTypeId, i.ObservationId }
+                            equals new { b.AgentCategoryId, b.AgentServiceId, b.AgentTypeId, b.ObservationId } into other
+                            from baseAoca in other.DefaultIfEmpty()
+                            select new
+                            {
+                                Aoca = i,
+                                AocaMap = baseAoca
+                            }).ToList();
+
+            joinRepo.Where(p => !p.Aoca.IsActive && p.AocaMap != null).ToList().ForEach(a =>
+            {
+                entity =
+                    entityList.SingleOrDefault(
+                        p =>
+                            p.AgentCategoryId == a.Aoca.AgentCategoryId && p.AgentTypeId == a.Aoca.AgentTypeId &&
+                            p.AgentServiceId == a.Aoca.AgentServiceId && p.ObservationId == a.AocaMap.ObservationId);
+                if (repoAoca.GetAll().Any(ra => ra.ObservationId == a.AocaMap.ObservationId && ra.AOCAAssessment.IsCompleted == false))
+                    throw new ArgumentNullException($" Observation with title '{entity.Observation.Title}', agent category '{entity.AgentCategory.Name}', agent type '{entity.AgentType.Name}' and  agent service '{entity.AgentService.Name}' cannot be removed because there are still incomplete assessments present for this observation.", innerException: null);
+
+                repo.Delete(entity);
+            });
+
+            var newToInsert = joinRepo.Where(p => p.Aoca.IsActive && p.AocaMap == null).ToList();
+            newToInsert.ForEach(a =>
+            {
+                repo.Add(new AocaObservationMap()
+                {
+
+                    ObservationId = a.Aoca.ObservationId,
+                    AgentCategoryId = a.Aoca.AgentCategoryId,
+                    AgentTypeId = a.Aoca.AgentTypeId,
+                    AgentServiceId = a.Aoca.AgentServiceId,
+                });
+            });
+
+
+            /*NA Score Guide*/
+            var scoreJoinRepo = (from i in nAScoringGuideVMList
+                                 join b in naScoreList
+                            on new { i.ObervationId, i.ScoringGuideId }
+                            equals new { b.ObervationId, b.ScoringGuideId } into other
+                                 from baseScore in other.DefaultIfEmpty()
+                                 select new
+                                 {
+                                     NAScore = i,
+                                     NAScoreVM = baseScore
+                                 }).ToList();
+
+            scoreJoinRepo.Where(p => p.NAScore.IsActive && p.NAScoreVM != null).ToList().ForEach(a =>
+            {
+                var naScore =
+                    naScoreList.SingleOrDefault(
+                        p =>
+                            p.ScoringGuideId == a.NAScore.ScoringGuideId && p.ObervationId == a.NAScoreVM.ObervationId);
+
+                naScoreRepo.Delete(naScore);
+            });
+
+            Observation aocaCriteriaObservation;
+
+            var naScoreInsertList = scoreJoinRepo.Where(p => !p.NAScore.IsActive && p.NAScoreVM == null).ToList();
+            naScoreInsertList.ForEach(a =>
+            {
+                aocaCriteriaObservation = aocaCriteriaObservationList.FirstOrDefault(o => o.Id == a.NAScore.ObervationId);
+
+                if (repoAoca.GetAll(ra => ra.ObservationId == a.NAScore.ObervationId && ra.AOCAAssessment.IsCompleted == false).Any())
+                    throw new ArgumentNullException($"Observation with criteria '{aocaCriteriaObservation.GradingCriteria.Name}' and title '{  aocaCriteriaObservation.Title}',  cannot be removed because there are still incomplete assessments present for this observation.", innerException: null);
+
+                naScoreRepo.Add(new NAScoringGuide()
+                {
+                    ObervationId = a.NAScore.ObervationId,
+                    ScoringGuideId = a.NAScore.ScoringGuideId
+                });
+            });
+
+            _genericUnitOfWork.SaveChanges();
+        }
+
+        public void AddObservationParticularHistory(ServiceRequestModel<ObservationParticularHistoryViewModel> serviceRequestModel)
+        {
+            var repo = _genericUnitOfWork.GetRepository<ObservationParticularHistory, Guid>();
+            var mapped = _mapper.Map<ObservationParticularHistoryViewModel, ObservationParticularHistory>(serviceRequestModel.Model);
+            mapped.Id = Guid.NewGuid();
+            mapped.CreatedDateTime = GeneralService.CurrentDate;
+            repo.Add(mapped);
+            _genericUnitOfWork.SaveChanges();
+        }
+        #endregion
+
+        private void SendCarrRequestedEmailsToAllAgentManagementUsers(AOCANotificationViewModel aocaNotificationViewModel)
+        {
+            if (aocaNotificationViewModel == null)
+                return;
+
+            var agentEmails = _genericUnitOfWork.GetRepository<User, Guid>().GetAll().Where(c => c.Roles.Any(p => GeneralService.AgentManagementDepartmentAgents.Any(q => q == p.Role.Id)));
+
+
+            var emailRequest = new EmailRequest<AOCANotificationViewModel>()
+            {
+                Model = aocaNotificationViewModel
+            };
+            if (!string.IsNullOrEmpty(aocaNotificationViewModel.ToEmail))
+                emailRequest.To.Add(new System.Net.Mail.MailAddress(aocaNotificationViewModel.ToEmail));
+
+            if (!string.IsNullOrEmpty(aocaNotificationViewModel.CcEmail))
+                emailRequest.CC.Add(new System.Net.Mail.MailAddress(aocaNotificationViewModel.CcEmail));
+
+
+            agentEmails.ForEachAsync(agent => emailRequest.To.Add(new System.Net.Mail.MailAddress(agent.Email)));
+            _emailComposer.SendAOCAEmails(emailRequest, EmailTemplate.AocacarrRequested, $"MBOS: CARR(s) for Assessment No: {aocaNotificationViewModel.AssessmentNo}");
+        }
+        private void SendCarrResponsedEmailToAreaAdministrator(AOCANotificationViewModel aocaNotificationViewModel)
+        {
+            if (aocaNotificationViewModel == null) return;
+            var emailRequest = new EmailRequest<AOCANotificationViewModel>()
+            {
+                Model = aocaNotificationViewModel
+            };
+            emailRequest.To.Add(new System.Net.Mail.MailAddress(aocaNotificationViewModel.ToEmail));
+            _emailComposer.SendAOCAEmails(emailRequest, EmailTemplate.AocacarrResponsed, $"MBOS: Report for CARR with Reference No: {aocaNotificationViewModel.AOCACARRReferenceNo}");
+        }
+        private void SendCarrResponseVerifiedEmailToAgentManagement(AOCANotificationViewModel aocaNotificationViewModel)
+        {
+            if (aocaNotificationViewModel == null) return;
+            var emailRequest = new EmailRequest<AOCANotificationViewModel>()
+            {
+                Model = aocaNotificationViewModel
+            };
+
+
+            if (!string.IsNullOrEmpty(aocaNotificationViewModel.ToEmail))
+                emailRequest.To.Add(new System.Net.Mail.MailAddress(aocaNotificationViewModel.ToEmail));
+
+
+            aocaNotificationViewModel.ToEmails.ForEach(c => emailRequest.To.Add(new System.Net.Mail.MailAddress(c)));
+            _emailComposer.SendAOCAEmails(emailRequest, EmailTemplate.AocacarrResponseVerified, $"MBOS: CARR with reference no: {aocaNotificationViewModel.AOCACARRReferenceNo} {aocaNotificationViewModel.VerifiedRejected} ");
+        }
+    }
+}
