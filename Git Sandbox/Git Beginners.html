@@ -31,11 +31,11 @@
   <h3>A) Create Project and Push into Git</h3>
   <pre class="limit-10">
     <code class='language-sql'>
-      Goto Project Folder  eg:TestFolder
+      Goto Project Folder  eg:TestFolder  at Your Computer
       git init
       git add .
       git commit -m "first commit"
-      git remote add origin "location"
+      git remote add origin "location"   //  Goto Github and Create a project eg. TestProject and after creating get location of that project
       git push -u origin master
   </code>
 </pre>
@@ -70,6 +70,31 @@
 </pre>
   <b>Then don't forget to pull Shared branch :)</b>
   ==========================================================
+
+<h2>Check Remote Owner</h2>
+<pre>
+  <code class="language-csharp">
+    git remote -v
+  
+
+//Example
+D:\Pathway Project\GPS_VTS\Frontend\gps_vts>git remote -v
+origin  https://gitlab.com/szon.clink/gps_vts.git (fetch)
+origin  https://gitlab.com/szon.clink/gps_vts.git (push)
+  </code
+
+
+
+
+
+
+
+
+
+
+
+
+  ================================================================
   <h2>Merge Conflict Resolving</h2>
 
   <p><span style="color: #ff0000;"><strong><span style="font-size: 14pt;">Resolving Merge

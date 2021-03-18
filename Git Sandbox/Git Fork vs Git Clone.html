@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+  <link rel="stylesheet" href="../Ef/css/bootstrap.css">
+  <link rel="stylesheet" href="../Ef/css/bootstrap-grid.css">
+  <link rel="stylesheet" href="../Ef/css/bootstrap-reboot.css">
+  <link rel="stylesheet" href="../Ef/css/dracula.css">
+  <link rel="stylesheet" href="../Ef/css/dracula-prism.css">
+  <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+<p><span style="color: #e03e2d;"><strong><span style="font-size: 18pt;">Git Terminology</span></strong></span></p>
+<p><span style="color: #e03e2d;"><strong><span style="font-size: 18pt;"><img src="https://i.ibb.co/xCR9VBK/simple-git.jpg" /></span></strong></span></p>
+<p>&nbsp;</p>
+<p><span style="color: #e03e2d;"><strong><span style="font-size: 18pt;"><img src="https://i.ibb.co/wpTL4hL/gittransport.png" /></span></strong></span></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><span style="color: #e03e2d;"><strong><span style="font-size: 18pt;">Working Area</span></strong></span></p>
+<ul>
+<li><span style="font-size: 18pt;">The Working Area is the area where you are currently working. It is where your files live. This area is also known as the &ldquo;untracked&rdquo; area of git.</span></li>
+<li><span style="font-size: 18pt;">Any things in working Area if not saved in git will not be saved to git.</span></li>
+</ul>
+<p><span style="font-size: 18pt;">Check a file in Working Area: This is unstaging area ie. git isnot tracking this file.</span></p>
+<p><span style="font-size: 18pt;"><img style="display: block; margin-left: auto; margin-right: auto;" src="https://miro.medium.com/max/796/1*g-r4SeerMdhPafYQmkesKw.jpeg" width="637" height="314" /></span></p>
+<p><span style="color: #e03e2d;"><strong><span style="font-size: 18pt;">Staging Area:</span></strong></span></p>
+<ul>
+<li><span style="font-size: 18pt;">The Staging Area is when git starts tracking and saving changes that occur in files. </span></li>
+<li><span style="font-size: 18pt;">These saved changes reflect in the .git directory</span></li>
+<li><span style="font-size: 18pt;">After you type: <span style="color: #2dc26b;"><strong>git add .&nbsp;</strong></span> will goto staging area.</span></li>
+</ul>
+<p><span style="color: #e03e2d;"><strong><span style="font-size: 18pt;">Local repository</span></strong></span></p>
+<ul>
+<li><span style="font-size: 18pt;">The git command&nbsp;<strong><code>git commit</code></strong>&nbsp;takes all changes in the Staging Area, wraps them together and puts them in your Local Repository.&nbsp; </span></li>
+<li><span style="font-size: 18pt;">After commit , stash area will be empty.</span></li>
+</ul>
+<p><span style="font-size: 18pt; color: #e03e2d;">Remote Repository</span></p>
+<p><span style="font-size: 18pt;">This is remote located repository.</span></p>
+<p>&nbsp;</p>
+<hr />
+<p><span style="color: #e03e2d;"><strong><span style="font-size: 18pt;">Git Fork vs Git Clone</span></strong></span></p>
+<p><span style="font-size: 18pt;"><img src="https://i.ibb.co/rxQRbYz/upstream-origin.png" />&nbsp;</span></p>
+<p><span style="font-size: 18pt;"><strong><span style="color: #2dc26b;">Central Repository :</span></strong> Say Company Repo. Called as UpStream Repo</span></p>
+<p><span style="font-size: 18pt;"><strong><span style="color: #2dc26b;">Personal Repository: </span></strong>When you fork a repository then , it will get copied to Personal GitHub. Called as Origin Repo</span></p>
+<p><span style="font-size: 18pt;"><span style="color: #2dc26b;"><strong>Local Repository :</strong></span> When you clone any remote repository then will get copied to Local Work Space.</span></p>
+
+<pre>
+    <code class="language-csharp">
+      git push origin master  // This tells pushing the code to Origin Repository.
+    </code>
+  </pre>
+
+
+<table style="border-collapse: collapse; width: 100%; height: 133px;" border="1">
+<tbody>
+<tr style="height: 33px;">
+<td style="width: 49.0652%; height: 33px; color: white; background: black;"><span style="font-size: 18pt;">Fork</span></td>
+<td style="width: 49.0652%; height: 33px; color: white; background: black;"><span style="font-size: 18pt;">Clone</span></td>
+</tr>
+<tr style="height: 33px;">
+<td style="width: 49.0652%; height: 33px;"><span style="font-size: 18pt;"><em>Forking is done on the GitHub Account&nbsp;</em> </span></td>
+<td style="width: 49.0652%; height: 33px;"><span style="font-size: 18pt;"><em>Cloning is done using Git.&nbsp;</em> </span></td>
+</tr>
+<tr style="height: 67px;">
+<td style="width: 49.0652%; height: 67px;"><span style="font-size: 18pt;"><em>When you fork a repository then , it will get copied to Personal GitHub.ie .Remotely located</em></span></td>
+<td style="width: 49.0652%; height: 67px;"><span style="font-size: 18pt;"><em>When you clone any remote repository then will get copied to Local Work Space.</em></span></td>
+</tr>
+</tbody>
+</table>
+<p><img src="https://cdn-anlbg.nitrocdn.com/dKKErbUyoNysjatCgltCzbTJJilTMwLi/assets/static/optimized/rev-4f664c4/wp-content/gallery/git/Difference-between-Git-Clone-and-Git-Fork.png" /></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 24pt;">Use of Pull Request ( Used if you want to be contributor in Central Github)</span></p>
+<p><span style="font-size: 18pt;"><em>Changes made to the forked repository can be merged with the original repository via a&nbsp;<span style="color: #e03e2d;"><strong>pull request</strong>.</span> Pull request knocks the repository owner and tell that &ldquo;<strong><span style="color: #2dc26b;">I have made some changes, please merge these changes to your repository if you like it</span>&rdquo;</strong>. On the other hand, changes made on the local machine (cloned repository) can be pushed to the upstream repository directly. For this, the user must have the write access for the repository otherwise this is not possible. If the user does not have the write access, the only way to go is through the forked request. So in that case, the changes made in the cloned repository are first pushed to the forked repository and then a pull request is created. It is a better option to fork before clone if the user is not declared as a contributor and it is a third party repository (not of the organization).</em></span></p>
+<p><span style="font-size: 18pt;"><em>Suppose you want to be vue contributer then just fork their repository and this will bring to my Remote Repository .From my Remote Repository clone to my Local Repostiory. Then make changes in local repository and push it to my Own Remote Repository .Then if you want to contribute to vue project, then just create "Pull Request" request to Central Repository ie. it is saying &ldquo;<strong><span style="color: #2dc26b;">I have made some changes, please merge these changes to your repository if you like it</span>&rdquo;</strong>. Then vue head person just review the pull request and if it is useful then&nbsp;</em></span></p>
+<p><span style="font-size: 18pt;"><em>merge the repository to central vue repository.</em></span></p>
+<p><span style="font-size: 18pt;"><em>Flow looks like this:</em></span></p>
+<p><span style="font-size: 18pt;"><em><img src="https://i.ibb.co/Bny35ps/work-flow-pull-request.png" /></em></span></p>
+<hr />
+<p>&nbsp;</p>
+
+
+
+<script src="../EF/js/prism.js"></script>
+<script type="text/javascript">
+  Prism.plugins.NormalizeWhitespace.setDefaults(
+    {
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+      // 'break-lines': 10,
+      // 'indent': 2,
+      // 'remove-initial-line-feed': false,
+      // 'tabs-to-spaces': 4,
+      // 'spaces-to-tabs': 4
+    });
+</script>
+</body>
+
+</html>
