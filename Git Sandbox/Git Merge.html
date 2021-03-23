@@ -15,32 +15,7 @@
 </head>
 
 <body>
-    <h2 id="when-to-delete-branches"><span style="color: #000000;"><strong>When to Delete branches</strong></span></h2>
-    <p><strong><span style="font-size: 14pt; color: #000000;">Repos often have a&nbsp;<span
-                    style="color: #2dc26b;"><code>master</code>&nbsp;</span>branch for the main codebase and developers
-                create other branches to work on different features.</span></strong></p>
-    <p><strong><span style="font-size: 14pt; color: #000000;">Once work is completed on a feature, <span
-                    style="color: #3598db;">it is often recommended to delete the branch.</span></span></strong></p>
-    <div class="row">
-        <div class="col-lg-6">
-            <h4>Delete Branch From Remote</h4>
-            <pre>
-        <code class="language-csharp">
-            git push origin --delete remoteBranchName
-        </code>
-    </pre>
-        </div>
-
-        <div class="col-lg-6">
-            <h4>Delete Branch Globally</h4>
-            <pre>
-        <code class="language-csharp">
-            git branch -d localBranchName
-        </code>
-    </pre>
-        </div>
-    </div>
-    <br>
+   
 
 <h2>Merge Type</h2>
 
@@ -77,6 +52,50 @@ git commit -m "make changes for c4 commit"
 git commit -m "make changes for c5 commit"
 git checkout master     
 git merge devDiwas  
+
+    </code>
+</pre>
+
+
+<hr>
+<h2>3 Way Merge Concept</h2>
+<img src="https://i.ibb.co/N3DVtNW/3-way-merge.jpg">
+
+<p><span style="font-size: 18pt;">From <strong>master C2 commit</strong>, <strong><span style="color: #e03e2d;">devBranch</span></strong> is created and <strong><span style="color: #2dc26b;">devBranch Moves on</span></strong> also at the same time <span style="color: #e03e2d;">master also goes on</span>.</span></p>
+<p><span style="font-size: 18pt;">So, to get back master data to devBranch, we <span style="color: #f1c40f;"><strong>pull the master branch</strong></span> and get in devBranch.</span></p>
+
+
+<pre>
+    <code class="language-csharp">
+git init
+// ... make changes 
+git commit -m "added file.text C1"
+// ... make changes
+git commit -m "added file2.text c2"
+git checkout -b devBranch
+// ... make changes
+git commit -m "make changes for c3 commit"
+// ... make change
+git commit -m "make changes for c4 commit"
+// ... make changes
+git commit -m "make changes for c5 commit"
+git checkout master     
+git merge devBranch  
+
+
+//Some works on Master Branch 
+// .. make changes on master branch
+git commit -m "make changes on C6 commit"
+// ... make changes 
+git commit -m "make changes and commit C7"
+
+
+//Then you want to get master Data to DevBranch then you have to pull master first , because master is ahead  from parent of devBranch 
+git pull origin master  // you may get conflict
+
+//Or
+git checkout master
+git merge devBranch
 
     </code>
 </pre>
