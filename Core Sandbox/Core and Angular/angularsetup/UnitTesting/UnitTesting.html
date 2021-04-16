@@ -1,0 +1,290 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../../css/bootstrap.css">
+    <link rel="stylesheet" href="../../css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../../css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../../css/dracula.css">
+    <link rel="stylesheet" href="../../css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+<style>
+    kbd {
+        background: black
+    }
+</style>
+<body>
+
+
+
+<div class="row">
+    <div class="col-lg-6">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+var MyApp = angular.module("MyAppModule", []);
+
+MyApp.filter('reverse', [function () {
+    return function (string) {
+        return string.split('').reverse().join('');
+    }
+}]);
+            </code>
+        </pre>
+    </div>
+
+    <div class="col-lg-6">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+describe('Calculator App Tests', function () {
+
+    beforeEach(module('MyAppModule'));
+
+    describe('reversestringfiltertest', function () {
+
+        var reverse;
+        beforeEach(inject(function ($filter) { //initialize filter
+            reverse = $filter('reverse', {});
+        }));
+
+        it('Should reverse a string', function () { 
+            expect(reverse('india')).toBe('aidni');
+            expect(reverse('don')).toBe('nod'); 
+        });
+
+    });
+
+
+});
+            </code>
+        </pre>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-lg-6">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+angular.module('controllers', [])
+  .controller('FirstController', ['$scope', 'dataSvc', function($scope, dataSvc){
+    $scope.saveData = function(){
+      dataSvc.save($scope.bookDetails).then(function(result){
+        $scope.bookDetails = {};
+        $scope.bookForm.$setPristine();
+      });
+    };
+
+    $scope.numberPattern = /^\d*$/;
+  }])
+  .controller('SecondController', function(dataSvc){
+    var vm=this;
+
+    vm.saveData = function(){
+      dataSvc.save(vm.bookDetails).then(function(result){
+        vm.bookDetails = {};
+        vm.bookForm.$setPristine();
+      });
+    };
+
+    vm.numberPattern = /^\d*$/;
+  });
+
+            </code>
+        </pre>
+    </div>
+
+    <div class="col-lg-6">
+        <pre data-keep-tags="kbd, em">
+            <code class="language-javascript">
+describe('testing controllers', function(){
+var mockDataSvc, rootScope, scope, passPromise, firstController, secondController;
+
+beforeEach(function(){
+    module(function($provide){
+    $provide.factory('dataSvc', ['$q', function($q){
+        function save(data){
+        if(passPromise){
+            return $q.when();
+        } else {
+            return $q.reject();
+        }
+        }
+
+        return {
+        save: save
+        };
+    }]);
+    });
+
+    module('controllers');
+});
+
+beforeEach(inject(function($rootScope, $controller, dataSvc){
+    rootScope = $rootScope;
+    scope = $rootScope.$new();
+    mockDataSvc = dataSvc;
+    spyOn(mockDataSvc, 'save').and.callThrough();
+}));
+
+describe('firstController', function(){
+    beforeEach(inject(function($controller){
+    firstController = $controller('FirstController', {
+        $scope: scope,
+        dataSvc: mockDataSvc
+    });
+    }));
+
+    it('should have assigned pattern to number pattern', function(){
+    expect(scope.numberPattern).toBeDefined();
+    expect(scope.numberPattern.test("100")).toBe(true);
+    expect(scope.numberPattern.test("100aa")).toBe(false);
+    });
+
+    it('should call save method on dataSvc on calling saveData', function(){
+    scope.bookDetails = {
+        bookId: 1,
+        name: "Mastering Web application development using AngularJS",
+        author: "Peter and Pawel"
+    };
+    scope.bookForm = {
+        $setPristine: jasmine.createSpy('$setPristine')
+    };
+    passPromise = true;
+    scope.saveData();
+    scope.$digest();
+
+    expect(mockDataSvc.save).toHaveBeenCalled();
+    expect(scope.bookDetails).toEqual({});
+    expect(scope.bookForm.$setPristine).toHaveBeenCalled();
+    });
+});
+
+describe('secondController', function(){
+    beforeEach(inject(function($controller){
+    secondController = $controller('SecondController',{
+        dataSvc: mockDataSvc
+    });
+    }));
+
+    it('should have set pattern to match numbers', function(){
+    expect(secondController.numberPattern).toBeDefined();
+    expect(secondController.numberPattern.test("100")).toBe(true);
+    expect(secondController.numberPattern.test("100aa")).toBe(false);
+    });
+
+    it('should call save method on dataSvc on calling saveData', function(){
+    secondController.bookDetails ={
+        bookId: 1,
+        name: "Mastering Web application development using AngularJS",
+        author: "Peter and Pawel"
+    };
+    secondController.bookForm ={
+        $setPristine: jasmine.createSpy('$setPristine')
+    };
+    passPromise = true;
+    secondController.saveData();
+    rootScope.$digest();
+
+    expect(mockDataSvc.save).toHaveBeenCalled();
+    expect(secondController.bookDetails).toEqual({});
+    expect(secondController.bookForm.$setPristine).toHaveBeenCalled();
+    });
+});
+});
+                  
+            </code>
+        </pre>
+    </div>
+</div>
+
+<script src="../../js/prism.js"></script>
+<script type="text/javascript">
+    Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true,
+            // 'break-lines': 10,
+            // 'indent': 2,
+            // 'remove-initial-line-feed': false,
+            // 'tabs-to-spaces': 4,
+            // 'spaces-to-tabs': 4
+        });
+
+
+    (function () {
+        if (!self.Prism) {
+            return;
+        }
+
+        var div = document.createElement('div');
+
+        Prism.hooks.add('before-highlight', function (env) {
+            var elt = env.element;
+            if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                elt = elt.parentNode;
+            }
+            var tags = elt.getAttribute('data-keep-tags');
+            if (!tags) {
+                return;
+            }
+            var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+            env.keepTags = true;
+            env.keepTagsPlaceholder = placeholder;
+
+            tags = tags.split(/\s*,\s*/).join('|');
+            var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+            env.keepTagsRegex = tags_regex;
+
+            env.tokenStack = [];
+            env.backupCode = env.code;
+
+            var code = env.element.innerHTML;
+            code = code.replace(tags_regex, function (match) {
+                env.tokenStack.push(match);
+                return placeholder.replace('{n}', env.tokenStack.length);
+            });
+            env.element.innerHTML = code;
+            code = env.element.textContent;
+            code = code.replace(/^(?:\r?\n|\r)/, '');
+
+            env.code = code;
+        });
+
+        Prism.hooks.add('after-highlight', function (env) {
+            if (!env.keepTags) {
+                return;
+            }
+            for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                    div.innerHTML = inside;
+                    inside = div.textContent;
+                    return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                });
+
+                env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                env.element.innerHTML = env.highlightedCode;
+            }
+        });
+
+    }());
+
+    Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+        v.classList.add("language-sql");
+    });
+    Prism.highlightAll();
+
+</script>
+</body>
+
+</html>
