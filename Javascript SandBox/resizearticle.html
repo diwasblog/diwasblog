@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <embed src="http://www.africau.edu/images/default/sample.pdf" type="application/pdf" width="100%" height="600px"> -->
+    
+        <div id="detail-controls" class="detail-controls-box">
+            <a   onclick="MyFunction(this)" id="small-text" class="btn-control" style="font-size:30px" data-fontsize="30px">अ</a>
+            <a onclick="MyFunction(this)" id="medium-text" class="btn-control active" style="font-size:25px" data-fontsize="25px">अ</a>
+            <a onclick="MyFunction(this)" id="large-text" class="btn-control" style="font-size:20px" data-fontsize="20px">अ</a>
+            </div>
+
+            <div class="detail-news-details-paragh detail-fontsize text-justify mb-30 post">
+                <p></p><p style="text-align: justify;"><strong>पर्सा :&nbsp;</strong>पर्साको वीरगन्जस्थित नारायणी अस्पतालमा उपचार गराइरहेका एक संक्रमितको मृत्यु भएको छ।&nbsp;मृतक बारा जितपुरसिमरा उपमहानगरपालिलका–७ का ४० वर्षीय पुरुष हुन्। उनमा अन्य कुनै प्रकारको रोग नेदेखिएको&nbsp;नारायणी अस्पतालका कोभिड संयोजक डा. सरोजरोशन दासले बताए।&nbsp;</p><p></p>
+                <p></p><p style="text-align: justify;">गएको ६ गते नै नारायणी अस्पतालमा भर्ना भएका ती पुरुषको ८ गते चैतमा आरटी पिसिआर रिपोर्ट पोजेटिभ आएको थियो। आज दिउँसो ४ बजेर ३० मिनेटमा उनको निधन भएको दासले जानकारी दिए। 'एक्स्ट्रा डिजिज' नभएका र भेन्टिलेटरमा पनि राख्न नपरेका उनको एक्कासि&nbsp;निधन भएको उनले बताए।&nbsp;</p><p style="text-align: justify;"><strong>संक्रमित बढ्ने क्रम पनि ६२ प्रतिशत&nbsp;</strong></p><p style="text-align: justify;">यता पर्सामा शुक्रबार पिसिआर परीक्षण गराएका १३९ जनामध्ये ८६ जनामा संक्रमण पुष्टि भएको पनि डा दासले बताए। परीक्षण गराएका मध्ये संक्रमित भेटिने दर पनि ६१ दशमलव ८७ प्रतिशत भएको पनि डा दासको भनाइ छ। &nbsp;</p><p style="text-align: justify;"><strong>बढी संक्रमित पर्साका &nbsp;</strong></p><p style="text-align: justify;">संक्रमितहरुमा पर्साका ६७ जना, बाराका १३ जना, रौतहटका ४ जना, महोत्तरी र धनुषाका एक–एक जना रहेका नारायणी अस्पतालले जनाएको छ। संक्रमितमध्ये ६३ जना पुरुष र २३ जना महिला छन्।</p><p style="text-align: justify;">उनीहरुको सिटी भ्यालु १४ देखि ३४&nbsp;छ। संक्रमित हुनेहरुको उमेर समूह भने २ देखि ८३ वर्षसम्मको छ।&nbsp;सिटी भ्यालु कम हुनेहरू फेला पर्ने क्रम बढिरहेका कारण वीरगन्जको नारायणी अस्पतालमा कुल ३१ जना संक्रमित भर्ना थिए। जसमा एक जनाको भने निधन भएको डा दासले बताए।&nbsp;</p><p></p>
+                </div>
+</head>
+
+
+<script>
+
+// Add active class to the current button (highlight it)
+var header = document.getElementById("detail-controls");
+var btns = header.getElementsByClassName("btn-control");
+for (var i = 0; i < btns.length; i++) {
+  btns[i].addEventListener("click", function() {
+  var current = document.getElementsByClassName("active");
+  current[0].className = current[0].className.replace(" active", "");
+  this.className += " active";
+  });
+}
+
+    function MyFunction(data){
+        console.log(data);
+        document.querySelector(".detail-news-details-paragh").style.fontSize = data.getAttribute("data-fontsize");
+    }
+</script>
+
+
+<style>
+.active, .btn-control:hover {
+  background-color: red;
+  color: white;
+}
+
+
+.detail-controls-box .detail-large {
+    font-size: 20px;
+}
+.detail-controls-box a {
+    padding: 5px 12px;
+    text-decoration: none;
+    border-radius: 50%;
+    box-shadow: 0 0 10px 0 rgb(0 0 0 / 10%);
+}
+</style>
+
+<body>
+    
+</body>
+</html>
