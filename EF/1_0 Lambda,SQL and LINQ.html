@@ -519,6 +519,19 @@
   </code>
   </pre>
   <br>
+==============================================================================================================================
+<h4>Conditional Group BY</h4>
+<pre>
+  <code class="language-csharp">
+    var numbers = arrayOfNumbers
+    .OrderBy(n => n)
+    .GroupBy(n => {
+         var evenOrOdd = (n % 2 == 0);       //conditional
+         return evenOrOdd ? "Even" : "Odd";
+    })
+    .OrderBy(k => k.Count());
+  </code>
+</pre>
 
   ==========================================================================================================================
   <br>

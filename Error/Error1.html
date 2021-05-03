@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+    <link rel="stylesheet" href="../SQL SandBox/css/bootstrap.css">
+    <link rel="stylesheet" href="../SQL SandBox/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../SQL SandBox/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../SQL SandBox/css/dracula.css">
+    <link rel="stylesheet" href="../SQL SandBox/css/dracula-prism.css">
+    <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+    <style>
+        kbd {
+            background: black
+        }
+    </style>
+</head>
+
+<body>
+
+    <hr>
+    <h2>The relationship could not be changed because one or more of the foreign-key properties is non-nullable. When a change is made to a relationship, the related foreign-key property is set to a null value.</h2>
+    <div data-post-id="32983252"><strong><span style="font-size: 18pt;">The reason you're facing this is due to the difference between <span style="color: #e03e2d;">composition&nbsp;</span>and&nbsp;<span style="color: #e03e2d;">aggregation</span>.</span></strong></div>
+    <div data-post-id="32983252">&nbsp;</div>
+    <div data-post-id="32983252">
+    <p><span style="font-size: 18pt;"><strong><span style="color: #e03e2d;">In composition</span>, <span style="color: #2dc26b;">the child object is created when the parent is created and is destroyed when its parent is destroyed</span></strong><span style="color: #2dc26b;">.</span> So its lifetime is controlled by its parent. e.g. <strong><span style="color: #843fa1;">A blog post and its comments</span></strong>. If a post is deleted, its comments should be deleted. It doesn't make sense to have comments for a post that doesn't exist. Same for orders and order items.</span></p>
+    <p><span style="font-size: 18pt;"><strong><span style="color: #e03e2d;">In aggregation</span>, <span style="color: #2dc26b;">the child object can exist irrespective of its parent</span></strong>. If the parent is destroyed, the child object can still exist, as it may be added to a different parent later. e.g.: <span style="color: #3598db;"><strong>the relationship between a playlist and the songs in that playlist</strong></span>. If the playlist is deleted, the songs shouldn't be deleted. They may be added to a different playlist.</span></p>
+    <p><span style="font-size: 18pt;">The way Entity Framework differentiates aggregation and composition relationships is as follows:</span></p>
+    <ol>
+    <li><span style="font-size: 18pt;"><span style="text-decoration: underline;">For composition:</span>(<strong>We have Multiple Primary Key for child class</strong>).It expects the child object to having a composite primary key (ParentID, ChildID). This is by design as the IDs of the children should be within the scope of their parents.</span></li>
+    </ol>
+    <p><img style="display: block; margin-left: auto; margin-right: auto;" src="https://i.ibb.co/h82wdwg/composition.png" /></p>
+    <p><span style="font-size: 14pt;">If you use composite key in child table then we can just delete child table row by below command.</span></p>
+    <div class="row">
+        <div class="col-lg-12">
+            <pre data-keep-tags="kbd, em">
+            <code class="language-dart">
+                parent.MemoAttachment.Clear();
+            </code>
+            </pre>
+        </div>
+</div>
+    <p><span style="font-size: 18pt;"><span style="text-decoration: underline;">2. For Aggregation:</span>(We have a single Primary Key,and ParentId as a foreign key): it expects the foreign key property in the child object to be nullable.&nbsp;</span></p>
+    <p><img style="display: block; margin-left: auto; margin-right: auto;" src="https://i.ibb.co/hcLLmv6/aggregatuion.png" /></p>
+    <p><span style="font-size: 14pt;">If you donot want to use Composite key, and like a primary key and foreign key then , we have to delete data from child table explicitly like below.</span></p>
+    <div class="row">
+        <div class="col-lg-12">
+            <pre data-keep-tags="kbd, em">
+            <code class="language-dart">
+                context.Children.RemoveRange(parent.Children);
+            </code>
+            </pre>
+        </div>
+</div>
+
+
+
+    <script src="../SQL SandBox/js/prism.js"></script>
+    <script type="text/javascript">
+        Prism.plugins.NormalizeWhitespace.setDefaults(
+            {
+                'remove-trailing': true,
+                'remove-indent': true,
+                'left-trim': true,
+                'right-trim': true,
+                // 'break-lines': 10,
+                // 'indent': 2,
+                // 'remove-initial-line-feed': false,
+                // 'tabs-to-spaces': 4,
+                // 'spaces-to-tabs': 4
+            });
+
+        (function () {
+            if (!self.Prism) {
+                return;
+            }
+
+            var div = document.createElement('div');
+
+            Prism.hooks.add('before-highlight', function (env) {
+                var elt = env.element;
+                if (!elt.hasAttribute('data-keep-tags') && elt.parentNode.tagName.toLowerCase() === 'pre') {
+                    elt = elt.parentNode;
+                }
+                var tags = elt.getAttribute('data-keep-tags');
+                if (!tags) {
+                    return;
+                }
+                var placeholder = elt.getAttribute('data-keep-tags-placeholder') || '___KEEPTAGS{n}___';
+
+                env.keepTags = true;
+                env.keepTagsPlaceholder = placeholder;
+
+                tags = tags.split(/\s*,\s*/).join('|');
+                var tags_regex = RegExp('<(' + tags + ')>([\\s\\S]*?)</\\1>', 'g');
+
+                env.keepTagsRegex = tags_regex;
+
+                env.tokenStack = [];
+                env.backupCode = env.code;
+
+                var code = env.element.innerHTML;
+                code = code.replace(tags_regex, function (match) {
+                    env.tokenStack.push(match);
+                    return placeholder.replace('{n}', env.tokenStack.length);
+                });
+                env.element.innerHTML = code;
+                code = env.element.textContent;
+                code = code.replace(/^(?:\r?\n|\r)/, '');
+
+                env.code = code;
+            });
+
+            Prism.hooks.add('after-highlight', function (env) {
+                if (!env.keepTags) {
+                    return;
+                }
+                for (var i = 0, t; t = env.tokenStack[i]; i++) {
+
+                    t = t.replace(env.keepTagsRegex, function (match, tag, inside) {
+                        div.innerHTML = inside;
+                        inside = div.textContent;
+                        return '<' + tag + '>' + Prism.highlight(inside, env.grammar, env.language) + '</' + tag + '>';
+                    });
+
+                    env.highlightedCode = env.highlightedCode.replace(env.keepTagsPlaceholder.replace('{n}', i + 1), t);
+                    env.element.innerHTML = env.highlightedCode;
+                }
+            });
+
+        }());
+
+        Array.prototype.slice.call(document.querySelectorAll("pre,code")).forEach(function (v) {
+            v.classList.add("language-sql");
+        });
+        Prism.highlightAll();
+
+    </script>
+</body>
+
+</html>
