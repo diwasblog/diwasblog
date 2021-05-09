@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,11 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/bootstrap-grid.css">
-    <link rel="stylesheet" href="css/bootstrap-reboot.css">
-    <link rel="stylesheet" href="css/dracula.css">
-    <link rel="stylesheet" href="css/dracula-prism.css">
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/bootstrap-grid.css">
+    <link rel="stylesheet" href="../css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="../css/dracula.css">
+    <link rel="stylesheet" href="../css/dracula-prism.css">
     <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
   </head>
   <body>
@@ -26,71 +27,145 @@
 
 ===================================================================================================
 <br>
-<h2>Extension/StringExtension.cs</h2>
+<h2>ToCamelCase</h2>
+
+<div class="row">
+    <div class="col-lg-12">
+        <pre>
+            <code class="language-csharp">
+
+            public static partial class ExtensionCollection     
+            {
+
+             public static string ToCamelCase(string str) 
+              {
+                Regex pattern = new Regex(@"[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+");
+                return new string(
+                  new CultureInfo("en-US", false)
+                    .TextInfo
+                    .ToTitleCase(
+                      string.Join(" ", pattern.Matches(str)).ToLower()
+                    )
+                    .Replace(@" ", "")
+                    .Select((x, i) => i == 0 ? char.ToLower(x) : x)
+                    .ToArray()
+                );
+              }
+
+            }
+            </code>
+          </pre>
+    </div>
+
+</div>
 
 <pre>
-  <code class="language-csharp">
-    using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+    <code class="language-csharp">
+        ExtensionCollection.ToCamelCase("some_database_field_name"); // "someDatabaseFieldName"
+        ExtensionCollection.ToCamelCase("Some label that needs to be title-cased"); // "someLabelThatNeedsToBeCamelized"
+        ExtensionCollection.ToCamelCase("some-package-name"); // "somePackageName"
+        ExtensionCollection.ToCamelCase("some-mixed_string with spaces_underscores-and-hyphens"); // "someMixedStringWithSpacesUnderscoresAndHyphens"
+    </code>
+</pre>
 
-namespace TUDCMIS.Extensions
-{
-    public static class StringExtension //must be public and static
-    {
-        public static string ToNepaliNumbers(this string input)  //must be static and public
-        {
-            if (input == null)
-                return "";
-            string output = "";
-            for(int i = 0; i < input.Length; i++)
+<br>
+<hr>
+<h2>To Kebab Case</h2>
+
+<div class="row">
+    <div class="col-lg-12">
+        <pre>
+            <code class="language-csharp">
+
+            public static partial class ExtensionCollection     
             {
-                 
-                switch (input[i])
+
+                public static string ToKebabCase(string str) 
                 {
-                    case '1':
-                        output += '१';
-                        break;
-                    case '2':
-                        output += '२';
-                        break;
-                    case '3':
-                        output += '३';
-                        break;
-                    case '4':
-                        output += '४';
-                        break;
-                    case '5':
-                        output += '५';
-                        break;
-                    case '6':
-                        output += '६';
-                        break;
-                    case '7':
-                        output += '७';
-                        break;
-                    case '8':
-                        output += '८';
-                        break;
-                    case '9':
-                        output += '९';
-                        break;
-                    case '0':
-                        output += '०';
-                        break;
-                    case '-':
-                        output += '-';
-                        break;
-                    default:
-                        break;
+                  Regex pattern = new Regex(@"[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+");
+                  return string.Join("-", pattern.Matches(str)).ToLower();
                 }
             }
-            return output;
-        }
-    }
-}
-  </code>
+            </code>
+          </pre>
+    </div>
+
+</div>
+
+<pre>
+    <code class="language-csharp">
+        ExtensionCollection.ToKebabCase("camelCase"); // "camel-case"
+        ExtensionCollection.ToKebabCase("some text"); // "some-text"
+        ExtensionCollection.ToKebabCase("some-mixed_string With spaces_underscores-and-hyphens"); // "some-mixed-string-with-spaces-underscores-and-hyphens"
+        ExtensionCollection.ToKebabCase("AllThe-small Things"); // "all-the-small-things"
+    </code>
+</pre>
+<hr>
+<br>
+<h2>To Snake Case</h2>
+
+<div class="row">
+    <div class="col-lg-12">
+        <pre>
+            <code class="language-csharp">
+
+            public static partial class ExtensionCollection     
+            {
+
+                public static string ToSnakeCase(string str) 
+                {
+                    Regex pattern = new Regex(@"[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+");
+                    return string.Join("_", pattern.Matches(str)).ToLower();
+                }
+            }
+            </code>
+          </pre>
+    </div>
+
+</div>
+
+<pre>
+    <code class="language-csharp">
+        ExtensionCollection.ToSnakeCase("camelCase"); // "camel_case"
+        ExtensionCollection.ToSnakeCase("some text"); // "some_text"
+        ExtensionCollection.ToSnakeCase("some-mixed_string With spaces_underscores-and-hyphens"); // "some_mixed_string_with_spaces_underscores_and_hyphens"
+        ExtensionCollection.ToSnakeCase("AllThe-small Things"); // "all_the_small_things"
+    </code>
+</pre>
+<hr>
+<h2>To Title / Pascal Case</h2>
+
+<div class="row">
+    <div class="col-lg-12">
+        <pre>
+            <code class="language-csharp">
+
+            public static partial class ExtensionCollection     
+            {
+
+                public static string ToTitleCase(string str) 
+                {
+                  Regex pattern = new Regex(@"[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+");
+                  return new CultureInfo("en-US", false)
+                    .TextInfo
+                    .ToTitleCase(
+                      string.Join(" ", pattern.Matches(str)).ToLower()
+                    );
+                }
+            }
+            </code>
+          </pre>
+    </div>
+
+</div>
+
+<pre>
+    <code class="language-csharp">
+        ExtensionCollection.ToTitleCase("some_database_field_name"); // "Some Database Field Name"
+        ExtensionCollection.ToTitleCase("Some label that needs to be title-cased"); // "Some Label That Needs To Be Title Cased"
+        ExtensionCollection.ToTitleCase("some-package-name"); // "Some Package Name"
+        ExtensionCollection.ToTitleCase("some-mixed_string with spaces_underscores-and-hyphens"); // "Some Mixed String With Spaces Underscores And Hyphens"
+    </code>
 </pre>
 
 ===========================================================================
@@ -372,7 +447,7 @@ Console.WriteLine(string.Join(", ",lst));
 </div>
 
 ====================================================================================
-<script src="js/prism.js"></script>
+<script src="../js/prism.js"></script>
 <script type="text/javascript">
   Prism.plugins.NormalizeWhitespace.setDefaults(
     {
