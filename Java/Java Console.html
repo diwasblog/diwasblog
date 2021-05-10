@@ -1,0 +1,176 @@
+<html>
+  <head>
+      <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=html&amp;skin=sons-of-obsidian"></script>
+  </head>
+  <body>
+      <img src="https://i.ibb.co/DDsGXGn/javasimpleproject.jpg">
+
+      <hr>
+      <h2>Main.java</h2>
+    <xmp class="prettyprint">
+        import java.util.Scanner;
+
+        public class Main {
+        
+            public static void main(String[] args) {
+                double totalSalesAmount;
+                
+                  try (Scanner sc = new Scanner(System.in)) {
+                    System.out.print("Enter Sales Amount: $ ");
+                     totalSalesAmount = sc.nextDouble();
+        
+                     System.out.print("Enter Sales Type (Master Card/ Visa Card / Amex Card / Gift Card");
+                     
+                     String userChoiceCard = sc.next();
+                     switch(userChoiceCard.toUpperCase()) {
+        
+                     case "MASTERCARD":
+                         MasterCardProcessor mcp = new MasterCardProcessor();
+                         mcp.input(totalSalesAmount);
+                         break;
+                     case "AMEXCARD":
+                         AmexCardProcessor acp = new AmexCardProcessor();
+                         acp.input(totalSalesAmount);
+                         break;
+                     case "GIFTCARD":
+                         GiftCardProcessor gcp = new GiftCardProcessor();
+                         gcp.input(totalSalesAmount);
+                         break;
+                     case "VISACARD":
+                         VisaCardProcessor vcp = new VisaCardProcessor();
+                         vcp.input(totalSalesAmount);
+                         break;
+                     default:
+                         CashProcessor cp = new CashProcessor();
+                         cp.input(totalSalesAmount); break;
+            }
+                }
+            }
+        
+        }
+        
+    </xmp>
+    <hr>
+    <h2>Base.java</h2>
+    <xmp class="prettyprint">
+        
+public class Base {
+	public double TotalSalesAmount;
+	public String CardType;
+	public double TotalDeliveryCharge;
+	public double TotalAmount;
+	public double CardProcessingFee;
+	
+	public Base(double cardProcesingFee) {
+		this.CardProcessingFee = cardProcesingFee;
+	}
+	
+	
+	public double GetTotalSalesAmount() {
+		return TotalSalesAmount;
+	}
+	
+	public String GetCardType() {
+		return CardType;
+	}
+	
+	public double GetTotalDeliveryCharge() {
+		return TotalDeliveryCharge;
+	}
+	
+	public void SetTotalSalesAmount(double totalSalesAmount) {
+		this.TotalSalesAmount = totalSalesAmount;
+	}
+	
+	public void SetCardType(String cardType) {
+		this.CardType = cardType;
+	}
+	
+	public void SetTotalDeliveryCharge(double totalDeliveryCharge) {
+		this.TotalDeliveryCharge = totalDeliveryCharge;
+	}
+	
+	public double CalculateTotalDeliveryCharge(double totalSalesAmount) {
+		if(totalSalesAmount < 50)
+			return   10; 
+		else if (totalSalesAmount >50 && totalSalesAmount <100)
+			return 5;
+		else 
+			return  0;
+	}
+	
+	public double TotalAmountToPay() {
+		return 0.01* this.TotalSalesAmount * (this.CardProcessingFee+100);
+	}
+	
+	
+	
+}
+
+    </xmp>
+
+
+    <hr>
+    <h2>Interface: IProcessor.java</h2>
+
+    <xmp class="prettyprint">
+        
+public interface Processor {
+    public void input(double amount);
+  public void output();
+  public double FinalAmount();
+}
+
+    </xmp>
+     <hr>
+    <h2>Child Class: MasterCard.java</h2>
+    <xmp class="prettyprint">
+        
+public class MasterCardProcessor extends Base implements Processor {          // Look Extended as well as Implemented
+
+	public MasterCardProcessor() {
+		super((double)1.5);
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public void input(double totalSalesAmount) {
+		super.SetCardType("MasterCard Payment");
+		super.SetTotalSalesAmount(totalSalesAmount);
+		super.CalculateTotalDeliveryCharge(totalSalesAmount);
+		this.output();	
+	}
+
+	@Override
+	public void output() {
+		System.out.println("***-----------------------------------------------------------------------****");
+		System.out.println("Total Sales: $ " + super.GetTotalSalesAmount());
+		System.out.println("-------------------------------------------------------------------------------");
+        System.out.println("Total Delivery Charge: $ " + super.GetTotalDeliveryCharge());
+		System.out.println("-------------------------------------------------------------------------------");
+        System.out.println("Card Type: " + super.GetCardType());
+		System.out.println("-------------------------------------------------------------------------------");
+        System.out.println("Card Processing Fee: $ " + super.CardProcessingFee);
+		System.out.println("-------------------------------------------------------------------------------");
+        System.out.println("Total Amount To Pay: $ " + this.FinalAmount());
+		
+	}
+
+	@Override
+	public double FinalAmount() {
+		return super.TotalAmountToPay();
+	}
+
+
+
+}
+
+
+
+    </xmp>
+
+    <hr>
+    <h2>Output</h2>
+    <img src="https://i.ibb.co/wNpRVRj/answered.jpg">
+  </body>
+</html>

@@ -1,0 +1,90 @@
+<html>
+
+<head>
+
+    <script
+        src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+
+    <style>
+        xmp.prettyprint {
+            font-size: 12pt;
+            font-family: monospace;
+
+        }
+    </style>
+
+
+
+
+</head>
+
+
+<body>
+
+    <h2>flatpickr datepciker</h2>
+
+    <div class="row">
+        <div class="col-lg-6">
+            //Jquery independent Date picker
+
+            <xmp class="prettyprint">
+
+                <textarea name="editor1"></textarea>
+
+
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+                <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
+
+                $( document ).ready(function() {
+                flatpickr('#invoice_date', {
+                dateFormat: "Y-m-d",
+                });
+                });
+
+
+            </xmp>
+        </div>
+
+        <div class="col-lg-6">
+            //In VUe js
+
+            <xmp class="prettyprint">
+
+              1. Create Facebook Comment url for Website . Facebook comment is bind by Website
+              2.
+
+                <script>
+                function loadAPI() {
+                    var js = document.createElement('script');
+                    js.src = '//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=YOUR_APP_ID&version=v2.0';
+                    document.body.appendChild(js);
+                }
+                window.onscroll = function () {
+                    var rect = document.getElementById('comments').getBoundingClientRect();
+                    if (rect.top < window.innerHeight) {
+                        loadAPI();
+                        window.onscroll = null;
+                    } 
+                }
+                </script>
+
+                <div id="fb-root"></div>
+
+                <div id="comments" class="fb-comments" data-href="YOUR_WEBPAGE" data-numposts="5" data-colorscheme="light"></div>
+
+
+                3. Now when onscroll reached  comment Id tag , then only will load facebook sdk
+
+            </xmp>
+        </div>
+    </div>
+
+
+<h2>https://gist.github.com/jimi008/5208cf9956beaf0416f04d84ced41dda</h2>
+</body>
+
+</html>

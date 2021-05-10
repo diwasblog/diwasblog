@@ -7,10 +7,18 @@
 <ul>
 <li><span style="font-size: 18pt; color: #000000;">This file will have information about the files included in that project, assemblies used in that project, project GUID and project version, etc.</span></li>
 <li><span style="font-size: 18pt; color: #000000;"> It will be <strong><span style="color: #e03e2d;">automatically generated when we create.</span></strong></span></li>
-<li><span style="font-size: 18pt; color: #000000;">One project has one csproj file. Open each project and see the ".csproj" file</span></li>
+<li><span style="font-size: 18pt; color: #000000;">One project has one csproj file. If 5 Project then 5 Csproj file associate to each project. Open each project and see the ".csproj" file</span></li>
 <li><span style="font-size: 18pt; color: #000000;">Multiple projects make a solution</span></li>
+
 </ul>
-<p><span style="font-size: 18pt; color: #000000;">What is the .sln file?</span></p>
+<hr>
+<h1>Do we need to deploy .csproj file</h1>
+
+<span style="font-size: 18pt; color: #000000;">The csproj file is not part of the deployed application like the web.config. It is used by the build system and run application locally. Therefore if you make changes to it, they will only take effect if you rebuild the application. <br>Also for deployment you have to publish your application and deploy the dlls and static pages/css images its, we should not upload whole source code to the production server.
+</span>
+<hr>
+
+p><span style="font-size: 18pt; color: #000000;">What is the .sln file?</span></p>
 <ul>
 <li><span style="font-size: 18pt; color: #000000;">".sln" is a structure for organizing projects in Visual Studio. </span></li>
 <li><span style="font-size: 18pt; color: #000000;">We have multiple projects inside one solution.</span></li>
