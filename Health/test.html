@@ -1,0 +1,80 @@
+<div class="container">
+    <img class="js-lazy-image" height="350px" width="450px"  data-src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg">
+</div>
+
+<div class="container">
+<img height="350px" width="450px" class="js-lazy-image" data-src="https://www.gettyimages.com/gi-resources/images/CreativeLandingPage/HP_Sept_24_2018/CR3_GettyImages-159018836.jpg">
+</div>
+
+<div class="container">
+<img height="350px" width="450px" class="js-lazy-image" data-src="https://www.w3schools.com/w3images/fjords.jpg">
+</div>
+<div class="container">
+    <img height="350px" width="450px" class="js-lazy-image" data-src="https://image.shutterstock.com/image-photo/lgbt-flag-rainbow-has-been-600w-1438340111.jpg">
+    </div>
+    <br>
+    <div class="container">
+        <img height="350px" width="450px" class="js-lazy-image" data-src="https://image.shutterstock.com/image-photo/lgbt-flag-rainbow-has-been-600w-1438340111.jpg">
+        </div>
+
+        <div class="container">
+            <img height="350px" width="450px" class="js-lazy-image" data-src="https://blog.logrocket.com/wp-content/uploads/2019/11/sizing-image-width-container.gif">
+            </div>
+            <div class="container">
+                <img height="350px" width="450px" class="js-lazy-image" data-src="https://image.shutterstock.com/image-photo/lgbt-flag-rainbow-has-been-600w-1438340111.jpg">
+                </div>
+    Hello world
+<style>
+.container{
+    background-color: black;
+}
+
+    img {
+  height: auto;
+  width: 100%;
+}
+.js-lazy-image {
+        display: block;
+       
+        margin: auto;
+      }
+</style>
+
+<script>
+    const images = document.querySelectorAll(".js-lazy-image");
+    const config = {
+      // if the image gets within 50px in the Y axis, start the download.
+      rootMargin: "50px 0px",
+      threshold: 0.01
+    };
+
+    if (!("IntersectionObserver" in window)) {
+      // no support for intersection observer, load the images immediately
+      Array.from(images).forEach(image => loadImage(image));
+    } else {
+      // observer for the images on the page
+      var observer = new IntersectionObserver(onIntersection, config);
+      images.forEach(image => {
+        observer.observe(image);
+      });
+    }
+
+    function onIntersection(entries) {
+      // loop through the entries
+      entries.forEach(entry => {
+        // are we in viewport?
+        if (entry.intersectionRatio > 0) {
+          // stop watching
+          observer.unobserve(entry.target);
+
+          // load image
+          loadImage(entry.target);
+        }
+      });
+    }
+
+    function loadImage(e) {
+      e.src = e.dataset.src;
+      e.classList.add("fade-in");
+    }
+  </script>
