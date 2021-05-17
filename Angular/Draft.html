@@ -1,0 +1,966 @@
+
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+        <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+    
+    <script src="https://unpkg.com/vue"></script>
+    
+    <style>
+    xmp.prettyprint{
+        font-size:12pt;
+        font-family:monospace;
+    
+    }
+    </style>
+     
+    </head>
+    <body>
+    
+   <h2>Controller.js</h2>
+       
+      <xmp class="prettyprint">
+        (function () {
+            'use strict';
+            angular.module("app.amd.agentmarketingrequest.raisenewrequest", []).controller('agentmarketingrequestCtrl', ['$scope', '$rootScope', 'appStore', '$controller', '$routeParams', 'Restangular', '$q', '$timeout', '$filter', 'Upload', 'toaster', 'ValidationService', '$location', '$window',
+                function ($scope, $rootScope, appStore, $controller, $routeParams, Restangular, $q, $timeout, $filter, Upload, toaster, ValidationService, $location, $window) {
+        
+                    $scope.userRole = appStore.getUserRole();
+                    $scope.isAMDMarketingTeamRole = appStore.isAMDMarketingTeamRole();
+                    $scope.isSeniorSuperExecutiveAMD = appStore.isAMDSUAdmin() || appStore.isAMDSeniorExecutive() || appStore.isAMDExecutive();
+                    angular.extend(this, $controller('baseCtrl', { $scope: $scope }));
+                    angular.extend($scope.kendoGridOptions, {
+                        columns:
+                            [
+                                {
+                                    field: "AgentName",
+                                    title: 'Agent',
+                                    type: "string",
+                                    width: "150px"
+                                },
+                                {
+                                    field: "CreatedDateStr",
+                                    title: 'Created Date',
+                                    type: "date",
+                                    width: "150px",
+                                    filterable: {
+                                        ui: "datetimepicker",
+                                        extra: true
+                                    },
+                                    format: "{0:dd/MM/yyyy }"
+                                },
+                                //{
+                                //    field: "StatusName",
+                                //    title: "Step",
+                                //    width: "150px",
+                                //    type: 'string',
+                                //    filterable: appStore.gridListFilter("list/agentmarketingrequeststatus")
+                                //},
+        
+        
+                                {
+                                    field: "",
+                                    title: "Action",
+                                    width: 150,
+                                    template: function (data) {
+                                        var action = "";
+                                        if (($scope.isAMDMarketingTeamRole || $scope.isSeniorSuperExecutiveAMD)) {
+                                            action += $scope.actions.Field.Edit(data);
+                                        }
+                                        action += "<a title='View' data-toggle='tooltip' class='btn btn-xs' href ='/" + $scope.urls.initUrl + "/detail/view/" + data.Id + "'> <i class='fa fa-search text-info'></i></a>";
+                                        return action;
+                                    }
+                                }
+                            ]
+                    });
+        
+        
+        
+        
+                    $scope.showaddbtn = ($scope.isAMDMarketingTeamRole || $scope.isSeniorSuperExecutiveAMD);
+        
+        
+                    angular.extend($scope.urls, {
+                        initUrl: 'amd/agentmarketingrequest/raisenewrequest',
+                        addUrl: 'amd/agentmarketingrequest/raisenewrequest/add',
+                        listUrl: 'amd/agentmarketingrequest/raisenewrequest/list',
+                        updateUrl: 'amd/agentmarketingrequest/raisenewrequest/update',
+                        deleteUrl: 'amd/agentmarketingrequest/raisenewrequest/delete',
+                        getUrl: 'amd/agentmarketingrequest/raisenewrequest/get',
+                        viewUrl: 'amd/agentmarketingrequest/raisenewrequest/get'
+        
+                    });
+                    $scope.loadGrid();
+                    $scope.Agents = [];
+        
+                    $scope.UserRoleName = appStore.getUserRoleName();
+        
+                    $scope.vModel = {
+                        Id: appStore.getBlankGuid(),
+                        AgentId: appStore.getBlankGuid(),
+                        AgentName: '',
+                        StartDate: '',
+                        EndDate: '',
+                        MarketingOfficerId: '',
+                        MarketingOfficerName: '',
+                        Activities: '',
+                        Expenses: '',
+                        Status: 4,
+                        StatusName: '',
+                        Attachments: [],
+                        AttachmentPath: '',
+                        AttachmentName: '',
+                        Address: '',
+                        RequestDate: '',
+                        Remarks: '',
+                        ContactPerson: '',
+                        IsSubmitted:true
+                    };
+                   // $scope.isSubmitted = true;
+                    //$scope.newAttachments = [];
+        
+                    //$scope.beforeSave = function () {
+                    //    $scope.vModel.Attachments = $scope.vModel.Attachments.concat($scope.newAttachments);
+                    //    $scope.newAttachments = [];
+                    //    return true;
+                    //};
+        
+                    $scope.removeRow = function (index, attachments) {
+                        attachments.splice(index, 1);
+                        if (attachments.length == 0) {
+                            $scope.AddFileBtn = true;
+                            $scope.addMoreFileBtn = false;
+                        }
+                    };
+        
+        
+                    $scope.saveRaiseNewRequest = function (form, isSubmitted) {
+                   
+                        $scope.vModel.IsSubmitted = isSubmitted;
+        
+        
+                        if (!new ValidationService().checkFormValidity(form) && !form.valid) {
+                               
+                                return;
+                            }
+                    };
+        
+        
+                    $scope.uploadDocument = function (file) {
+                        var uploaded = {};
+                        if (file != null) {
+                            Upload.upload({
+                                url: appStore.getBaseUrl() + "/DocumentUpload/upload",
+                                data: { file: file }
+                            }).then(function (resp) {
+                                if (resp) {
+                                    $scope.vModel.AttachmentPath = resp.data.Path;
+                                    uploaded = { Id: appStore.getBlankGuid(), AgentMarketingRequestId: appStore.getBlankGuid(), AttachmentName: resp.data.NameWithExtension, AttachmentPath: resp.data.Path };
+                                    $scope.vModel.Attachments.push(uploaded);
+                                }
+                            }, function (resp) {
+        
+                            }, function (evt) {
+        
+                            });
+                        }
+                    };
+        
+        
+                    if ($scope.mode == "view") {
+                        $rootScope.pagetitle = "Agent Marketing Request";
+                        $q.all([$scope.getViewRecord()]).then(function wrapUp(response) {
+                            var model = response[0];
+        
+                            if (model) {
+                                appStore.mapViewModel(model, $scope.vModel);
+                            };
+                        });
+        
+                    }
+                    else {
+                        $q.all([$scope.getList("list/agent/all"),
+                        $scope.getList("list/AreaAdministrators"),
+                        $scope.getEditRecord()]).then(function wrapUp(response) {
+        
+                            $scope.Agents = response[0].plain();
+                            $scope.MarketingOfficers = response[1].plain();
+                            var model = response[2];
+        
+                            if (model) {
+                                appStore.mapViewModel(model, $scope.vModel);
+                                console.log($scope.vModel);
+                                //$scope.vModel.Status = 2;
+                            }
+        
+                        });
+                        $scope.showValidation = true;
+                    }
+        
+                }]);
+        })();
+        
+        
+        </xmp>
+
+
+<h2>Create.html</h2>
+<xmp class="prettyprint">
+  
+<form role="form" name="form" ng-submit="save(form)" novalidate>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label" for="AgentId">Agent</label>
+                <div ng-if="!(isAMDMarketingTeamRole || isSeniorSuperExecutiveAMD)" class="readonly-div">{{vModel.AgentName}}</div>
+
+
+                <div ng-if="(isAMDMarketingTeamRole || isSeniorSuperExecutiveAMD)">
+                    <select kendo-drop-down-list ng-model="vModel.AgentId" name="AgentId" ng-disabled="userRole =='6facf0e4-1d0d-484f-96bf-66f355dcc68a'"
+                            validation-error-to="AgentError" validation="required" id="AgentId"
+                            k-data-text-field="'Text'" k-option-label="'Select'" k-data-value-field="'Id'"
+                            k-data-source="Agents" k-options="kendoDropDownOptions"
+                            style="width: 100%"></select>
+                    <div id="AgentError" class="validation text-danger"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label" for="Location">Address</label>
+                <input ng-if="!(isAMDMarketingTeamRole || isSeniorSuperExecutiveAMD)" readonly type="text" class="form-control" value="{{vModel.Address}}" />
+                <div ng-if="(isAMDMarketingTeamRole || isSeniorSuperExecutiveAMD)"> 
+                    <input type="text" name="Address" class="form-control" id="Address" placeholder="" ng-model="vModel.Address" validation="required" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label" for="ContactPerson">Contact Person</label>
+                <div ng-if="!(isAMDMarketingTeamRole || isSeniorSuperExecutiveAMD)" class="readonly-div">{{vModel.ContactPerson}}</div>
+                <div ng-if="(isAMDMarketingTeamRole || isSeniorSuperExecutiveAMD)">
+                    <input type="text" name="ContactPerson" class="form-control" id="ContactPerson" placeholder="" ng-model="vModel.ContactPerson" validation="required" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label" for="Location">Request Date</label>
+                <div ng-if="!(isAMDMarketingTeamRole || isSeniorSuperExecutiveAMD)" class="readonly-div">{{vModel.RequestDate}}</div>
+                <div ng-if="(isAMDMarketingTeamRole || isSeniorSuperExecutiveAMD)">
+                    <input type="text" name="RequestDate" class="form-control" id="RequestDate"
+                           kendo-date-picker
+                           placeholder="" ng-model="vModel.RequestDate"
+                           style="width:100%;" validation-error-to="RequestDate" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label class="control-label" for="Location">Remarks</label>
+                <div ng-if="!(isAMDMarketingTeamRole || isSeniorSuperExecutiveAMD)" style="height:150px" class="readonly-div">{{vModel.Remarks}}</div>
+                <div ng-if="(isAMDMarketingTeamRole || isSeniorSuperExecutiveAMD)">
+                    <textarea name="Remarks" class="form-control min-height-100" id="Remarks" placeholder="" ng-model="vModel.Remarks" validation="{{vModel.IsSubmitted ? 'required' : ''}}"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div ng-if="isAMDMarketingTeamRole || isSeniorSuperExecutiveAMD">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div>
+                        <label class="control-label" for="StartDate">Start Date</label>
+                        <input type="text" name="StartDate" class="form-control" id="StartDate"
+                               kendo-date-picker k-format="'dd/MM/yyyy'"
+                               placeholder="" ng-model="vModel.StartDate" validation="{{vModel.IsSubmitted ? 'required' : ''}}"
+                               style="width:100%;" validation-error-to="StartDateError" />
+                    </div>
+                    <span id="StartDateError" class="validation text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div>
+                        <label class="control-label" for="EndDate">End Date</label>
+                        <input type="text" name="EndDate" class="form-control" id="EndDate"
+                               kendo-date-picker
+                               placeholder="" ng-model="vModel.EndDate" validation="{{vModel.IsSubmitted ? 'required' : ''}}"
+                               style="width:100%;" validation-error-to="EndDateError" />
+                    </div>
+                    <span id="EndDateError" class="validation text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label" for="MarketingOfficerId">Officer </label>
+                    <select kendo-drop-down-list ng-model="vModel.MarketingOfficerId" name="MarketingOfficerId"
+                            validation-error-to="MarketingOfficerIdError" validation="{{vModel.IsSubmitted ? 'required' : ''}}" id="MarketingOfficerId"
+                            k-data-text-field="'Text'" k-option-label="'Select'" k-data-value-field="'Id'"
+                            k-data-source="MarketingOfficers" k-options="kendoDropDownOptions"
+                            style="width: 100%"></select>
+                    <div id="MarketingOfficerIdError" class="validation text-danger"></div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label" for="Activities">Activities</label>
+                    <input type="text" name="Activities" class="form-control" id="Activities" placeholder="" ng-model="vModel.Activities" validation="{{vModel.IsSubmitted ? 'required' : ''}}" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label" for="Activities">Expenses</label>
+                    <input type="number" name="Expenses" validation="{{vModel.IsSubmitted ? 'required' : ''}}" class="form-control" id="Expenses" placeholder="" ng-model="vModel.Expenses" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+
+        <div class="row">
+
+            <div class="col-md-9">
+               
+                <label class="control-label">Documents </label><br />
+                <input ng-model="vModel.Attachments" validation="required:alt=* Document is required"
+                       type="hidden" name="Attachments"
+                       id="AttachmentPath" validation-error-to="AttachmentPathError" />
+                <div id="AttachmentsError" class="validation text-danger"></div>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-blue btn-icon btn-icon-standalone btn-icon-standalone-right pull-right" ngf-select="uploadDocument($file)" ngf-accept="'.pdf,image/*'" ngf-max-size="25MB" type="button"> <i class="fa fa-upload"></i> <span> Upload Letter</span> </button>
+            </div>
+        </div>
+
+        <div class="row" ng-show="vModel.Attachments.length>0">
+            <div class="col-md-12">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>File Name</th>
+                            <th></th>
+                    </thead>
+                    <tbody>
+
+                        <tr ng-repeat="file in vModel.Attachments">
+                            <td>{{$index+1}}</td>
+                            <td>{{file.AttachmentName}}</td>
+                            <td>
+                                <a target="_blank" class="btn btn-blue btn-sm btn-icon icon-left" href="{{file.AttachmentPath}}"><i class="fa fa-search"></i></a>
+                                <button  type="button" class="btn btn-danger btn-sm btn-icon icon-left" ng-click="removeRow($index,vModel.Attachments)">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group">
+            <button class="btn btn-red btn-icon btn-icon-standalone pull-left" ng-click="saveRaiseNewRequest(this,true)">
+                <i class="fa fa-save"></i>
+                <span>Save</span>
+            </button>
+            <button ng-if="(vModel.Status == 4)" class="btn btn-red btn-icon btn-icon-standalone pull-left" ng-click="saveRaiseNewRequest(this,false)">
+                <i class="fa fa-list"></i>
+                <span>Save as Draft</span>
+            </button>
+            <button type="button" ng-click="cancel()" class="btn btn-gray btn-icon btn-icon-standalone pull-left">
+                <i class="fa fa-times"></i>
+                <span>Cancel</span>
+            </button>
+        </div>
+    </div>
+</form>
+
+
+
+
+
+
+
+
+</xmp>
+
+<hr>
+<h2>AMDController.cs</h2>
+<xmp class="prettyprint">
+    public void AddAgentMarketingRequest(ServiceRequestModel<AgentMarketingRequestViewModel> serviceRequestModel)
+        {
+            var repo = _genericUnitOfWork.GetRepository<AgentMarketingRequest, Guid>();
+
+            var mapped = _mapper.Map<AgentMarketingRequestViewModel, AgentMarketingRequest>(serviceRequestModel.Model);
+            mapped.Id = Guid.NewGuid();
+            mapped.CreatedById = serviceRequestModel.LoginInfo.UserId;
+            mapped.CreatedDate = GeneralService.CurrentDate;
+            if(serviceRequestModel.LoginInfo.RoleId == new Guid(ApplicationConstants.MarketingOfficerId))
+            {
+                mapped.Status = serviceRequestModel.Model.IsSubmitted ? AgentMarketingRequestStatus.MarketingTeamReviewed : AgentMarketingRequestStatus.DRAFT;
+            }
+            else
+            {
+                mapped.Status = serviceRequestModel.Model.IsSubmitted ? AgentMarketingRequestStatus.New : AgentMarketingRequestStatus.DRAFT;
+            }
+
+                //mapped.Status = AgentMarketingRequestStatus.New;
+
+            mapped.Attachments.ToList().ForEach(x =>
+            {
+                x.Id = Guid.NewGuid();
+                x.AgentMarketingRequestId = mapped.Id;
+            });
+
+
+            repo.Add(mapped);
+            _genericUnitOfWork.SaveChanges();
+
+
+
+            //send mail to marketing team
+            var marketingTeamEmail = _genericUnitOfWork.GetRepository<UserRole, Guid>()
+                .GetAll(x => x.RoleId == new Guid(ApplicationConstants.MarketingOfficerId) && x.User.IsActive)
+                .Select(x => x.User.Email).ToList();
+
+            var agentName = _genericUnitOfWork.GetRepository<Agent, Guid>().GetById(serviceRequestModel.Model.AgentId).Name;
+
+            var emailRequest = new EmailRequestWithUrl<AgentMarketingRequestNotificationViewModel>()
+            {
+                Model = new AgentMarketingRequestNotificationViewModel()
+                {
+                    AgentName = agentName,
+                    Status = AgentMarketingRequestStatus.New.ToString()
+                }
+            };
+
+            marketingTeamEmail.ForEach(x => emailRequest.To.Add(new System.Net.Mail.MailAddress(x)));
+            emailRequest.Subject = MailSubject.AgentMarketingRequest.ToDescription();
+            emailRequest.Template = EmailTemplate.AgentMarketingRequest;
+            _emailComposer.SendAgentMarketingRequestMail(emailRequest);
+
+
+        }
+</xmp>
+
+
+<hr>
+<h2>Index.html</h2>
+<xmp class="prettyprint">
+  
+</xmp>
+
+
+<h2>Add </h2>
+
+<xmp class="prettyprint">
+    public void AddMerchantAppSetupReport(ServiceRequestModel<MerchantAppSetUpReportViewModel> serviceRequestModel)
+        {
+            var repo = _genericUnitOfWork.GetRepository<MerchantAppSetUpReport, Guid>();
+
+            var merchantOperationExists = repo.GetAll().Any(c => c.MerchantId == serviceRequestModel.Model.MerchantId);
+
+            if (serviceRequestModel.LoginInfo.RoleId != new Guid(ApplicationConstants.AMDSuperAdminId))
+                throw new ArgumentNullException($"This role doesnot have permission to perform this action", innerException: null);
+
+            if (merchantOperationExists)
+                throw new ArgumentNullException($"CICO App Setup Report already exists for this merchant in the system.", innerException: null);
+
+
+            //var mapped = _mapper.Map<MerchantLaunchReportViewModel, MerchantLaunchReport>(serviceRequestModel.Model);
+            var id = Guid.NewGuid();
+            var model = serviceRequestModel.Model;
+            var mapped = new MerchantAppSetUpReport()
+            {
+                Id = id,
+                MerchantId = model.MerchantId,
+                PendingNewCICOAppsSetup = model.PendingNewCICOAppsSetup,
+                PendingUserIdRequest = model.PendingUserIdRequest,
+                UserName = model.UserName,
+                Attachments = serviceRequestModel.Model.Attachments.Select(p => new CICOAttachment()
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Url = p.Url,
+                    AttachmentType = p.AttachmentType
+                }).ToList()
+            };
+            repo.Add(mapped);
+
+            _genericUnitOfWork.SaveChanges(new Domain.Entity.AuditTrail.AuditTrialRequest
+            {
+                CreateDateTime = DateTime.Now,
+                Mode = "Create",
+                ModuleName = AuditTrialModule.MerchantLaunchReport,
+                SubModuleName = AuditTrialSubModule.Create,
+                UserName = serviceRequestModel.LoginInfo.FullName,
+                ReferenceNo = mapped.MerchantId.ToString()
+            });
+
+            // _genericUnitOfWork.SaveChanges();
+        }
+
+
+        public List<string> DeleteMerchantAppSetupReport(ServiceRequestModel<Guid> serviceRequestModel)
+            {
+                var repo = _genericUnitOfWork.GetRepository<MerchantAppSetUpReport, Guid>();
+    
+    
+                if (serviceRequestModel.LoginInfo.RoleId != new Guid(ApplicationConstants.AMDSuperAdminId))
+                    throw new ArgumentNullException($"This role doesnot have permission to perform this action", innerException: null);
+    
+                if (repo.GetTagList(serviceRequestModel.Model).Any())
+                    throw new ArgumentNullException($"Cannot delete. Already tagged.", innerException: null);
+    
+                var data = repo.GetById(serviceRequestModel.Model);
+    
+                List<string> deletedAttachments = new List<string>();
+                foreach (var item in data.Attachments)
+                    deletedAttachments.Add(item.Url);
+    
+                repo.Delete(data);
+                _genericUnitOfWork.SaveChanges(new Domain.Entity.AuditTrail.AuditTrialRequest
+                {
+                    CreateDateTime = DateTime.Now,
+                    Mode = "Create",
+                    ModuleName = AuditTrialModule.MerchantAppSetUpReport,
+                    SubModuleName = AuditTrialSubModule.Delete,
+                    UserName = serviceRequestModel.LoginInfo.FullName,
+                    ReferenceNo = data.MerchantId.ToString()
+                });
+    
+                return deletedAttachments;
+            }
+    
+            public MerchantAppSetUpReportViewModel GetMerchantAppsReport(Guid id)
+            {
+                var report = _genericUnitOfWork.GetRepository<MerchantAppSetUpReport, Guid>().GetById(id);
+                return _mapper.Map<MerchantAppSetUpReport, MerchantAppSetUpReportViewModel>(report);
+            }
+    
+            public DataSourceResult ListMerchatAppSetupReport(ServiceRequestModel<KendoDataRequest> kendoDataRequest)
+            {
+                var merchantAppSetupReportData = _genericUnitOfWork.GetRepository<MerchantAppSetUpReport, Guid>().GetAll();
+    
+                kendoDataRequest.Model.DataExtensions = new List<DataExtension>()
+                {
+                    new DataExtension() { Field = "UserName", ActualField ="UserName" },
+                    new DataExtension() { Field = "MerchantName", ActualField ="Merchant.MerchantDetail.Name" },
+                    new DataExtension() { Field = "PendingUserIdRequest", ActualField ="PendingUserIdRequest" },
+                    new DataExtension() { Field = "PendingNewCICOAppsSetup", ActualField ="PendingNewCICOAppsSetup" }
+                };
+                return merchantAppSetupReportData.AsQueryable().ToDataSourceResult<MerchantAppSetUpReport, MerchantAppSetUpReportListViewModel>(kendoDataRequest.Model, new Sort { Field = "Id", Dir = "asc" }, kendoDataRequest.LoginInfo);
+    
+    
+            }
+    
+            public List<string> UpdateMerchantAppSetupReport(ServiceRequestModel<MerchantAppSetUpReportViewModel> serviceRequestModel)
+            {
+                var repo = _genericUnitOfWork.GetRepository<MerchantAppSetUpReport, Guid>();
+                var data = repo.GetById(serviceRequestModel.Model.Id);
+                var model = serviceRequestModel.Model;
+                var existingAttachments = data.Attachments.ToList();
+    
+                var merchantOperationExists = repo.GetAll().Any(c => c.MerchantId == serviceRequestModel.Model.MerchantId && c.Id != serviceRequestModel.Model.Id);
+    
+                if (serviceRequestModel.LoginInfo.RoleId!= new Guid(ApplicationConstants.AMDSuperAdminId))
+                    throw new ArgumentNullException($"This role doesnot have permission to perform this action", innerException: null);
+    
+    
+                if (merchantOperationExists)
+                    throw new ArgumentNullException($"CICO App Setup Report already exists for this merchant in the system.", innerException: null);
+    
+                var mapped = _mapper.Map<MerchantAppSetUpReportViewModel, MerchantAppSetUpReport>(serviceRequestModel.Model, data);
+    
+                mapped.Attachments.Clear();
+    
+                List<string> deletedAttachments = new List<string>();
+                foreach (var item in existingAttachments)
+                {
+                    if (!serviceRequestModel.Model.Attachments.Any(x => x.Id == item.Id))
+                        deletedAttachments.Add(item.Url);
+                }
+    
+                if (serviceRequestModel.Model.Attachments.Count() > 0)
+                {
+                    foreach (var item in serviceRequestModel.Model.Attachments)
+                    {
+                        var attachment = existingAttachments.SingleOrDefault(c => c.Id == item.Id);
+                        //Allowing only new data to insert
+                        if (attachment == null)
+                        {
+                            var mappedAttachment = _mapper.Map<AttachmentViewModel, CICOAttachment>(item);
+                            mappedAttachment.AttachmentType = item.AttachmentType.Value;
+                            mappedAttachment.Id = Guid.NewGuid();
+                            mappedAttachment.Url = item.Url;
+                            mappedAttachment.Name = item.Name;
+                            mapped.Attachments.Add(mappedAttachment);
+                        }
+                        else // For already existing attachment
+                        {
+                            var mappedAttachment = _mapper.Map<AttachmentViewModel, CICOAttachment>(item, attachment);
+                            mapped.Attachments.Add(mappedAttachment);
+                        }
+                    }
+                }
+                repo.Update(mapped);
+                //_genericUnitOfWork.SaveChanges();
+                _genericUnitOfWork.SaveChanges(new Domain.Entity.AuditTrail.AuditTrialRequest
+                {
+                    CreateDateTime = DateTime.Now,
+                    Mode = "Create",
+                    ModuleName = AuditTrialModule.MerchantLaunchReport,
+                    SubModuleName = AuditTrialSubModule.Update,
+                    UserName = serviceRequestModel.LoginInfo.FullName,
+                    ReferenceNo = mapped.MerchantId.ToString()
+                });
+    
+                return deletedAttachments;
+            }
+</xmp>
+    </body>
+    </html>
+
+
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel-heading">
+                <h3 class="panel-title">System Collection</h3>
+            </div>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Source</th>
+                        <th>Remittance</th>
+                        <th>MVNO & IATS</th>
+                        <th>Insurance</th>
+                        <!--<th>MC RM Float</th>-->
+                        <th>
+                            Money Changing Net Sales / (Purchase) RM
+                        </th>
+                        <th>Money Changing FCY (in RM Equivalent</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td> Amount </td>
+                        <td><amount value="pvModel.Remittance" format="currencyFormat"></amount>
+                        <td><amount value="pvModel.MVNO" format="currencyFormat"></amount></td>
+                        <td><amount value="pvModel.Insurance" format="currencyFormat"></amount></td>
+                        <!-- <td accounting-currency="pvModel.MCRMFloat" symbol="RM"></td> -->
+                        <td><amount value="pvModel.MCRMAmount" format="currencyFormat"></amount></td>
+                        <td><amount value="pvModel.MCFCYEquivalent" format="currencyFormat"></amount></td>
+                    </tr>
+                </tbody>
+    
+            </table>
+            <br />
+    
+        </div>
+    </div>
+    <hr />
+    
+    <form role="form" name="form" ng-submit="save(form)" novalidate>
+        <div class="row">
+            <div class="col-md-4">
+                <cit-branch model="vModel" branch-source="Branches" k-on-change="handleChangeBranch(e)"></cit-branch>
+                
+                <!--<div class="form-group">
+            <label class="control-label" for="BranchId">Branch</label>
+            <div ng-if="allowBranchChange">
+                <div>
+                    <select kendo-drop-down-list
+                            ng-model="vModel.BranchId" name="BranchId"
+                            validation-error-to="BranchError"
+                            validation="required" id="BranchId"
+                            k-data-text-field="'Text'"
+                            k-option-label="'Select'"
+                            k-data-value-field="'Id'"
+                            k-data-source="Branches"
+                            k-options="kendoDropDownOptions"
+                            k-on-change="handleChangeBranch(kendoEvent)"
+                            style="width: 100%"></select>
+                </div>
+                <div id="BranchError" class="validation text-danger"></div>
+            </div>
+            <div ng-if="!allowBranchChange">
+                <div class="readonly-div">{{vModel.BranchName}}</div>
+                <input type="hidden"
+                       ng-model="vModel.BranchId"
+                       validation="required" name="hdnBranchId"
+                       id="hdnBranchId" validation-error-to="hdnBranchError" />
+                <div id="hdnBranchError" class="validation text-danger"></div>
+            </div>
+        </div>-->
+    
+    
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel-heading">
+                    <span class="panel-title" style="color: #695d5d">Additional System Collection</span> &nbsp;<i style="color: #695d5d"> (To be filled manually )</i>
+                </div>
+             
+                <div class="form-group">
+                    <button class="btn btn-blue btn-icon btn-icon-standalone btn-icon-standalone-right pull-right" ng-click="addAdditionalSource()" type="button"> <i class="fa-plus"></i> <span> Add</span> </button>
+                </div>
+    
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Product</th>
+                            <th>Amount</th>
+                            <th>Delete</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="source in vModel.CITCollectionAdditionalSystems">
+                            <td>
+                                {{$index+1}}
+                            </td>
+                            <td>
+                                <select kendo-drop-down-list ng-model="source.SourceTypeId" name="SourceTypeId{{$index}}"
+                                        id="SourceTypeId" {{$index}}
+                                        k-data-text-field="'Text'" k-option-label="'Select'" k-data-value-field="'Id'"
+                                        k-data-source="SourceType" k-options="kendoDropDownOptions"
+                                        style="width: 100%"></select>
+                            </td>
+    
+                            <td><input type="number" id="Amount{{$index}}" name="Amount{{$index}}" class="form-control text-right" placeholder="Amount" ng-model="source.Amount" /></td>
+    
+                            <td><button type="button" class="btn btn-danger btn-sm btn-icon icon-left" ng-click="removeAdditionalSource($index)">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    Transit to :
+    
+                    <label class="cbr-inline" ng-repeat="transit in CITCollectionTransit">
+                        <div class="cbr-replaced cbr-radio " ng-class="{'cbr-checked' : vModel.TransitTo == transit.Id}">
+                            <div class="cbr-input">
+                                <input type="radio" name="TransitTo" ng-model="vModel.TransitTo" value="{{transit.Id}}" ng-change="LoadByTransit(vModel.TransitTo)" />
+    
+                            </div>
+                            <div class="cbr-state"><span></span></div>
+                        </div>
+                        {{transit.Text}}
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label" for="BookingNumberId">Booking No.</label>
+                    <select kendo-drop-down-list ng-model="vModel.CITBookingId" name="BookingNumberId" id="BookingNumberId"
+                            validation-error-to="BookingNumberIdError"
+                            validation="required"
+                            k-data-text-field="'Text'"
+                            k-option-label="'Select'"
+                            k-data-value-field="'Id'"
+                            k-data-source="BookingNo" k-options="kendoDropDownOptions"
+                            style="width: 100%"
+                            ng-change="loadBookedBy(vModel.CITBookingId)"></select>
+                    <div id="BookingNumberIdError" class="validation text-danger"></div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label" for="BookedBy">Booked By</label>
+                    <input disabled type="text" name="BookedBy" class="form-control" id="BookedBy" ng-model="vModel.BookedBy" />
+    
+                </div>
+            </div>
+            <div class="col-md-3" ng-if="vModel.TransitTo == 2">
+                <div class="form-group">
+                    <label class="control-label" for="WCBId">WCB Location</label>
+                    <select kendo-drop-down-list ng-model="vModel.WCBId" name="WCBId" id="WCBId"
+                            k-data-text-field="'Text'"
+                            k-option-label="'Select'"
+                            k-data-value-field="'Id'"
+                            k-data-source="WCBLocation" k-options="kendoDropDownOptions"
+                            style="width: 100%"></select>
+                </div>
+            </div>
+    
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label" for="WCBId">CIT Officer</label>
+                    <select kendo-drop-down-list ng-model="vModel.CITAuthorizedPersonId" name="CITAuthorizePersonId" id="CITAuthorizePersonId"
+                            k-data-text-field="'Text'"
+                            k-option-label="'Select'"
+                            k-data-value-field="'Id'"
+                            k-data-source="CITAuthorizedPersons" k-options="kendoDropDownOptions"
+                            style="width: 100%"></select>
+                </div>
+            </div>
+    
+    
+    
+        </div>
+    
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label" for="CTNo">CT No.</label>
+                    <input type="text" name="CTNo" class="form-control" id="CTNo" ng-model="vModel.CTNO" />
+    
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label" for="SealNo">Seal No.</label>
+                    <input type="text" name="SealNo" class="form-control" id="SealNo" ng-model="vModel.SealNo" />
+    
+                </div>
+            </div>
+        </div>
+        <!--<div class="row">
+            <div class="col-md-3" ng-if="transitToWCB == true">
+                <div class="form-group">
+                    <label class="control-label" for="SealNo">Seal No.</label>
+                    <input type="text" name="SealNo" class="form-control" id="SealNo" ng-model="vModel.SealNo" />
+    
+                </div>
+            </div>
+        </div>-->
+    
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <button ng-show="receiptAddBtn" class="btn btn-blue btn-icon btn-icon-standalone btn-icon-standalone-right pull-right" ngf-select="uploadPic($file)" ngf-accept="'image/*'" ngf-max-size="25MB" type="button"> <i class="fa-upload"></i> <span> Receipt</span> </button>
+                    <button ng-show="addMoreBtn" class="btn btn-blue btn-icon btn-icon-standalone btn-icon-standalone-right pull-right" ngf-select="uploadPic($file)" ngf-accept="'image/*'" ngf-max-size="25MB" type="button"> <i class="fa-plus"></i> <span> Add</span> </button>
+                    <!--<input type="hidden" id="CITCollectionDocuments" name="CITCollectionDocuments" ng-model="vModel.CITCollectionDocuments" />-->
+                </div>
+            </div>
+            <input type="hidden" id="CITCollectionDocuments" name="CITCollectionDocuments" 
+                   validation=" {{vModel.CITCollectionDocuments.length == 0 ? 'required' : ''}}" class="form-control" validation-error-to="CITCollectionDocumentsCountError" />
+            <div class="text-danger validation" id="CITCollectionDocumentsCountError"></div>
+        </div>
+        <div class="row mt15" ng-if="vModel.CITCollectionDocuments.length > 0">
+            <div class="col-md-12">
+                <h3>Receipts</h3>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Reciept</th>
+                            <th></th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="file in vModel.CITCollectionDocuments">
+                            <td>{{$index+1}}</td>
+                            <td>{{file.ReceiptName}}</td>
+                            <td>
+                                <a target="_blank" href="{{file.ReceiptPath}}"><i class="fa fa-search"></i></a>
+                                <button type="button" class="btn btn-danger btn-sm btn-icon icon-left" ng-click="removeReceiptRow($index,file)"><i class="fa fa-remove"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    
+        <div class="row">
+            <div class="col-md-12">
+                <h3>CIT Source</h3>
+                <hr />
+                <div class="form-group">
+                    <button class="btn btn-blue btn-icon btn-icon-standalone btn-icon-standalone-right pull-right" ng-click="addSource()" type="button"> <i class="fa-plus"></i> <span> Add</span> </button>
+    
+                </div>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Source Type</th>
+                            <th>Bank</th>
+                            <th>Amount</th>
+                            <th>Collection Date</th>
+                            <th>Delete</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="source in vModel.CITCollectionSources">
+                            <td style="width:150px">
+                                {{$index+1}}
+                            </td>
+                            <td style="width:300px">
+                                <select kendo-drop-down-list ng-model="source.SourceTypeId"
+                                        name="SourceTypeId{{$index}}"
+                                        validation-error-to="SourceTypeId{{$index}}Error"
+                                        validation="required"
+                                        id="SourceTypeId" {{$index}}
+                                        k-data-text-field="'Text'"
+                                        k-option-label="'Select'" k-data-value-field="'Id'"
+                                        k-data-source="SourceType"
+                                        k-options="kendoDropDownOptions"
+                                        k-on-change="handleChangeSourceType(kendoEvent,source)"
+                                        style="width: 100%"></select>
+                                <div id="SourceTypeId{{$index}}Error" class="validation text-danger"></div>
+                            </td>
+                            <td>
+                                <select kendo-drop-down-list ng-model="source.SourceTypeBankId"
+                                        name="SourceTypeBankId{{$index}}"
+                                        id="SourceTypeBankId{{$index}}"
+                                        validation="required"
+                                        validation-error-to="SourceTypeBankId{{$index}}Error"
+                                        k-data-text-field="'Text'"
+                                        k-option-label="'Select'"
+                                        k-data-value-field="'Id'"
+                                        k-data-source="source.Banks"
+                                        k-options="kendoDropDownOptions"
+                                        style="width: 100%"></select>
+                                <div id="SourceTypeBankId{{$index}}Error"
+                                     class="validation text-danger"></div>
+                            </td>
+                            <td style="width:200px">
+                                <input type="number" id="Amount{{$index}}" name="Amount{{$index}}" class="form-control text-right" placeholder="Amount" ng-model="source.Amount" />
+                            </td>
+                            <td style="width:200px">
+                                <input type="text" name="CollectionDate" class="form-control" id="CollectionDate{{$index}}"
+                                       kendo-date-picker placeholder="Collection Date" ng-model="source.CollectionDate"
+                                       style="width:100%;" validation-error-to="CollectionDateErrorId{{$index}}"
+                                       validation="required">
+                                <span id="CollectionDateErrorId{{$index}}" class="validation text-danger"></span>
+                            </td>
+                            <td><button type="button" class="btn btn-danger btn-sm btn-icon icon-left" ng-click="removeRow($index)">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label" for="Remarks">Remarks</label>
+                    <textarea name="Remarks" class="form-control min-height-150" id="Remarks" placeholder="Remarks" ng-model="vModel.RemarksFromCC"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" ng-include="'/app/shared/EntryFooter.html?v1'"></div>
+    </form>

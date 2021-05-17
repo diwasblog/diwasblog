@@ -1,0 +1,939 @@
+
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+        <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+    
+    <script src="https://unpkg.com/vue"></script>
+    
+    <style>
+    xmp.prettyprint{
+        font-size:12pt;
+        font-family:monospace;
+    
+    }
+    </style>
+     
+    </head>
+    <body>
+    
+   <h2>Controller.js</h2>
+       
+      <xmp class="prettyprint">
+        (function () {
+            'use strict';
+            angular.module("app.cico.appsetupreport", []).controller('appsetupreportCtrl', ['$scope', 'appStore', '$controller', '$routeParams', 'Restangular', '$q', '$timeout', 'Upload', '$route', '$filter', '$rootScope', 'ValidationService', 'toaster', '$location',
+                function ($scope, appStore, $controller, $routeParams, Restangular, $q, $timeout, Upload, $route, $filter, $rootScope, ValidationService, toaster, $location) {
+                    angular.extend(this, $controller('baseCtrl', { $scope: $scope }));
+                    angular.extend($scope.urls, {
+                        initUrl: 'cico/appsetupreport',
+                        listUrl: 'cico/appsetupreport/list',
+                        addUrl: 'cico/appsetupreport/add',
+                        updateUrl: 'cico/appsetupreport/update',
+                        deleteUrl: 'cico/appsetupreport/delete',
+                        getUrl: 'cico/appsetupreport/get',
+                        viewUrl: 'cico/appsetupreport/get'
+                    });
+        
+                    $scope.routeMode = $routeParams.mode;
+                    $scope.isAMDSUAdmin = appStore.isAMDSUAdmin();
+        
+                    //Undefined is for List
+                    if ($routeParams.mode == undefined) {
+                        angular.extend($scope.kendoGridOptions, {
+                            columns:
+                                [
+        
+                                    {
+                                        field: "MerchantName",  // View Model Property
+                                        title: "Merchant Name",
+                                        type: "string"
+                                    },
+                                    {
+                                        field: "UserName", // View Model Property
+                                        title: "User Name",
+                                        type: "string"
+                                    },
+                                    {
+                                        field: "PendingUserIdRequest",  // View Model Property
+                                        title: "Pending UserId Request",
+                                        type: "boolean",
+                                        filterable: { messages: { isTrue: "<span>Yes</span>", isFalse: "<span>No</span>" } },
+                                        template: function (data) {
+                                            return data.PendingUserIdRequest ? "Yes" : "No";
+                                        }
+                                    },
+                                    {
+                                        field: "PendingNewCICOAppsSetup",  // View Model Property
+                                        title: "Pending New CICO Apps Setup",
+                                        type: "boolean",
+                                        filterable: { messages: { isTrue: "<span>Yes</span>", isFalse: "<span>No</span>" } },
+                                        template: function (data) {
+                                            return data.PendingNewCICOAppsSetup ? "Yes" : "No";
+                                        }
+                                    },
+                                    $scope.actions.NormalWithAccessControl
+                                ]
+                        });
+                        $scope.loadGrid();
+                    }
+                    else {
+                        $scope.pvModel = {
+                            AccountId: '',
+                            AccountMSISDN: '',
+                            UniversalId: '',
+                            Layer: ''
+                        };
+        
+                        $scope.vModel = {
+                            Id: appStore.getBlankGuid(),
+                            MerchantId: '',
+                            MerchantName: '',
+                            PendingUserIdRequest: false,
+                            PendingNewCICOAppsSetup: false,
+                            UserName: '',
+                            Attachments: []
+                        };
+                        $scope.Merchants = [];
+                        $scope.removeRow = function (index) {
+                            $scope.vModel.Attachments.splice(index, 1);
+                        };
+                        $scope.showMerchantDetail = false;
+        
+                        $scope.onMerchantChange = function () {
+                            if ($scope.vModel.MerchantId == '') {
+                                $scope.showMerchantDetail = false;
+                                return;
+                            }
+                            Restangular.one("cico/commencement/get/shortinfo/" + $scope.vModel.MerchantId).get().then(function (result) {
+                                $scope.pvModel.AccountId = result.AccountId;
+                                $scope.pvModel.AccountMSISDN = result.AccountMSISDN;
+                                $scope.pvModel.Layer = result.Layer == 1 ? "L1" : result.Layer == 2 ? "L2" : result.Layer == 3 ? "L3" : result.Layer;
+                                $scope.pvModel.UniversalId = result.UniversalId;
+                                $scope.showMerchantDetail = true;
+                            });
+                        };
+        
+                        $scope.$on('$routeChangeSuccess', function () {
+                            var response = $route.current.locals.initialData;
+                            if (!response)
+                                return;
+        
+                            if ($routeParams.mode == "create") {
+                                $scope.Merchants = response[0];
+                            } else  {
+                                var model = response[0];
+                                appStore.mapViewModel(model, $scope.vModel);
+                                $scope.onMerchantChange();
+                            }
+                        });
+        
+        
+                        $scope.uploadDocument = function (file, type) {
+                            if (file != null) {
+                                Upload.upload({
+                                    url: appStore.getBaseUrl() + "/DocumentUpload/upload",
+                                    data: { file: file }
+                                }).then(function (resp) {
+                                    if (resp) {
+                                        var uploaded = {
+                                            Id: appStore.getGuid(),
+                                            Name: resp.data.NameWithExtension,
+                                            Url: resp.data.Path,
+                                            AttachmentType: type  // 5 for UserIdAttachment and 1 for Passport / NRIC 
+                                        };
+                                        $scope.vModel.Attachments.push(uploaded);
+                                    }
+        
+                                }, function (resp) {
+        
+                                }, function (evt) {
+        
+                                });
+                            }
+                        };
+        
+                    }
+        
+        
+        
+                }]);
+        })();
+        
+        
+        
+        
+        </xmp>
+
+
+<h2>Create.html</h2>
+<xmp class="prettyprint">
+    <form role="form" name="form" ng-submit="save(form)" novalidate>
+        <div class="row">
+            <div class="col-md-4 " ng-if="routeMode=='create'">
+                <div class="form-group">
+                    <label class="control-label bold">CICO Name</label>
+                    <select kendo-drop-down-list ng-model="vModel.MerchantId" name="Text" id="Id"
+                            validation-error-to="MerchantError"
+                            validation="required"
+                            k-data-text-field="'Text'"
+                            k-option-label="'Select'"
+                            k-data-value-field="'Id'"
+                            k-data-source="Merchants" k-options="kendoDropDownOptions" ng-change="onMerchantChange()"
+                            style="width: 100%"></select>
+                    <div class="text-danger validation" id="MerchantError"></div>
+                </div>
+            </div>
+            <div class="col-md-4" ng-if="routeMode=='edit'">
+                <div class="form-group">
+                    <label class="control-label bold" >CICO Name</label>
+                    <div> {{vModel.MerchantName}}</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label display-block bold" for="PendingUserIdRequest">
+                        Pending UserId Request
+                    </label>
+                    <label class="switch switch-3d switch-success iswitch-xlg">
+                        <input type="checkbox" class="switch-input" name="PendingUserIdRequest"
+                               id="PendingUserIdRequest"
+                               ng-model="vModel.PendingUserIdRequest">
+                        <span class="switch-label"></span>
+                        <span class="switch-handle"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label display-block bold" for="PendingNewCICOAppsSetup">
+                        Pending New CICO Apps Setup
+                    </label>
+                    <label class="switch switch-3d switch-success iswitch-xlg">
+                        <input type="checkbox" class="switch-input" name="PendingNewCICOAppsSetup"
+                               id="PendingNewCICOAppsSetup"
+                               ng-model="vModel.PendingNewCICOAppsSetup">
+                        <span class="switch-label"></span>
+                        <span class="switch-handle"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label bold">UserName</label>
+                    <input type="text" name="UserName" class="form-control" id="UserName"
+                           ng-model="vModel.UserName"
+                           validation="required">
+                </div>
+            </div>
+            <div class="col-md-4" ng-show="showMerchantDetail">
+                <div class="form-group">
+                    <label class="control-label bold">Account ID Number</label>
+                    <div>{{pvModel.AccountId}}</div>
+                </div>
+            </div>
+            <div class="col-md-4" ng-show="showMerchantDetail">
+                <div class="form-group">
+                    <label class="control-label bold">Account MSSIDN Number</label>
+                    <div>{{pvModel.AccountMSISDN}}</div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="row">
+            <div class="col-md-4" ng-show="showMerchantDetail">
+                <div class="form-group">
+                    <label class="control-label bold">Layer</label>
+                    <div>{{pvModel.Layer}}</div>
+                </div>
+            </div>
+            <div class="col-md-4" ng-show="showMerchantDetail">
+                <div class="form-group">
+                    <label class="control-label bold">Universal ID</label>
+                    <div>{{pvModel.UniversalId}}</div>
+                </div>
+            </div>
+        </div>
+        <hr />
+    
+        <div class="row">
+            <div class="col-md-6">
+                <label class="control-label bold">Upload Document</label>
+                <div class="form-group">
+                    <button class="btn btn-blue btn-icon btn-icon-standalone btn-icon-standalone-right"
+                            ngf-select="uploadDocument($file,1)" ngf-accept="'.pdf,image/*'"
+                            ngf-max-size="25MB" type="button">
+                        <i class="fa-upload"></i> <span>User ID</span>
+                    </button>
+                    <button class="btn btn-blue btn-icon btn-icon-standalone btn-icon-standalone-right"
+                            ngf-select="uploadDocument($file,2)" ngf-accept="'.pdf,image/*'"
+                            ngf-max-size="25MB" type="button">
+                        <i class="fa-upload"></i> <span>NRIC / Passport Copy</span>
+                    </button>
+                    <input type="hidden" id="Attachments" name="Attachments" ng-model="vModel.AttachmentCount"
+                           validation=" {{vModel.Attachments.length == 0 ? 'required' : ''}}" class="form-control" validation-error-to="AttachmentCountError" />
+                    <div class="text-danger validation" id="AttachmentCountError"></div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="row" ng-show="vModel.Attachments.length>0">
+            <div class="col-md-12">
+    
+                <label class="control-label bold">Uploaded Document</label>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Type</th>
+                            <th>Name</th>
+                            <th>Action</th>
+                    </thead>
+                    <tbody>
+    
+                        <tr ng-repeat="file in vModel.Attachments">
+                            <td>{{$index+1}}</td>
+                            <td>{{file.AttachmentType == '1'?"UserID":"NRIC / Passport Copy"}}</td>
+                            <td>{{file.Name}}</td>
+                            <td>
+                                <a target="_blank" href="{{file.Url}}"><i class="fa fa-search"></i></a> &nbsp;&nbsp;
+                                <button type="button" class="btn btn-danger btn-sm btn-icon icon-left" ng-click="removeRow($index)"><i class="fa fa-times"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    
+        <div class="form-group" ng-include="'/app/shared/EntryFooter.html'"></div>
+    </form>
+</xmp>
+
+<hr>
+<h2>View.html</h2>
+<xmp class="prettyprint">
+    <form role="form" name="form">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label display-block bold" for="UserIDLevel">CICO Name</label>
+                    <div>{{vModel.MerchantName}}</div>
+                </div>
+            </div>
+    
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label bold">Pending User Id Request</label>
+                    <div> {{vModel.PendingUserIdRequest ? 'Yes' : 'No'}}</div>
+                </div>
+            </div>
+    
+    
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label bold">Pending New Agent MIRS Setup</label>
+                    <div> {{vModel.PendingNewCICOAppsSetup ? 'Yes' : 'No'}}</div>
+                </div>
+            </div>
+    
+        </div>
+    
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label bold" for="NRICUserName">User Name</label>                
+                    <div>{{vModel.UserName}}</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label bold">Account ID Number</label>
+                    <div>{{pvModel.AccountId}}</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label bold">Account MSSIDN Number</label>
+                    <div>{{pvModel.AccountMSISDN}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label bold">Layer</label>
+                    <div>{{pvModel.Layer}}</div>
+                </div>
+            </div>
+    
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label bold">Universal ID</label>
+                    <div> {{pvModel.UniversalId}}</div>
+                </div>
+            </div>
+    
+        </div>
+        <hr />
+        <div class="row" ng-show="vModel.Attachments.length>0">
+            <div class="col-md-12">
+                <label class="control-label bold">Uploaded Document</label>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th> Type</th>
+                            <th>Name</th>
+                            <th>Action</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="file in vModel.Attachments">
+                            <td>{{$index+1}}</td>
+                            <td>{{file.AttachmentType == '1'?"UserID":"NRIC / Passport Copy"}}</td>
+                            <td>{{file.Name}}</td>
+                            <td>
+                                <a class="btn btn-primary btn-sm" target="_blank" href="{{file.Url}}"  ><i class="fa fa-search"></i></a>
+    
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    
+    
+    
+    
+        <div class="form-group" ng-include="'/app/shared/Cancel.html'"></div>
+    
+    </form>
+    
+</xmp>
+
+
+<hr>
+<h2>Index.html</h2>
+<xmp class="prettyprint">
+    <div class="row" ng-controller="appsetupreportCtrl">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">CICO App Setup Report</h3>
+                    <div class="pull-right" ng-if="isAMDSUAdmin" ng-include="'../app/shared/buttons.html'"></div>
+                </div>
+                <div class="panel-body">
+                    <div ng-switch on="mode">
+                        <div ng-switch-when="create">
+                            <div ng-include="'../app/cico/appsetupreport/create.html?v1.22.6'"></div>
+                        </div>
+                        <div ng-switch-when="view">
+                            <div ng-include="'../app/cico/appsetupreport/view.html?v1'"></div>
+                        </div>
+                        <div ng-switch-default>
+                            <div ng-include="'../app/shared/list.html'"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</xmp>
+
+
+<h2>Add </h2>
+
+<xmp class="prettyprint">
+    public void AddMerchantAppSetupReport(ServiceRequestModel<MerchantAppSetUpReportViewModel> serviceRequestModel)
+        {
+            var repo = _genericUnitOfWork.GetRepository<MerchantAppSetUpReport, Guid>();
+
+            var merchantOperationExists = repo.GetAll().Any(c => c.MerchantId == serviceRequestModel.Model.MerchantId);
+
+            if (serviceRequestModel.LoginInfo.RoleId != new Guid(ApplicationConstants.AMDSuperAdminId))
+                throw new ArgumentNullException($"This role doesnot have permission to perform this action", innerException: null);
+
+            if (merchantOperationExists)
+                throw new ArgumentNullException($"CICO App Setup Report already exists for this merchant in the system.", innerException: null);
+
+
+            //var mapped = _mapper.Map<MerchantLaunchReportViewModel, MerchantLaunchReport>(serviceRequestModel.Model);
+            var id = Guid.NewGuid();
+            var model = serviceRequestModel.Model;
+            var mapped = new MerchantAppSetUpReport()
+            {
+                Id = id,
+                MerchantId = model.MerchantId,
+                PendingNewCICOAppsSetup = model.PendingNewCICOAppsSetup,
+                PendingUserIdRequest = model.PendingUserIdRequest,
+                UserName = model.UserName,
+                Attachments = serviceRequestModel.Model.Attachments.Select(p => new CICOAttachment()
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Url = p.Url,
+                    AttachmentType = p.AttachmentType
+                }).ToList()
+            };
+            repo.Add(mapped);
+
+            _genericUnitOfWork.SaveChanges(new Domain.Entity.AuditTrail.AuditTrialRequest
+            {
+                CreateDateTime = DateTime.Now,
+                Mode = "Create",
+                ModuleName = AuditTrialModule.MerchantLaunchReport,
+                SubModuleName = AuditTrialSubModule.Create,
+                UserName = serviceRequestModel.LoginInfo.FullName,
+                ReferenceNo = mapped.MerchantId.ToString()
+            });
+
+            // _genericUnitOfWork.SaveChanges();
+        }
+
+
+        public List<string> DeleteMerchantAppSetupReport(ServiceRequestModel<Guid> serviceRequestModel)
+            {
+                var repo = _genericUnitOfWork.GetRepository<MerchantAppSetUpReport, Guid>();
+    
+    
+                if (serviceRequestModel.LoginInfo.RoleId != new Guid(ApplicationConstants.AMDSuperAdminId))
+                    throw new ArgumentNullException($"This role doesnot have permission to perform this action", innerException: null);
+    
+                if (repo.GetTagList(serviceRequestModel.Model).Any())
+                    throw new ArgumentNullException($"Cannot delete. Already tagged.", innerException: null);
+    
+                var data = repo.GetById(serviceRequestModel.Model);
+    
+                List<string> deletedAttachments = new List<string>();
+                foreach (var item in data.Attachments)
+                    deletedAttachments.Add(item.Url);
+    
+                repo.Delete(data);
+                _genericUnitOfWork.SaveChanges(new Domain.Entity.AuditTrail.AuditTrialRequest
+                {
+                    CreateDateTime = DateTime.Now,
+                    Mode = "Create",
+                    ModuleName = AuditTrialModule.MerchantAppSetUpReport,
+                    SubModuleName = AuditTrialSubModule.Delete,
+                    UserName = serviceRequestModel.LoginInfo.FullName,
+                    ReferenceNo = data.MerchantId.ToString()
+                });
+    
+                return deletedAttachments;
+            }
+    
+            public MerchantAppSetUpReportViewModel GetMerchantAppsReport(Guid id)
+            {
+                var report = _genericUnitOfWork.GetRepository<MerchantAppSetUpReport, Guid>().GetById(id);
+                return _mapper.Map<MerchantAppSetUpReport, MerchantAppSetUpReportViewModel>(report);
+            }
+    
+            public DataSourceResult ListMerchatAppSetupReport(ServiceRequestModel<KendoDataRequest> kendoDataRequest)
+            {
+                var merchantAppSetupReportData = _genericUnitOfWork.GetRepository<MerchantAppSetUpReport, Guid>().GetAll();
+    
+                kendoDataRequest.Model.DataExtensions = new List<DataExtension>()
+                {
+                    new DataExtension() { Field = "UserName", ActualField ="UserName" },
+                    new DataExtension() { Field = "MerchantName", ActualField ="Merchant.MerchantDetail.Name" },
+                    new DataExtension() { Field = "PendingUserIdRequest", ActualField ="PendingUserIdRequest" },
+                    new DataExtension() { Field = "PendingNewCICOAppsSetup", ActualField ="PendingNewCICOAppsSetup" }
+                };
+                return merchantAppSetupReportData.AsQueryable().ToDataSourceResult<MerchantAppSetUpReport, MerchantAppSetUpReportListViewModel>(kendoDataRequest.Model, new Sort { Field = "Id", Dir = "asc" }, kendoDataRequest.LoginInfo);
+    
+    
+            }
+    
+            public List<string> UpdateMerchantAppSetupReport(ServiceRequestModel<MerchantAppSetUpReportViewModel> serviceRequestModel)
+            {
+                var repo = _genericUnitOfWork.GetRepository<MerchantAppSetUpReport, Guid>();
+                var data = repo.GetById(serviceRequestModel.Model.Id);
+                var model = serviceRequestModel.Model;
+                var existingAttachments = data.Attachments.ToList();
+    
+                var merchantOperationExists = repo.GetAll().Any(c => c.MerchantId == serviceRequestModel.Model.MerchantId && c.Id != serviceRequestModel.Model.Id);
+    
+                if (serviceRequestModel.LoginInfo.RoleId!= new Guid(ApplicationConstants.AMDSuperAdminId))
+                    throw new ArgumentNullException($"This role doesnot have permission to perform this action", innerException: null);
+    
+    
+                if (merchantOperationExists)
+                    throw new ArgumentNullException($"CICO App Setup Report already exists for this merchant in the system.", innerException: null);
+    
+                var mapped = _mapper.Map<MerchantAppSetUpReportViewModel, MerchantAppSetUpReport>(serviceRequestModel.Model, data);
+    
+                mapped.Attachments.Clear();
+    
+                List<string> deletedAttachments = new List<string>();
+                foreach (var item in existingAttachments)
+                {
+                    if (!serviceRequestModel.Model.Attachments.Any(x => x.Id == item.Id))
+                        deletedAttachments.Add(item.Url);
+                }
+    
+                if (serviceRequestModel.Model.Attachments.Count() > 0)
+                {
+                    foreach (var item in serviceRequestModel.Model.Attachments)
+                    {
+                        var attachment = existingAttachments.SingleOrDefault(c => c.Id == item.Id);
+                        //Allowing only new data to insert
+                        if (attachment == null)
+                        {
+                            var mappedAttachment = _mapper.Map<AttachmentViewModel, CICOAttachment>(item);
+                            mappedAttachment.AttachmentType = item.AttachmentType.Value;
+                            mappedAttachment.Id = Guid.NewGuid();
+                            mappedAttachment.Url = item.Url;
+                            mappedAttachment.Name = item.Name;
+                            mapped.Attachments.Add(mappedAttachment);
+                        }
+                        else // For already existing attachment
+                        {
+                            var mappedAttachment = _mapper.Map<AttachmentViewModel, CICOAttachment>(item, attachment);
+                            mapped.Attachments.Add(mappedAttachment);
+                        }
+                    }
+                }
+                repo.Update(mapped);
+                //_genericUnitOfWork.SaveChanges();
+                _genericUnitOfWork.SaveChanges(new Domain.Entity.AuditTrail.AuditTrialRequest
+                {
+                    CreateDateTime = DateTime.Now,
+                    Mode = "Create",
+                    ModuleName = AuditTrialModule.MerchantLaunchReport,
+                    SubModuleName = AuditTrialSubModule.Update,
+                    UserName = serviceRequestModel.LoginInfo.FullName,
+                    ReferenceNo = mapped.MerchantId.ToString()
+                });
+    
+                return deletedAttachments;
+            }
+</xmp>
+    </body>
+    </html>
+
+
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel-heading">
+                <h3 class="panel-title">System Collection</h3>
+            </div>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Source</th>
+                        <th>Remittance</th>
+                        <th>MVNO & IATS</th>
+                        <th>Insurance</th>
+                        <!--<th>MC RM Float</th>-->
+                        <th>
+                            Money Changing Net Sales / (Purchase) RM
+                        </th>
+                        <th>Money Changing FCY (in RM Equivalent</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td> Amount </td>
+                        <td><amount value="pvModel.Remittance" format="currencyFormat"></amount>
+                        <td><amount value="pvModel.MVNO" format="currencyFormat"></amount></td>
+                        <td><amount value="pvModel.Insurance" format="currencyFormat"></amount></td>
+                        <!-- <td accounting-currency="pvModel.MCRMFloat" symbol="RM"></td> -->
+                        <td><amount value="pvModel.MCRMAmount" format="currencyFormat"></amount></td>
+                        <td><amount value="pvModel.MCFCYEquivalent" format="currencyFormat"></amount></td>
+                    </tr>
+                </tbody>
+    
+            </table>
+            <br />
+    
+        </div>
+    </div>
+    <hr />
+    
+    <form role="form" name="form" ng-submit="save(form)" novalidate>
+        <div class="row">
+            <div class="col-md-4">
+                <cit-branch model="vModel" branch-source="Branches" k-on-change="handleChangeBranch(e)"></cit-branch>
+                
+                <!--<div class="form-group">
+            <label class="control-label" for="BranchId">Branch</label>
+            <div ng-if="allowBranchChange">
+                <div>
+                    <select kendo-drop-down-list
+                            ng-model="vModel.BranchId" name="BranchId"
+                            validation-error-to="BranchError"
+                            validation="required" id="BranchId"
+                            k-data-text-field="'Text'"
+                            k-option-label="'Select'"
+                            k-data-value-field="'Id'"
+                            k-data-source="Branches"
+                            k-options="kendoDropDownOptions"
+                            k-on-change="handleChangeBranch(kendoEvent)"
+                            style="width: 100%"></select>
+                </div>
+                <div id="BranchError" class="validation text-danger"></div>
+            </div>
+            <div ng-if="!allowBranchChange">
+                <div class="readonly-div">{{vModel.BranchName}}</div>
+                <input type="hidden"
+                       ng-model="vModel.BranchId"
+                       validation="required" name="hdnBranchId"
+                       id="hdnBranchId" validation-error-to="hdnBranchError" />
+                <div id="hdnBranchError" class="validation text-danger"></div>
+            </div>
+        </div>-->
+    
+    
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel-heading">
+                    <span class="panel-title" style="color: #695d5d">Additional System Collection</span> &nbsp;<i style="color: #695d5d"> (To be filled manually )</i>
+                </div>
+             
+                <div class="form-group">
+                    <button class="btn btn-blue btn-icon btn-icon-standalone btn-icon-standalone-right pull-right" ng-click="addAdditionalSource()" type="button"> <i class="fa-plus"></i> <span> Add</span> </button>
+                </div>
+    
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Product</th>
+                            <th>Amount</th>
+                            <th>Delete</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="source in vModel.CITCollectionAdditionalSystems">
+                            <td>
+                                {{$index+1}}
+                            </td>
+                            <td>
+                                <select kendo-drop-down-list ng-model="source.SourceTypeId" name="SourceTypeId{{$index}}"
+                                        id="SourceTypeId" {{$index}}
+                                        k-data-text-field="'Text'" k-option-label="'Select'" k-data-value-field="'Id'"
+                                        k-data-source="SourceType" k-options="kendoDropDownOptions"
+                                        style="width: 100%"></select>
+                            </td>
+    
+                            <td><input type="number" id="Amount{{$index}}" name="Amount{{$index}}" class="form-control text-right" placeholder="Amount" ng-model="source.Amount" /></td>
+    
+                            <td><button type="button" class="btn btn-danger btn-sm btn-icon icon-left" ng-click="removeAdditionalSource($index)">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    Transit to :
+    
+                    <label class="cbr-inline" ng-repeat="transit in CITCollectionTransit">
+                        <div class="cbr-replaced cbr-radio " ng-class="{'cbr-checked' : vModel.TransitTo == transit.Id}">
+                            <div class="cbr-input">
+                                <input type="radio" name="TransitTo" ng-model="vModel.TransitTo" value="{{transit.Id}}" ng-change="LoadByTransit(vModel.TransitTo)" />
+    
+                            </div>
+                            <div class="cbr-state"><span></span></div>
+                        </div>
+                        {{transit.Text}}
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label" for="BookingNumberId">Booking No.</label>
+                    <select kendo-drop-down-list ng-model="vModel.CITBookingId" name="BookingNumberId" id="BookingNumberId"
+                            validation-error-to="BookingNumberIdError"
+                            validation="required"
+                            k-data-text-field="'Text'"
+                            k-option-label="'Select'"
+                            k-data-value-field="'Id'"
+                            k-data-source="BookingNo" k-options="kendoDropDownOptions"
+                            style="width: 100%"
+                            ng-change="loadBookedBy(vModel.CITBookingId)"></select>
+                    <div id="BookingNumberIdError" class="validation text-danger"></div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label" for="BookedBy">Booked By</label>
+                    <input disabled type="text" name="BookedBy" class="form-control" id="BookedBy" ng-model="vModel.BookedBy" />
+    
+                </div>
+            </div>
+            <div class="col-md-3" ng-if="vModel.TransitTo == 2">
+                <div class="form-group">
+                    <label class="control-label" for="WCBId">WCB Location</label>
+                    <select kendo-drop-down-list ng-model="vModel.WCBId" name="WCBId" id="WCBId"
+                            k-data-text-field="'Text'"
+                            k-option-label="'Select'"
+                            k-data-value-field="'Id'"
+                            k-data-source="WCBLocation" k-options="kendoDropDownOptions"
+                            style="width: 100%"></select>
+                </div>
+            </div>
+    
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label" for="WCBId">CIT Officer</label>
+                    <select kendo-drop-down-list ng-model="vModel.CITAuthorizedPersonId" name="CITAuthorizePersonId" id="CITAuthorizePersonId"
+                            k-data-text-field="'Text'"
+                            k-option-label="'Select'"
+                            k-data-value-field="'Id'"
+                            k-data-source="CITAuthorizedPersons" k-options="kendoDropDownOptions"
+                            style="width: 100%"></select>
+                </div>
+            </div>
+    
+    
+    
+        </div>
+    
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label" for="CTNo">CT No.</label>
+                    <input type="text" name="CTNo" class="form-control" id="CTNo" ng-model="vModel.CTNO" />
+    
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label" for="SealNo">Seal No.</label>
+                    <input type="text" name="SealNo" class="form-control" id="SealNo" ng-model="vModel.SealNo" />
+    
+                </div>
+            </div>
+        </div>
+        <!--<div class="row">
+            <div class="col-md-3" ng-if="transitToWCB == true">
+                <div class="form-group">
+                    <label class="control-label" for="SealNo">Seal No.</label>
+                    <input type="text" name="SealNo" class="form-control" id="SealNo" ng-model="vModel.SealNo" />
+    
+                </div>
+            </div>
+        </div>-->
+    
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <button ng-show="receiptAddBtn" class="btn btn-blue btn-icon btn-icon-standalone btn-icon-standalone-right pull-right" ngf-select="uploadPic($file)" ngf-accept="'image/*'" ngf-max-size="25MB" type="button"> <i class="fa-upload"></i> <span> Receipt</span> </button>
+                    <button ng-show="addMoreBtn" class="btn btn-blue btn-icon btn-icon-standalone btn-icon-standalone-right pull-right" ngf-select="uploadPic($file)" ngf-accept="'image/*'" ngf-max-size="25MB" type="button"> <i class="fa-plus"></i> <span> Add</span> </button>
+                    <!--<input type="hidden" id="CITCollectionDocuments" name="CITCollectionDocuments" ng-model="vModel.CITCollectionDocuments" />-->
+                </div>
+            </div>
+            <input type="hidden" id="CITCollectionDocuments" name="CITCollectionDocuments" 
+                   validation=" {{vModel.CITCollectionDocuments.length == 0 ? 'required' : ''}}" class="form-control" validation-error-to="CITCollectionDocumentsCountError" />
+            <div class="text-danger validation" id="CITCollectionDocumentsCountError"></div>
+        </div>
+        <div class="row mt15" ng-if="vModel.CITCollectionDocuments.length > 0">
+            <div class="col-md-12">
+                <h3>Receipts</h3>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Reciept</th>
+                            <th></th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="file in vModel.CITCollectionDocuments">
+                            <td>{{$index+1}}</td>
+                            <td>{{file.ReceiptName}}</td>
+                            <td>
+                                <a target="_blank" href="{{file.ReceiptPath}}"><i class="fa fa-search"></i></a>
+                                <button type="button" class="btn btn-danger btn-sm btn-icon icon-left" ng-click="removeReceiptRow($index,file)"><i class="fa fa-remove"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    
+        <div class="row">
+            <div class="col-md-12">
+                <h3>CIT Source</h3>
+                <hr />
+                <div class="form-group">
+                    <button class="btn btn-blue btn-icon btn-icon-standalone btn-icon-standalone-right pull-right" ng-click="addSource()" type="button"> <i class="fa-plus"></i> <span> Add</span> </button>
+    
+                </div>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>S.No</th>
+                            <th>Source Type</th>
+                            <th>Bank</th>
+                            <th>Amount</th>
+                            <th>Collection Date</th>
+                            <th>Delete</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="source in vModel.CITCollectionSources">
+                            <td style="width:150px">
+                                {{$index+1}}
+                            </td>
+                            <td style="width:300px">
+                                <select kendo-drop-down-list ng-model="source.SourceTypeId"
+                                        name="SourceTypeId{{$index}}"
+                                        validation-error-to="SourceTypeId{{$index}}Error"
+                                        validation="required"
+                                        id="SourceTypeId" {{$index}}
+                                        k-data-text-field="'Text'"
+                                        k-option-label="'Select'" k-data-value-field="'Id'"
+                                        k-data-source="SourceType"
+                                        k-options="kendoDropDownOptions"
+                                        k-on-change="handleChangeSourceType(kendoEvent,source)"
+                                        style="width: 100%"></select>
+                                <div id="SourceTypeId{{$index}}Error" class="validation text-danger"></div>
+                            </td>
+                            <td>
+                                <select kendo-drop-down-list ng-model="source.SourceTypeBankId"
+                                        name="SourceTypeBankId{{$index}}"
+                                        id="SourceTypeBankId{{$index}}"
+                                        validation="required"
+                                        validation-error-to="SourceTypeBankId{{$index}}Error"
+                                        k-data-text-field="'Text'"
+                                        k-option-label="'Select'"
+                                        k-data-value-field="'Id'"
+                                        k-data-source="source.Banks"
+                                        k-options="kendoDropDownOptions"
+                                        style="width: 100%"></select>
+                                <div id="SourceTypeBankId{{$index}}Error"
+                                     class="validation text-danger"></div>
+                            </td>
+                            <td style="width:200px">
+                                <input type="number" id="Amount{{$index}}" name="Amount{{$index}}" class="form-control text-right" placeholder="Amount" ng-model="source.Amount" />
+                            </td>
+                            <td style="width:200px">
+                                <input type="text" name="CollectionDate" class="form-control" id="CollectionDate{{$index}}"
+                                       kendo-date-picker placeholder="Collection Date" ng-model="source.CollectionDate"
+                                       style="width:100%;" validation-error-to="CollectionDateErrorId{{$index}}"
+                                       validation="required">
+                                <span id="CollectionDateErrorId{{$index}}" class="validation text-danger"></span>
+                            </td>
+                            <td><button type="button" class="btn btn-danger btn-sm btn-icon icon-left" ng-click="removeRow($index)">Remove</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="control-label" for="Remarks">Remarks</label>
+                    <textarea name="Remarks" class="form-control min-height-150" id="Remarks" placeholder="Remarks" ng-model="vModel.RemarksFromCC"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" ng-include="'/app/shared/EntryFooter.html?v1'"></div>
+    </form>
