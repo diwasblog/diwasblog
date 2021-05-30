@@ -1,0 +1,62 @@
+<html>
+
+<head>
+
+    <script
+        src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+    <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+
+
+    <style>
+        xmp.prettyprint {
+            font-size: 12pt;
+            font-family: monospace;
+
+        }
+    </style>
+
+
+
+
+</head>
+
+
+<body>
+
+
+    <div class="row">
+        <div class="col-lg-12">
+
+            <xmp class="prettyprint">
+
+                //Html Part
+                <input type="date" onblur="isInPast(event)">
+
+
+                //Js Part
+                var isInPast = function(event){
+                    var userEntered = new Date(event.target.valueAsNumber); // valueAsNumber has no time or timezone!
+                    var now = new Date();
+                    var today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() ));
+                    if(userEntered.getTime() < today.getTime())
+                      alert("date is past");
+                    else if(userEntered.getTime() == today.getTime())
+                      alert("date is today");
+                    else
+                      alert("date is future");
+              
+                  }
+
+
+                  //Source
+            </xmp>
+        </div>
+
+
+    </div>
+
+
+
+</body>
+
+</html>
