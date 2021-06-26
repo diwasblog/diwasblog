@@ -1,0 +1,1036 @@
+
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=java&amp;skin=sons-of-obsidian"></script>
+        <!-- skin default,desert,sunbrust,sons-of-obsidian,doxy-->
+    
+    <script src="https://unpkg.com/vue"></script>
+    
+    <style>
+    xmp.prettyprint{
+        font-size:8pt;
+        font-family:monospace;
+    
+    }
+    </style>
+     
+    </head>
+    <body>
+    
+   <h2>File Validation</h2>
+       
+      <xmp class="prettyprint">
+        <tr ng-repeat="row in vModel.VisitBys">
+            <th scope="row">{{$index+1}}</th>
+            <td>
+                <input type="text" autocomplete="off" name="VisitByFullName{{$index}}"
+                       class="form-control"
+                       id="VisitByFullName{{$index}}"
+                       placeholder="" ng-model="row.Name"
+                       style="width:100%;" validation-error-to="VisitByFullNameError{{$index}}"
+                       validation="max:250|required">
+                <div class="text-danger validation" id="VisitByFullNameError{{$index}}"></div>
+            </td>
+            <td>
+                <input type="text" autocomplete="off" name="VisitByEmail{{$index}}"
+                    class="form-control" id="VisitByEmail{{$index}}"
+                    placeholder="" ng-model="row.Email"
+                    style="width:100%;" validation-error-to="VisitByEmailError{{$index}}"
+                    validation="email_address:alt=Invalid email address.|required:alt=Email is required.">
+                <div class="text-danger validation" id="VisitByEmailError{{$index}}"></div>
+            </td>
+            <td>
+                <select kendo-drop-down-list ng-model="row.DepartmentId" name="VisitByDepartment{{$index}}"
+                        validation-error-to="VisitByDepartmentError{{$index}}" validation="required" id="VisitByDepartment{{$index}}"
+                        k-data-text-field="'Text'" k-option-label="'Select'" k-data-value-field="'Id'"
+                        k-data-source="Departments" k-options="kendoDropDownOptions" 
+                        style="width: 100%"></select>
+                <div class="text-danger validation" id="VisitByDepartmentError{{$index}}"></div>
+            </td>
+            <td><button class="btn btn-sm btn-red" ng-click="onRemoveVisitBy($index)"><i class="fa fa-times"></i></button></td>
+        </tr>
+
+        $scope.onRemoveVisitBy = function (index) {
+            $scope.vModel.VisitBys.splice(index, 1);
+        }
+        </xmp>
+
+
+Conditional Validation
+<xmp class="prettyprint">
+    <select kendo-drop-down-list ng-model="source.ReceivingBranchId" name="ReceivingBranchId"
+    validation-error-to="ReceivingBranchIdError"
+    validation="{{citOfficerDisplay ? 'required' : ''}}"
+    id="ReceivingBranchId"
+    k-data-text-field="'Text'"
+    k-data-value-field="'Id'"
+    k-option-label="'Select Branch'"
+    k-data-source="Branches" k-options="kendoDropDownOptions"
+    style="width: 100%"></select>
+</xmp>
+
+
+<h2>Max Length Validation</h2>
+<xmp class="prettyprint">
+    <input type="text" autocomplete="off" name="VisitByFullName"
+    class="form-control"
+    id="VisitByFullName"
+    placeholder="" ng-model="row.Name"
+    style="width:100%;" validation-error-to="VisitByFullNameError"
+    validation="max:250|required">
+<div class="text-danger validation" id="VisitByFullNameError"></div>
+</xmp>
+
+<h2>For Loop Validation</h2>
+<xmp class="prettyprint">
+    <select kendo-drop-down-list ng-model="source.SourceTypeId" name="ProductName{{$index}}"
+    validation-error-to="ProductNameError{{$index}}"
+    validation="{{$index!=0?'required':'' }}" id="ProductName{{$index}}"
+    k-data-text-field="'Text'" k-option-label="'Select'" k-data-value-field="'Id'"
+    k-data-source="ProductName" k-options="kendoDropDownOptions"
+    style="width: 100%"></select>
+</xmp>
+
+
+<h2>Email Validation</h2>
+<xmp class="prettyprint">
+    <input type="text" autocomplete="off" name="VisitByEmail"
+    class="form-control" id="VisitByEmail"
+    placeholder="" ng-model="row.Email"
+    style="width:100%;" validation-error-to="VisitByEmailError"
+    validation="email_address:alt=Invalid email address.|required:alt=Email is required.">
+</xmp>
+
+<h2>Date Validation</h2>
+<xmp class="prettyprint">
+    <tr>
+        <td class="pt-15">
+
+            <div class="form-group">
+                <label class="control-label" for="VisitDate"><strong>Visit Date</strong></label>
+                <input type="text" name="VisitDate"  autocomplete="off" class="form-control" id="VisitDate"
+                    placeholder="Please select" kendo-date-picker k-format="'dd/MM/yyyy'" ng-disabled="readonly"
+                    validation="date_euro:alt=Invalid date format|required" style="width:100%;"
+                    ng-model="vModel.VisitDate" validation-error-to="VisitDateError">
+                <span id="VisitDateError" class="validation text-danger"></span>
+            </div>
+        </td>
+    </tr>
+</xmp>
+<hr>
+<h2>Time Validation</h2>
+<xmp class="prettyprint">
+    <div class="form-group">
+        <label class="control-label" for="VisitTime"><strong>Visit Time</strong></label>
+        <input type="text" name="VisitTime"  autocomplete="off" class="form-control" id="VisitTime"
+            ng-model="vModel.VisitTime" kendo-time-picker style="width:100%;" ng-disabled="readonly"
+            validation="required|pattern=/^(0?[1-9]|1[012])(:[0-5]\d) [APap][mM]$/:alt=Invalid time format"
+            validation-error-to="VisitTimeError">
+        <span id="VisitTimeError" class="validation text-danger"></span>
+    </div>
+
+
+    <input type="text" name="CollectionTime" class="form-control" id="CollectionTime"
+    kendo-time-picker placeholder="Collection Time" ng-model="vModel.CollectionTime"
+    k-ng-model="obj"
+    k-options="{interval:1}"
+    style="width:100%;"
+    validation="{{(vModel.CollectionTime.length <= 0 )? '':('required|pattern=/((1[0-2]|0?[1-9]):([0-5][0-9]) ?([AaPp][Mm]))/:alt=Invalid time format')}}"
+    validation-error-to="CollectionTimeErrorId">
+
+
+    //https://digitalfortress.tech/tricks/top-15-commonly-used-regex/
+</xmp>
+
+<xmp class="prettyprint">
+    <td ng-style="vModel.EODForBranchCoverFund.ShortageExcess < 0 ? {'color': 'red'} : {'color': 'black'}">
+        {{vModel.EODForBranchCoverFund.ShortageExcess | customCurrency : 'RM ' : 2 : "-"}}
+    </td>
+</xmp>
+
+
+
+
+<h2>On Click Submit</h2>
+
+<xmp class="prettyprint">
+    
+    <button type="button" ng-click="statusupdate(this,'receiving')" class="btn btn-secondary btn-icon btn-icon-standalone pull-left">
+        <i class="fa-thumbs-up"></i>
+        <span>Submit</span>
+    </button>
+
+    $scope.statusupdate = function ($this, status) {
+        if (!new ValidationService().checkFormValidity($this))
+            return;
+
+        $scope.processing = true;
+        Restangular.all('notification/interbranch/' + status).customPOST($scope.pvModel).then((function (resp) {
+            $scope.processing = false;
+            toaster.pop('success', "", "Saved successfully.");
+            var notificationControllerViewModel = $scope.$new();
+            $controller('notificationController', { $scope: notificationControllerViewModel });
+            notificationControllerViewModel.startNotification(true);
+            $location.path("notification");
+
+        }), function (resp) {
+            $scope.processing = false;
+        });
+    };
+</xmp>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="row" ng-controller="calendarCtrl as ctrl">
+    <div class="col-sm-12">
+        <div class="calendar-env">
+            <div class="calendar-main">
+                <div id="calendar" class="fc fc-ltr fc-unthemed">
+                    <div class="fc-toolbar">
+                        <div class="fc-left">
+                            <h2>{{vModel.Caption}}</h2>
+                        </div>
+                        <div class="fc-right">
+
+                            <div class="fc-button-group">
+                                <button class="fc-prev-button fc-button fc-state-default fc-corner-left" type="button" title="Previous Month" data-toggle="tooltip" ng-click="previousMonth()"><span class="fa fa-angle-left"></span></button><button title="Next Month" data-toggle="tooltip" class="fc-next-button fc-button fc-state-default fc-corner-right" type="button" ng-click="nextMonth()"><span class="fa fa-angle-right"></span></button>
+                            </div>
+                        </div>
+                        <div class="fc-center"></div>
+                        <div class="fc-clear"></div>
+                    </div>
+                    <div class="fc-view-container" style="">
+                        <div class="fc-view fc-month-view fc-basic-view" style="">
+                            <table>
+                                <thead class="fc-head">
+                                    <tr>
+                                        <td class="fc-widget-header">
+                                            <div class="fc-row fc-widget-header">
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="fc-day-header fc-widget-header fc-sun"><label>Sun</label></th>
+                                                            <th class="fc-day-header fc-widget-header fc-mon"><label>Mon</label></th>
+                                                            <th class="fc-day-header fc-widget-header fc-tue"><label>Tue</label></th>
+                                                            <th class="fc-day-header fc-widget-header fc-wed"><label>Wed</label></th>
+                                                            <th class="fc-day-header fc-widget-header fc-thu"><label>Thur</label></th>
+                                                            <th class="fc-day-header fc-widget-header fc-fri"><label>Fri</label></th>
+                                                            <th class="fc-day-header fc-widget-header fc-sat"><label>Sat</label></th>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody class="fc-body">
+                                    <tr>
+                                        <td class="fc-widget-content">
+                                            <div class="fc-day-grid-container" style="">
+                                                <div class="fc-day-grid">
+                                                    <div class="fc-row fc-week fc-widget-content">
+                                                        <table>
+                                                            <tbody>
+                                                                <tr ng-repeat="_week in _calendar">
+                                                                    <td ng-repeat="day in _week.week" class="cal-td">
+                                                                        <div ng-class="{hide:day.Number == 0}">
+                                                                            <span class="fc-day-number" ng-class="{passdate : day.IsPastDate}">{{day.Number}}</span>
+                                                                            <button ng-hide="day.IsPastDate" title="Add Schedule" data-toggle="tooltip" class="add-event" type="button" ng-click="addEvent(day)"><i class="fa fa-plus"></i></button>
+
+                                                                        </div>
+                                                                        <div class="event-wrapper" ng-repeat="event in day.Events">
+                                                                            <span ng-hide="(event.IsMeetingSchedule) || event.WorkScheduleTypeId == 1 || day.IsPastDate">
+                                                                                <button class="fa fa-times text-danger calendar-actions" title="Delete Schedule" data-toggle="tooltip" ng-click="deleteEvent(day.Events,$index)"></button>
+                                                                                <button class="fa fa-check text-success calendar-actions" title="Update Schedule" data-toggle="tooltip" ng-click="updateEvent(event)"></button>
+                                                                            </span>
+                                                                            <span ng-show="(!event.IsMeetingSchedule && !event.OffDay && day.IsPastDate) ">
+                                                                                <button type="button" title="Delete Work Status" data-toggle="tooltip" ng-show="event.WorkStatus != null" class="fa fa-times text-danger calendar-actions " ng-click="deleteStatus(event)"></button>
+                                                                                <button type="button" title="Add/Update Work Status" data-toggle="tooltip" class="fa fa-check text-success calendar-actions" ng-click="addStatus(event)"></button>
+                                                                            </span>
+                                                                            <div ng-switch="event.OffDay">
+                                                                                <div ng-switch-when="true" class="dayoff">
+                                                                                    DAY OFF
+                                                                                </div>
+                                                                                <div ng-switch-default>
+                                                                                    <p style="clear: both">{{event.Description | limitTo: 40}}{{event.Description.length > 40 ? '...' : ''}}
+                                                                                    <div ng-show="event.WorkStatus != null" class="text-center work-status">({{event.WorkStatus.TimeIn}} - {{event.WorkStatus.TimeOut}}) {{event.WorkStatus.Kilometer}}Km</div>
+                                                                                </div>
+
+                                                                            </div>
+
+
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+
+                        </div>
+                        <div ng-if="!vModel.IsPlanSubmitted" class="mt15" style="overflow: hidden">
+                         
+                            <button type="button" style="height: auto" class="btn btn-red btn-icon btn-icon-standalone pull-left" ng-click="postPlan()" >
+                                <i class="fa fa-save"></i>
+                                <span>Submit Monthly Plan</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <modal visible="showModal">
+        <modal-header title="Work Schedule"></modal-header>
+        <modal-body>
+            <form role="form" name="eventfrm" ng-submit="saveEvent(this)" novalidate>
+                <div ng-init="setformobject(eventfrm,'schedule')">
+                    <div class="form-group">
+                        <div>
+                            <label class="control-label" for="Description">Description</label>
+                            <textarea class="form-control min-height-200" id="Description"
+                                      name="EventDescription" placeholder="" ng-model="calendarModel.Description"
+                                      validation-error-to="DescriptionError" validation="{{calendarModel.OffDay ?  '': 'required'}}"></textarea>
+                        </div>
+                        <span id="DescriptionError" class="validation text-danger"></span>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" id="xsdf" checked />hh
+                    <div >
+                        <label class="cbr-inline">
+
+                            <input type="checkbox" id="OffDasdfy" name="OffasdfDay" ng-click="hideShow('offday')" checked ng-model="calendarModel.OffDay" />Is Day Off
+                        </label><br />
+                        <label class="cbr-inline">
+                            <input type="checkbox" id="IsBocaAssessmensdft" ng-click="hideShow('boca')" name="IsBosdfcaAssessment" ng-model="calendarModel.IsBocaAssessment" />Boca Assessment
+                        </label><br />
+                        <label class="cbr-inline">
+                            <input type="checkbox" id="IsAosdfacaAssessment" ng-click="hideShow('aoca')" name="IsAocaAsdfassessment" ng-model="calendarModel.IsAocaAssessment" />Aoca Assessment
+                        </label>
+                    </div>
+
+                </div>
+                <div>
+                    <div class="form-group" ng-cloak ng-hide="calendarModel.OffDay || calendarModel.IsAocaAssessment ">
+                        <div>
+                            <label class="control-label" for="WorkScheduleBranch">Branch</label>
+                            <select kendo-drop-down-list ng-model="calendarModel.BranchId" name="WorkScheduleBranch" k-option-label="'Select Branch'"
+                                    validation-error-to="WorkScheduleBranchError" ng-disabled="calendarModel.OffDay || calendarModel.IsAocaAssessment"
+                                    validation="{{calendarModel.OffDay ?  '': 'required'}}" id="WorkScheduleBranch"
+                                    k-data-text-field="'Name'"
+                                    k-data-value-field="'Id'"
+                                    k-data-source="branchesDataSource"
+                                    style="width: 100%"></select>
+                        </div>
+                        <span id="WorkScheduleBranchError" class="validation text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="form-group" ng-cloak ng-show="calendarModel.IsAocaAssessment">
+                    <div>
+                        <label class="control-label" for="Agent">Agent</label>
+                        <select kendo-drop-down-list ng-model="calendarModel.AgentId" name="Agent" k-option-label="'Select Agent'"
+                                validation-error-to="AocaAssessmentError" ng-disabled="calendarModel.OffDay || calendarModel.IsBocaAssessment"
+                                validation="{{calendarModel.IsAocaAssessment ?  'required': ''}}" id="Agent"
+                                k-data-text-field="'Text'"
+                                k-data-value-field="'Id'"
+                                k-data-source="agentDataSource"
+                                style="width: 100%"></select>
+                    </div>
+                    <span id="AocaAssessmentError" class="validation text-danger"></span>
+                </div>
+
+                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> Save</button> <button class="btn btn-gray " ng-click="hideModal('schedule')" type="button"><i class="fa fa-times"></i> Cancel</button>
+            </form>
+        </modal-body>
+    </modal>
+    <modal visible="showWorkStatusModal">
+        <modal-header title="Work Status"></modal-header>
+        <modal-body>
+            <form role="form" name="workstatus" ng-submit="saveWorkStatus(this)" novalidate>
+                <div class="form-group" ng-init="setformobject(workstatus)">
+                    <label class="control-label" style="display: block">Branch</label>
+                    <h4> {{BranchName}}</h4>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div>
+                                <label class="control-label btn-block" for="TimeIn">Time In</label>
+                                <input class="form-control" kendo-time-picker id="TimeIn" name="TimeIn" placeholder="" ng-model="workStatusModel.TimeIn"
+                                       validation-error-to="TimeInErrorId"
+                                       validation="required|pattern=/^(0?[1-9]|1[012])(:[0-5]\d) [APap][mM]$/:alt=Invalid time format">
+
+                            </div>
+                            <span id="TimeInErrorId" class="validation text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <div>
+                                <label class="control-label btn-block" for="TimeOut">Time Out</label>
+                                <input class="form-control" kendo-time-picker id="TimeOut" name="TimeOut" placeholder="" ng-model="workStatusModel.TimeOut"
+                                       validation-error-to="TimeOutErrorId"
+                                       validation="required|pattern=/^(0?[1-9]|1[012])(:[0-5]\d) [APap][mM]$/:alt=Invalid time format">
+
+                            </div>
+                            <span id="TimeOutErrorId" class="validation text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div>
+                                <label class="control-label" for="Kilometer">Km.</label>
+                                <input is-decimal class="form-control" id="Kilometer" name="Kilometer" placeholder="Kilometer" ng-model="workStatusModel.Kilometer"
+                                       validation-error-to="KilometerErrorId"
+                                       validation="required">
+                            </div>
+                            <span id="KilometerErrorId" class="validation text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="PreparingReportForHQ" name="PreparingReportForHQ" ng-model="workStatusModel.PreparingReportForHQ" /> Preparing Report For HQ
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="AuditingPurpose" name="AuditingPurpose" ng-model="workStatusModel.AuditingPurpose" /> Auditing Purpose
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="SurpriseVistiForSportCheck" name="SurpriseVistiForSportCheck" ng-model="workStatusModel.SurpriseVistiForSportCheck" /> Surprise Visit For Sport Check
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="CheckBranchesReport" name="CheckBranchesReport" ng-model="workStatusModel.CheckBranchesReport" /> Check Branches Report
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="CoachingTrainingBriefing" name="CoachingTrainingBriefing" ng-model="workStatusModel.CoachingTrainingBriefing" /> Coaching/Training/Briefing
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="Investigation" name="Investigation" ng-model="workStatusModel.Investigation" /> Investigation
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="ReliefAtBranch" name="ReliefAtBranch" ng-model="workStatusModel.ReliefAtBranch" /> Relief At Branch
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="Other" name="Other" ng-model="workStatusModel.Other" /> Other
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group">
+                    <div>
+                        <label class="control-label" for="ActivityReason">Activty Reason</label>
+                        <textarea class="form-control" id="ActivityReason" name="ActivityReason" placeholder="" ng-model="workStatusModel.ActivityReason"
+                                  validation-error-to="ActivityReasonError"
+                                  validation="required"></textarea>
+                    </div>
+                    <span id="ActivityReasonError" class="validation text-danger"></span>
+
+                </div>
+                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> Save</button> <button class="btn btn-gray " ng-click="hideModal('status')" type="button"><i class="fa fa-times"></i> Cancel</button>
+            </form>
+        </modal-body>
+    </modal>
+
+</div>
+
+
+
+(function () {
+    'use strict';
+    angular.module("app.calendar",  []).controller('calendarCtrl',
+        ['$scope', 'appStore', '$controller', '$routeParams', 'Restangular', '$q', 'toaster', 'ValidationService',
+            function ($scope, appStore, $controller, $routeParams, Restangular, $q, toaster, ValidationService) {
+
+
+                $scope.vModel = {
+                    Year: 0,
+                    Month: 0,
+                    Caption: '',
+                    UserId: appStore.getUserId(),
+                    IsPlanSubmitted: false
+                }
+              
+
+                $scope.selectedData = null;
+                $scope.showWorkStatusModal = false;
+                $scope.BranchName = '';
+                $scope._workstatus = null;
+                $scope._workschedule = null;
+                $scope.setformobject = function (form, t) {
+                    if (t == 'schedule')
+                        $scope._workschedule = form;
+                    else
+                        $scope._workstatus = form;
+                }
+
+                $scope.calendarModel = {
+                    BranchId: null,
+                    Description: '',
+                    UserId: '',
+                    OffDay: false,
+                    IsAocaAssessment: false,
+                    IsBocaAssessment: false,
+                    Id: '',
+                    Date: ''
+                }
+
+                $scope.workStatusModel = {
+                    WorkScheduleId: '',
+                    TimeIn: '',
+                    TimeOut: '',
+                    Kilometer: '',
+                    ActivityReason: '',
+                    PreparingReportForHQ: false,
+                    AuditingPurpose: false,
+                    SurpriseVisitForSportCheck: false,
+                    CheckBranchesReport: false,
+                    CoachingTrainingBriefing: false,
+                    Investigation: false,
+                    ReliefAtBranch: false,
+                    Other: false
+
+                }
+
+                $scope.showModal = false;
+                $scope.isAddEvent = true;
+                $scope.isAddStatus = true;
+
+                $scope._calendar = [];
+
+
+                $scope.branchesDataSource = appStore.getUserBranches();
+
+
+                $scope.hideShow = function (mode) {
+
+                    if (mode === "offday") {
+
+                        debugger;
+                        $scope.calendarModel.OffDay = true;
+
+                        $scope.calendarModel.IsBocaAssessment = false;
+                        $scope.calendarModel.BranchId = null;
+
+                        $scope.calendarModel.IsAocaAssessment = false;
+                        $scope.calendarModel.AgentId = null;
+
+                    }
+                    else if (mode === "boca") {
+                        $scope.calendarModel.OffDay = false;
+
+
+                        $scope.calendarModel.IsAocaAssessment = false;
+                        $scope.calendarModel.AgentId = null;
+
+                    } else {
+                        $scope.calendarModel.Offday = false;
+                        $scope.calendarModel.BranchId = null;
+                        $scope.calendarModel.IsBocaAssessment = false;
+
+                    }
+                }
+
+                $scope.nextMonth = function () {
+                    $scope.vModel.Year = ($scope.vModel.Month + 1) == 13 ? $scope.vModel.Year + 1 : $scope.vModel.Year;
+                    $scope.vModel.Month = ($scope.vModel.Month + 1) == 13 ? 1 : $scope.vModel.Month + 1;
+                    $scope.getCalendar();
+                }
+
+                $scope.previousMonth = function () {
+
+                    $scope.vModel.Year = ($scope.vModel.Month - 1) == 0 ? $scope.vModel.Year - 1 : $scope.vModel.Year;
+                    $scope.vModel.Month = ($scope.vModel.Month - 1) == 0 ? 12 : $scope.vModel.Month - 1;
+                    $scope.getCalendar();
+                }
+
+                $scope.getCalendar = function () {
+
+                    Restangular.all("calendar/monthwise").customPOST($scope.vModel).then((function (resp) {
+                        $scope.vModel.Month = resp.Month;
+                        $scope.vModel.Year = resp.Year;
+                        $scope.vModel.Caption = resp.Caption;
+                        $scope.vModel.IsPlanSubmitted = resp.IsPlanSubmitted;
+
+                        var weeks = [{ week: [] }], index = 0;
+
+                        if (resp.WorkScheduleDays[0].Day > 0) {
+                            for (var j = resp.WorkScheduleDays[0].Day; j > 0; j--) {
+                                resp.WorkScheduleDays.unshift({
+                                    "IsDummy": true,
+                                    "Day": 0,
+                                    "Number": 0
+                                });
+                            }
+                        }
+
+                        angular.forEach(resp.WorkScheduleDays, function (value, ix) {
+
+
+                            if (ix % 7 == 0) {
+                                weeks.push({ week: [] });
+                                index++;
+                            }
+                            weeks[index].week.push(value);
+
+                        });
+
+                        var lastrow = weeks[weeks.length - 1];
+
+                        if (lastrow.week.length < 7) {
+                            for (var j = lastrow.week.length; j < 7; j++) {
+                                weeks[weeks.length - 1].week.push({
+                                    "IsDummy": true,
+                                    "Day": 0,
+                                    "Number": 0
+                                });
+                            }
+                        }
+
+                        $scope._calendar = weeks;
+
+
+                    }), function (resp) {
+
+                    });
+
+                }
+
+                $scope.getCalendar();
+                $scope.eventBranchesDataSource = [];
+                $scope.agentDataSource = [];
+
+                $scope.hideModal = function (t) {
+                    if (t == 'status')
+                        $scope.showWorkStatusModal = false;
+                    else
+                        $scope.showModal = false;
+                }
+
+                $scope.addEvent = function (selected) {
+
+
+                    if (selected.Events != null) {
+                        var a = selected.Events.filter(function (item) { return item.OffDay })[0];
+                        if (a != null) {
+                            toaster.warning("Day Off");
+                            return;
+                        }
+                    }
+
+                    $scope.resetForm($scope._workschedule);
+
+                    $scope.calendarModel.Description = '';
+                    $scope.calendarModel.OffDay = false;
+                    $scope.calendarModel.BranchId = '';
+                    $scope.calendarModel.Date = selected.Date;
+                    $scope.calendarModel.Id = appStore.getBlankGuid();
+                    $scope.calendarModel.UserId = appStore.getUserId();
+                    $scope.selectedData = selected;
+                    $scope.showModal = true;
+                    $scope.isAddEvent = true;
+
+
+
+                }
+
+                $scope.updateEvent = function (selected) {
+
+
+                    $scope.calendarModel.Description = selected.Description;
+                    $scope.calendarModel.OffDay = selected.OffDay;
+                    $scope.calendarModel.IsAocaAssessment = selected.IsAocaAssessment;
+                    $scope.calendarModel.IsBocaAssessment = selected.IsBocaAssessment;
+                    $scope.calendarModel.Date = selected.Date;
+                    $scope.calendarModel.BranchId = selected.BranchId;
+                    $scope.calendarModel.AgentId = selected.AgentId;
+                    $scope.calendarModel.Id = selected.Id;
+                    $scope.calendarModel.UserId = appStore.getUserId();
+                    $scope.selectedData = selected;
+                    $scope.showModal = true;
+                    $scope.isAddEvent = false;
+                }
+
+                $scope.addStatus = function (selected) {
+                    $scope.selectedData = selected;
+
+
+                    /*  setTimeout(function () {
+                         
+                          angular.element('#reset-status').triggerHandler('click');
+                      }, 100);*/
+
+
+                    $scope.resetForm($scope._workstatus);
+
+                    $scope.showWorkStatusModal = true;
+
+                    if (selected.WorkStatus != null) {
+                        $scope.workStatusModel.WorkScheduleId = selected.WorkStatus.WorkScheduleId;
+                        $scope.workStatusModel.TimeIn = selected.WorkStatus.TimeIn;
+                        $scope.workStatusModel.TimeOut = selected.WorkStatus.TimeOut;
+                        $scope.workStatusModel.Kilometer = selected.WorkStatus.Kilometer;
+                        $scope.workStatusModel.ActivityReason = selected.WorkStatus.ActivityReason;
+                        $scope.workStatusModel.PreparingReportForHQ = selected.WorkStatus.PreparingReportForHQ;
+                        $scope.workStatusModel.AuditingPurpose = selected.WorkStatus.AuditingPurpose;
+                        $scope.workStatusModel.SurpriseVisitForSportCheck = selected.WorkStatus.SurpriseVisitForSportCheck;
+                        $scope.workStatusModel.CheckBranchesReport = selected.WorkStatus.CheckBranchesReport;
+                        $scope.workStatusModel.CoachingTrainingBriefing = selected.WorkStatus.CoachingTrainingBriefing;
+                        $scope.workStatusModel.Investigation = selected.WorkStatus.Investigation;
+                        $scope.workStatusModel.ReliefAtBranch = selected.WorkStatus.ReliefAtBranch;
+                        $scope.workStatusModel.Other = selected.WorkStatus.Other;
+
+                        $scope.isAddStatus = false;
+                    }
+                    else {
+                        $scope.isAddStatus = true;
+                        $scope.workStatusModel.WorkScheduleId = selected.Id;
+                        $scope.resetWorkStatusModel();
+                    }
+
+                    $scope.BranchName = selected.BranchName;
+
+
+
+                }
+
+                $scope.resetWorkStatusModel = function () {
+                    $scope.workStatusModel.TimeIn = '';
+                    $scope.workStatusModel.TimeOut = '';
+                    $scope.workStatusModel.Kilometer = '';
+                    $scope.workStatusModel.ActivityReason = '';
+                    $scope.workStatusModel.PreparingReportForHQ = false;
+                    $scope.workStatusModel.AuditingPurpose = false;
+                    $scope.workStatusModel.SurpriseVisitForSportCheck = false;
+                    $scope.workStatusModel.CheckBranchesReport = false;
+                    $scope.workStatusModel.CoachingTrainingBriefing = false;
+                    $scope.workStatusModel.Investigation = false;
+                    $scope.workStatusModel.ReliefAtBranch = false;
+                    $scope.workStatusModel.Other = false;
+                }
+
+                $scope.deleteEvent = function (parent, index) {
+
+                    var selected = parent[index];
+
+
+                    bootbox.confirm("Are you sure, you want to delete?", function (response) {
+                        if (response) {
+
+                            Restangular.one("calendar/workschedule/delete/" + selected.Id).get().then((function (resp) {
+                                $scope.processing = false;
+                                toaster.success("Delete successfully.");
+                                parent.splice(index, 1);
+
+                            }), function (resp) {
+                                $scope.processing = false;
+                            });
+                        }
+                    });
+                }
+
+                $scope.deleteStatus = function (selected) {
+
+                    bootbox.confirm("Are you sure, you want to delete?", function (response) {
+                        if (response) {
+
+                            Restangular.one("calendar/workstatus/delete/" + selected.Id).get().then((function (resp) {
+                                $scope.processing = false;
+                                toaster.success("Delete successfully.");
+                                selected.WorkStatus = null;
+                            }), function (resp) {
+                                $scope.processing = false;
+                            });
+                        }
+                    });
+                }
+
+
+
+                $scope.saveEvent = function ($this) {
+
+
+
+                    if (!new ValidationService().checkFormValidity($this.eventfrm))
+                        return;
+
+
+                    if ($scope.selectedData.Events != null && $scope.selectedData.Events.length > 0 && $scope.calendarModel.OffDay) {
+                        toaster.warning("Other Schedule and the Off day could not be on same day.");
+                        return;
+
+                    }
+
+                    var url = $scope.isAddEvent ? "calendar/workschedule/add" : "calendar/workschedule/update";
+
+                    $scope.processing = true;
+                    Restangular.all(url).customPOST($scope.calendarModel).then((function (resp) {
+                        $scope.processing = false;
+                        toaster.success("Saved successfully.");
+
+                        if ($scope.selectedData.Events == null && $scope.isAddEvent)
+                            $scope.selectedData.Events = [];
+
+                        if ($scope.isAddEvent) {
+                            $scope.selectedData.Events.push({
+                                Id: resp.Id,
+                                BranchId: resp.BranchId,
+                                UserId: resp.UserId,
+                                Description: resp.Description,
+                                OffDay: resp.OffDay,
+                                IsAocaAssessment: resp.IsAocaAssessment,
+                                IsBocaAssessment: resp.IsBocaAssessment,
+                                AgentId: resp.AgentId,
+                                Date: resp.Date
+                            });
+                        } else {
+                            $scope.selectedData.Description = resp.Description;
+                            $scope.selectedData.Date = resp.Date;
+                            $scope.selectedData.UserId = resp.UserId;
+                            $scope.selectedData.BranchId = resp.BranchId;
+                            $scope.selectedData.OffDay = resp.OffDay;
+
+                            $scope.selectedData.AgentId = resp.AgentId;
+                            $scope.selectedData.IsAocaAssessment = resp.IsAocaAssessment;
+                            $scope.selectedData.IsBocaAssessment = resp.IsBocaAssessment;
+
+
+                        }
+
+                        $scope.showModal = false;
+
+                    }), function (resp) {
+                        $scope.processing = false;
+                    });
+
+                }
+
+
+                $scope.saveWorkStatus = function ($this) {
+
+                    if (!new ValidationService().checkFormValidity($this.workstatus))
+                        return;
+
+
+
+                    var url = $scope.isAddStatus ? "calendar/workstatus/add" : "calendar/workstatus/update";
+
+                    $scope.processing = true;
+                    Restangular.all(url).customPOST($scope.workStatusModel).then((function (resp) {
+                        $scope.processing = false;
+                        toaster.success("Saved successfully.");
+
+
+                        $scope.selectedData.WorkStatus = {
+                            WorkScheduleId: resp.WorkScheduleId,
+                            TimeIn: resp.TimeIn,
+                            TimeOut: resp.TimeOut,
+                            Kilometer: resp.Kilometer,
+                            ActivityReason: resp.ActivityReason,
+                            PreparingReportForHQ: resp.PreparingReportForHQ,
+                            AuditingPurpose: resp.AuditingPurpose,
+                            SurpriseVisitForSportCheck: resp.SurpriseVisitForSportCheck,
+                            CheckBranchesReport: resp.CheckBranchesReport,
+                            CoachingTrainingBriefing: resp.CoachingTrainingBriefing,
+                            Investigation: resp.Investigation,
+                            ReliefAtBranch: resp.ReliefAtBranch,
+                            Other: resp.Other
+                        };
+
+
+
+
+                        $scope.showWorkStatusModal = false;
+
+                    }), function (resp) {
+                        $scope.processing = false;
+                    });
+
+                }
+
+                $scope.cancelEvent = function () {
+
+                }
+
+                $scope.resetForm = function (form) {
+
+                    new ValidationService().resetForm(form);
+                    form.$setUntouched();
+                    form.$setPristine();
+
+                }
+
+
+                Restangular.one("list/agent").get().then(function (response) {
+
+                    $scope.agentDataSource = response;
+                });
+
+                $scope.postPlan = function () {
+
+                    var isValid = true;
+
+                    angular.forEach($scope._calendar, function (value, index) {
+
+                       
+
+                        angular.forEach(value.week, function (day, weekIndex) {
+
+                           
+                            console.log("All Days: ",day.Date);
+
+                            if (!day.IsDummy && !day.IsPastDate) {
+
+                                console.log("Checked Days:",day.Date);
+
+                                if (day.Events.length > 0) {
+
+                                    var insetedEvent = _.filter(day.Events, function (item) {
+                                        return (!item.IsMeetingSchedule && !item.IsPosted);
+                                    });
+
+                                    if (insetedEvent.length === 0)
+                                        isValid = false;
+
+                                } else
+                                    isValid = false;
+                            }
+                        });
+                    });
+
+
+
+                    if (isValid) {
+
+
+                        Restangular.all("branchoperation/workschedule/submission").customPOST({
+                            Id: appStore.getBlankGuid(),
+                            Date: '01/' + $scope.vModel.Month + "/" + $scope.vModel.Year
+                        }).then((function (resp) {
+                            $scope.vModel.IsPlanSubmitted = true;
+                            toaster.success("Saved successfully");
+                        }));
+
+
+                    } else {
+                        toaster.info("Please insert the whole monthly plan for the selected month.");
+                    }
+                };
+
+            }]);
+})();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
