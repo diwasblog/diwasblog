@@ -31,7 +31,21 @@
     <h3>Step 3 Start Apache Server and Mysql from Xamp</h3>
     Open xamp as "Run as Administrator".<br>
     Then start Apache Server and MySql server<br>
-
+     <br>
+     <br>
+     <b>You may get below error</b> <br>
+     <img src="https://i.ibb.co/1fmYJgk/wordpressinstallationerror.jpg">
+     <br>
+     Just Click on Config and  Inside the httpd.conf file, somehow I found a line that says:
+     <pre>
+        Listen 80
+     </pre>
+     <br>
+     And change the 80 into any number / port you want. In my scenario I’m using port 8080.
+     <br>
+     <pre>
+        Listen 8080
+     </pre>
     <hr>
 
     <h3>Step 4 : Run xamp from url</h3>

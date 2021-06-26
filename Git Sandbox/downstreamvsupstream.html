@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dracula — A dark theme for Prism.js and 50+ apps</title>
+  <link rel="stylesheet" href="../Ef/css/bootstrap.css">
+  <link rel="stylesheet" href="../Ef/css/bootstrap-grid.css">
+  <link rel="stylesheet" href="../Ef/css/bootstrap-reboot.css">
+  <link rel="stylesheet" href="../Ef/css/dracula.css">
+  <link rel="stylesheet" href="../Ef/css/dracula-prism.css">
+  <link rel="icon" type="image/x-icon" href="https://draculatheme.com/assets/img/favicon.ico">
+</head>
+
+<body>
+
+    <p><span style="font-size: 18pt;">Upstream vs Downstream</span></p>
+    <ul>
+    <li><span style="font-size: 18pt;"><strong>Upstream </strong>is like <strong>Upload</strong></span></li>
+    <li><span style="font-size: 18pt;"><strong>Downstream </strong>is like <strong>Download</strong></span></li>
+    </ul>
+    <ol>
+    <li><span style="font-size: 18pt;">When you make changes in git, you usually want to send them back "<strong>upstream</strong>" so that everyone can pull it to get up-to-date code using the <span style="background-color: #e03e2d;">git push command</span>.</span></li>
+    <li><span style="font-size: 18pt;">You do downstream when you get others code by <span style="background-color: #e03e2d;">clone</span>, <span style="background-color: #e03e2d;">checkout command</span>.</span></li>
+    </ol>
+ 
+
+    <hr>
+    <h2>Git Push vs Git Push Upstream</h2>
+    <p><span style="font-size: 18pt;">Output of&nbsp;<span style="background-color: #2dc26b;"><code>git push</code>&nbsp;</span>when pushing a<span style="background-color: #2dc26b;"> new branch</span></span></p>
+
+    <pre>
+        <code class="language-csharp">
+            > git checkout -b new_branch
+            Switched to a new branch 'new_branch'
+            > git push
+            fatal: The current branch new_branch has no upstream branch.
+            To push the current branch and set the remote as upstream, use
+            
+                git push --set-upstream origin new_branch
+        </code>
+      </pre>
+      <p><span style="font-size: 18pt;">A simple&nbsp;<code>git push</code>&nbsp;assumes that <span style="background-color: #2dc26b;">there already exists a remote branch</span> that the current local branch is tracking<span style="background-color: #2dc26b;">. If no such remote branch exists, and you want to create it</span>, you must specify that using the&nbsp;<code>-u</code>&nbsp;(short form of&nbsp;<code>--set-upstream</code>) flag.</span></p>
+
+
+    <script src="../EF/js/prism.js"></script>
+    <script type="text/javascript">
+      Prism.plugins.NormalizeWhitespace.setDefaults(
+        {
+          'remove-trailing': true,
+          'remove-indent': true,
+          'left-trim': true,
+          'right-trim': true,
+          // 'break-lines': 10,
+          // 'indent': 2,
+          // 'remove-initial-line-feed': false,
+          // 'tabs-to-spaces': 4,
+          // 'spaces-to-tabs': 4
+        });
+    </script>
+  </body>
+  
+  </html>
